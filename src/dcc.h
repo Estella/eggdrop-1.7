@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.h,v 1.5 2004/08/27 10:01:17 wcc Exp $
+ * $Id: dcc.h,v 1.6 2004/12/11 04:21:03 wcc Exp $
  */
 
 #ifndef _EGG_DCC_H
@@ -204,8 +204,8 @@ enum {
 struct userrec;
 
 struct dcc_t {
-  long sock;            /* This should be a long to keep 64-bit machines sane.           */
-  IP addr;              /* IP address in host byte order.                                */
+  long sock;            /* This should be a long to keep 64-bit machines sane.  */
+  IP addr;              /* IP address in network byte order.                    */
   unsigned int port;
   struct userrec *user;
   char nick[NICKLEN];
