@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: misc.h,v 1.2 2004/08/30 23:58:23 wcc Exp $
+ * $Id: misc.h,v 1.3 2004/08/31 22:56:12 wcc Exp $
  */
 
 #ifndef _EGG_MISC_H

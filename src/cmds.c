@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.c,v 1.11 2004/08/31 01:48:21 wcc Exp $
+ * $Id: cmds.c,v 1.12 2004/08/31 22:56:11 wcc Exp $
  */
 
 #include "main.h"
@@ -32,6 +32,7 @@
                       * struct dcc_t */
 #include "dccutil.h" /* get_data_ptr, dprintf, chanout_but, dcc_chatter, lostdcc,
                       * tell_dcc, not_away, set_away, do_boot, flush_lines */
+#include "help.h"    /* debug_help */
 #include "logfile.h" /* LOG_*, putlog, logmodes, masktype, maskname */
 #include "net.h"     /* killsock, tell_netdebug */
 #include "userrec.h" /* adduser, addhost_by_handle, u_pass_match, delhost_by_handle,
@@ -421,55 +422,6 @@ static void cmd_vbottree(struct userrec *u, int idx, char *par)
 {
   putlog(LOG_CMDS, "*", "#%s# vbottree", dcc[idx].nick);
   tell_bottree(idx, 1);
-}
-
-static void cmd_rehelp(struct userrec *u, int idx, char *par)
-{
-  putlog(LOG_CMDS, "*", "#%s# rehelp", dcc[idx].nick);
-  dprintf(idx, "Reload help cache...\n");
-  reload_help_data();
-}
-
-static void cmd_help(struct userrec *u, int idx, char *par)
-{
-  struct flag_record fr = { FR_GLOBAL | FR_CHAN, 0, 0, 0, 0, 0 };
-
-  get_user_flagrec(u, &fr, dcc[idx].u.chat->con_chan);
-  if (par[0]) {
-    putlog(LOG_CMDS, "*", "#%s# help %s", dcc[idx].nick, par);
-    if (!strcmp(par, "all"))
-      tellallhelp(idx, "all", &fr);
-    else if (strchr(par, '*') || strchr(par, '?')) {
-      char *p = par;
-
-      /* Check if the search pattern only consists of '*' and/or '?'
-       * If it does, show help for "all" instead of listing all help
-       * entries.
-       */
-      for (p = par; *p && ((*p == '*') || (*p == '?')); p++);
-      if (*p)
-        tellwildhelp(idx, par, &fr);
-      else
-        tellallhelp(idx, "all", &fr);
-    } else
-      tellhelp(idx, par, &fr, 0);
-  } else {
-    putlog(LOG_CMDS, "*", "#%s# help", dcc[idx].nick);
-    if (glob_op(fr) || glob_botmast(fr) || chan_op(fr))
-      tellhelp(idx, "help", &fr, 0);
-    else
-      tellhelp(idx, "partyline", &fr, 0);
-  }
-}
-
-static void cmd_addlog(struct userrec *u, int idx, char *par)
-{
-  if (!par[0]) {
-    dprintf(idx, "Usage: addlog <message>\n");
-    return;
-  }
-  dprintf(idx, "Placed entry in the log file.\n");
-  putlog(LOG_MISC, "*", "%s: %s", dcc[idx].nick, par);
 }
 
 static void cmd_who(struct userrec *u, int idx, char *par)
@@ -2700,7 +2652,6 @@ cmd_t C_dcc[] = {
   {"-host",     "",     (Function) cmd_mns_host,   NULL},
   {"-ignore",   "m",    (Function) cmd_mns_ignore, NULL},
   {"-user",     "m",    (Function) cmd_mns_user,   NULL},
-  {"addlog",    "to|o", (Function) cmd_addlog,     NULL},
   {"away",      "",     (Function) cmd_away,       NULL},
   {"back",      "",     (Function) cmd_back,       NULL},
   {"backup",    "m|m",  (Function) cmd_backup,     NULL},
@@ -2724,7 +2675,6 @@ cmd_t C_dcc[] = {
   {"die",       "n",    (Function) cmd_die,        NULL},
   {"echo",      "",     (Function) cmd_echo,       NULL},
   {"fixcodes",  "",     (Function) cmd_fixcodes,   NULL},
-  {"help",      "",     (Function) cmd_help,       NULL},
   {"ignores",   "m",    (Function) cmd_ignores,    NULL},
   {"link",      "t",    (Function) cmd_link,       NULL},
   {"loadmod",   "n",    (Function) cmd_loadmod,    NULL},
@@ -2739,7 +2689,6 @@ cmd_t C_dcc[] = {
   {"page",      "",     (Function) cmd_page,       NULL},
   {"quit",      "",     (Function) NULL,           NULL},
   {"rehash",    "m",    (Function) cmd_rehash,     NULL},
-  {"rehelp",    "n",    (Function) cmd_rehelp,     NULL},
   {"relay",     "o",    (Function) cmd_relay,      NULL},
   {"reload",    "m|m",  (Function) cmd_reload,     NULL},
   {"restart",   "m",    (Function) cmd_restart,    NULL},

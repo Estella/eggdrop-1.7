@@ -2,7 +2,7 @@
  * misc_file.c -- handles:
  *   copyfile() movefile() file_readable()
  *
- * $Id: misc_file.c,v 1.2 2004/08/27 05:34:18 wcc Exp $
+ * $Id: misc_file.c,v 1.3 2004/08/31 22:56:12 wcc Exp $
  */
 /*
  * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
@@ -31,6 +31,21 @@
 
 #include "stat.h"
 
+
+int is_file(const char *s)
+{
+  struct stat ss;
+  int i;
+
+  i = stat(s, &ss);
+  if (i < 0)
+    return 0;
+
+  if ((ss.st_mode & S_IFREG) || (ss.st_mode & S_IFLNK))
+    return 1;
+
+  return 0;
+}
 
 /* Copy a file from one place to another (possibly erasing old copy).
  *

@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: traffic.h,v 1.2 2004/08/27 10:01:17 wcc Exp $
+ * $Id: traffic.h,v 1.3 2004/08/31 22:56:12 wcc Exp $
  */
 
 #ifndef _EGG_TRAFFIC_H
@@ -40,7 +40,7 @@ typedef struct {
 void traffic_update_in(struct dcc_table *, int);
 void traffic_update_out(struct dcc_table *, int);
 void traffic_reset();
-void init_traffic();
+void traffic_init();
 #endif
 
 #endif /* !__EGG_TRAFFIC_H */

@@ -7,7 +7,7 @@
  *   (non-Tcl) procedure lookups for msg/dcc/file commands
  *   (Tcl) binding internal procedures to msg/dcc/file commands
  *
- * $Id: tclhash.c,v 1.8 2004/08/31 01:48:21 wcc Exp $
+ * $Id: tclhash.c,v 1.9 2004/08/31 22:56:12 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -45,7 +45,7 @@ extern struct dcc_t *dcc;
 extern struct userrec *userlist;
 extern int dcc_total;
 extern time_t now;
-extern cmd_t C_dcc[], traffic_dcc[];
+extern cmd_t C_dcc[], traffic_dcc[], help_dcc[], logfile_dcc[];
 
 p_tcl_bind_list bind_table_list;
 p_tcl_bind_list H_chat, H_act, H_bcst, H_chon, H_chof, H_load, H_unld, H_link,
@@ -244,6 +244,8 @@ void init_bind(void)
   H_event = add_bind_table("evnt", HT_STACKABLE, builtin_char);
   add_builtins(H_dcc, C_dcc);
   add_builtins(H_dcc, traffic_dcc);
+  add_builtins(H_dcc, help_dcc);
+  add_builtins(H_dcc, logfile_dcc);
   Context;
 }
 
@@ -253,11 +255,13 @@ void kill_bind(void)
 
   rem_builtins(H_dcc, C_dcc);
   rem_builtins(H_dcc, traffic_dcc);
+  rem_builtins(H_dcc, help_dcc);
+  rem_builtins(H_dcc, logfile_dcc);
   for (tl = bind_table_list; tl; tl = tl_next) {
     tl_next = tl->next;
 
     if (!(tl->flags |= HT_DELETED))
-      putlog(LOG_DEBUG, "*", "De-Allocated bind table %s", tl->name);
+      putlog(LOG_DEBUG, "*", "De-Allocated bind table %s.", tl->name);
     tcl_bind_list_delete(tl);
   }
   bind_table_list = NULL;
@@ -295,7 +299,7 @@ tcl_bind_list_t *add_bind_table(const char *nme, int flg, Function func)
     bind_table_list = tl;
   }
 
-  putlog(LOG_DEBUG, "*", "Allocated bind table %s (flags %d)", nme, flg);
+  putlog(LOG_DEBUG, "*", "Allocated bind table %s (flags %d).", nme, flg);
   return tl;
 }
 

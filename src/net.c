@@ -3,7 +3,7 @@
  * This is hereby released into the public domain.
  * Robey Pointer, robey@netcom.com
  *
- * $Id: net.c,v 1.7 2004/08/31 01:48:21 wcc Exp $
+ * $Id: net.c,v 1.8 2004/08/31 22:56:12 wcc Exp $
  */
 
 #include <fcntl.h>
@@ -105,6 +105,7 @@ IP getmyip()
   char s[121];
   IP ip;
   struct in_addr *in;
+
   if (myip[0]) {
     if ((myip[strlen(myip) - 1] >= '0') && (myip[strlen(myip) - 1] <= '9'))
       return (IP) inet_addr(myip);

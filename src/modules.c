@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: modules.c,v 1.8 2004/08/30 23:58:23 wcc Exp $
+ * $Id: modules.c,v 1.9 2004/08/31 22:56:12 wcc Exp $
  */
 
 #include <ctype.h>
@@ -35,8 +35,10 @@
 #include "dcc.h"
 #include "dccutil.h"
 #include "dns.h"
+#include "help.h"
 #include "language.h"
 #include "match.h"
+#include "misc.h"
 #include "logfile.h"
 #include "net.h"
 #include "rfc1459.h"

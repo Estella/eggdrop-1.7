@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tclmisc.c,v 1.9 2004/08/31 01:48:21 wcc Exp $
+ * $Id: tclmisc.c,v 1.10 2004/08/31 22:56:12 wcc Exp $
  */
 
 #include "main.h"
@@ -43,8 +43,9 @@
 #include "md5/md5.h"
 #include "botmsg.h"  /* add_note */
 #include "dcc.h"     /* STRIP_*, strip_mirc_codes, struct dcc_t */
-#include "logfile.h" /* log_t, LF_EXPIRING, LOG_*, putlog, logmodes, masktype */
-#include "match.h"   /* wild_match_per */
+#include "logfile.h" /* LOG_*, putlog */
+#include "help.h"    /* showhelp, tellhelp */
+#include "match.h"   /* wild_match_per, reload_help_data */
 #include "net.h"     /* getmyip */
 
 
@@ -55,146 +56,8 @@ extern char botnetnick[], quit_msg[];
 extern struct userrec *userlist;
 extern time_t now;
 extern module_entry *module_list;
-extern int max_logs;
-extern log_t *logs;
 extern Tcl_Interp *interp;
 
-
-int expmem_tclmisc()
-{
-  int i, tot = 0;
-
-  for (i = 0; i < max_logs; i++) {
-    if (logs[i].filename != NULL) {
-      tot += strlen(logs[i].filename) + 1;
-      tot += strlen(logs[i].chname) + 1;
-    }
-  }
-
-  return tot;
-}
-
-/*
- *      Logging
- */
-
-/* logfile [<modes> <channel> <filename>] */
-static int tcl_logfile STDVAR
-{
-  int i;
-  char s[151];
-
-  BADARGS(1, 4, " ?logModes channel logFile?");
-
-  if (argc == 1) {
-    /* They just want a list of the logfiles and modes */
-    for (i = 0; i < max_logs; i++)
-      if (logs[i].filename != NULL) {
-        strcpy(s, masktype(logs[i].mask));
-        strcat(s, " ");
-        strcat(s, logs[i].chname);
-        strcat(s, " ");
-        strcat(s, logs[i].filename);
-        Tcl_AppendElement(interp, s);
-      }
-      return TCL_OK;
-  }
-
-  BADARGS(4, 4, " ?logModes channel logFile?");
-
-  for (i = 0; i < max_logs; i++)
-    if ((logs[i].filename != NULL) && (!strcmp(logs[i].filename, argv[3]))) {
-      logs[i].flags &= ~LF_EXPIRING;
-      logs[i].mask = logmodes(argv[1]);
-      nfree(logs[i].chname);
-      logs[i].chname = NULL;
-      if (!logs[i].mask) {
-        /* ending logfile */
-        nfree(logs[i].filename);
-        logs[i].filename = NULL;
-        if (logs[i].f != NULL) {
-          fclose(logs[i].f);
-          logs[i].f = NULL;
-        }
-        logs[i].flags = 0;
-      } else {
-        logs[i].chname = nmalloc(strlen(argv[2]) + 1);
-        strcpy(logs[i].chname, argv[2]);
-      }
-      Tcl_AppendResult(interp, argv[3], NULL);
-      return TCL_OK;
-    }
-  /* Do not add logfiles without any flags to log ++rtc */
-  if (!logmodes(argv[1])) {
-    Tcl_AppendResult(interp, "can't remove \"", argv[3],
-                     "\" from list: no such logfile", NULL);
-    return TCL_ERROR;
-  }
-  for (i = 0; i < max_logs; i++)
-    if (logs[i].filename == NULL) {
-      logs[i].flags = 0;
-      logs[i].mask = logmodes(argv[1]);
-      logs[i].filename = nmalloc(strlen(argv[3]) + 1);
-      strcpy(logs[i].filename, argv[3]);
-      logs[i].chname = nmalloc(strlen(argv[2]) + 1);
-      strcpy(logs[i].chname, argv[2]);
-      Tcl_AppendResult(interp, argv[3], NULL);
-      return TCL_OK;
-    }
-  Tcl_AppendResult(interp, "reached max # of logfiles", NULL);
-  return TCL_ERROR;
-}
-
-static int tcl_putlog STDVAR
-{
-  char logtext[501];
-
-  BADARGS(2, 2, " text");
-
-  strncpyz(logtext, argv[1], sizeof logtext);
-  putlog(LOG_MISC, "*", "%s", logtext);
-  return TCL_OK;
-}
-
-static int tcl_putcmdlog STDVAR
-{
-  char logtext[501];
-
-  BADARGS(2, 2, " text");
-
-  strncpyz(logtext, argv[1], sizeof logtext);
-  putlog(LOG_CMDS, "*", "%s", logtext);
-  return TCL_OK;
-}
-
-static int tcl_putxferlog STDVAR
-{
-  char logtext[501];
-
-  BADARGS(2, 2, " text");
-
-  strncpyz(logtext, argv[1], sizeof logtext);
-  putlog(LOG_FILES, "*", "%s", logtext);
-  return TCL_OK;
-}
-
-static int tcl_putloglev STDVAR
-{
-  int lev = 0;
-  char logtext[501];
-
-  BADARGS(4, 4, " level channel text");
-
-  lev = logmodes(argv[1]);
-  if (!lev) {
-    Tcl_AppendResult(irp, "No valid log-level given", NULL);
-    return TCL_ERROR;
-  }
-  strncpyz(logtext, argv[3], sizeof logtext);
-
-  putlog(lev, argv[2], "%s", logtext);
-  return TCL_OK;
-}
 
 static int tcl_binds STDVAR
 {
@@ -598,30 +461,6 @@ static int tcl_modules STDVAR
   return TCL_OK;
 }
 
-static int tcl_loadhelp STDVAR
-{
-  BADARGS(2, 2, " helpfile-name");
-
-  add_help_reference(argv[1]);
-  return TCL_OK;
-}
-
-static int tcl_unloadhelp STDVAR
-{
-  BADARGS(2, 2, " helpfile-name");
-
-  rem_help_reference(argv[1]);
-  return TCL_OK;
-}
-
-static int tcl_reloadhelp STDVAR
-{
-  BADARGS(1, 1, "");
-
-  reload_help_data();
-  return TCL_OK;
-}
-
 static int tcl_callevent STDVAR
 {
   BADARGS(2, 2, " event");
@@ -717,11 +556,6 @@ tcl_cmds tclmisc_objcmds[] = {
 };
 
 tcl_cmds tclmisc_cmds[] = {
-  {"logfile",           tcl_logfile},
-  {"putlog",             tcl_putlog},
-  {"putcmdlog",       tcl_putcmdlog},
-  {"putxferlog",     tcl_putxferlog},
-  {"putloglev",       tcl_putloglev},
   {"timer",               tcl_timer},
   {"utimer",             tcl_utimer},
   {"killtimer",       tcl_killtimer},
@@ -744,9 +578,6 @@ tcl_cmds tclmisc_cmds[] = {
   {"loadmodule",     tcl_loadmodule},
   {"checkmodule",    tcl_loadmodule},
   {"modules",           tcl_modules},
-  {"loadhelp",         tcl_loadhelp},
-  {"unloadhelp",     tcl_unloadhelp},
-  {"reloadhelp",     tcl_reloadhelp},
   {"duration",         tcl_duration},
 #ifndef USE_TCL_OBJ
   {"md5",                   tcl_md5},

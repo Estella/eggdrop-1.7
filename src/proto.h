@@ -7,7 +7,7 @@
  * because they use structures in those
  * (saves including those .h files EVERY time) - Beldin
  *
- * $Id: proto.h,v 1.9 2004/08/31 01:48:21 wcc Exp $
+ * $Id: proto.h,v 1.10 2004/08/31 22:56:12 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -34,11 +34,11 @@
 #include "lush.h"
 #include "misc_file.h"
 
-struct chanset_t;               /* keeps the compiler warnings down :) */
+/* These keep down compiler warnings. */
+struct chanset_t;
 struct userrec;
 struct maskrec;
 struct igrec;
-struct flag_record;
 struct list_type;
 
 #ifndef MAKING_MODS
@@ -87,22 +87,12 @@ void dumplots(int, const char *, char *);
 void daysago(time_t, time_t, char *);
 void days(time_t, time_t, char *);
 void daysdur(time_t, time_t, char *);
-void help_subst(char *, char *, struct flag_record *, int, char *);
 void sub_lang(int, char *);
 void show_motd(int);
-void tellhelp(int, char *, struct flag_record *, int);
-void tellwildhelp(int, char *, struct flag_record *);
-void tellallhelp(int, char *, struct flag_record *);
-void showhelp(char *, char *, struct flag_record *, int);
-void rem_help_reference(char *);
-void add_help_reference(char *);
-void debug_help(int);
-void reload_help_data(void);
 char *extracthostname(char *);
 void show_banner(int i);
 void make_rand_str(char *, int);
 int oatoi(const char *);
-int is_file(const char *);
 char *str_escape(const char *, const char, const char);
 char *strchr_unescape(char *, const char, register const char);
 void str_unescape(char *, register const char);

@@ -4,7 +4,7 @@
  *   a bunch of functions to find and change user records
  *   change and check user (and channel-specific) flags
  *
- * $Id: userrec.c,v 1.9 2004/08/31 01:48:21 wcc Exp $
+ * $Id: userrec.c,v 1.10 2004/08/31 22:56:12 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -680,8 +680,8 @@ struct userrec *adduser(struct userrec *bu, char *handle, char *host,
   if (bu == userlist)
     clear_chanlist();
   noshare = oldshare;
-  if ((!noshare) && (handle[0] != '*') && (!(flags & USER_UNSHARED)) &&
-      (bu == userlist)) {
+  if (!noshare && handle[0] != '*' && !(flags & USER_UNSHARED) &&
+      bu == userlist) {
     struct flag_record fr = { FR_GLOBAL, 0, 0, 0, 0, 0 };
     char x[100];
 
@@ -695,7 +695,7 @@ struct userrec *adduser(struct userrec *bu, char *handle, char *host,
   if (bu == NULL)
     bu = u;
   else {
-    if ((bu == userlist) && (lastuser != NULL))
+    if (bu == userlist && lastuser != NULL)
       x = lastuser;
     else
       x = bu;
@@ -705,6 +705,7 @@ struct userrec *adduser(struct userrec *bu, char *handle, char *host,
     if (bu == userlist)
       lastuser = u;
   }
+
   return bu;
 }
 
@@ -828,7 +829,7 @@ void addhost_by_handle(char *handle, char *host)
 
   set_user(&USERENTRY_HOSTS, u, host);
   /* u will be cached, so really no overhead, even tho this looks dumb: */
-  if ((!noshare) && !(u->flags & USER_UNSHARED)) {
+  if (!noshare && !(u->flags & USER_UNSHARED)) {
     if (u->flags & USER_BOT)
       shareout(NULL, "+bh %s %s\n", handle, host);
     else

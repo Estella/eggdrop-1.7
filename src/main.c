@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.10 2004/08/30 23:58:23 wcc Exp $
+ * $Id: main.c,v 1.11 2004/08/31 22:56:12 wcc Exp $
  */
 
 #include "main.h"
@@ -45,6 +45,7 @@
 #include "dcc.h"     /* DCC_*, STRIP_*, STAT_*, struct chat_info, struct dcc_t */
 #include "dccutil.h" /* dprintf, dcc_chatter, lostdcc, tell_dcc, new_dcc,
                       * dcc_remove_lost */
+#include "help.h"    /* add_help_reference, help_expmem */
 #include "logfile.h" /* log_t, LOG_*, putlog, logfile_init, logfile_expmem, flushlogs,
                       * check_logsize */
 #include "net.h"     /* SOCK_*, getmyip, setsock, killsock, dequeue_sockets, sockgets */
@@ -128,7 +129,6 @@ char quit_msg[1024]; /* Quit message.                           */
 
 int expmem_chanprog();
 int expmem_users();
-int expmem_misc();
 int expmem_dccutil();
 int expmem_botnet();
 int expmem_tcl();
@@ -137,7 +137,6 @@ int expmem_net();
 int expmem_modules(int);
 int expmem_language();
 int expmem_tcldcc();
-int expmem_tclmisc();
 int init_mem();
 int init_dcc_max();
 int init_userent();
@@ -170,10 +169,10 @@ int expected_memory(void)
 {
   int tot;
 
-  tot = expmem_chanprog() + expmem_users() + expmem_misc() + expmem_dccutil() +
+  tot = expmem_chanprog() + expmem_users() + expmem_dccutil() +
         expmem_botnet() + expmem_tcl() + expmem_tclhash() + expmem_net() +
         expmem_modules(0) + expmem_language() + expmem_tcldcc() +
-        expmem_tclmisc() + logfile_expmem();
+        logfile_expmem() + help_expmem();
   return tot;
 }
 
@@ -379,18 +378,20 @@ static void core_secondly()
     }
     if (i > 1)
       putlog(LOG_MISC, "*", "(!) timer drift -- spun %d minutes", i);
-    miltime = (nowtm.tm_hour * 100) + (nowtm.tm_min);
-    if (((int) (nowtm.tm_min / 5) * 5) == (nowtm.tm_min)) {     /* 5 min */
+    miltime = (nowtm.tm_hour * 100) + nowtm.tm_min;
+    if (((int) (nowtm.tm_min / 5) * 5) == nowtm.tm_min) {
+      /* 5-minutely. */
       call_hook(HOOK_5MINUTELY);
       check_botnet_pings();
       if (!quick_logs) {
         flushlogs();
         check_logsize();
       }
-      if (!miltime) {           /* At midnight */
+      if (!miltime) {
         char s[25];
         int j;
 
+        /* Midnight. */
         strncpyz(s, ctime(&now), sizeof s);
         putlog(LOG_ALL, "*", "--- %.11s%s", s, s + 20);
         call_hook(HOOK_BACKUP);
@@ -533,6 +534,7 @@ int main(int argc, char **argv)
   /* Now add on the patchlevel (for Tcl) */
   sprintf(&egg_version[strlen(egg_version)], " %u", egg_numver);
   strcat(egg_version, egg_xtra);
+
 #ifdef STOP_UAC
   {
     int nvpair[2];
@@ -591,15 +593,20 @@ int main(int argc, char **argv)
 
   init_dcc_max();
   init_userent();
-  logfile_init();
+  logfile_init(0);
   init_bots();
   init_net();
   init_modules();
+
   if (backgrd)
     bg_prepare_split();
+
   init_tcl(argc, argv);
   init_language(0);
-  init_traffic();
+  help_init();
+  traffic_init();
+  logfile_init(1);
+
 #ifdef STATIC
   link_statics();
 #endif
@@ -627,8 +634,7 @@ int main(int argc, char **argv)
   if (f != NULL) {
     fgets(s, 10, f);
     xx = atoi(s);
-    kill(xx, SIGCHLD);          /* Meaningless kill to determine if pid
-                                 * is used */
+    kill(xx, SIGCHLD); /* Meaningless kill to determine if PID is used. */
     if (errno != ESRCH) {
       printf(EGG_RUNNING1, botnetnick);
       printf(EGG_RUNNING2, pid_file);
@@ -641,19 +647,19 @@ int main(int argc, char **argv)
   if (backgrd) {
 #ifndef CYGWIN_HACKS
     bg_do_split();
-  } else {                        /* !backgrd */
+  } else { /* !backgrd */
 #endif
     xx = getpid();
     if (xx != 0) {
       FILE *fp;
 
-      /* Write pid to file */
+      /* Write PID to file. */
       unlink(pid_file);
       fp = fopen(pid_file, "w");
       if (fp != NULL) {
         fprintf(fp, "%u\n", xx);
         if (fflush(fp)) {
-          /* Let the bot live since this doesn't appear to be a botchk */
+          /* Let the bot live since this doesn't appear to be a botchk. */
           printf(EGG_NOWRITE, pid_file);
           fclose(fp);
           unlink(pid_file);
@@ -701,14 +707,14 @@ int main(int argc, char **argv)
       userlist = adduser(userlist, dcc[n].nick, "none", "-", USER_PARTY);
       dcc[n].user = get_user_by_handle(userlist, dcc[n].nick);
     }
-    setsock(STDOUT, 0);          /* Entry in net table */
+    setsock(STDOUT, 0); /* Entry in net table */
     dprintf(n, "\n### ENTERING DCC CHAT SIMULATION ###\n\n");
     dcc_chatter(n);
   }
 
   then = now;
   online_since = now;
-  autolink_cycle(NULL);         /* Hurry and connect to tandem bots */
+  autolink_cycle(NULL); /* Hurry and connect to tandem bots. */
   add_help_reference("cmds1.help");
   add_help_reference("cmds2.help");
   add_help_reference("core.help");
@@ -730,7 +736,7 @@ int main(int argc, char **argv)
     int socket_cleanup = 0;
 
 #ifdef USE_TCL_EVENTS
-    /* Process a single tcl event */
+    /* Process a single Tcl event. */
     Tcl_DoOneEvent(TCL_ALL_EVENTS | TCL_DONT_WAIT);
 #endif /* USE_TCL_EVENTS */
 
@@ -864,7 +870,9 @@ int main(int argc, char **argv)
         kill_tcl();
         init_tcl(argc, argv);
         init_language(0);
-        init_traffic();
+        help_init();
+        traffic_init();
+        logfile_init(1);
 
         /* this resets our modules which we didn't unload (encryption and uptime) */
         for (p = module_list; p; p = p->next) {

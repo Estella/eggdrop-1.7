@@ -3,7 +3,7 @@
  *   memory allocation and deallocation
  *   keeping track of what memory is being used by whom
  *
- * $Id: mem.c,v 1.6 2004/08/30 23:58:23 wcc Exp $
+ * $Id: mem.c,v 1.7 2004/08/31 22:56:12 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -37,7 +37,8 @@
 #include "mod/modvals.h"
 
 #include "dccutil.h" /* dprintf */
-#include "logfile.h" /* putlog, LOG_* */
+#include "help.h"    /* help_expmem */
+#include "logfile.h" /* LOG_*, putlog, logfile_expmem */
 
 extern module_entry *module_list;
 
@@ -56,14 +57,12 @@ struct {
 /* Prototypes */
 int expected_memory();
 int expmem_chanprog();
-int expmem_misc();
 int expmem_fileq();
 int expmem_users();
 int expmem_dccutil();
 int expmem_botnet();
 int expmem_tcl();
 int expmem_tclhash();
-int expmem_tclmisc();
 int expmem_net();
 int expmem_modules();
 int expmem_language();
@@ -123,23 +122,22 @@ void debug_mem_to_dcc(int idx)
 #  define MAX_MEM 13
   unsigned long exp[MAX_MEM], use[MAX_MEM], l;
   int i, j;
-  char fn[20], sofar[81];
+  char fn[20], sofar[81], *p;
   module_entry *me;
-  char *p;
 
   exp[0] = expmem_language();
   exp[1] = expmem_chanprog();
-  exp[2] = expmem_misc();
-  exp[3] = expmem_users();
-  exp[4] = expmem_net();
-  exp[5] = expmem_dccutil();
-  exp[6] = expmem_botnet();
-  exp[7] = expmem_tcl();
-  exp[8] = expmem_tclhash();
-  exp[9] = expmem_tclmisc();
-  exp[10] = expmem_modules(1);
-  exp[11] = expmem_tcldcc();
-  exp[12] = expmem_dns();
+  exp[2] = expmem_users();
+  exp[3] = expmem_net();
+  exp[4] = expmem_dccutil();
+  exp[5] = expmem_botnet();
+  exp[6] = expmem_tcl();
+  exp[7] = expmem_tclhash();
+  exp[8] = expmem_modules(1);
+  exp[9] = expmem_tcldcc();
+  exp[10] = expmem_dns();
+  exp[11] = help_expmem();
+  exp[12] = logfile_expmem();
 
   for (me = module_list; me; me = me->next)
     me->mem_work = 0;
@@ -157,27 +155,27 @@ void debug_mem_to_dcc(int idx)
       use[0] += l;
     else if (!strcmp(fn, "chanprog.c"))
       use[1] += l;
-    else if (!strcmp(fn, "misc.c"))
-      use[2] += l;
     else if (!strcmp(fn, "userrec.c"))
-      use[3] += l;
+      use[2] += l;
     else if (!strcmp(fn, "net.c"))
-      use[4] += l;
+      use[3] += l;
     else if (!strcmp(fn, "dccutil.c"))
-      use[5] += l;
+      use[4] += l;
     else if (!strcmp(fn, "botnet.c"))
-      use[6] += l;
+      use[5] += l;
     else if (!strcmp(fn, "tcl.c"))
-      use[7] += l;
+      use[6] += l;
     else if (!strcmp(fn, "tclhash.c"))
-      use[8] += l;
-    else if (!strcmp(fn, "tclmisc.c"))
-      use[9] += l;
+      use[7] += l;
     else if (!strcmp(fn, "modules.c"))
-      use[10] += l;
+      use[8] += l;
     else if (!strcmp(fn, "tcldcc.c"))
-      use[11] += l;
+      use[0] += l;
     else if (!strcmp(fn, "dns.c"))
+      use[10] += l;
+    else if (!strcmp(fn, "help.c"))
+      use[11] += l;
+    else if (!strcmp(fn, "logfile.c"))
       use[12] += l;
     else if (p) {
       for (me = module_list; me; me = me->next)
@@ -189,45 +187,45 @@ void debug_mem_to_dcc(int idx)
 
   for (i = 0; i < MAX_MEM; i++) {
     switch (i) {
-    case 0:
-      strcpy(fn, "language.c");
-      break;
-    case 1:
-      strcpy(fn, "chanprog.c");
-      break;
-    case 2:
-      strcpy(fn, "misc.c");
-      break;
-    case 3:
-      strcpy(fn, "userrec.c");
-      break;
-    case 4:
-      strcpy(fn, "net.c");
-      break;
-    case 5:
-      strcpy(fn, "dccutil.c");
-      break;
-    case 6:
-      strcpy(fn, "botnet.c");
-      break;
-    case 7:
-      strcpy(fn, "tcl.c");
-      break;
-    case 8:
-      strcpy(fn, "tclhash.c");
-      break;
-    case 9:
-      strcpy(fn, "tclmisc.c");
-      break;
-    case 10:
-      strcpy(fn, "modules.c");
-      break;
-    case 11:
-      strcpy(fn, "tcldcc.c");
-      break;
-    case 12:
-      strcpy(fn, "dns.c");
-      break;
+      case 0:
+        strcpy(fn, "language.c");
+        break;
+      case 1:
+        strcpy(fn, "chanprog.c");
+        break;
+      case 2:
+        strcpy(fn, "userrec.c");
+        break;
+      case 3:
+        strcpy(fn, "net.c");
+        break;
+      case 4:
+        strcpy(fn, "dccutil.c");
+        break;
+      case 5:
+        strcpy(fn, "botnet.c");
+        break;
+      case 6:
+        strcpy(fn, "tcl.c");
+        break;
+      case 7:
+        strcpy(fn, "tclhash.c");
+        break;
+      case 8:
+        strcpy(fn, "modules.c");
+        break;
+      case 9:
+        strcpy(fn, "tcldcc.c");
+        break;
+      case 10:
+        strcpy(fn, "dns.c");
+        break;
+      case 11:
+        strcpy(fn, "help.c");
+        break;
+      case 12:
+        strcpy(fn, "logfile.c");
+        break;
     }
 
     if (use[i] == exp[i])
@@ -279,7 +277,8 @@ void debug_mem_to_dcc(int idx)
       strcpy(sofar, "   ");
       for (j = 0; j < lastused; j++) {
         strcpy(fn, memtbl[j].file);
-        if ((p = strchr(fn, ':')) != NULL) {
+        p = strchr(fn, ':');
+        if (p != NULL) {
           *p = 0;
           if (!egg_strcasecmp(fn, me->name)) {
             sprintf(&sofar[strlen(sofar)], "%-10s/%-4d:(%04X) ", p + 1,
@@ -299,8 +298,6 @@ void debug_mem_to_dcc(int idx)
       }
     }
   }
-
-  dprintf(idx, "--- End of debug memory list.\n");
 #else
   dprintf(idx, "Compiled without extensive memory debugging (sorry).\n");
 #endif
@@ -309,7 +306,6 @@ void debug_mem_to_dcc(int idx)
 void *n_malloc(int size, const char *file, int line)
 {
   void *x;
-
 #ifdef DEBUG_MEM
   int i = 0;
   char *p;

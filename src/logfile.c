@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: logfile.c,v 1.2 2004/08/31 01:48:21 wcc Exp $
+ * $Id: logfile.c,v 1.3 2004/08/31 22:56:11 wcc Exp $
  */
 
 #include "main.h"
@@ -35,8 +35,9 @@ extern char logfile_suffix[];
 extern int backgrd, con_chan, term_z, use_stderr, keep_all_logs, quick_logs,
            dcc_total;
 extern time_t now;
+extern Tcl_Interp *interp;
 
-log_t *logs = 0;      /* Logfiles */
+log_t *logs = 0;      /* Logfiles. */
 int shtime = 1;       /* Display the time with console output? */
 int max_logs = 5;     /* Current maximum log files. */
 int max_logsize = 0;  /* Maximum logfile size; 0 for no limit. */
@@ -45,31 +46,19 @@ int raw_log = 0;      /* Allow logging of raw traffic? */
 int conmask = LOG_TCLERROR | LOG_MODES | LOG_CMDS | LOG_MISC; /* Console mask. */
 
 
-void logfile_init()
-{
-  static int last = 0;
-
-  if (max_logs < 1)
-    max_logs = 1;
-
-  if (logs)
-    logs = nrealloc(logs, max_logs * sizeof(log_t));
-  else
-    logs = nmalloc(max_logs * sizeof(log_t));
-
-  for (; last < max_logs; last++) {
-    logs[last].filename  = logs[last].chname = NULL;
-    logs[last].mask      = 0;
-    logs[last].f         = NULL;
-    logs[last].szlast[0] = 0;
-    logs[last].repeats   = 0;
-    logs[last].flags     = 0;
-  }
-}
-
 int logfile_expmem()
 {
-  return (max_logs * sizeof(log_t));
+  int tot = 0, i;
+
+  for (i = 0; i < max_logs; i++) {
+    if (logs[i].filename != NULL) {
+      tot += strlen(logs[i].filename) + 1;
+      tot += strlen(logs[i].chname) + 1;
+    }
+  }
+  tot += (max_logs * sizeof(log_t));
+
+  return tot;
 }
 
 int logmodes(char *s)
@@ -490,4 +479,183 @@ void flushlogs()
   }
 }
 
+static void cmd_addlog(struct userrec *u, int idx, char *par)
+{
+  if (!par[0]) {
+    dprintf(idx, "Usage: addlog <message>\n");
+    return;
+  }
 
+  dprintf(idx, "Placed entry in the log file.\n");
+  putlog(LOG_MISC, "*", "%s: %s", dcc[idx].nick, par);
+}
+
+static int tcl_logfile STDVAR
+{
+  int i;
+  char s[151];
+
+  BADARGS(1, 4, " ?logmodes channel logfile?");
+
+  if (argc == 1) {
+    /* They just want a list of the logfiles and modes. */
+    for (i = 0; i < max_logs; i++) {
+      if (logs[i].filename != NULL) {
+        strcpy(s, masktype(logs[i].mask));
+        strcat(s, " ");
+        strcat(s, logs[i].chname);
+        strcat(s, " ");
+        strcat(s, logs[i].filename);
+        Tcl_AppendElement(interp, s);
+      }
+
+      return TCL_OK;
+    }
+  }
+
+  BADARGS(4, 4, " ?logmodes channel logfile?");
+
+  for (i = 0; i < max_logs; i++) {
+    if (logs[i].filename != NULL && !strcmp(logs[i].filename, argv[3])) {
+      logs[i].flags &= ~LF_EXPIRING;
+      logs[i].mask = logmodes(argv[1]);
+      nfree(logs[i].chname);
+      logs[i].chname = NULL;
+      if (!logs[i].mask) {
+        /* Ending logfile. */
+        nfree(logs[i].filename);
+        logs[i].filename = NULL;
+        if (logs[i].f != NULL) {
+          fclose(logs[i].f);
+          logs[i].f = NULL;
+        }
+        logs[i].flags = 0;
+      } else {
+        logs[i].chname = nmalloc(strlen(argv[2]) + 1);
+        strcpy(logs[i].chname, argv[2]);
+      }
+      Tcl_AppendResult(interp, argv[3], NULL);
+
+      return TCL_OK;
+    }
+  }
+
+  /* Do not add logfiles without any flags to log. */
+  if (!logmodes(argv[1])) {
+    Tcl_AppendResult(interp, "can't remove \"", argv[3],
+                     "\" from list: no such logfile", NULL);
+    return TCL_ERROR;
+  }
+
+  for (i = 0; i < max_logs; i++) {
+    if (logs[i].filename == NULL) {
+      logs[i].flags = 0;
+      logs[i].mask = logmodes(argv[1]);
+      logs[i].filename = nmalloc(strlen(argv[3]) + 1);
+      strcpy(logs[i].filename, argv[3]);
+      logs[i].chname = nmalloc(strlen(argv[2]) + 1);
+      strcpy(logs[i].chname, argv[2]);
+      Tcl_AppendResult(interp, argv[3], NULL);
+
+      return TCL_OK;
+    }
+  }
+
+  Tcl_AppendResult(interp, "reached max number of logfiles", NULL);
+  return TCL_ERROR;
+}
+
+static int tcl_putlog STDVAR
+{
+  char logtext[501];
+
+  BADARGS(2, 2, " text");
+
+  strncpyz(logtext, argv[1], sizeof logtext);
+  putlog(LOG_MISC, "*", "%s", logtext);
+
+  return TCL_OK;
+}
+
+static int tcl_putcmdlog STDVAR
+{
+  char logtext[501];
+
+  BADARGS(2, 2, " text");
+
+  strncpyz(logtext, argv[1], sizeof logtext);
+  putlog(LOG_CMDS, "*", "%s", logtext);
+
+  return TCL_OK;
+}
+
+static int tcl_putxferlog STDVAR
+{
+  char logtext[501];
+
+  BADARGS(2, 2, " text");
+
+  strncpyz(logtext, argv[1], sizeof logtext);
+  putlog(LOG_FILES, "*", "%s", logtext);
+
+  return TCL_OK;
+}
+
+static int tcl_putloglev STDVAR
+{
+  int lev = 0;
+  char logtext[501];
+
+  BADARGS(4, 4, " level channel text");
+
+  lev = logmodes(argv[1]);
+  if (!lev) {
+    Tcl_AppendResult(irp, "no valid log-level given", NULL);
+    return TCL_ERROR;
+  }
+
+  strncpyz(logtext, argv[3], sizeof logtext);
+  putlog(lev, argv[2], "%s", logtext);
+
+  return TCL_OK;
+}
+
+cmd_t logfile_dcc[] = {
+  {"addlog", "to|o", (Function) cmd_addlog, NULL},
+  {NULL,     NULL,   NULL,                  NULL}
+};
+
+tcl_cmds logfile_tcl[] = {
+  {"logfile",    tcl_logfile},
+  {"putlog",     tcl_putlog},
+  {"putcmdlog",  tcl_putcmdlog},
+  {"putxferlog", tcl_putxferlog},
+  {"putloglev",  tcl_putloglev},
+  {NULL,         NULL}
+};
+
+void logfile_init(int dotcl)
+{
+  if (dotcl) {
+    static int last = 0;
+
+    if (max_logs < 1)
+      max_logs = 1;
+
+    if (logs)
+      logs = nrealloc(logs, max_logs * sizeof(log_t));
+    else
+      logs = nmalloc(max_logs * sizeof(log_t));
+
+    for (; last < max_logs; last++) {
+      logs[last].filename  = logs[last].chname = NULL;
+      logs[last].mask      = 0;
+      logs[last].f         = NULL;
+      logs[last].szlast[0] = 0;
+      logs[last].repeats   = 0;
+      logs[last].flags     = 0;
+    }
+  } else {
+    add_tcl_commands(logfile_tcl);
+  }
+}
