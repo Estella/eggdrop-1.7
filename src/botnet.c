@@ -17,17 +17,16 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botnet.c,v 1.5 2004/08/26 10:36:50 wcc Exp $
+ * $Id: botnet.c,v 1.6 2004/08/27 00:49:23 wcc Exp $
  */
 
 #include "main.h"
-#include "tandem.h"
 
 #include "botnet.h"
-#include "botmsg.h"  /* simple_sprintf, tandout_but */
-#include "dcc.h"     /* DCC_*, STAT_*, BSTAT_*, struct bot_info, struct relay_info,
-                      * struct chat_info, struct dcc_t, struct dns_info, failed_link,
-                      * dupwait_notify */
+#include "botmsg.h"  /* simple_sprintf, tandout_but, botnet_send_*, NEAT_BOTNET */
+#include "dcc.h"     /* DCC_*, STAT_*, BSTAT_*, PLSTAT_*, struct bot_info,
+                      * struct relay_info, struct chat_info, struct dcc_t,
+                      * struct dns_info, dupwait_notify, failed_link */
 #include "dccutil.h" /* get_data_ptr, dprintf, chatout, chanout_but, lostdcc,
                       * new_dcc, changeover_dcc */
 #include "dns.h"     /* RES_* */
@@ -740,7 +739,7 @@ void dump_links(int z)
     else
       p = bot->uplink->bot;
 #ifndef NO_OLD_BOTNET
-    if (b_numver(z) < NEAT_BOTNET)
+    if (dcc[z].u.bot->numver < NEAT_BOTNET)
       l = simple_sprintf(x, "nlinked %s %s %c%d\n", bot->bot,
                          p, bot->share, bot->ver);
     else
@@ -756,7 +755,7 @@ void dump_links(int z)
         if ((dcc[i].u.chat->channel >= 0) &&
             (dcc[i].u.chat->channel < GLOBAL_CHANS)) {
 #ifndef NO_OLD_BOTNET
-          if (b_numver(z) < NEAT_BOTNET)
+          if (dcc[z].u.bot->numver < NEAT_BOTNET)
             l = simple_sprintf(x, "join %s %s %d %c%d %s\n",
                                botnetnick, dcc[i].nick,
                                dcc[i].u.chat->channel, geticon(i),
@@ -769,7 +768,7 @@ void dump_links(int z)
                                dcc[i].sock, dcc[i].host);
           tputs(dcc[z].sock, x, l);
 #ifndef NO_OLD_BOTNET
-          if (b_numver(z) < NEAT_BOTNET) {
+          if (dcc[z].u.bot->numver < NEAT_BOTNET) {
             if (dcc[i].u.chat->away) {
               l = simple_sprintf(x, "away %s %d %s\n", botnetnick,
                                  dcc[i].sock, dcc[i].u.chat->away);
@@ -788,7 +787,7 @@ void dump_links(int z)
     }
     for (i = 0; i < parties; i++) {
 #ifndef NO_OLD_BOTNET
-      if (b_numver(z) < NEAT_BOTNET)
+      if (dcc[z].u.bot->numver < NEAT_BOTNET)
         l = simple_sprintf(x, "join %s %s %d %c%d %s\n",
                            party[i].bot, party[i].nick,
                            party[i].chan, party[i].flag,
@@ -802,7 +801,7 @@ void dump_links(int z)
       tputs(dcc[z].sock, x, l);
       if ((party[i].status & PLSTAT_AWAY) || (party[i].timer != 0)) {
 #ifndef NO_OLD_BOTNET
-        if (b_numver(z) < NEAT_BOTNET) {
+        if (dcc[z].u.bot->numver < NEAT_BOTNET) {
           if (party[i].status & PLSTAT_AWAY) {
             l = simple_sprintf(x, "away %s %d %s\n", party[i].bot,
                                party[i].sock, party[i].away);
@@ -899,7 +898,7 @@ int botunlink(int idx, char *nick, char *reason, char *from)
 
         if (idx >= 0)
           dprintf(idx, "%s %s.\n", BOT_BREAKLINK, dcc[i].nick);
-        else if ((idx == -3) && (b_status(i) & BSTAT_SHARE) && !share_unlinks)
+        else if ((idx == -3) && (dcc[i].status & BSTAT_SHARE) && !share_unlinks)
           return -1;
         bot = findbot(dcc[i].nick);
         bots = bots_in_subtree(bot);

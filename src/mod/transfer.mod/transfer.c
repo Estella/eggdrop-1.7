@@ -1,7 +1,7 @@
 /*
  * transfer.c -- part of transfer.mod
  *
- * $Id: transfer.c,v 1.4 2004/08/26 10:36:52 wcc Exp $
+ * $Id: transfer.c,v 1.5 2004/08/27 00:49:24 wcc Exp $
  *
  * Copyright (C) 1997 Robey Pointer
  * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
@@ -31,7 +31,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "src/mod/module.h"
-#include "src/tandem.h"
 
 #include "src/users.h"
 #include "transfer.h"

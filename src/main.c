@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.6 2004/08/26 10:36:51 wcc Exp $
+ * $Id: main.c,v 1.7 2004/08/27 00:49:23 wcc Exp $
  */
 
 #include "main.h"
@@ -48,9 +48,9 @@
 
 #include "chan.h"
 #include "modules.h"
-#include "tandem.h"
 #include "bg.h"
 
+#include "botmsg.h"  /* botnet_send_* */
 #include "botnet.h"  /* check_botnet_pings */
 #include "dcc.h"     /* DCC_*, STRIP_*, STAT_*, struct chat_info, struct dcc_t */
 #include "dccutil.h" /* dprintf, dcc_chatter, lostdcc, tell_dcc, new_dcc,

@@ -17,19 +17,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botcmd.c,v 1.5 2004/08/26 10:36:50 wcc Exp $
+ * $Id: botcmd.c,v 1.6 2004/08/27 00:49:23 wcc Exp $
  */
 
 #include "main.h"
-#include "tandem.h"
 #include "users.h"
 #include "chan.h"
 #include "modules.h"
 
 #include "botcmd.h"
 #include "botnet.h"
-#include "botmsg.h"  /* add_note, simple_sprintf, base64_to_int */
-#include "dcc.h"     /* DCC_*, DCT_*, BSTAT_*, struct dcc_t */
+#include "botmsg.h"  /* add_note, simple_sprintf, base64_to_int, botnet_send_*,
+                      * NEAT_BOTNET */
+#include "dcc.h"     /* DCC_*, DCT_*, BSTAT_*, PLSTAT_*, b_*, struct dcc_t */
 #include "dccutil.h" /* dprintf, chatout, sharein, chanout_but, lostdcc, do_boot */
 #include "net.h"     /* killsock */
 #include "userrec.h" /* change_handle, touch_laston */
@@ -61,7 +61,7 @@ static void fake_alert(int idx, char *item, char *extra)
 
   if (now - lastfake > 10) {
 #ifndef NO_OLD_BOTNET
-    if (b_numver(idx) < NEAT_BOTNET)
+    if (dcc[idx].u.bot->numver < NEAT_BOTNET)
       dprintf(idx, "chat %s NOTICE: %s (%s != %s).\n",
               botnetnick, NET_FAKEREJECT, item, extra);
     else
@@ -86,7 +86,7 @@ static void bot_chan2(int idx, char *msg)
   from = newsplit(&msg);
   p = newsplit(&msg);
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) < NEAT_BOTNET)
+  if (dcc[idx].u.bot->numver < NEAT_BOTNET)
     chan = atoi(p);
   else
 #endif
@@ -184,7 +184,7 @@ static void bot_actchan(int idx, char *par)
   }
   p = newsplit(&par);
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) < NEAT_BOTNET)
+  if (dcc[idx].u.bot->numver < NEAT_BOTNET)
     chan = atoi(p);
   else
 #endif
@@ -409,7 +409,7 @@ static void bot_who(int idx, char *par)
   if (!egg_strcasecmp(to, botnetnick))
     to[0] = 0;
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) < NEAT_BOTNET)
+  if (dcc[idx].u.bot->numver < NEAT_BOTNET)
     chan = atoi(par);
   else
 #endif
@@ -593,7 +593,7 @@ static void bot_update(int idx, char *par)
   if (x)
     par++;
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) < NEAT_BOTNET)
+  if (dcc[idx].u.bot->numver < NEAT_BOTNET)
     vnum = atoi(par);
   else
 #endif
@@ -663,7 +663,7 @@ static void bot_nlinked(int idx, char *par)
   else
     x = '-';
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) < NEAT_BOTNET)
+  if (dcc[idx].u.bot->numver < NEAT_BOTNET)
     i = atoi(par);
   else
 #endif
@@ -1145,7 +1145,7 @@ static void bot_nickchange(int idx, char *par)
     return;
   bot = newsplit(&par);
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) < NEAT_BOTNET) {
+  if (dcc[idx].u.bot->numver < NEAT_BOTNET) {
     fake_alert(idx, "botversion", "NEAT_BOTNET");
     return;
   }
@@ -1180,19 +1180,18 @@ static void bot_join(int idx, char *par)
     return;
   bot = newsplit(&par);
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) >= NEAT_BOTNET)
+  if (dcc[idx].u.bot->numver >= NEAT_BOTNET)
 #endif
     if (bot[0] == '!') {
       linking = 1;
       bot++;
     }
-  if (b_status(idx) & BSTAT_LINKING) {
+  if (dcc[idx].status & BSTAT_LINKING)
     linking = 1;
-  }
   nick = newsplit(&par);
   x = newsplit(&par);
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) < NEAT_BOTNET)
+  if (dcc[idx].u.bot->numver < NEAT_BOTNET)
     chan = atoi(x);
   else
 #endif
@@ -1206,7 +1205,7 @@ static void bot_join(int idx, char *par)
     sock = 0;
   } else {
 #ifndef NO_OLD_BOTNET
-    if (b_numver(idx) < NEAT_BOTNET)
+    if (dcc[idx].u.bot->numver < NEAT_BOTNET)
       sock = atoi(y + 1);
     else
 #endif
@@ -1235,12 +1234,12 @@ static void bot_join(int idx, char *par)
   botnet_send_join_party(idx, linking, i2, i);
   if (i != chan) {
     if (i >= 0) {
-      if (b_numver(idx) >= NEAT_BOTNET)
+      if (dcc[idx].u.bot->numver >= NEAT_BOTNET)
         chanout_but(-1, i, "*** (%s) %s %s %s.\n", bot, nick, NET_LEFTTHE,
                     i ? "channel" : "party line");
       check_tcl_chpt(bot, nick, sock, i);
     }
-    if ((b_numver(idx) >= NEAT_BOTNET) && !linking)
+    if ((dcc[idx].u.bot->numver >= NEAT_BOTNET) && !linking)
       chanout_but(-1, chan, "*** (%s) %s %s %s.\n", bot, nick, NET_JOINEDTHE,
                   chan ? "channel" : "party line");
     check_tcl_chjn(bot, nick, chan, y[0], sock, par);
@@ -1266,7 +1265,7 @@ static void bot_part(int idx, char *par)
   nick = newsplit(&par);
   etc = newsplit(&par);
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) < NEAT_BOTNET) {
+  if (dcc[idx].u.bot->numver < NEAT_BOTNET) {
     sock = atoi(etc);
     silent = 1;
   } else
@@ -1282,7 +1281,7 @@ static void bot_part(int idx, char *par)
   if ((partyidx = getparty(bot, sock)) != -1) {
     if (party[partyidx].chan >= 0)
       check_tcl_chpt(bot, nick, sock, party[partyidx].chan);
-    if ((b_numver(idx) >= NEAT_BOTNET) && !silent) {
+    if ((dcc[idx].u.bot->numver >= NEAT_BOTNET) && !silent) {
       register int chan = party[partyidx].chan;
 
       if (par[0])
@@ -1309,18 +1308,17 @@ static void bot_away(int idx, char *par)
     return;
   bot = newsplit(&par);
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) >= NEAT_BOTNET)
+  if (dcc[idx].u.bot->numver >= NEAT_BOTNET)
 #endif
     if (bot[0] == '!') {
       linking = 1;
       bot++;
     }
-  if (b_status(idx) & BSTAT_LINKING) {
+  if (dcc[idx].status & BSTAT_LINKING)
     linking = 1;
-  }
   etc = newsplit(&par);
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) < NEAT_BOTNET)
+  if (dcc[idx].u.bot->numver < NEAT_BOTNET)
     sock = atoi(etc);
   else
 #endif
@@ -1334,7 +1332,7 @@ static void bot_away(int idx, char *par)
   } else
     partystat(bot, sock, 0, PLSTAT_AWAY);
   partyidx = getparty(bot, sock);
-  if ((b_numver(idx) >= NEAT_BOTNET) && !linking) {
+  if ((dcc[idx].u.bot->numver >= NEAT_BOTNET) && !linking) {
     if (par[0])
       chanout_but(-1, party[partyidx].chan,
                   "*** (%s) %s %s: %s.\n", bot,
@@ -1359,7 +1357,7 @@ static void bot_idle(int idx, char *par)
   bot = newsplit(&par);
   work = newsplit(&par);
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) < NEAT_BOTNET)
+  if (dcc[idx].u.bot->numver < NEAT_BOTNET)
     sock = atoi(work);
   else
 #endif
@@ -1368,7 +1366,7 @@ static void bot_idle(int idx, char *par)
     sock = partysock(bot, work);
   work = newsplit(&par);
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) < NEAT_BOTNET)
+  if (dcc[idx].u.bot->numver < NEAT_BOTNET)
     idle = atoi(work);
   else
 #endif

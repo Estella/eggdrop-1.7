@@ -2,7 +2,7 @@
  * filesys.c -- part of filesys.mod
  *   main file of the filesys eggdrop module
  *
- * $Id: filesys.c,v 1.3 2004/08/26 03:21:14 wcc Exp $
+ * $Id: filesys.c,v 1.4 2004/08/27 00:49:24 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -62,7 +62,6 @@
 
 #include "filedb3.h"
 #include "filesys.h"
-#include "src/tandem.h"
 #include "files.h"
 #include "dbcompat.h"
 #include "filelist.h"

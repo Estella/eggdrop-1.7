@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.h,v 1.3 2004/08/26 10:36:51 wcc Exp $
+ * $Id: dcc.h,v 1.4 2004/08/27 00:49:23 wcc Exp $
  */
 
 #ifndef _EGG_DCC_H
@@ -89,6 +89,9 @@
 #define BSTAT_LEAF        0x00080 /* This bot cannot act as a hub; leaf only. */
 #define BSTAT_LINKING     0x00100 /* Bot is in the process of linking.        */
 #define BSTAT_AGGRESSIVE  0x00200 /* Aggressively sharing with this bot.      */
+
+/* Status flags for partyline users. */
+#define PLSTAT_AWAY  0x001
 
 struct dcc_table {
   char *name;

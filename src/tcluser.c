@@ -17,13 +17,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcluser.c,v 1.4 2004/08/26 10:36:51 wcc Exp $
+ * $Id: tcluser.c,v 1.5 2004/08/27 00:49:24 wcc Exp $
  */
 
 #include "main.h"
 #include "users.h"
 #include "chan.h"
-#include "tandem.h"
 #include "modules.h"
 
 #include "botmsg.h"  /* int_to_base10 */

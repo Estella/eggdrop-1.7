@@ -19,13 +19,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: modules.c,v 1.5 2004/08/26 10:36:51 wcc Exp $
+ * $Id: modules.c,v 1.6 2004/08/27 00:49:23 wcc Exp $
  */
 
 #include <ctype.h>
 #include "main.h"
 #include "modules.h"
-#include "tandem.h"
 #include "md5/md5.h"
 #include "users.h"
 

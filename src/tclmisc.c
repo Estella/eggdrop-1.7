@@ -17,12 +17,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tclmisc.c,v 1.5 2004/08/26 10:36:51 wcc Exp $
+ * $Id: tclmisc.c,v 1.6 2004/08/27 00:49:24 wcc Exp $
  */
 
 #include "main.h"
 #include "modules.h"
-#include "tandem.h"
 
 #ifdef TIME_WITH_SYS_TIME
 #  include <sys/time.h>

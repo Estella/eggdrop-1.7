@@ -17,19 +17,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcldcc.c,v 1.5 2004/08/26 10:36:51 wcc Exp $
+ * $Id: tcldcc.c,v 1.6 2004/08/27 00:49:24 wcc Exp $
  */
 
 #include "main.h"
-#include "tandem.h"
 #include "modules.h"
 
 #include "tcldcc.h"
-#include "botmsg.h"  /* int_to_base10 */
+#include "botmsg.h"  /* int_to_base10, botnet_send_* */
 #include "botnet.h"  /* lastbot, nextbot, botlink, butunlink */
 #include "cmds.h"    /* stripmodes, stripmasktype */
-#include "dcc.h"     /* DCC_*, DCT_*, LSTN_*, STAT_*, EGG_OPTION_*, struct script_info,
-                      * struct dcc_t */
+#include "dcc.h"     /* DCC_*, DCT_*, LSTN_*, STAT_*, PLSTAT_*, EGG_OPTION_*,
+                      * struct script_info, struct dcc_t */
 #include "dccutil.h" /* get_data_ptr, chatout, chanout_but, lostdcc, killtransfer,
                       * not_away, set_away, do_boot, new_dcc */
 #include "net.h"     /* SOCK_*, getmyip, neterror, getsock, killsock, open_listen,

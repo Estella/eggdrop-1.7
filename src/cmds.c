@@ -17,16 +17,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.c,v 1.5 2004/08/26 10:36:51 wcc Exp $
+ * $Id: cmds.c,v 1.6 2004/08/27 00:49:23 wcc Exp $
  */
 
 #include "main.h"
-#include "tandem.h"
 #include "modules.h"
 #include <ctype.h>
 
 #include "cmds.h"
-#include "botmsg.h"  /* simple_sprintf */
+#include "botmsg.h"  /* simple_sprintf, botnet_send_* */
 #include "botnet.h"  /* answer_local_whom, lastbot, nextbot, tell_bots,
                       * tell_bottree, botlink, botunlink, tandem_relay */
 #include "dcc.h"     /* DCC_*, DCT_*, STRIP_*, STAT_*, BSTAT_*, struct chat_info,

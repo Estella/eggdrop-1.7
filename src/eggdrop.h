@@ -4,7 +4,7 @@
  *
  *   IF YOU ALTER THIS FILE, YOU NEED TO RECOMPILE THE BOT.
  *
- * $Id: eggdrop.h,v 1.3 2004/08/26 10:36:51 wcc Exp $
+ * $Id: eggdrop.h,v 1.4 2004/08/27 00:49:23 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -319,15 +319,8 @@ typedef struct {
 #define STDERR 2
 
 
-/* Return codes for add_note */
-#define NOTE_ERROR      0       /* error                        */
-#define NOTE_OK         1       /* success                      */
-#define NOTE_STORED     2       /* not online; stored           */
-#define NOTE_FULL       3       /* too many notes stored        */
-#define NOTE_TCL        4       /* tcl binding caught it        */
-#define NOTE_AWAY       5       /* away; stored                 */
-#define NOTE_FWD        6       /* away; forwarded              */
-#define NOTE_REJECT     7       /* ignore mask matched          */
+/* Number of global partyline channels. */
+#define GLOBAL_CHANS 100000
 
 #define STR_PROTECT     2
 #define STR_DIR         1

@@ -17,20 +17,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.c,v 1.5 2004/08/26 10:36:51 wcc Exp $
+ * $Id: dcc.c,v 1.6 2004/08/27 00:49:23 wcc Exp $
  */
 
 #include "main.h"
 #include <ctype.h>
 #include <errno.h>
 #include "modules.h"
-#include "tandem.h"
 
 #include "dcc.h"
 #include "md5/md5.h" /* MD5 challenge/response stuff */
 #include "botcmd.h"  /* bot_share, botcmd_t */
-#include "botmsg.h"  /* add_note, simple_sprintf */
-#include "botnet.h"  /* nextbot, in_chain, dump_links, addbot, rembot, findbot, unvia */
+#include "botmsg.h"  /* add_note, simple_sprintf, botnet_send_*, *_in_subtree,
+                      * NEAT_BOTNET */
+#include "botnet.h"  /* nextbot, in_chain, dump_links, addbot, rembot, findbot,
+                      * unvia */
 #include "cmds.h"    /* check_dcc_attrs */
 #include "dccutil.h" /* get_data_ptr, dprintf, chatout, chanout_but, dcc_chatter,
                       * lostdcc, makepass, not_away, do_boot, detect_dcc_flood,
@@ -38,8 +39,8 @@
 #include "dns.h"     /* RES_* */
 #include "net.h"     /* SOCK_*, EGG_OPTION_*, neterror, getsock, killsock, answer,
                       * open_telnet, tputs, open_telnet_raw, iptostr, sockoptions */
-#include "userrec.h" /* adduser, u_pass_match, deluser, correct_handle, write_userfile,
-                      * touch_laston */
+#include "userrec.h" /* adduser, u_pass_match, deluser, correct_handle,
+                      * write_userfile, touch_laston */
 
 
 extern struct userrec *userlist;
@@ -173,7 +174,7 @@ static void bot_version(int idx, char *par)
     dcc[idx].u.bot->numver = 0;
 
 #ifndef NO_OLD_BOTNET
-  if (b_numver(idx) < NEAT_BOTNET) {
+  if (dcc[idx].u.bot->numver < NEAT_BOTNET) {
 #if HANDLEN != 9
     putlog(LOG_BOTS, "*", "Non-matching handle lengths with %s, they use 9 "
            "characters.", dcc[idx].nick);
@@ -453,16 +454,16 @@ static void display_dcc_bot(int idx, char *buf)
 {
   int i = simple_sprintf(buf, "bot   flags: ");
 
-  buf[i++] = b_status(idx) & BSTAT_PINGED ? 'P' : 'p';
-  buf[i++] = b_status(idx) & BSTAT_SHARE ? 'U' : 'u';
-  buf[i++] = b_status(idx) & BSTAT_CALLED ? 'C' : 'c';
-  buf[i++] = b_status(idx) & BSTAT_OFFERED ? 'O' : 'o';
-  buf[i++] = b_status(idx) & BSTAT_SENDING ? 'S' : 's';
-  buf[i++] = b_status(idx) & BSTAT_GETTING ? 'G' : 'g';
-  buf[i++] = b_status(idx) & BSTAT_WARNED ? 'W' : 'w';
-  buf[i++] = b_status(idx) & BSTAT_LEAF ? 'L' : 'l';
-  buf[i++] = b_status(idx) & BSTAT_LINKING ? 'I' : 'i';
-  buf[i++] = b_status(idx) & BSTAT_AGGRESSIVE ? 'a' : 'A';
+  buf[i++] = dcc[idx].status & BSTAT_PINGED     ? 'P' : 'p';
+  buf[i++] = dcc[idx].status & BSTAT_SHARE      ? 'U' : 'u';
+  buf[i++] = dcc[idx].status & BSTAT_CALLED     ? 'C' : 'c';
+  buf[i++] = dcc[idx].status & BSTAT_OFFERED    ? 'O' : 'o';
+  buf[i++] = dcc[idx].status & BSTAT_SENDING    ? 'S' : 's';
+  buf[i++] = dcc[idx].status & BSTAT_GETTING    ? 'G' : 'g';
+  buf[i++] = dcc[idx].status & BSTAT_WARNED     ? 'W' : 'w';
+  buf[i++] = dcc[idx].status & BSTAT_LEAF       ? 'L' : 'l';
+  buf[i++] = dcc[idx].status & BSTAT_LINKING    ? 'I' : 'i';
+  buf[i++] = dcc[idx].status & BSTAT_AGGRESSIVE ? 'a' : 'A';
   buf[i++] = 0;
 }
 

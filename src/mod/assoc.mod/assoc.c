@@ -2,7 +2,7 @@
  * assoc.c -- part of assoc.mod
  *   the assoc code, moved here mainly from botnet.c for module work
  *
- * $Id: assoc.c,v 1.3 2004/08/26 10:36:51 wcc Exp $
+ * $Id: assoc.c,v 1.4 2004/08/27 00:49:24 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -27,7 +27,6 @@
 #define MAKING_ASSOC
 
 #include "src/mod/module.h"
-#include "src/tandem.h"
 #include <stdlib.h>
 #include "assoc.h"
 
@@ -52,7 +51,7 @@ static void botnet_send_assoc(int idx, int chan, char *nick, char *buf)
   simple_sprintf(x, "assoc %D %s %s", chan, nick, buf);
   for (idx2 = 0; idx2 < dcc_total; idx2++)
     if ((dcc[idx2].type == &DCC_BOT) && (idx2 != idx) &&
-        (b_numver(idx2) >= NEAT_BOTNET) &&
+        (dcc[idx2].u.bot->numver >= NEAT_BOTNET) &&
         !(bot_flags(dcc[idx2].user) & BOT_ISOLATE))
       botnet_send_zapf(idx2, botnetnick, dcc[idx2].nick, x);
 }
@@ -319,7 +318,7 @@ static void zapf_assoc(char *botnick, char *code, char *par)
 
   if ((idx >= 0) && !(bot_flags(dcc[idx].user) & BOT_ISOLATE)) {
     if (!egg_strcasecmp(dcc[idx].nick, botnick))
-      linking = b_status(idx) & BSTAT_LINKING;
+      linking = dcc[idx].status & BSTAT_LINKING;
     s = newsplit(&par);
     chan = base64_to_int(s);
     if ((chan > 0) || (chan < GLOBAL_CHANS)) {

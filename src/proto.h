@@ -7,7 +7,7 @@
  * because they use structures in those
  * (saves including those .h files EVERY time) - Beldin
  *
- * $Id: proto.h,v 1.5 2004/08/26 10:36:51 wcc Exp $
+ * $Id: proto.h,v 1.6 2004/08/27 00:49:24 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -40,7 +40,6 @@ struct maskrec;
 struct igrec;
 struct flag_record;
 struct list_type;
-struct tand_t_struct;
 
 #ifndef MAKING_MODS
 extern void (*encrypt_pass) (char *, char *);

@@ -1,7 +1,7 @@
 /*
  * share.c -- part of share.mod
  *
- * $Id: share.c,v 1.4 2004/08/26 10:36:52 wcc Exp $
+ * $Id: share.c,v 1.5 2004/08/27 00:49:24 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -1123,7 +1123,7 @@ static void share_ufsend(int idx, char *par)
   FILE *f;
 
   egg_snprintf(s, sizeof s, ".share.%s.%li.users", botnetnick, now);
-  if (!(b_status(idx) & BSTAT_SHARE)) {
+  if (!(dcc[idx].status & BSTAT_SHARE)) {
     dprintf(idx, "s e You didn't ask; you just started sending.\n");
     dprintf(idx, "s e Ask before sending the userfile.\n");
     zapfbot(idx);

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.h,v 1.4 2004/08/26 10:36:51 wcc Exp $
+ * $Id: main.h,v 1.5 2004/08/27 00:49:23 wcc Exp $
  */
 
 #ifndef _EGG_MAIN_H
@@ -26,8 +26,6 @@
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
-
-#include "types.h" /* We need this basically everywhere. */
 
 #include "lush.h"
 
@@ -86,8 +84,9 @@
 
 #include <sys/types.h>
 #include "lush.h"
-#include "lang.h"
 #include "eggdrop.h"
+#include "types.h" /* We need this basically everywhere. */
+#include "lang.h"
 #include "flags.h"
 
 #ifndef MAKING_MODS

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: module.h,v 1.3 2004/08/26 10:36:51 wcc Exp $
+ * $Id: module.h,v 1.4 2004/08/27 00:49:24 wcc Exp $
  */
 
 #ifndef _EGG_MOD_MODULE_H
@@ -25,9 +25,9 @@
 
 #include "src/main.h"
 #include "modvals.h"
-#include "src/tandem.h"
 
 #include "src/types.h"
+#include "src/botmsg.h"
 #include "src/dcc.h"
 #include "src/dccutil.h"
 #include "src/dns.h"

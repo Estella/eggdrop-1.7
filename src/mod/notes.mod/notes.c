@@ -5,7 +5,7 @@
  *   note cmds
  *   note ignores
  *
- * $Id: notes.c,v 1.2 2004/08/25 01:51:04 wcc Exp $
+ * $Id: notes.c,v 1.3 2004/08/27 00:49:24 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -32,7 +32,6 @@
 #include <fcntl.h>
 #include <sys/stat.h>           /* chmod(..) */
 #include "src/mod/module.h"
-#include "src/tandem.h"
 #include "notes.h"
 
 

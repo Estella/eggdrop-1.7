@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: types.h,v 1.1 2004/08/26 03:21:14 wcc Exp $
+ * $Id: types.h,v 1.2 2004/08/27 00:49:24 wcc Exp $
  */
 
 #ifndef _EGG_TYPES_H
@@ -30,15 +30,6 @@
 #  define NULL 0
 #endif
 
-typedef int (*Function) ();
-
-typedef struct {
-  char *name;
-  char *flags;
-  Function func;
-  char *funcname;
-} cmd_t;
-
 /* 32 bit type */
 #if (SIZEOF_INT == 4)
 typedef unsigned int u_32bit_t;
@@ -50,9 +41,37 @@ typedef unsigned long u_32bit_t;
 #  endif
 #endif
 
-typedef unsigned short int u_16bit_t; /* 16 bit type */
-typedef unsigned char u_8bit_t;       /* 8 bit type  */
+typedef unsigned short int u_16bit_t; /* 16 bit type   */
+typedef unsigned char u_8bit_t;       /* 8 bit type    */
+typedef u_32bit_t IP;                 /* IP type       */
+typedef int (*Function) ();           /* Function type */
 
-typedef u_32bit_t IP; /* IP type */
+typedef struct _tand_t {
+  char bot[HANDLEN + 1];
+  struct _tand_t *via;
+  struct _tand_t *uplink;
+  struct _tand_t *next;
+  int ver;
+  char share;
+} tand_t;
+
+typedef struct {
+  char nick[HANDLEN + 1];
+  char bot[HANDLEN + 1];
+  int sock;
+  int chan;
+  char *from;
+  char flag;
+  char status;
+  time_t timer;
+  char *away;
+} party_t;
+
+typedef struct {
+  char *name;
+  char *flags;
+  Function func;
+  char *funcname;
+} cmd_t;
 
 #endif /* _EGG_TYPES_H */

@@ -16,39 +16,43 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botnet.h,v 1.2 2004/08/26 03:21:13 wcc Exp $
+ * $Id: botnet.h,v 1.3 2004/08/27 00:49:23 wcc Exp $
  */
 
 #ifndef _EGG_BOTNET_H
 #define _EGG_BOTNET_H
 
+#include "types.h" /* tand_t */
+
 #ifndef MAKING_MODS
-void answer_local_whom(int, int);
-char *lastbot(char *);
-int nextbot(char *);
-int in_chain(char *);
-void tell_bots(int);
-void tell_bottree(int, int);
-int botlink(char *, int, char *);
-int botunlink(int, char *, char *, char *);
-void dump_links(int);
 void addbot(char *, char *, char *, char, int);
 void updatebot(int, char *, char, int);
-void rembot(char *);
-struct tand_t_struct *findbot(char *);
-void unvia(int, struct tand_t_struct *);
-void check_botnet_pings();
+tand_t *findbot(char *);
 int partysock(char *, char *);
 int addparty(char *, char *, int, char, int, char *, int *);
-void remparty(char *, int);
 void partystat(char *, int, int, int);
-int partynick(char *, int, char *);
-int partyidle(char *, char *);
 void partysetidle(char *, int, int);
-void partyaway(char *, int, char *);
-void zapfbot(int);
-void tandem_relay(int, char *, int);
 int getparty(char *, int);
+int partyidle(char *, char *);
+int partynick(char *, int, char *);
+void partyaway(char *, int, char *);
+void rembot(char *);
+void remparty(char *, int);
+void unvia(int, tand_t *);
+int nextbot(char *);
+char *lastbot(char *);
+void answer_local_whom(int, int);
+void tell_bots(int);
+void tell_bottree(int, int);
+void dump_links(int);
+int in_chain(char *);
+int bots_in_subtree(tand_t *);
+int users_in_subtree(tand_t *);
+int botunlink(int, char *, char *, char *);
+int botlink(char *, int, char *);
+void check_botnet_pings();
+void tandem_relay(int, char *, int);
+void zapfbot(int);
 #endif
 
 #endif /* !_EGG_BOTNET_H */
