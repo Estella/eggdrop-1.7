@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.h,v 1.7 2004/08/27 09:34:10 wcc Exp $
+ * $Id: main.h,v 1.8 2004/08/28 00:15:41 wcc Exp $
  */
 
 #ifndef _EGG_MAIN_H
@@ -148,7 +148,7 @@
 #endif
 
 /* UGH! Why couldn't Tcl pick a standard? */
-#if (defined(USE_TCL_VARARGS) && (defined(__STDC__) || defined(HAS_STDARG)) || MAKING_DEPEND)
+#if defined(USE_TCL_VARARGS) && (defined(__STDC__) || defined(HAS_STDARG))
 #  ifdef HAVE_STDARG_H
 #    include <stdarg.h>
 #  else
@@ -160,10 +160,12 @@
 #  define EGG_VARARGS_DEF(type, name) (type name, ...)
 #  define EGG_VARARGS_START(type, name, list) (va_start(list, name), name)
 #else
-#  include <varargs.h>
-#  define EGG_VARARGS(type, name) ()
-#  define EGG_VARARGS_DEF(type, name) (va_alist) va_dcl
-#  define EGG_VARARGS_START(type, name, list) (va_start(list), va_arg(list,type))
+#  ifndef MAKING_DEPEND /* Allows 'make depend' to work on newer GCC versions. */
+#    include <varargs.h>
+#    define EGG_VARARGS(type, name) ()
+#    define EGG_VARARGS_DEF(type, name) (va_alist) va_dcl
+#    define EGG_VARARGS_START(type, name, list) (va_start(list), va_arg(list,type))
+#  endif
 #endif
 
 #include <stdio.h>

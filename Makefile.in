@@ -2,7 +2,7 @@
 #  This is the Makefile for EGGDROP (the IRC bot)
 #  You should never need to edit this.
 #
-# $Id: Makefile.in,v 1.2 2004/08/27 05:34:18 wcc Exp $
+# $Id: Makefile.in,v 1.3 2004/08/28 00:15:41 wcc Exp $
 
 SHELL = @SHELL@
 top_srcdir = @top_srcdir@
@@ -69,27 +69,15 @@ MODULE_XLIBS = @MODULE_XLIBS@
 # Shouldn't need to touch anything below here.
 DEBCFLAGS = -DDEBUG_ASSERT -DDEBUG_MEM
 
-modconf = $(top_srcdir)/misc/modconfig --top_srcdir=$(top_srcdir)
 
 egg_test_run = EGG_LANGDIR=$(top_srcdir)/language ./$(EGGEXEC) -v
 
-post_config  =  echo "" && \
-		echo "You can now compile the bot, using \"make\"." && \
-		echo ""
-
-post_iconfig =  $(modconf) update-depends && \
-		$(modconf) Makefile && \
-		(cd src/mod && $(MAKE_CONFIG) config) && \
-		$(modconf) Makefile
-
-egg_install_msg =  echo "" && \
-		   echo "Now run \"make install\" to install your bot." && \
-		   echo ""
+modconf = $(top_srcdir)/misc/modconfig --top_srcdir=$(top_srcdir)
 
 MAKE_MODEGG = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(MOD_CC)' 'LD=$(MOD_LD)' \
 'STRIP=$(MOD_STRIP)' 'RANLIB=$(RANLIB)' 'CFLGS=$(CFLGS)' \
 'TCLLIB=$(TCLLIB)' 'TCLLIBFN=$(TCLLIBFN)' 'XREQS=$(XREQS)' \
-'XLIBS=$(XLIBS)' 'EGGEXEC=$(EGGEXEC)' 'EGGBUILD=(standard build)' 'MODOBJS='
+'XLIBS=$(XLIBS)' 'EGGEXEC=$(EGGEXEC)' 'EGGBUILD=standard build' 'MODOBJS='
 
 MAKE_MODULES = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(SHLIB_CC)' 'LD=$(SHLIB_LD)' \
 'STRIP=$(SHLIB_STRIP)' 'CFLGS=$(CFLGS)' 'XLIBS=$(XLIBS)' 'MOD_EXT=$(MOD_EXT)' \
@@ -98,13 +86,13 @@ MAKE_MODULES = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(SHLIB_CC)' 'LD=$(SHLIB_LD)' \
 MAKE_STATIC = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(CC)' 'LD=$(LD)' \
 'STRIP=$(STRIP)' 'RANLIB=$(RANLIB)' 'CFLGS=$(CFLGS) -DSTATIC' \
 'TCLLIB=$(TCLLIB)' 'TCLLIBFN=$(TCLLIBFN)' 'XREQS=$(XREQS)' \
-'XLIBS=$(XLIBS)' 'EGGEXEC=$(EGGEXEC)' 'EGGBUILD=(static version)' \
+'XLIBS=$(XLIBS)' 'EGGEXEC=$(EGGEXEC)' 'EGGBUILD=static version' \
 'MODOBJS=mod/*.o'
 
 MAKE_DEBEGG = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(MOD_CC)' 'LD=$(MOD_LD) -g' \
 'STRIP=touch' 'RANLIB=$(RANLIB)' 'CFLGS=-g3 $(DEBCFLAGS) $(CFLGS)' \
 'TCLLIB=$(TCLLIB)' 'TCLLIBFN=$(TCLLIBFN)' 'XREQS=$(XREQS)' \
-'XLIBS=$(XLIBS)' 'EGGEXEC=$(EGGEXEC)' 'EGGBUILD=(debug version)' 'MODOBJS='
+'XLIBS=$(XLIBS)' 'EGGEXEC=$(EGGEXEC)' 'EGGBUILD=debug version' 'MODOBJS='
 
 MAKE_DEBMODULES = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(SHLIB_CC)' 'LD=$(SHLIB_LD)' \
 'XLIBS=$(XLIBS)' 'STRIP=touch' 'CFLGS=-g3 $(DEBCFLAGS) $(CFLGS)' \
@@ -113,10 +101,9 @@ MAKE_DEBMODULES = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(SHLIB_CC)' 'LD=$(SHLIB_LD)' \
 MAKE_SDEBUG = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(CC)' 'LD=$(LD) -g' \
 'STRIP=touch' 'RANLIB=$(RANLIB)' 'CFLGS=-g3 $(DEBCFLAGS) -DSTATIC $(CFLGS)' \
 'TCLLIB=$(TCLLIB)' 'TCLLIBFN=$(TCLLIBFN)' 'XREQS=$(XREQS)' 'XLIBS=$(XLIBS)' \
-'EGGEXEC=$(EGGEXEC)' 'EGGBUILD=(static debug version)' 'MODOBJS=mod/*.o'
+'EGGEXEC=$(EGGEXEC)' 'EGGBUILD=static debug version' 'MODOBJS=mod/*.o'
 
-MAKE_DEPEND = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(CC)' 'LD=$(LD)' \
-'STRIP=$(STRIP)' 'CFLGS=$(CFLGS)'
+MAKE_DEPEND = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(CC)'
 
 MAKE_CONFIG = $(MAKE) 'MAKE=$(MAKE)'
 
@@ -158,22 +145,34 @@ config:
 	@$(modconf) Makefile
 	@cd src/mod && $(MAKE_CONFIG) config
 	@$(modconf) Makefile
-	@$(post_config)
+	@echo ""
+	@echo "You can now compile the bot, using \"make\"."
+	@echo ""
 
 new-iconfig:
 	@$(modconf) modules-still-exist
 	@$(modconf) update-depends
 	@$(modconf) -n configure
-	@$(post_iconfig)
-	@$(post_config)
+	@$(modconf) update-depends
+	@$(modconf) Makefile
+	@(cd src/mod && $(MAKE_CONFIG) config)
+	@$(modconf) Makefile
+	@echo ""
+	@echo "You can now compile the bot, using \"make\"."
+	@echo ""
 
 iconfig:
 	@$(modconf) modules-still-exist
 	@$(modconf) detect-modules
 	@$(modconf) update-depends
 	@$(modconf) configure
-	@$(post_iconfig)
-	@$(post_config)
+	@$(modconf) update-depends
+	@$(modconf) Makefile
+	@(cd src/mod && $(MAKE_CONFIG) config)
+	@$(modconf) Makefile
+	@echo ""
+	@echo "You can now compile the bot, using \"make\"."
+	@echo ""
 
 clean-modconfig:
 	@rm -f .modules .known_modules
@@ -191,7 +190,13 @@ conftest:
 
 reconfig: clean-modconfig config
 
-eggdrop: modegg modules
+runts:
+	@echo ""
+	@echo "This may take a while. Go get some runts."
+	@echo "-----------------------------------------"
+	@echo ""
+
+eggdrop: runts modegg modules
 
 modegg: modtest
 	@rm -f src/mod/mod.xlibs
@@ -208,16 +213,17 @@ modules: modtest
 	@echo ""
 	@echo "Modules successfully compiled:"
 	@ls -l *.$(MOD_EXT)
-	@$(egg_install_msg)
-
-static: eggtest
 	@echo ""
-	@echo "Making module objects for static linking..."
+	@echo "Now run \"make install\" to install your bot."
+	@echo ""
+
+static: eggtest runts
+	@echo "Building module objects for static linking."
 	@echo ""
 	@rm -f src/mod/mod.xlibs
 	@cd src/mod && $(MAKE_STATIC) static
 	@echo ""
-	@echo "Making core eggdrop for static linking..."
+	@echo "Building core Eggdrop for static linking."
 	@echo ""
 	@cd src && $(MAKE_STATIC) $(EGGEXEC)
 	@echo ""
@@ -227,9 +233,10 @@ static: eggtest
 	@echo "Eggdrop successfully compiled:"
 	@ls -l $(EGGEXEC)
 	@echo ""
-	@$(egg_install_msg)
+	@echo "Now run \"make install\" to install your bot."
+	@echo ""
 
-debug: debegg debmodules
+debug: runts debegg debmodules
 
 debegg: modtest
 	@cd src && $(MAKE_DEBEGG) $(EGGEXEC)
@@ -245,9 +252,11 @@ debmodules: modtest
 	@echo ""
 	@echo "Modules successfully compiled:"
 	@ls -l *.$(MOD_EXT)
-	@$(egg_install_msg)
+	@echo ""
+	@echo "Now run \"make install\" to install your bot."
+	@echo ""
 
-sdebug: eggtest
+sdebug: eggtest runts
 	@echo ""
 	@echo "Making module objects for static linking."
 	@echo ""
@@ -264,7 +273,8 @@ sdebug: eggtest
 	@echo "Eggdrop successfully compiled:"
 	@ls -l $(EGGEXEC)
 	@echo ""
-	@$(egg_install_msg)
+	@echo "Now run \"make install\" to install your bot."
+	@echo ""
 
 eggtest: conftest
 	@if test -f EGGMOD.stamp; then \

@@ -1,5 +1,5 @@
 # Makefile for src/
-# $Id: Makefile.in,v 1.4 2004/08/27 09:34:10 wcc Exp $
+# $Id: Makefile.in,v 1.5 2004/08/28 00:15:41 wcc Exp $
 
 SHELL = @SHELL@
 top_srcdir = @top_srcdir@
@@ -32,39 +32,35 @@ doofus:
 	@echo ""
 	@cd .. && $(MAKE)
 
+build_msg:
+	@echo ""
+	@echo "Compiling Eggdrop: $(EGGBUILD)."
+	@echo ""
+
 ../$(EGGEXEC): build_msg $(eggdrop_objs) $(XREQS) compile_md5 compatability
-	@echo "Linking eggdrop $(EGGBUILD)."
+	@echo ""
+	@echo "Linking Eggdrop: $(EGGBUILD)."
 	@echo ""
 	@touch mod/mod.xlibs
 	$(LD) -o ../$(EGGEXEC) $(eggdrop_objs) $(MODOBJS) $(XLIBS) md5/md5c.o compat/*.o `cat mod/mod.xlibs`
 	$(STRIP) ../$(EGGEXEC)
 	@echo ""
-	@echo "Successful compile: $(EGGEXEC)"
+	@echo "Successful compile: $(EGGEXEC)."
 	@echo ""
 
 $(EGGEXEC): ../$(EGGEXEC)
 
 depend:
-	$(CC) $(CFLAGS) -DMAKING_DEPEND -MM *.c > .depend
+	$(CC) -I.. -DMAKING_DEPEND -MM *.c > .depend
 
 clean:
 	@rm -f .depend *.o *.a *~
 
-build_msg:
-	@echo "This may take a while. Go get some runts."
-	@echo ""
-
 main.o:
-	$(CC) $(CFLAGS) $(CPPFLAGS) \
-'-DCCFLAGS="$(CC) $(CFLAGS) $(CPPFLAGS)"' \
-'-DLDFLAGS="$(LD)"' \
-'-DSTRIPFLAGS="$(STRIP)"' -c $(srcdir)/main.c
+	$(CC) $(CFLAGS) '-DCCFLAGS="$(CC) $(CFLAGS)"' '-DLDFLAGS="$(LD)"' '-DSTRIPFLAGS="$(STRIP)"' -c $(srcdir)/main.c
 
 compatability:
 	@cd compat && $(MAKE_GENERIC) compat
-	@echo ""
-	@echo "---------- Yeah! That's the compiling, now the linking! ----------"
-	@echo ""
 
 compile_md5:
 	@cd md5 && $(MAKE_GENERIC) md5
@@ -84,7 +80,7 @@ eggdrop.h:
 .SUFFIXES: .c .h .o .a
 
 .c.o:
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $<
 
 #safety hash
 bg.o: bg.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h lang.h \
@@ -159,7 +155,7 @@ main.o: main.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
   users.h compat/compat.h compat/inet_aton.h ../src/main.h \
   compat/snprintf.h compat/memset.h compat/memcpy.h compat/strcasecmp.h \
   compat/strftime.h modules.h mod/modvals.h ../src/types.h bg.h botmsg.h \
-  botnet.h dcc.h dccutil.h net.h userrec.h patch.h
+  botnet.h dcc.h dccutil.h net.h traffic.h userrec.h patch.h
 match.o: match.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
   lang.h flags.h proto.h misc_file.h language.h tclegg.h tclhash.h chan.h \
   users.h compat/compat.h compat/inet_aton.h ../src/main.h \
@@ -169,7 +165,7 @@ mem.o: mem.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
   lang.h flags.h proto.h misc_file.h language.h tclegg.h tclhash.h chan.h \
   users.h compat/compat.h compat/inet_aton.h ../src/main.h \
   compat/snprintf.h compat/memset.h compat/memcpy.h compat/strcasecmp.h \
-  compat/strftime.h mod/modvals.h ../src/types.h dccutil.h dcc.h net.h
+  compat/strftime.h mod/modvals.h ../src/types.h dccutil.h dcc.h
 misc.o: misc.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
   lang.h flags.h proto.h misc_file.h language.h tclegg.h tclhash.h chan.h \
   users.h compat/compat.h compat/inet_aton.h ../src/main.h \
@@ -192,7 +188,7 @@ net.o: net.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
   lang.h flags.h proto.h misc_file.h language.h tclegg.h tclhash.h chan.h \
   users.h compat/compat.h compat/inet_aton.h ../src/main.h \
   compat/snprintf.h compat/memset.h compat/memcpy.h compat/strcasecmp.h \
-  compat/strftime.h net.h dcc.h dccutil.h
+  compat/strftime.h net.h dcc.h dccutil.h traffic.h
 rfc1459.o: rfc1459.c main.h ../config.h ../lush.h eggdrop.h types.h \
   debug.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
   tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
@@ -227,6 +223,11 @@ tcluser.o: tcluser.c main.h ../config.h ../lush.h eggdrop.h types.h \
   ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
   compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
   ../src/types.h botmsg.h botnet.h dcc.h userrec.h
+traffic.o: traffic.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  debug.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
+  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
+  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
+  compat/strcasecmp.h compat/strftime.h traffic.h dcc.h dccutil.h
 userent.o: userent.c main.h ../config.h ../lush.h eggdrop.h types.h \
   debug.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
   tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \

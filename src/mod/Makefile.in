@@ -1,5 +1,6 @@
-# Makefile for src/mod/
-# $Id: Makefile.in,v 1.1 2004/08/25 01:02:06 wcc Exp $
+# Makefile for src/mod/.
+#
+# $Id: Makefile.in,v 1.2 2004/08/28 00:15:41 wcc Exp $
 
 SHELL = @SHELL@
 top_srcdir = @top_srcdir@
@@ -17,10 +18,7 @@ CC = @CC@
 LD = @CC@
 STRIP = @STRIP@
 CFLAGS = @CFLAGS@ -I../.. -I$(top_srcdir) @DEFS@ $(CFLGS)
-CPPFLAGS = @CPPFLAGS@
-MOD_CFLAGS = @CFLAGS@ -I. -I../../.. -I$(MOD_UPDIR)$(top_srcdir) \
-  -I$(MOD_UPDIR)$(top_srcdir)/src/mod @DEFS@ $(CFLGS)
-MOD_CPPFLAGS = @CPPFLAGS@
+MOD_CFLAGS = @CFLAGS@ -I. -I../../.. -I$(MOD_UPDIR)$(top_srcdir) -I$(MOD_UPDIR)$(top_srcdir)/src/mod @DEFS@ $(CFLGS)
 XLIBS = @XLIBS@
 MOD_EXT = @MOD_EXT@
 
@@ -30,14 +28,15 @@ mods =
 mod_objs =
 mod_libs =
 
-modconfig = $(top_srcdir)/misc/modconfig --bindir=../.. \
-  --top_srcdir=$(top_srcdir)
+modconfig = $(top_srcdir)/misc/modconfig --bindir=../.. --top_srcdir=$(top_srcdir)
 egg_ac_parameters = @egg_ac_parameters@
 
-MAKE_MOD = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(CC)' 'LD=$(LD)' \
-'STRIP=$(STRIP)' 'CFLAGS=$(MOD_CFLAGS)' 'CPPFLAGS=$(MOD_CPPFLAGS)' \
-'XLIBS=$(XLIBS)' 'MOD_EXT=$(MOD_EXT)' 'SHELL=$(SHELL)' \
+MAKE_MOD = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(CC)' 'LD=$(LD)' 'STRIP=$(STRIP)' \
+'CFLAGS=$(MOD_CFLAGS)' 'XLIBS=$(XLIBS)' 'MOD_EXT=$(MOD_EXT)' 'SHELL=$(SHELL)' \
 'MODULE_XLIBS=$(MODULE_XLIBS)'
+
+MAKE_MODDEPEND = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(CC)' \
+'CFLAGS = -I../../.. -I../../../src/mod -DMAKING_DEPEND -DHAVE_CONFIG_H -DMAKING_MODS'
 
 
 doofus:
@@ -46,9 +45,15 @@ doofus:
 	@echo ""
 	@cd ../.. && $(MAKE)
 
-modules: $(mod_libs)
+modules_msg:
+	@echo ""
+	@echo "Compiling modules."
+	@echo ""
+
+modules: modules_msg $(mod_libs)
 	@echo ""
 	@echo "All modules compiled."
+	@echo ""
 
 static: $(mod_objs)
 	@$(modconfig) static.h
@@ -76,7 +81,7 @@ depend:
 		if test ! -r $$i/Makefile; then \
 			cp $(srcdir)/$$i/Makefile $$i/Makefile; \
 		fi; \
-		(cd $$i && $(MAKE_MOD) "VPATH=$(MOD_UPDIR)$(srcdir)/$$i" "srcdir=$(MOD_UPDIR)$(srcdir)/$$i" depend); \
+		(cd $$i && $(MAKE_MODDEPEND) "VPATH=$(MOD_UPDIR)$(srcdir)/$$i" "srcdir=$(MOD_UPDIR)$(srcdir)/$$i" depend); \
 	done
 
 config:

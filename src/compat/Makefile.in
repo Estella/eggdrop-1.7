@@ -1,5 +1,6 @@
 # Makefile for src/compat/
-# $Id: Makefile.in,v 1.4 2004/08/27 09:34:11 wcc Exp $
+#
+# $Id: Makefile.in,v 1.5 2004/08/28 00:15:41 wcc Exp $
 
 SHELL = @SHELL@
 top_srcdir = @top_srcdir@
@@ -26,7 +27,7 @@ doofus:
 	@cd ../.. && $(MAKE)
 
 depend:
-	$(CC) $(CFLAGS) -DMAKING_DEPEND -MM *.c > .depend
+	$(CC) -I../.. -I../../src -DMAKING_DEPEND -DHAVE_CONFIG_H -MM *.c > .depend
 
 clean:
 	@rm -f .depend *.o *~
@@ -37,7 +38,7 @@ compat: $(OBJS)
 .SUFFIXES: .c .o .h
 
 .c.o:
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $<
 
 #safety hash
 gnu_strftime.o: gnu_strftime.c ../../config.h
