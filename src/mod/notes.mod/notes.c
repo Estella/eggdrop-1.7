@@ -5,7 +5,7 @@
  *   note cmds
  *   note ignores
  *
- * $Id: notes.c,v 1.3 2004/08/27 00:49:24 wcc Exp $
+ * $Id: notes.c,v 1.4 2004/12/02 23:28:17 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -403,8 +403,7 @@ static int tcl_erasenotes STDVAR
   read = 0;
   erased = 0;
   notes_parse(nl, (argv[2][0] == 0) ? "-" : argv[2]);
-  while (!feof(f)) {
-    fgets(s, 600, f);
+  while (!feof(f) && fgets(s, 600, f)) {
     if (s[strlen(s) - 1] == '\n')
       s[strlen(s) - 1] = 0;
     if (!feof(f)) {
@@ -491,8 +490,7 @@ static void notes_read(char *hand, char *nick, char *srd, int idx)
     return;
   }
   notes_parse(rd, srd);
-  while (!feof(f)) {
-    fgets(s, 600, f);
+  while (!feof(f) && fgets(s, 600, f)) {
     i = strlen(s);
     if (i > 0 && s[i - 1] == '\n')
       s[i - 1] = 0;
@@ -690,8 +688,7 @@ static int tcl_notes STDVAR
   count = 0;
   read = 0;
   notes_parse(nl, (argv[2][0] == 0) ? "-" : argv[2]);
-  while (!feof(f)) {
-    fgets(s, 600, f);
+  while (!feof(f) && fgets(s, 600, f)) {
     if (s[strlen(s) - 1] == '\n')
       s[strlen(s) - 1] = 0;
     if (!feof(f)) {
