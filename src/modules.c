@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: modules.c,v 1.9 2004/08/31 22:56:12 wcc Exp $
+ * $Id: modules.c,v 1.10 2004/09/10 01:10:50 wcc Exp $
  */
 
 #include <ctype.h>
@@ -377,8 +377,8 @@ Function global_table[] = {
   /* 132 - 135 */
   (Function) cmd_die,
   (Function) days,
-  (Function) daysago,
-  (Function) daysdur,
+  (Function) 0,
+  (Function) 0,
   /* 136 - 139 */
   (Function) ismember,
   (Function) newsplit,
@@ -402,7 +402,7 @@ Function global_table[] = {
   /* 152 - 155 */
   (Function) makepass,
   (Function) _wild_match,
-  (Function) _maskhost,
+  (Function) maskhost,
   (Function) show_motd,
   /* 156 - 159 */
   (Function) tellhelp,
@@ -549,7 +549,7 @@ Function global_table[] = {
   (Function) strchr_unescape,
   /* 264 - 267 */
   (Function) str_unescape,
-  (Function) egg_strcatn,
+  (Function) 0,
   (Function) clear_chanlist_member,
   (Function) fixfrom,
   /* 268 - 271 */

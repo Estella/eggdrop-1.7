@@ -2,7 +2,7 @@
  * userent.c -- handles:
  *   user-entry handling, new stylem more versatile.
  *
- * $Id: userent.c,v 1.7 2004/08/30 23:58:23 wcc Exp $
+ * $Id: userent.c,v 1.8 2004/09/10 01:10:50 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -32,6 +32,7 @@
 #include "dccutil.h" /* dprintf, shareout */
 #include "logfile.h" /* putlog, LOG_* */
 #include "match.h"   /* wild_match */
+#include "misc.h"    /* newsplit, strncpyz */
 #include "rfc1459.h" /* rfc_casecmp */
 #include "userrec.h" /* addhost_by_handle */
 

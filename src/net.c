@@ -3,7 +3,7 @@
  * This is hereby released into the public domain.
  * Robey Pointer, robey@netcom.com
  *
- * $Id: net.c,v 1.9 2004/09/02 20:27:00 wcc Exp $
+ * $Id: net.c,v 1.10 2004/09/10 01:10:50 wcc Exp $
  */
 
 #include <fcntl.h>
@@ -27,18 +27,17 @@
 #include "net.h"
 #include "dcc.h"     /* struct dcc_t */
 #include "dccutil.h" /* dprintf */
+#include "misc.h"    /* strncpyz, extracthostname */
 #include "logfile.h" /* putlog, LOG_* */
 #include "traffic.h" /* traffic_update_out */
 
 
 extern struct dcc_t *dcc;
 extern int backgrd, use_stderr, resolve_timeout, dcc_total;
-extern unsigned long otraffic_irc_today, otraffic_bn_today, otraffic_dcc_today,
-                     otraffic_filesys_today, otraffic_trans_today,
-                     otraffic_unknown_today;
 
 char hostname[121] = "";      /* Hostname can be specified in the config file.*/
 char myip[121] = "";          /* IP can be specified in the config file.      */
+char natip[121] = "";         /* Outside IP of NAT router/firewall.           */
 char firewall[121] = "";      /* Socks server for firewall.                   */
 int firewallport = 1080;      /* Default port of socks 4/5 firewalls.         */
 char botuser[21] = "eggdrop"; /* Username of the user running the bot.        */
@@ -1114,6 +1113,7 @@ int hostsanitycheck_dcc(char *nick, char *from, IP ip, char *dnsname,
   /* It is disabled HERE so we only have to check in *one* spot! */
   if (!dcc_sanitycheck)
     return 1;
+
   sprintf(badaddress, "%u.%u.%u.%u", (ip >> 24) & 0xff, (ip >> 16) & 0xff,
           (ip >> 8) & 0xff, ip & 0xff);
   /* These should pad like crazy with zeros, since 120 bytes or so is
@@ -1130,8 +1130,7 @@ int hostsanitycheck_dcc(char *nick, char *from, IP ip, char *dnsname,
            "information of %s port %s. %s does not resolve to %s!", nick, from,
            badaddress, prt, from, badaddress);
   else
-    return 1;                   /* <- usually happens when we have
-                                 * a user with an unresolved hostmask! */
+    return 1; /* This usually happens with a user with an unresolved hostmask. */
   return 0;
 }
 

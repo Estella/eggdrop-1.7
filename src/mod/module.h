@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: module.h,v 1.5 2004/08/30 23:58:23 wcc Exp $
+ * $Id: module.h,v 1.6 2004/09/10 01:10:50 wcc Exp $
  */
 
 #ifndef _EGG_MOD_MODULE_H
@@ -32,6 +32,7 @@
 #include "src/dccutil.h"
 #include "src/dns.h"
 #include "src/logfile.h"
+#include "src/misc.h"
 #include "src/net.h"
 
 /*
@@ -56,8 +57,6 @@
 #undef get_data_ptr
 #undef wild_match
 #undef wild_match_per
-#undef maskhost
-#undef maskban
 #undef user_realloc
 #undef Context
 #undef ContextNote
@@ -89,11 +88,7 @@
 #  define EXPORT_SCOPE
 #endif
 
-/* Version checks for modules. */
-#define EGG_IS_MIN_VER(ver)             ((ver) <= EGG_VERSION)
-#define EGG_IS_MAX_VER(ver)             ((ver) >= EGG_VERSION)
-
-/* Redefine for module-relevance */
+/* Redefine for module-relevance. */
 
 /* 0 - 3 */
 #define nmalloc(x) (((void *(*)())global[0])((x),MODULE_NAME,__FILE__,__LINE__))
@@ -266,9 +261,9 @@
 #define findchan ((struct chanset_t *(*)(char *))global[131])
 /* 132 - 135 */
 #define cmd_die (global[132])
-#define days ((void (*)(time_t,time_t,char *))global[133])
-#define daysago ((void (*)(time_t,time_t,char *))global[134])
-#define daysdur ((void (*)(time_t,time_t,char *))global[135])
+#define days ((void (*)(time_t,time_t,char *,int))global[133])
+/* HOLE 134 */
+/* HOLE 135 */
 /* 136 - 139 */
 #define ismember ((memberlist * (*) (struct chanset_t *, char *))global[136])
 #define newsplit ((char *(*)(char **))global[137])
@@ -292,7 +287,7 @@
 /* 152 - 155 */
 #define makepass ((void (*) (char *))global[152])
 #define wild_match ((int (*)(const char *, const char *))global[153])
-#define _maskhost ((void (*)(const char *, char *, int))global[154])
+#define maskhost ((void (*)(const char *, char *, int))global[154])
 #define show_motd ((void(*)(int))global[155])
 /* 156 - 159 */
 #define tellhelp ((void(*)(int, char *, struct flag_record *, int))global[156])
@@ -442,7 +437,7 @@
 #define strchr_unescape ((char *(*)(char *, const char, register const char))global[263])
 /* 264 - 267 */
 #define str_unescape ((void (*)(char *, register const char))global[264])
-#define egg_strcatn ((int (*)(char *dst, const char *src, size_t max))global[265])
+/* HOLE 265 */
 #define clear_chanlist_member ((void (*)(const char *nick))global[266])
 #define fixfrom ((char *(*)(char *))global[267])
 /* 268 - 271 */
@@ -482,10 +477,6 @@
 /* 292 - 295 */
 #define str_isdigit ((int (*) (const char *))global[292])
 #define remove_crlf ((void (*)(char **))global[293])
-
-/* hostmasking */
-#define maskhost(a,b) _maskhost((a),(b),1)
-#define maskban(a,b) _maskhost((a),(b),0)
 
 /* This is for blowfish module, couldnt be bothered making a whole new .h
  * file for it ;)

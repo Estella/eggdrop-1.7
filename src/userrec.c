@@ -4,7 +4,7 @@
  *   a bunch of functions to find and change user records
  *   change and check user (and channel-specific) flags
  *
- * $Id: userrec.c,v 1.10 2004/08/31 22:56:12 wcc Exp $
+ * $Id: userrec.c,v 1.11 2004/09/10 01:10:50 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -37,6 +37,7 @@
 #include "dccutil.h" /* shareout, chanout_but */
 #include "logfile.h" /* putlog, LOG_* */
 #include "match.h"   /* wild_match */
+#include "misc.h"    /* strncpyz, str_escape */
 #include "rfc1459.h" /* rfc_casecmp */
 #include "userent.h" /* list_type_expmem */
 

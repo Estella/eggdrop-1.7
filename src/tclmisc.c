@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tclmisc.c,v 1.10 2004/08/31 22:56:12 wcc Exp $
+ * $Id: tclmisc.c,v 1.11 2004/09/10 01:10:50 wcc Exp $
  */
 
 #include "main.h"
@@ -46,6 +46,7 @@
 #include "logfile.h" /* LOG_*, putlog */
 #include "help.h"    /* showhelp, tellhelp */
 #include "match.h"   /* wild_match_per, reload_help_data */
+#include "misc.h"    /* strncpyz, randint, kill_bot */
 #include "net.h"     /* getmyip */
 
 

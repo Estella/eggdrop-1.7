@@ -4,7 +4,7 @@
  *   channel mode changes and the bot's reaction to them
  *   setting and getting the current wanted channel modes
  *
- * $Id: mode.c,v 1.2 2004/08/26 10:36:52 wcc Exp $
+ * $Id: mode.c,v 1.3 2004/09/10 01:10:51 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -25,8 +25,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/* Reversing this mode? */
-static int reversing = 0;
 
 #define PLUS    0x01
 #define MINUS   0x02
@@ -37,8 +35,46 @@ static int reversing = 0;
 #define INVITE  0x40
 #define CHHOP   0x80
 
+
 static struct flag_record user = { FR_GLOBAL | FR_CHAN, 0, 0, 0, 0, 0 };
 static struct flag_record victim = { FR_GLOBAL | FR_CHAN, 0, 0, 0, 0, 0 };
+
+/* Reversing this mode? */
+static int reversing = 0;
+
+
+/*  This implementation wont overrun dst - 'max' is the max bytes that dst
+ *  can be, including the null terminator. So if 'dst' is a 128 byte buffer,
+ *  pass 128 as 'max'. The function will _always_ null-terminate 'dst'.
+ *
+ *  Returns: The number of characters appended to 'dst'.
+ */
+static int mode_strcatn(char *dst, const char *src, size_t max)
+{
+  size_t tmpmax = 0;
+
+  /* Find end of 'dst'. */
+  while (*dst && max > 0) {
+    dst++;
+    max--;
+  }
+
+  /* Store 'max' to help figure out how many characters were written later on.*/
+  tmpmax = max;
+
+  /* Copy upto, but not including the terminating NUL. */
+  while (*src && max > 1) {
+    *dst++ = *src++;
+    max--;
+  }
+
+  /* NUL-terminate the buffer. */
+  *dst = 0;
+
+  /* Don't include the terminating NUL in our count, as it will cumulate in
+   * loops--causing a headache for the caller. */
+  return tmpmax - max;
+}
 
 static void flush_mode(struct chanset_t *chan, int pri)
 {
@@ -73,8 +109,8 @@ static void flush_mode(struct chanset_t *chan, int pri)
     }
     *p++ = 'k';
 
-    postsize -= egg_strcatn(post, chan->key, sizeof(post));
-    postsize -= egg_strcatn(post, " ", sizeof(post));
+    postsize -= mode_strcatn(post, chan->key, sizeof(post));
+    postsize -= mode_strcatn(post, " ", sizeof(post));
 
     nfree(chan->key), chan->key = NULL;
   }
@@ -103,8 +139,8 @@ static void flush_mode(struct chanset_t *chan, int pri)
     }
     *p++ = 'k';
 
-    postsize -= egg_strcatn(post, chan->rmkey, sizeof(post));
-    postsize -= egg_strcatn(post, " ", sizeof(post));
+    postsize -= mode_strcatn(post, chan->rmkey, sizeof(post));
+    postsize -= mode_strcatn(post, " ", sizeof(post));
 
     nfree(chan->rmkey), chan->rmkey = NULL;
   }
@@ -122,20 +158,19 @@ static void flush_mode(struct chanset_t *chan, int pri)
               ((chan->cmode[i].type & EXEMPT) ? 'e' :
               ((chan->cmode[i].type & INVITE) ? 'I' : 'v')))));
 
-      postsize -= egg_strcatn(post, chan->cmode[i].op, sizeof(post));
-      postsize -= egg_strcatn(post, " ", sizeof(post));
+      postsize -= mode_strcatn(post, chan->cmode[i].op, sizeof(post));
+      postsize -= mode_strcatn(post, " ", sizeof(post));
 
       nfree(chan->cmode[i].op), chan->cmode[i].op = NULL;
       chan->cmode[i].type = 0;
     }
   }
 
-  /* now do all the + modes... */
+  /* Now do all the + modes. */
   for (i = 0; i < modesperline; i++) {
     if ((chan->cmode[i].type & PLUS) && postsize > strlen(chan->cmode[i].op)) {
-      if (plus != 1) {
+      if (plus != 1)
         *p++ = '+', plus = 1;
-      }
 
       *p++ = ((chan->cmode[i].type & BAN) ? 'b' :
               ((chan->cmode[i].type & CHOP) ? 'o' :
@@ -143,27 +178,28 @@ static void flush_mode(struct chanset_t *chan, int pri)
               ((chan->cmode[i].type & EXEMPT) ? 'e' :
               ((chan->cmode[i].type & INVITE) ? 'I' : 'v')))));
 
-      postsize -= egg_strcatn(post, chan->cmode[i].op, sizeof(post));
-      postsize -= egg_strcatn(post, " ", sizeof(post));
+      postsize -= mode_strcatn(post, chan->cmode[i].op, sizeof(post));
+      postsize -= mode_strcatn(post, " ", sizeof(post));
 
       nfree(chan->cmode[i].op), chan->cmode[i].op = NULL;
       chan->cmode[i].type = 0;
     }
   }
 
-  /* remember to terminate the buffer ('out')... */
+  /* Remember to terminate the buffer ('out'). */
   *p = 0;
 
   if (post[0]) {
-    /* remove the trailing space... */
+    /* Remove the trailing space. */
     size_t index = (sizeof(post) - 1) - postsize;
 
     if (index > 0 && post[index - 1] == ' ')
       post[index - 1] = 0;
 
-    egg_strcatn(out, " ", sizeof(out));
-    egg_strcatn(out, post, sizeof(out));
+    mode_strcatn(out, " ", sizeof(out));
+    mode_strcatn(out, post, sizeof(out));
   }
+
   if (out[0]) {
     if (pri == IRC_QUICK)
       dprintf(DP_MODE, "MODE %s %s\n", chan->name, out);

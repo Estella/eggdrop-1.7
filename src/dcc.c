@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.c,v 1.8 2004/08/30 23:58:23 wcc Exp $
+ * $Id: dcc.c,v 1.9 2004/09/10 01:10:50 wcc Exp $
  */
 
 #include "main.h"
@@ -35,10 +35,12 @@
 #include "cmds.h"    /* check_dcc_attrs */
 #include "dccutil.h" /* get_data_ptr, dprintf, chatout, chanout_but, dcc_chatter,
                       * lostdcc, makepass, not_away, do_boot, detect_dcc_flood,
-                      * flush_lines, new_dcc, add_cr, changeover_dcc */
+                      * flush_lines, new_dcc, add_cr, changeover_dcc, show_banner */
 #include "dns.h"     /* RES_*, dcc_dnshostbyip */
+#include "help.h"    /* help_subst */
 #include "logfile.h" /* putlog, LOG_* */
 #include "match.h"   /* wild_match */
+#include "misc.h"    /* splitc, strncpyz, newsplit */
 #include "net.h"     /* SOCK_*, EGG_OPTION_*, neterror, getsock, killsock, answer,
                       * open_telnet, tputs, open_telnet_raw, iptostr, sockoptions */
 #include "userrec.h" /* adduser, u_pass_match, deluser, correct_handle,
@@ -49,7 +51,7 @@ extern struct userrec *userlist;
 extern struct chanset_t *chanset;
 extern Tcl_Interp *interp;
 extern time_t now;
-extern char botnetnick[], ver[], origbotname[], notify_new[];
+extern char botnetnick[], bannerfile[], ver[], origbotname[], notify_new[];
 extern int egg_numver, connect_timeout, conmask, backgrd, max_dcc, raw_log,
            make_userfile, default_flags, ignore_time, par_telnet_flood;
 

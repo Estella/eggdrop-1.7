@@ -1,7 +1,7 @@
 /*
  * userchan.c -- part of channels.mod
  *
- * $Id: userchan.c,v 1.1 2004/08/25 01:02:07 wcc Exp $
+ * $Id: userchan.c,v 1.2 2004/09/10 01:10:51 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -660,27 +660,31 @@ static void display_ban(int idx, int number, maskrec *ban,
   char dates[81], s[41];
 
   if (ban->added) {
-    daysago(now, ban->added, s);
+    days(now, ban->added, s, DAYS_AGO);
     sprintf(dates, "%s %s", MODES_CREATED, s);
     if (ban->added < ban->lastactive) {
       strcat(dates, ", ");
       strcat(dates, MODES_LASTUSED);
       strcat(dates, " ");
-      daysago(now, ban->lastactive, s);
+      days(now, ban->lastactive, s, DAYS_AGO);
       strcat(dates, s);
     }
-  } else
+  } else {
     dates[0] = 0;
+  }
+
   if (ban->flags & MASKREC_PERM)
     strcpy(s, "(perm)");
   else {
     char s1[41];
 
-    days(ban->expire, now, s1);
+    days(ban->expire, now, s1, DAYS_IN);
     sprintf(s, "(expires %s)", s1);
   }
+
   if (ban->flags & MASKREC_STICKY)
     strcat(s, " (sticky)");
+
   if (!chan || ischanban(chan, ban->mask)) {
     if (number >= 0)
       dprintf(idx, "  [%3d] %s %s\n", number, ban->mask, s);
@@ -691,8 +695,10 @@ static void display_ban(int idx, int number, maskrec *ban,
       dprintf(idx, "! [%3d] %s %s\n", number, ban->mask, s);
     else
       dprintf(idx, "BAN (%s): %s %s\n", MODES_INACTIVE, ban->mask, s);
-  } else
+  } else {
     return;
+  }
+
   dprintf(idx, "        %s: %s\n", ban->user, ban->desc);
   if (dates[0])
     dprintf(idx, "        %s\n", dates);
@@ -706,27 +712,31 @@ static void display_exempt(int idx, int number, maskrec *exempt,
   char dates[81], s[41];
 
   if (exempt->added) {
-    daysago(now, exempt->added, s);
+    days(now, exempt->added, s, DAYS_AGO);
     sprintf(dates, "%s %s", MODES_CREATED, s);
     if (exempt->added < exempt->lastactive) {
       strcat(dates, ", ");
       strcat(dates, MODES_LASTUSED);
       strcat(dates, " ");
-      daysago(now, exempt->lastactive, s);
+      days(now, exempt->lastactive, s, DAYS_AGO);
       strcat(dates, s);
     }
-  } else
+  } else {
     dates[0] = 0;
+  }
+
   if (exempt->flags & MASKREC_PERM)
     strcpy(s, "(perm)");
   else {
     char s1[41];
 
-    days(exempt->expire, now, s1);
+    days(exempt->expire, now, s1, DAYS_IN);
     sprintf(s, "(expires %s)", s1);
   }
+
   if (exempt->flags & MASKREC_STICKY)
     strcat(s, " (sticky)");
+
   if (!chan || ischanexempt(chan, exempt->mask)) {
     if (number >= 0)
       dprintf(idx, "  [%3d] %s %s\n", number, exempt->mask, s);
@@ -737,8 +747,10 @@ static void display_exempt(int idx, int number, maskrec *exempt,
       dprintf(idx, "! [%3d] %s %s\n", number, exempt->mask, s);
     else
       dprintf(idx, "EXEMPT (%s): %s %s\n", MODES_INACTIVE, exempt->mask, s);
-  } else
+  } else {
     return;
+  }
+
   dprintf(idx, "        %s: %s\n", exempt->user, exempt->desc);
   if (dates[0])
     dprintf(idx, "        %s\n", dates);
@@ -752,27 +764,31 @@ static void display_invite(int idx, int number, maskrec *invite,
   char dates[81], s[41];
 
   if (invite->added) {
-    daysago(now, invite->added, s);
+    days(now, invite->added, s, DAYS_AGO);
     sprintf(dates, "%s %s", MODES_CREATED, s);
     if (invite->added < invite->lastactive) {
       strcat(dates, ", ");
       strcat(dates, MODES_LASTUSED);
       strcat(dates, " ");
-      daysago(now, invite->lastactive, s);
+      days(now, invite->lastactive, s, DAYS_AGO);
       strcat(dates, s);
     }
-  } else
+  } else {
     dates[0] = 0;
+  }
+
   if (invite->flags & MASKREC_PERM)
     strcpy(s, "(perm)");
   else {
     char s1[41];
 
-    days(invite->expire, now, s1);
+    days(invite->expire, now, s1, DAYS_IN);
     sprintf(s, "(expires %s)", s1);
   }
+
   if (invite->flags & MASKREC_STICKY)
     strcat(s, " (sticky)");
+
   if (!chan || ischaninvite(chan, invite->mask)) {
     if (number >= 0)
       dprintf(idx, "  [%3d] %s %s\n", number, invite->mask, s);
@@ -783,8 +799,10 @@ static void display_invite(int idx, int number, maskrec *invite,
       dprintf(idx, "! [%3d] %s %s\n", number, invite->mask, s);
     else
       dprintf(idx, "INVITE (%s): %s %s\n", MODES_INACTIVE, invite->mask, s);
-  } else
+  } else {
     return;
+  }
+
   dprintf(idx, "        %s: %s\n", invite->user, invite->desc);
   if (dates[0])
     dprintf(idx, "        %s\n", dates);

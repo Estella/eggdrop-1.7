@@ -2,7 +2,7 @@
  * flags.c -- handles:
  *   all the flag matching/conversion functions in one neat package :)
  *
- * $Id: flags.c,v 1.4 2004/08/31 01:48:21 wcc Exp $
+ * $Id: flags.c,v 1.5 2004/09/10 01:10:50 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -27,6 +27,7 @@
 
 #include "dcc.h"     /* struct dcc_t */
 #include "dccutil.h" /* shareout */
+#include "misc.h"    /* strncpyz */
 #include "rfc1459.h" /* rfc_casecmp */
 #include "userent.h" /* list_type_kill */
 

@@ -2,7 +2,7 @@
  * chancmds.c -- part of irc.mod
  *   handles commands directly relating to channel interaction
  *
- * $Id: cmdsirc.c,v 1.2 2004/08/28 03:24:46 takeda Exp $
+ * $Id: cmdsirc.c,v 1.3 2004/09/10 01:10:51 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -1039,7 +1039,7 @@ static void cmd_adduser(struct userrec *u, int idx, char *par)
     return;
   }
   if (!statichost)
-    maskhost(s, s1);
+    maskhost(s, s1, MASKHOST_HOST);
   else {
     strncpyz(s1, s, sizeof s1);
     fixfrom(s1);

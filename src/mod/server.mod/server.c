@@ -2,7 +2,7 @@
  * server.c -- part of server.mod
  *   basic irc server support
  *
- * $Id: server.c,v 1.3 2004/08/25 05:26:38 wcc Exp $
+ * $Id: server.c,v 1.4 2004/09/10 01:10:51 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -1668,7 +1668,7 @@ static void server_report(int idx, int details)
     if (nick_juped)
       dprintf(idx, "    NICK IS JUPED: %s%s\n", origbotname,
               keepnick ? " (trying)" : "");
-    daysdur(now, server_online, s1);
+    days(now, server_online, s1, DAYS_FOR);
     egg_snprintf(s, sizeof s, "(connected %s)", s1);
     if (server_lag && !waiting_for_awake) {
       if (server_lag == -1)

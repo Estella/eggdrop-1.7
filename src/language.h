@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: language.h,v 1.3 2004/08/27 10:01:17 wcc Exp $
+ * $Id: language.h,v 1.4 2004/09/10 01:10:50 wcc Exp $
  */
 
 #ifndef _EGG_LANGUAGE_H
@@ -34,6 +34,7 @@ int cmd_loadlanguage(struct userrec *, int, char *);
 void add_lang_section(char *);
 int del_lang_section(char *);
 int exist_lang_section(char *);
+void sub_lang(int, char *);
 #endif
 
 #endif /* !_EGG_LANGUAGE_H */

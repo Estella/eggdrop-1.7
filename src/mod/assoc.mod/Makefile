@@ -1,5 +1,5 @@
 # Makefile for src/mod/assoc.mod/.
-# $Id: Makefile,v 1.5 2004/08/30 23:58:23 wcc Exp $
+# $Id: Makefile,v 1.6 2004/09/10 01:10:51 wcc Exp $
 
 MOD_NAME = assoc
 srcdir = .
@@ -43,4 +43,5 @@ distclean: clean
   ../../../src/compat/memset.h ../../../src/compat/memcpy.h \
   ../../../src/compat/strcasecmp.h ../../../src/compat/strftime.h \
   ../../../src/mod/modvals.h ../../../src/botmsg.h ../../../src/dcc.h \
-  ../../../src/dccutil.h ../../../src/dns.h ../../../src/net.h assoc.h
+  ../../../src/dccutil.h ../../../src/dns.h ../../../src/misc.h \
+  ../../../src/net.h assoc.h

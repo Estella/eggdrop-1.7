@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.c,v 1.12 2004/08/31 22:56:11 wcc Exp $
+ * $Id: cmds.c,v 1.13 2004/09/10 01:10:50 wcc Exp $
  */
 
 #include "main.h"
@@ -31,9 +31,10 @@
 #include "dcc.h"     /* DCC_*, DCT_*, STRIP_*, STAT_*, BSTAT_*, struct chat_info,
                       * struct dcc_t */
 #include "dccutil.h" /* get_data_ptr, dprintf, chanout_but, dcc_chatter, lostdcc,
-                      * tell_dcc, not_away, set_away, do_boot, flush_lines */
+                      * tell_dcc, not_away, set_away, do_boot, flush_lines, show_motd */
 #include "help.h"    /* debug_help */
 #include "logfile.h" /* LOG_*, putlog, logmodes, masktype, maskname */
+#include "misc.h"    /* my_strcpy, splitcn, strncpyz, newsplit, dumplots, kill_bot */
 #include "net.h"     /* killsock, tell_netdebug */
 #include "userrec.h" /* adduser, addhost_by_handle, u_pass_match, delhost_by_handle,
                       * deluser, change_handle, correct_handle, write_userfile */

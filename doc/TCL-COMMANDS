@@ -1,4 +1,4 @@
-$Id: TCL-COMMANDS,v 1.1 2004/09/02 20:44:09 wcc Exp $
+$Id: TCL-COMMANDS,v 1.2 2004/09/10 01:10:50 wcc Exp $
 
 Eggdrop Tcl Commands
 Last revised: August 24, 2004
@@ -1312,10 +1312,26 @@ bars (|) on the left.
       list of logfiles such as: {mco * eggdrop.log} {jp #lame lame.log}
     Module: core
 
-  maskhost <nick!user@host>
-    Returns: masked hostmask for the string given ("n!u@1.2.3.4" -> "*!u@1.2.3.*",
-      "n!u@lame.com" -> "*!u@lame.com", "n!u@a.b.edu" -> "*!u@*.b.edu")
-    Module: core
+| maskhost <nick!user@host> [options]
+|   Returns: masked hostmask for the string given.
+|   Examples:
+|     abc!user@a.b.host becomes *!user@*.b.host
+|     abc!user@1.2.3.4  becomes *!user@1.2.3.*
+|     abc!user@0:0:0:0:0:ffff:1.2.3.4 becomes *!user@0:0:0:0:0:ffff:1.2.3.*
+|     abc!user@3ffe:604:2:b02e:6174:7265:6964:6573 becomes *!user@3ffe:604:2:b02e:6174:7265:6964:*
+|
+|     When using the -ban option:
+|       abc!~user@1.2.3.4 becomes *!*user@1.2.3.*
+|     When using the -host option (with strict-ident):
+|       abc!~user@1.2.3.4 -> *!~user@1.2.3.*
+|     When using the -host option (without strict-ident):
+|       abc!~user@1.2.3.4 -> *!?user@1.2.3.*
+|   Options:
+|     -ban:  Any ident prefix will be replaced with a '*'. This is the default.
+|     -host: Unless strict-ident is disabled, ident prefixes will not be
+|            replaced. If strict-ident IS disabled, ident prefixes will be
+|            replaced with '?'. -host is the default option.
+|   Module: core
 
   timer <minutes> <tcl-command>
     Description: executes the given Tcl command after a certain number of

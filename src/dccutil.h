@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dccutil.h,v 1.4 2004/08/27 10:01:17 wcc Exp $
+ * $Id: dccutil.h,v 1.5 2004/09/10 01:10:50 wcc Exp $
  */
 
 #ifndef _EGG_DCCUTIL_H
@@ -48,27 +48,30 @@
 #endif
 
 #ifndef MAKING_MODS
+char *add_cr(char *);
+void remove_crlf(char **);
+void show_banner(int);
+void show_motd(int);
 void dprintf EGG_VARARGS(int, arg1);
 void chatout EGG_VARARGS(char *, arg1);
 extern void (*shareout) ();
 extern void (*sharein) (int, char *);
 void chanout_but EGG_VARARGS(int, arg1);
 void dcc_chatter(int);
-void lostdcc(int);
 void killtransfer(int);
+void lostdcc(int);
 void removedcc(int);
-void makepass(char *);
+void dcc_remove_lost(void);
 void tell_dcc(int);
 void not_away(int);
 void set_away(int, char *);
 void *_get_data_ptr(int, char *, int);
-void dcc_remove_lost(void);
-void do_boot(int, char *, char *);
-int detect_dcc_flood(time_t *, struct chat_info *, int);
+void makepass(char *);
 void flush_lines(int, struct chat_info *);
 int new_dcc(struct dcc_table *, int);
-char *add_cr(char *);
 void changeover_dcc(int, struct dcc_table *, int);
+int detect_dcc_flood(time_t *, struct chat_info *, int);
+void do_boot(int, char *, char *);
 #endif
 
 #endif /* !_EGG_DCCUTIL_H */

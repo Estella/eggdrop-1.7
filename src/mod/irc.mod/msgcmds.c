@@ -2,7 +2,7 @@
  * msgcmds.c -- part of irc.mod
  *   all commands entered via /MSG
  *
- * $Id: msgcmds.c,v 1.1 2004/08/25 01:02:14 wcc Exp $
+ * $Id: msgcmds.c,v 1.2 2004/09/10 01:10:51 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -56,7 +56,7 @@ static int msg_hello(char *nick, char *h, struct userrec *u, char *p)
     return 1;
   }
   if (atr & USER_COMMON) {
-    maskhost(s, host);
+    maskhost(s, host, MASKHOST_HOST);
     strcpy(s, host);
     egg_snprintf(host, sizeof host, "%s!%s", nick, s + 2);
     userlist = adduser(userlist, handle, host, "-", USER_DEFAULT);
@@ -64,7 +64,7 @@ static int msg_hello(char *nick, char *h, struct userrec *u, char *p)
            IRC_INTRODUCED, nick, host, IRC_COMMONSITE);
     common = 1;
   } else {
-    maskhost(s, host);
+    maskhost(s, host, MASKHOST_HOST);
     if (make_userfile) {
       userlist = adduser(userlist, handle, host, "-",
                  sanity_check(default_flags | USER_MASTER | USER_OWNER));
@@ -206,7 +206,7 @@ static int msg_ident(char *nick, char *host, struct userrec *u, char *par)
     } else {
       putlog(LOG_CMDS, "*", "(%s!%s) !*! IDENT %s", nick, host, who);
       egg_snprintf(s, sizeof s, "%s!%s", nick, host);
-      maskhost(s, s1);
+      maskhost(s, s1, MASKHOST_HOST);
       dprintf(DP_HELP, "NOTICE %s :%s: %s\n", nick, IRC_ADDHOSTMASK, s1);
       addhost_by_handle(who, s1);
       check_this_user(who, 0, NULL);

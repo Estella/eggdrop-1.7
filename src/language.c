@@ -2,7 +2,7 @@
  * language.c -- handles:
  *   language support code
  *
- * $Id: language.c,v 1.4 2004/08/30 23:58:23 wcc Exp $
+ * $Id: language.c,v 1.5 2004/09/10 01:10:50 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -68,9 +68,13 @@
 #include "language.h"
 #include "dcc.h"      /* struct dcc_t */
 #include "dccutil.h"  /* dprintf */
+#include "help.h"     /* help_subst */
 #include "logfile.h"  /* putlog, LOG_* */
+#include "misc.h"     /* strncpyz */
+
 
 extern struct dcc_t *dcc;
+extern char botnetnick[];
 
 
 typedef struct lang_st {
@@ -568,6 +572,25 @@ char *get_language(int idx)
       return l->text;
   egg_snprintf(text, sizeof text, "MSG%03X", idx);
   return text;
+}
+
+/* Substitute vars in a lang text to an IDX. */
+void sub_lang(int idx, char *text)
+{
+  char s[1024];
+  struct flag_record fr = { FR_GLOBAL | FR_CHAN, 0, 0, 0, 0, 0 };
+
+  get_user_flagrec(dcc[idx].user, &fr, dcc[idx].u.chat->con_chan);
+  help_subst(NULL, NULL, 0,
+             (dcc[idx].status & STAT_TELNET) ? 0 : HELP_IRC, NULL);
+  strncpyz(s, text, sizeof s);
+  if (s[strlen(s) - 1] == '\n')
+    s[strlen(s) - 1] = 0;
+  if (!s[0])
+    strcpy(s, " ");
+  help_subst(s, dcc[idx].nick, &fr, 1, botnetnick);
+  if (s[0])
+    dprintf(idx, "%s\n", s);
 }
 
 int expmem_language()

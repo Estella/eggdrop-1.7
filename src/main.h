@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.h,v 1.9 2004/08/30 23:58:23 wcc Exp $
+ * $Id: main.h,v 1.10 2004/09/10 01:10:50 wcc Exp $
  */
 
 #ifndef _EGG_MAIN_H
@@ -208,7 +208,6 @@
 #  define TCL_PATCH_LEVEL Tcl_GetVar(interp, "tcl_patchLevel", TCL_GLOBAL_ONLY)
 #endif
 
-/* FIXME: next 3 macros need to be in misc.h */
 #ifndef HAVE_SRANDOM
 #  define srandom(x) srand(x)
 #endif
@@ -216,21 +215,6 @@
 #ifndef HAVE_RANDOM
 #  define random() (rand()/16)
 #endif
-
-#define fixcolon(x) do {                                                \
-        if ((x)[0] == ':')                                              \
-          (x)++;                                                        \
-        else                                                            \
-          (x) = newsplit(&(x));                                         \
-} while (0)
-
-/* This macro copies (_len - 1) bytes from _source to _target. The
- * target string is NULL-terminated.
- */
-#define strncpyz(_target, _source, _len) do {                           \
-        strncpy((_target), (_source), (_len) - 1);                      \
-        (_target)[(_len) - 1] = 0;                                      \
-} while (0)
 
 #ifndef HAVE_SIGACTION
 #  define sigaction sigvec
@@ -244,12 +228,6 @@
 #ifndef HAVE_SIGEMPTYSET
 #  define sigemptyset(x) ((*(int *)(x))=0)
 #endif
-
-/* Use high-order bits for getting the random integer. With random()
- * modulo would probably be sufficient but on systems lacking random(),
- * the function will be just renamed rand().
- */
-#define randint(n) (unsigned long) (random() / (RAND_MAX + 1.0) * ((n) < 0 ? (-(n)) : (n)))
 
 #ifndef MAKING_MODS
 void fatal(const char *, int);

@@ -1,6 +1,6 @@
 # Makefile for src/mod/uptime.mod/.
 #
-# $Id: Makefile,v 1.5 2004/08/30 23:58:25 wcc Exp $
+# $Id: Makefile,v 1.6 2004/09/10 01:10:52 wcc Exp $
 
 MOD_NAME = uptime
 srcdir = .
@@ -44,5 +44,5 @@ distclean: clean
   ../../../src/compat/memset.h ../../../src/compat/memcpy.h \
   ../../../src/compat/strcasecmp.h ../../../src/compat/strftime.h \
   ../modvals.h ../../../src/botmsg.h ../../../src/dcc.h \
-  ../../../src/dccutil.h ../../../src/dns.h ../../../src/net.h \
-  ../server.mod/server.h
+  ../../../src/dccutil.h ../../../src/dns.h ../../../src/misc.h \
+  ../../../src/net.h ../server.mod/server.h

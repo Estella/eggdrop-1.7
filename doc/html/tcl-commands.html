@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<!-- $Id: tcl-commands.html,v 1.3 2004/08/31 01:48:21 wcc Exp $ -->
+<!-- $Id: tcl-commands.html,v 1.4 2004/09/10 01:10:50 wcc Exp $ -->
 
 <html>
   <head>
@@ -2904,7 +2904,7 @@
           Entering a blank mode and channel (&quot;&quot;) makes the bot
           stop logging there.</p>
 
-                    <p>Logfile flags:</p>
+          <p>Logfile flags:</p>
 
           <blockquote>
             <table>
@@ -3077,13 +3077,52 @@
           <p><strong>Module:</strong> core</p>
         </dd>
 
-        <dt><strong>maskhost &lt;nick!user@host&gt;</strong></dt>
+        <dt><strong>maskhost &lt;nick!user@host&gt; [options]</strong></dt>
 
         <dd>
           <p><strong>Returns:</strong> masked hostmask for the string
-          given (&quot;n!u@1.2.3.4&quot; -&gt; &quot;*!u@1.2.3.*&quot;,
-          &quot;n!u@lame.com&quot; -&gt; &quot;*!u@lame.com&quot;,
-          &quot;n!u@a.b.edu&quot; -&gt; &quot;*!u@*.b.edu&quot;)</p>
+          given.</p>
+
+          <p><strong>Examples:</strong></p>
+
+          <blockquote>
+            <ul>
+              <li><strong>abc!user@a.b.host</strong> becomes
+              <strong>*!user@*.b.host</strong></li>
+
+              <li><strong>abc!user@1.2.3.4</strong> becomes
+              <strong>*!user@1.2.3.*</strong></li>
+
+              <li><strong>abc!user@0:0:0:0:0:ffff:1.2.3.4</strong> becomes
+              <strong>*!user@0:0:0:0:0:ffff:1.2.3.*</strong></li>
+
+              <li><strong>abc!user@3ffe:604:2:b02e:6174:7265:6964:6573</strong>
+              becomes <strong>*!user@3ffe:604:2:b02e:6174:7265:6964:*</strong>
+              </li>
+
+              <li><strong>When using the -ban option: abc!~user@1.2.3.4</strong>
+              becomes <strong>*!*user@1.2.3.*</strong></li>
+
+              <li><strong>When using the -host option (with strict-ident):
+              abc!~user@1.2.3.4</strong> becomes <strong>*!~user@1.2.3.*
+              </strong></li>
+
+              <li><strong>When using the -host option (without strict-ident):
+              abc!~user@1.2.3.4</strong> becomes <strong>*!?user@1.2.3.*
+              </strong></li>
+            </ul>
+          </blockquote>
+
+          <p><strong>Options:</strong></p>
+
+          <blockquote>
+            <p><strong>-ban</strong>: Any ident prefix will be replaced with a
+            &#39;*&#39;. This is the default.<br>
+            <strong>-host</strong>: Unless strict-ident is disabled, ident
+            prefixes will not be replaced. If strict-ident IS disabled, ident
+            prefixes will be replaced with #39;?&#39;. -host is the default
+            option.</p>
+          </blockquote>
 
           <p><strong>Module:</strong> core</p>
         </dd>

@@ -1,6 +1,6 @@
 # Makefile for src/mod/irc.mod/.
 #
-# $Id: Makefile,v 1.5 2004/08/30 23:58:24 wcc Exp $
+# $Id: Makefile,v 1.6 2004/09/10 01:10:51 wcc Exp $
 
 MOD_NAME = irc
 srcdir = .
@@ -44,7 +44,7 @@ distclean: clean
   ../../../src/compat/memset.h ../../../src/compat/memcpy.h \
   ../../../src/compat/strcasecmp.h ../../../src/compat/strftime.h \
   ../../../src/mod/modvals.h ../../../src/botmsg.h ../../../src/dcc.h \
-  ../../../src/dccutil.h ../../../src/dns.h ../../../src/net.h irc.h \
-  ../../../src/mod/server.mod/server.h \
+  ../../../src/dccutil.h ../../../src/dns.h ../../../src/misc.h \
+  ../../../src/net.h irc.h ../../../src/mod/server.mod/server.h \
   ../../../src/mod/channels.mod/channels.h chan.c mode.c cmdsirc.c \
   msgcmds.c tclirc.c

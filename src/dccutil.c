@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dccutil.c,v 1.6 2004/08/30 23:58:23 wcc Exp $
+ * $Id: dccutil.c,v 1.7 2004/09/10 01:10:50 wcc Exp $
  */
 
 #include <sys/stat.h>
@@ -29,15 +29,19 @@
 #include "dccutil.h"
 #include "botmsg.h"  /* botnet_send_* */
 #include "dcc.h"     /* DCC_*, DCT_*, STAT_* */
+#include "help.h"    /* help_subst */
 #include "logfile.h" /* putlog, LOG_* */
+#include "misc.h"    /* randint, make_rand_str */
 #include "net.h"     /* SOCK_* , killsock, tputs, sock_list */
 
 
 extern struct dcc_t *dcc;
 extern int dcc_total, max_dcc, dcc_flood_thr, backgrd, copy_to_tmp, MAXSOCKS;
-extern char botnetnick[], version[];
+extern char botnetnick[], version[], motdfile[], bannerfile[];
 extern time_t now;
 extern sock_list *socklist;
+
+extern void (*qserver) (int, char *, int);
 
 
 char motdfile[121] = "text/motd"; /* File where the MOTD is stored.         */
@@ -81,7 +85,7 @@ int expmem_dccutil()
 }
 
 
-/* Replace \n with \r\n */
+/* Replace \n with \r\n. */
 char *add_cr(char *buf)
 {
   static char WBUF[1024];
@@ -96,7 +100,82 @@ char *add_cr(char *buf)
   return WBUF;
 }
 
-extern void (*qserver) (int, char *, int);
+/* Remove \r\n from line (modifies line). */
+void remove_crlf(char **line)
+{
+  char *p;
+
+  p = strchr(*line, '\n');
+  if (p != NULL)
+    *p = 0;
+  p = strchr(*line, '\r');
+  if (p != NULL)
+    *p = 0;
+}
+
+/* Show banner to telnet user. */
+void show_banner(int idx)
+{
+  FILE *vv;
+  char s[1024];
+  struct flag_record fr = { FR_GLOBAL | FR_CHAN, 0, 0, 0, 0, 0 };
+
+  if (!is_file(bannerfile))
+    return;
+
+  vv = fopen(bannerfile, "r");
+  if (!vv)
+    return;
+
+  get_user_flagrec(dcc[idx].user, &fr, dcc[idx].u.chat->con_chan);
+  /* Reset the help_subst variables to their defaults. */
+  help_subst(NULL, NULL, 0, 0, NULL);
+  while (!feof(vv)) {
+    fgets(s, 120, vv);
+    if (!feof(vv)) {
+      if (!s[0])
+        strcpy(s, " \n");
+      help_subst(s, dcc[idx].nick, &fr, 0, botnetnick);
+      dprintf(idx, "%s", s);
+    }
+  }
+  fclose(vv);
+}
+
+/* Show motd to partyline user. */
+void show_motd(int idx)
+{
+  FILE *vv;
+  char s[1024];
+  struct flag_record fr = { FR_GLOBAL | FR_CHAN, 0, 0, 0, 0, 0 };
+
+  if (!is_file(motdfile))
+    return;
+
+  vv = fopen(motdfile, "r");
+  if (!vv)
+    return;
+
+  get_user_flagrec(dcc[idx].user, &fr, dcc[idx].u.chat->con_chan);
+  dprintf(idx, "\n");
+  /* reset the help_subst variables to their defaults */
+  help_subst(NULL, NULL, 0,
+             (dcc[idx].status & STAT_TELNET) ? 0 : HELP_IRC, NULL);
+  while (!feof(vv)) {
+    fgets(s, 120, vv);
+    if (!feof(vv)) {
+      if (s[strlen(s) - 1] == '\n')
+        s[strlen(s) - 1] = 0;
+      if (!s[0])
+        strcpy(s, " ");
+      help_subst(s, dcc[idx].nick, &fr, 1, botnetnick);
+      if (s[0])
+        dprintf(idx, "%s\n", s);
+    }
+  }
+  fclose(vv);
+  dprintf(idx, "\n");
+}
 
 void dprintf EGG_VARARGS_DEF(int, arg1)
 {

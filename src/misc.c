@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: misc.c,v 1.11 2004/08/31 22:56:12 wcc Exp $
+ * $Id: misc.c,v 1.12 2004/09/10 01:10:50 wcc Exp $
  */
 
 #include "main.h"
@@ -30,7 +30,7 @@
 #include "modules.h"
 #include "stat.h"
 
-
+#include "misc.h"
 #include "botmsg.h"  /* simple_sprintf, botnet_send_* */
 #include "dcc.h"     /* DCC_*, STAT_*, struct dcc_t */
 #include "dccutil.h" /* dprintf, chatout */
@@ -42,59 +42,10 @@
 
 extern struct dcc_t *dcc;
 extern struct chanset_t *chanset;
-extern char motdfile[], botnetnick[], bannerfile[];
+extern char botnetnick[];
 extern int con_chan, strict_ident;
 extern time_t now;
 
-
-/*  This implementation wont overrun dst - 'max' is the max bytes that dst
- *  can be, including the null terminator. So if 'dst' is a 128 byte buffer,
- *  pass 128 as 'max'. The function will _always_ null-terminate 'dst'.
- *
- *  Returns: The number of characters appended to 'dst'.
- *
- *  Usage example:
- *
- *    char buf[128];
- *    size_t bufsize = sizeof(buf);
- *
- *    buf[0] = 0, bufsize--;
- *
- *    while (blah && bufsize) {
- *      bufsize -= egg_strcatn(buf, <some-long-string>, sizeof(buf));
- *    }
- *
- *  <Cybah>
- */
-int egg_strcatn(char *dst, const char *src, size_t max)
-{
-  size_t tmpmax = 0;
-
-  /* find end of 'dst' */
-  while (*dst && max > 0) {
-    dst++;
-    max--;
-  }
-
-  /*    Store 'max', so we can use it to workout how many characters were
-   *  written later on.
-   */
-  tmpmax = max;
-
-  /* copy upto, but not including the null terminator */
-  while (*src && max > 1) {
-    *dst++ = *src++;
-    max--;
-  }
-
-  /* null-terminate the buffer */
-  *dst = 0;
-
-  /*    Don't include the terminating null in our count, as it will cumulate
-   *  in loops - causing a headache for the caller.
-   */
-  return tmpmax - max;
-}
 
 int my_strcpy(register char *a, register char *b)
 {
@@ -106,8 +57,7 @@ int my_strcpy(register char *a, register char *b)
   return b - c;
 }
 
-/* Split first word off of rest and put it in first
- */
+/* Split first word off of 'rest' and put it in 'first'. */
 void splitc(char *first, char *rest, char divider)
 {
   char *p = strchr(rest, divider);
@@ -117,27 +67,29 @@ void splitc(char *first, char *rest, char divider)
       first[0] = 0;
     return;
   }
+
   *p = 0;
+
   if (first != NULL)
     strcpy(first, rest);
+
   if (first != rest)
-    /*    In most circumstances, strcpy with src and dst being the same buffer
-     *  can produce undefined results. We're safe here, as the src is
-     *  guaranteed to be at least 2 bytes higher in memory than dest. <Cybah>
+    /* In most circumstances, strcpy with src and dst being the same buffer can
+     * produce undefined results. We're safe here, as the src is guaranteed to
+     * be at least 2 bytes higher in memory than dest. <Cybah>
+     *
+     * FIXME: It's still hack-ish and probably needs to be changed. It makes
+     * valgrind bitch alot =P -Wcc
      */
     strcpy(rest, p + 1);
 }
 
-/*    As above, but lets you specify the 'max' number of bytes (EXCLUDING the
- * terminating null).
+/* Identical to splitc(), but lets you specify the 'max' number of bytes
+ * (EXCLUDING the terminating NUL).
  *
  * Example of use:
- *
- * char buf[HANDLEN + 1];
- *
- * splitcn(buf, input, "@", HANDLEN);
- *
- * <Cybah>
+ *   char buf[HANDLEN + 1];
+ *   splitcn(buf, input, "@", HANDLEN);
  */
 void splitcn(char *first, char *rest, char divider, size_t max)
 {
@@ -148,13 +100,18 @@ void splitcn(char *first, char *rest, char divider, size_t max)
       first[0] = 0;
     return;
   }
+
   *p = 0;
   if (first != NULL)
     strncpyz(first, rest, max);
+
   if (first != rest)
-    /*    In most circumstances, strcpy with src and dst being the same buffer
-     *  can produce undefined results. We're safe here, as the src is
-     *  guaranteed to be at least 2 bytes higher in memory than dest. <Cybah>
+    /* In most circumstances, strcpy with src and dst being the same buffer can
+     * produce undefined results. We're safe here, as the src is guaranteed to
+     * be at least 2 bytes higher in memory than dest. <Cybah>
+     *
+     * FIXME: It's still hack-ish and probably needs to be changed. It makes
+     * valgrind bitch alot =P -Wcc
      */
     strcpy(rest, p + 1);
 }
@@ -168,19 +125,8 @@ char *splitnick(char **blah)
     *blah = p + 1;
     return q;
   }
+
   return "";
-}
-
-void remove_crlf(char **line)
-{
-  char *p;
-
-  p = strchr(*line, '\n');
-  if (p != NULL)
-    *p = 0;
-  p = strchr(*line, '\r');
-  if (p != NULL)
-    *p = 0;
 }
 
 char *newsplit(char **rest)
@@ -189,6 +135,7 @@ char *newsplit(char **rest)
 
   if (!rest)
     return *rest = "";
+
   o = *rest;
   while (*o == ' ')
     o++;
@@ -198,116 +145,131 @@ char *newsplit(char **rest)
   if (*o)
     *o++ = 0;
   *rest = o;
+
   return r;
 }
 
-/* Convert "abc!user@a.b.host" into "*!user@*.b.host"
- * or "abc!user@1.2.3.4" into "*!user@1.2.3.*"
- * or "abc!user@0:0:0:0:0:ffff:1.2.3.4" into "*!user@0:0:0:0:0:ffff:1.2.3.*"
- * or "abc!user@3ffe:604:2:b02e:6174:7265:6964:6573" into
- *    "*!user@3ffe:604:2:b02e:6174:7265:6964:*"
+/* Creates a mask from a nick!user@host.
+ * Examples:
+ *   abc!user@a.b.host -> *!user@*.b.host
+ *   abc!user@1.2.3.4  -> *!user@1.2.3.*
+ *   abc!user@0:0:0:0:0:ffff:1.2.3.4 -> *!user@0:0:0:0:0:ffff:1.2.3.*
+ *   abc!user@3ffe:604:2:b02e:6174:7265:6964:6573 -> *!user@3ffe:604:2:b02e:6174:7265:6964:*
+ *   MASKHOST_BAN: abc!~user@1.2.3.4 -> *!*user@1.2.3.*
+ *   MASKHOST_HOST (with strict-ident): abc!~user@1.2.3.4 -> *!~user@1.2.3.*
+ *   MASKHOST_HOST (without strict-ident): abc!~user@1.2.3.4 -> *!?user@1.2.3.*
  */
-void _maskhost(const char *s, char *nw, int host)
+void maskhost(const char *s, char *new, int host)
 {
   register const char *p, *q, *e, *f;
-  int i;
-  char *newmask = nw;
+  int i, j = 0;
 
-  *nw++ = '*';
-  *nw++ = '!';
-  p = (q = strchr(s, '!')) ? q + 1 : s;
-  /* Strip of any nick, if a username is found, use last 8 chars */
-  if ((q = strchr(p, '@'))) {
-    int fl = 0;
+  *new++ = '*';
+  *new++ = '!';
 
+  q = strchr(s, '!');
+  if (q)
+    p = q + 1;
+  else
+    p = s;
+
+  /* Strip of any nick. If a username is found, use last 8 chars. */
+  q = strchr(p, '@');
+  if (q) {
     if ((q - p) > 9) {
-      nw[0] = '*';
+      new[0] = '*';
       p = q - 7;
       i = 1;
-    } else
+    }
+    else
       i = 0;
     while (*p != '@') {
-      if (!fl && strchr("~+-^=", *p) && !host) {
-        /* depends on ban, we change prefix to '?' or '*'
-         * but since if it's ban isn't better just to put '*'? (takeda)
-         */
-        if (strict_ident)
-          nw[i] = '?';
+      if (!j && strchr("~+-^=", *p)) {
+        if (!host)
+          new[i] = '*';
+        else if (!strict_ident)
+          new[i] = '?';
         else
-          nw[i] = '*';
-      } else
-        nw[i] = *p;
-      fl++;
+          new[i] = *p;
+      }
+      else
+        new[i] = *p;
       p++;
       i++;
+      j++;
     }
-    nw[i++] = '@';
+    new[i++] = '@';
     q++;
-  } else {
-    nw[0] = '*';
-    nw[1] = '@';
+  }
+  else {
+    new[0] = '*';
+    new[1] = '@';
     i = 2;
     q = s;
   }
-  nw += i;
+  new += i;
   e = NULL;
-  /* Now q points to the hostname, i point to where to put the mask */
-  if ((!(p = strchr(q, '.')) || !(e = strchr(p + 1, '.'))) && !strchr(q, ':'))
-    /* TLD or 2 part host */
-    strcpy(nw, q);
-  else {
-    if (e == NULL) {            /* IPv6 address?                */
-      const char *mask_str;
-
-      f = strrchr(q, ':');
-      if (strchr(f, '.')) {     /* IPv4 wrapped in an IPv6?     */
-        f = strrchr(f, '.');
-        mask_str = ".*";
-      } else                      /* ... no, true IPv6.               */
-        mask_str = ":*";
-      strncpy(nw, q, f - q);
-      /* No need to nw[f-q] = 0 here, as the strcpy below will
-       * terminate the string for us.
-       */
-      nw += (f - q);
-      strcpy(nw, mask_str);
-    } else {
-      for (f = e; *f; f++);
-      f--;
-      if (*f >= '0' && *f <= '9') {     /* Numeric IP address */
-        while (*f != '.')
-          f--;
-        strncpy(nw, q, f - q);
-        /* No need to nw[f-q] = 0 here, as the strcpy below will
-         * terminate the string for us.
-         */
-        nw += (f - q);
-        strcpy(nw, ".*");
-      } else {                    /* Normal host >= 3 parts */
-        /*    a.b.c  -> *.b.c
-         *    a.b.c.d ->  *.b.c.d if tld is a country (2 chars)
-         *             OR   *.c.d if tld is com/edu/etc (3 chars)
-         *    a.b.c.d.e -> *.c.d.e   etc
-         */
-        const char *x = strchr(e + 1, '.');
-
-        if (!x)
-          x = p;
-        else if (strchr(x + 1, '.'))
-          x = e;
-        else if (strlen(x) == 3)
-          x = p;
-        else
-          x = e;
-        sprintf(nw, "*%s", x);
-      }
-    }
+  /* Now q points to the hostname, i points to where to put the mask. */
+  if (!strchr(q, ':') && (!(p = strchr(q, '.')) || !(e = strchr(p + 1, '.')))) { /* TLD or 2 part host. */
+    strcpy(new, q);
+    return;
   }
-  if (host && !strict_ident)
-    fixfrom(newmask);
+
+  if (e == NULL) {        /* IPv6 address? */
+    const char *mask_str;
+
+    f = strrchr(q, ':');
+    if (strchr(f, '.')) { /* IPv4 wrapped in an IPv6?     */
+      f = strrchr(f, '.');
+      mask_str = ".*";
+    }
+    else                  /* True IPv6. */
+      mask_str = ":*";
+    strncpy(new, q, f - q);
+    /* No need to new[f-q] = 0 here, as the strcpy below will terminate the
+     * string for us. */
+    new += (f - q);
+    strcpy(new, mask_str);
+    return;
+  }
+
+  for (f = e; *f; f++);
+  f--;
+  if (*f >= '0' && *f <= '9') { /* Numeric IP address */
+    while (*f != '.')
+      f--;
+    strncpy(new, q, f - q);
+    /* No need to new[f-q] = 0 here, as the strcpy below will terminate the
+     * string for us. */
+    new += (f - q);
+    strcpy(new, ".*");
+  }
+  else {
+   /* a.b.c     -> *.b.c
+    * a.b.c.d   -> *.b.c.d if tld is a country (2 chars)
+    *           OR *.c.d if tld is com/edu/etc (3 chars)
+    * a.b.c.d.e -> *.c.d.e,
+    * etc
+    */
+    const char *x = strchr(e + 1, '.');
+
+    if (!x)
+      x = p;
+    else if (strchr(x + 1, '.'))
+      x = e;
+    else if (strlen(x) == 3)
+      x = p;
+    else
+      x = e;
+    sprintf(new, "*%s", x);
+  }
 }
 
-/* Dump a potentially super-long string of text.
+/* Dump a potentially super-long string of text ('data') to 'idx', prefixed
+ * by 'prefix'.
+ *
+ * Example of use:
+ *   dumplots(idx, "Tcl error: ", result);
  */
 void dumplots(int idx, const char *prefix, char *data)
 {
@@ -318,18 +280,19 @@ void dumplots(int idx, const char *prefix, char *data)
     dprintf(idx, "%s\n", prefix);
     return;
   }
+
   while (strlen(p) > max_data_len) {
     q = p + max_data_len;
-    /* Search for embedded linefeed first */
+    /* Search for embedded linefeed first. */
     n = strchr(p, '\n');
     if (n && n < q) {
-      /* Great! dump that first line then start over */
+      /* Great! Dump that first line then start over. */
       *n = 0;
       dprintf(idx, "%s%s\n", prefix, p);
       *n = '\n';
       p = n + 1;
     } else {
-      /* Search backwards for the last space */
+      /* Search backwards for the last space. */
       while (*q != ' ' && q != p)
         q--;
       if (q == p)
@@ -343,7 +306,8 @@ void dumplots(int idx, const char *prefix, char *data)
         p++;
     }
   }
-  /* Last trailing bit: split by linefeeds if possible */
+
+  /* Last trailing bit: split by linefeeds if possible. */
   n = strchr(p, '\n');
   while (n) {
     *n = 0;
@@ -352,103 +316,56 @@ void dumplots(int idx, const char *prefix, char *data)
     p = n + 1;
     n = strchr(p, '\n');
   }
+
   if (*p)
-    dprintf(idx, "%s%s\n", prefix, p);  /* Last trailing bit */
+    dprintf(idx, "%s%s\n", prefix, p);  /* Last trailing bit. */
 }
 
-/* Convert an interval (in seconds) to one of:
- * "19 days ago", "1 day ago", "18:12"
- */
-void daysago(time_t now, time_t then, char *out)
-{
-  if (now - then > 86400) {
-    int days = (now - then) / 86400;
-
-    sprintf(out, "%d day%s ago", days, (days == 1) ? "" : "s");
-    return;
-  }
-  egg_strftime(out, 6, "%H:%M", localtime(&then));
-}
-
-/* Convert an interval (in seconds) to one of:
- * "in 19 days", "in 1 day", "at 18:12"
- */
-void days(time_t now, time_t then, char *out)
-{
-  if (now - then > 86400) {
-    int days = (now - then) / 86400;
-
-    sprintf(out, "in %d day%s", days, (days == 1) ? "" : "s");
-    return;
-  }
-  egg_strftime(out, 9, "at %H:%M", localtime(&now));
-}
-
-/* Convert an interval (in seconds) to one of:
- * "for 19 days", "for 1 day", "for 09:10"
- */
-void daysdur(time_t now, time_t then, char *out)
-{
-  char s[81];
-  int hrs, mins;
-
-  if (now - then > 86400) {
-    int days = (now - then) / 86400;
-
-    sprintf(out, "for %d day%s", days, (days == 1) ? "" : "s");
-    return;
-  }
-  strcpy(out, "for ");
-  now -= then;
-  hrs = (int) (now / 3600);
-  mins = (int) ((now - (hrs * 3600)) / 60);
-  sprintf(s, "%02d:%02d", hrs, mins);
-  strcat(out, s);
-}
-
-
-
-/* Substitute %x codes in help files
+/* Convert an interval (in seconds ('now' - 'then')) to one of the following
+ * (depending on 'flag'), and copy it to 'out'.
  *
- * %B = bot nickname
- * %V = version
- * %C = list of channels i monitor
- * %E = eggdrop banner
- * %A = admin line
- * %n = network name
- * %T = current time ("14:15")
- * %N = user's nickname
- * %U = display system name if possible
- * %{+xy}     require flags to read this section
- * %{-}       turn of required flag matching only
- * %{center}  center this line
- * %{cols=N}  start of columnated section (indented)
- * %{help=TOPIC} start a section for a particular command
- * %{end}     end of section
+ *   DAYS_IN:  "in 19 days", "in 1 day", "at 18:12"
+ *   DAYS_FOR: "for 19 days", "for 1 day", "for 09:10"
+ *   DAYS_AGO: "19 days ago", "1 day ago", "18:12"
  */
-
-/* Substitute vars in a lang text to dcc chatter. */
-void sub_lang(int idx, char *text)
+void days(time_t now, time_t then, char *out, int flag)
 {
-  char s[1024];
-  struct flag_record fr = { FR_GLOBAL | FR_CHAN, 0, 0, 0, 0, 0 };
+  int i;
 
-  get_user_flagrec(dcc[idx].user, &fr, dcc[idx].u.chat->con_chan);
-  help_subst(NULL, NULL, 0,
-             (dcc[idx].status & STAT_TELNET) ? 0 : HELP_IRC, NULL);
-  strncpyz(s, text, sizeof s);
-  if (s[strlen(s) - 1] == '\n')
-    s[strlen(s) - 1] = 0;
-  if (!s[0])
-    strcpy(s, " ");
-  help_subst(s, dcc[idx].nick, &fr, 1, botnetnick);
-  if (s[0])
-    dprintf(idx, "%s\n", s);
+  if (now - then > 86400) {
+    int days = (now - then) / 86400;
+
+    switch (flag) {
+      case DAYS_IN:
+        sprintf(out, "in %d day%s", days, (days == 1) ? "" : "s");
+        break;
+      case DAYS_FOR:
+        sprintf(out, "for %d day%s", days, (days == 1) ? "" : "s");
+        break;
+      case DAYS_AGO:
+        sprintf(out, "%d day%s ago", days, (days == 1) ? "" : "s");
+        break;
+    }
+    return;
+  }
+
+  switch (flag) {
+    case DAYS_IN:
+      egg_strftime(out, 9, "at %H:%M", localtime(&now));
+      break;
+    case DAYS_FOR:
+      now -= then;
+      i = (int) (now / 3600);
+      sprintf(out, "for %02d:%02d", i, (int) ((i - (i * 3600)) / 60));
+      break;
+    case DAYS_AGO:
+      egg_strftime(out, 6, "%H:%M", localtime(&then));
+      break;
+  }
 }
 
-/* This will return a pointer to the first character after the @ in the
- * string given it.  Possibly it's time to think about a regexp library
- * for eggdrop...
+/* This will return a pointer to the first character after the @ in the string
+ * given it.
  */
 char *extracthostname(char *hostmask)
 {
@@ -457,73 +374,8 @@ char *extracthostname(char *hostmask)
   return p ? p + 1 : "";
 }
 
-/* Show motd to dcc chatter
- */
-void show_motd(int idx)
-{
-  FILE *vv;
-  char s[1024];
-  struct flag_record fr = { FR_GLOBAL | FR_CHAN, 0, 0, 0, 0, 0 };
-
-  if (!is_file(motdfile))
-    return;
-
-  vv = fopen(motdfile, "r");
-  if (!vv)
-    return;
-
-  get_user_flagrec(dcc[idx].user, &fr, dcc[idx].u.chat->con_chan);
-  dprintf(idx, "\n");
-  /* reset the help_subst variables to their defaults */
-  help_subst(NULL, NULL, 0,
-             (dcc[idx].status & STAT_TELNET) ? 0 : HELP_IRC, NULL);
-  while (!feof(vv)) {
-    fgets(s, 120, vv);
-    if (!feof(vv)) {
-      if (s[strlen(s) - 1] == '\n')
-        s[strlen(s) - 1] = 0;
-      if (!s[0])
-        strcpy(s, " ");
-      help_subst(s, dcc[idx].nick, &fr, 1, botnetnick);
-      if (s[0])
-        dprintf(idx, "%s\n", s);
-    }
-  }
-  fclose(vv);
-  dprintf(idx, "\n");
-}
-
-/* Show banner to telnet user
- */
-void show_banner(int idx)
-{
-  FILE *vv;
-  char s[1024];
-  struct flag_record fr = { FR_GLOBAL | FR_CHAN, 0, 0, 0, 0, 0 };
-
-  if (!is_file(bannerfile))
-    return;
-
-  vv = fopen(bannerfile, "r");
-  if (!vv)
-    return;
-
-  get_user_flagrec(dcc[idx].user, &fr, dcc[idx].u.chat->con_chan);
-  /* reset the help_subst variables to their defaults */
-  help_subst(NULL, NULL, 0, 0, NULL);
-  while (!feof(vv)) {
-    fgets(s, 120, vv);
-    if (!feof(vv)) {
-      if (!s[0])
-        strcpy(s, " \n");
-      help_subst(s, dcc[idx].nick, &fr, 0, botnetnick);
-      dprintf(idx, "%s", s);
-    }
-  }
-  fclose(vv);
-}
-
-/* Create a string with random letters and digits
+/* This fills string 's' with random letters and digits, up to 'len' and then
+ * NUL-terminates 's' at 'len'.
  */
 void make_rand_str(char *s, int len)
 {
@@ -535,10 +387,11 @@ void make_rand_str(char *s, int len)
     else
       s[j] = 'a' + randint(26);
   }
+
   s[len] = 0;
 }
 
-/* Convert an octal string into a decimal integer value.  If the string
+/* This converts an octal string into a decimal integer value. If the string
  * is empty or contains non-octal characters, -1 is returned.
  */
 int oatoi(const char *octal)
@@ -547,16 +400,18 @@ int oatoi(const char *octal)
 
   if (!*octal)
     return -1;
+
   for (i = 0; ((*octal >= '0') && (*octal <= '7')); octal++)
     i = (i * 8) + (*octal - '0');
+
   if (*octal)
     return -1;
+
   return i;
 }
 
-/* Return an allocated buffer which contains a copy of the string
- * 'str', with all 'div' characters escaped by 'mask'. 'mask'
- * characters are escaped too.
+/* Return an allocated buffer which contains a copy of the string 'str', with
+ * all 'div' characters escaped by 'mask'. 'mask' characters are escaped too.
  *
  * Remember to free the returned memory block.
  */
@@ -569,6 +424,7 @@ char *str_escape(const char *str, const char div, const char mask)
 
   if (!buf)
     return NULL;
+
   for (s = str; *s; s++) {
     /* Resize buffer. */
     if ((buflen - blen) <= 3) {
@@ -588,19 +444,19 @@ char *str_escape(const char *str, const char div, const char mask)
       blen++;
     }
   }
+
   *b = 0;
   return buf;
 }
 
-/* Search for a certain character 'div' in the string 'str', while
- * ignoring escaped characters prefixed with 'mask'.
+/* Search for a certain character 'div' in the string 'str', while ignoring
+ * escaped characters prefixed with 'mask'.
  *
  * The string
  *
  *   "\\3a\\5c i am funny \\3a):further text\\5c):oink"
  *
- * as str, '\\' as mask and ':' as div would change the str buffer
- * to
+ * as str, '\\' as mask and ':' as div would change the str buffer to
  *
  *   ":\\ i am funny :)"
  *
@@ -616,19 +472,29 @@ char *strchr_unescape(char *str, const char div, register const char esc_char)
 
   buf[2] = 0;
   for (s = p = str; *s; s++, p++) {
-    if (*s == esc_char) {       /* Found escape character.              */
+    if (*s == esc_char) {
       /* Convert code to character. */
-      buf[0] = s[1], buf[1] = s[2];
+      buf[0] = s[1];
+      buf[1] = s[2];
       *p = (unsigned char) strtol(buf, NULL, 16);
       s += 2;
     } else if (*s == div) {
       *p = *s = 0;
-      return (s + 1);           /* Found searched for character.        */
+      return (s + 1); /* Found searched-for character. */
     } else
       *p = *s;
   }
+
   *p = 0;
   return NULL;
+}
+
+/* As strchr_unescape(), but converts the complete string, without searching
+ * for a specific delimiter character.
+ */
+void str_unescape(char *str, register const char esc_char)
+{
+  (void) strchr_unescape(str, 0, esc_char);
 }
 
 /* Is every character in a string a digit? */
@@ -641,15 +507,8 @@ int str_isdigit(const char *str)
     if (!egg_isdigit(*str))
       return 0;
   }
-  return 1;
-}
 
-/* As strchr_unescape(), but converts the complete string, without
- * searching for a specific delimiter character.
- */
-void str_unescape(char *str, register const char esc_char)
-{
-  (void) strchr_unescape(str, 0, esc_char);
+  return 1;
 }
 
 /* Kills the bot. s1 is the reason shown to other bots,

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcluser.c,v 1.5 2004/08/27 00:49:24 wcc Exp $
+ * $Id: tcluser.c,v 1.6 2004/09/10 01:10:50 wcc Exp $
  */
 
 #include "main.h"
@@ -28,6 +28,7 @@
 #include "botmsg.h"  /* int_to_base10 */
 #include "botnet.h"  /* nextbot */
 #include "dcc.h"     /* DCC_*, BSTAT_*, struct dcc_t */
+#include "misc.h"    /* strncpyz */
 #include "userrec.h" /* adduser, u_pass_match, delhost_by_handle, count_users,
                       * deluser, change_handle, write_userfile */
 

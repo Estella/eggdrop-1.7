@@ -1,6 +1,6 @@
 # Makefile for src/mod/filesys.mod/.
 #
-# $Id: Makefile,v 1.5 2004/08/30 23:58:24 wcc Exp $
+# $Id: Makefile,v 1.6 2004/09/10 01:10:51 wcc Exp $
 
 MOD_NAME = filesys
 srcdir = .
@@ -44,7 +44,8 @@ distclean: clean
   ../../../src/compat/memset.h ../../../src/compat/memcpy.h \
   ../../../src/compat/strcasecmp.h ../../../src/compat/strftime.h \
   ../../../src/mod/modvals.h ../../../src/botmsg.h ../../../src/dcc.h \
-  ../../../src/dccutil.h ../../../src/dns.h ../../../src/net.h filedb3.h \
-  filesys.h ../../../src/mod/transfer.mod/transfer.h files.h dbcompat.h \
-  filelist.h ../../../src/cmds.h files.c ../../../src/stat.h filedb3.c \
-  tclfiles.c dbcompat.c filelist.c
+  ../../../src/dccutil.h ../../../src/dns.h ../../../src/misc.h \
+  ../../../src/net.h filedb3.h filesys.h \
+  ../../../src/mod/transfer.mod/transfer.h files.h dbcompat.h filelist.h \
+  ../../../src/cmds.h files.c ../../../src/stat.h filedb3.c tclfiles.c \
+  dbcompat.c filelist.c

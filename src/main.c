@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.11 2004/08/31 22:56:12 wcc Exp $
+ * $Id: main.c,v 1.12 2004/09/10 01:10:50 wcc Exp $
  */
 
 #include "main.h"
@@ -48,6 +48,7 @@
 #include "help.h"    /* add_help_reference, help_expmem */
 #include "logfile.h" /* log_t, LOG_*, putlog, logfile_init, logfile_expmem, flushlogs,
                       * check_logsize */
+#include "misc.h"    /* strncpyz, newsplit */
 #include "net.h"     /* SOCK_*, getmyip, setsock, killsock, dequeue_sockets, sockgets */
 #include "traffic.h" /* traffic_update_out, traffic_reset, init_traffic */
 #include "userrec.h" /* adduser, count_users, write_userfile */

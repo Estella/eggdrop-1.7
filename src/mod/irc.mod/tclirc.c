@@ -1,7 +1,7 @@
 /*
  * tclirc.c -- part of irc.mod
  *
- * $Id: tclirc.c,v 1.3 2004/08/26 10:36:52 wcc Exp $
+ * $Id: tclirc.c,v 1.4 2004/09/10 01:10:51 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -497,9 +497,20 @@ static int tcl_maskhost STDVAR
 {
   char new[121];
 
-  BADARGS(2, 2, " nick!user@host");
+  BADARGS(2, 3, " nick!user@host ?options?");
 
-  maskban(argv[1], new);
+  if (argc == 3 && egg_strcasecmp(argv[2], "-ban") &&
+      egg_strcasecmp(argv[2], "-host")) {
+    Tcl_AppendResult(irp, "unknown maskhost option: should be one of: ",
+                     "-ban -host", NULL);
+    return TCL_ERROR;
+  }
+
+  if (argc == 3 && !egg_strcasecmp(argv[2], "-host"))
+    maskhost(argv[1], new, MASKHOST_HOST);
+  else
+    maskhost(argv[1], new, MASKHOST_BAN);
+
   Tcl_AppendResult(irp, new, NULL);
   return TCL_OK;
 }

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcldcc.c,v 1.9 2004/08/31 01:48:21 wcc Exp $
+ * $Id: tcldcc.c,v 1.10 2004/09/10 01:10:50 wcc Exp $
  */
 
 #include "main.h"
@@ -32,6 +32,7 @@
 #include "dccutil.h" /* get_data_ptr, chatout, chanout_but, lostdcc, killtransfer,
                       * not_away, set_away, do_boot, new_dcc */
 #include "logfile.h" /* LOG_*, putlog, logmodes, masktype */
+#include "misc.h"    /* splitc, strncpyz, dumplots */
 #include "net.h"     /* SOCK_*, getmyip, neterror, getsock, killsock, open_listen,
                       * tputs, open_telnet_raw, sockoptions */
 #include "userrec.h" /* write_userfile */

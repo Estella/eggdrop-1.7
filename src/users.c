@@ -17,14 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: users.c,v 1.8 2004/08/30 23:58:23 wcc Exp $
+ * $Id: users.c,v 1.9 2004/09/10 01:10:50 wcc Exp $
  */
 
 #include "main.h"
 #include "users.h"
 #include "chan.h"
 #include "modules.h"
-char natip[121] = "";
 
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -35,6 +34,8 @@ char natip[121] = "";
 #include "dccutil.h" /* dprintf, chatout, shareout, lostdcc */
 #include "logfile.h" /* putlog, LOG_* */
 #include "match.h"   /* wild_match */
+#include "misc.h"    /* DAY_*, splitc, newsplit, strncpyz, days, str_escape,
+                      * strchr_unescape */
 #include "net.h"     /* killsock */
 #include "rfc1459.h" /* rfc_casecmp */
 #include "userrec.h" /* adduser, clear_masks */
@@ -161,32 +162,37 @@ void addignore(char *ign, char *from, char *mnote, time_t expire_time)
   }
 }
 
-/* take host entry from ignore list and display it ignore-style */
+/* Take host entry from ignore list and display it ignore-style. */
 void display_ignore(int idx, int number, struct igrec *ignore)
 {
   char dates[81], s[41];
 
   if (ignore->added) {
-    daysago(now, ignore->added, s);
+    days(now, ignore->added, s, DAYS_AGO);
     sprintf(dates, "Started %s", s);
-  } else
+  } else {
     dates[0] = 0;
+  }
+
   if (ignore->flags & IGREC_PERM)
     strcpy(s, "(perm)");
   else {
     char s1[41];
 
-    days(ignore->expire, now, s1);
+    days(ignore->expire, now, s1, DAYS_IN);
     sprintf(s, "(expires %s)", s1);
   }
+
   if (number >= 0)
     dprintf(idx, "  [%3d] %s %s\n", number, ignore->igmask, s);
   else
     dprintf(idx, "IGNORE: %s %s\n", ignore->igmask, s);
+
   if (ignore->msg && ignore->msg[0])
     dprintf(idx, "        %s: %s\n", ignore->user, ignore->msg);
   else
     dprintf(idx, "        %s %s\n", MODES_PLACEDBY, ignore->user);
+
   if (dates[0])
     dprintf(idx, "        %s\n", dates);
 }

@@ -7,7 +7,7 @@
  *   (non-Tcl) procedure lookups for msg/dcc/file commands
  *   (Tcl) binding internal procedures to msg/dcc/file commands
  *
- * $Id: tclhash.c,v 1.10 2004/09/02 20:27:00 wcc Exp $
+ * $Id: tclhash.c,v 1.11 2004/09/10 01:10:50 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -38,6 +38,7 @@
 #include "dccutil.h" /* dprintf */
 #include "logfile.h" /* putlog, LOG_* */
 #include "match.h"   /* wild_match_per */
+#include "misc.h"    /* newsplit */
 #include "userrec.h" /* touch_laston */
 
 extern Tcl_Interp *interp;

@@ -7,7 +7,7 @@
  * because they use structures in those
  * (saves including those .h files EVERY time) - Beldin
  *
- * $Id: proto.h,v 1.10 2004/08/31 22:56:12 wcc Exp $
+ * $Id: proto.h,v 1.11 2004/09/10 01:10:50 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -72,36 +72,6 @@ void n_free(void *, const char *, int);
 void tell_mem_status(char *);
 void tell_mem_status_dcc(int);
 void debug_mem_to_dcc(int);
-
-/* misc.c */
-int egg_strcatn(char *, const char *, size_t);
-int my_strcpy(char *, char *);
-char *stristr(char *, char *);
-void splitc(char *, char *, char);
-void splitcn(char *, char *, char, size_t);
-void remove_crlf(char **);
-char *newsplit(char **);
-char *splitnick(char **);
-void stridx(char *, char *, int);
-void dumplots(int, const char *, char *);
-void daysago(time_t, time_t, char *);
-void days(time_t, time_t, char *);
-void daysdur(time_t, time_t, char *);
-void sub_lang(int, char *);
-void show_motd(int);
-char *extracthostname(char *);
-void show_banner(int i);
-void make_rand_str(char *, int);
-int oatoi(const char *);
-char *str_escape(const char *, const char, const char);
-char *strchr_unescape(char *, const char, register const char);
-void str_unescape(char *, register const char);
-int str_isdigit(const char *);
-void kill_bot(char *, char *);
-
-void _maskhost(const char *, char *, int);
-#define maskhost(a,b) _maskhost((a),(b),1)
-#define maskban(a,b)  _maskhost((a),(b),0)
 
 /* tcl.c */
 void protect_tcl();

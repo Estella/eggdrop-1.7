@@ -17,16 +17,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcl.c,v 1.7 2004/08/31 01:48:21 wcc Exp $
+ * $Id: tcl.c,v 1.8 2004/09/10 01:10:50 wcc Exp $
  */
 
 #include <stdlib.h>             /* getenv()                             */
 #include <locale.h>             /* setlocale()                          */
 
 #include "main.h"
+
 #include "dcc.h"     /* DCT_*, struct dcc_t */
 #include "logfile.h" /* LOG_*, putlog, logsuffix_change, logfile_init, logmodes,
                         masktype */
+#include "misc.h"    /* splitc, oatoi */
+
 
 /* Used for read/write to internal strings */
 typedef struct {
