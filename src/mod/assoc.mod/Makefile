@@ -1,5 +1,5 @@
 # Makefile for src/mod/assoc.mod/.
-# $Id: Makefile,v 1.4 2004/08/28 00:15:41 wcc Exp $
+# $Id: Makefile,v 1.5 2004/08/30 23:58:23 wcc Exp $
 
 MOD_NAME = assoc
 srcdir = .
@@ -35,12 +35,12 @@ distclean: clean
 #safety hash
 ../assoc.o: assoc.c ../../../src/mod/module.h ../../../src/main.h \
   ../../../config.h ../../../lush.h ../../../src/eggdrop.h \
-  ../../../src/types.h ../../../src/debug.h ../../../src/lang.h \
-  ../../../src/flags.h ../../../src/language.h ../../../src/tclegg.h \
-  ../../../src/tclhash.h ../../../src/chan.h ../../../src/users.h \
-  ../../../src/compat/compat.h ../../../src/compat/inet_aton.h \
-  ../../../src/compat/snprintf.h ../../../src/compat/memset.h \
-  ../../../src/compat/memcpy.h ../../../src/compat/strcasecmp.h \
-  ../../../src/compat/strftime.h ../../../src/mod/modvals.h \
-  ../../../src/botmsg.h ../../../src/dcc.h ../../../src/dccutil.h \
-  ../../../src/dns.h ../../../src/net.h assoc.h
+  ../../../src/types.h ../../../src/debug.h ../../../src/logfile.h \
+  ../../../src/lang.h ../../../src/flags.h ../../../src/language.h \
+  ../../../src/tclegg.h ../../../src/tclhash.h ../../../src/chan.h \
+  ../../../src/users.h ../../../src/compat/compat.h \
+  ../../../src/compat/inet_aton.h ../../../src/compat/snprintf.h \
+  ../../../src/compat/memset.h ../../../src/compat/memcpy.h \
+  ../../../src/compat/strcasecmp.h ../../../src/compat/strftime.h \
+  ../../../src/mod/modvals.h ../../../src/botmsg.h ../../../src/dcc.h \
+  ../../../src/dccutil.h ../../../src/dns.h ../../../src/net.h assoc.h

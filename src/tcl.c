@@ -17,14 +17,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcl.c,v 1.5 2004/08/28 03:24:46 takeda Exp $
+ * $Id: tcl.c,v 1.6 2004/08/30 23:58:23 wcc Exp $
  */
 
 #include <stdlib.h>             /* getenv()                             */
 #include <locale.h>             /* setlocale()                          */
 
 #include "main.h"
-#include "dcc.h"  /* DCT_*, struct dcc_t */
+#include "dcc.h"     /* DCT_*, struct dcc_t */
+#include "logfile.h" /* LOG_*, putlog, logsuffix_change, logfile_init */
 
 /* Used for read/write to internal strings */
 typedef struct {
@@ -124,7 +125,7 @@ static void botnet_change(char *new)
  *     Vars, traces, misc
  */
 
-int init_dcc_max(), init_misc();
+int init_dcc_max();
 
 /* Used for read/write to integer couplets */
 typedef struct {
@@ -230,7 +231,7 @@ static char *tcl_eggint(ClientData cdata, Tcl_Interp *irp,
           if (l < max_logs)
             return "you can't DECREASE max-logs";
           max_logs = l;
-          init_misc();
+          logfile_init();
         } else
           *(ii->var) = (int) l;
       }

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: module.h,v 1.4 2004/08/27 00:49:24 wcc Exp $
+ * $Id: module.h,v 1.5 2004/08/30 23:58:23 wcc Exp $
  */
 
 #ifndef _EGG_MOD_MODULE_H
@@ -31,6 +31,7 @@
 #include "src/dcc.h"
 #include "src/dccutil.h"
 #include "src/dns.h"
+#include "src/logfile.h"
 #include "src/net.h"
 
 /*

@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: modules.c,v 1.7 2004/08/27 05:34:18 wcc Exp $
+ * $Id: modules.c,v 1.8 2004/08/30 23:58:23 wcc Exp $
  */
 
 #include <ctype.h>
@@ -37,10 +37,12 @@
 #include "dns.h"
 #include "language.h"
 #include "match.h"
+#include "logfile.h"
 #include "net.h"
 #include "rfc1459.h"
 #include "userent.h"
 #include "userrec.h"
+
 
 #ifndef STATIC
 #  ifdef MOD_USE_SHL

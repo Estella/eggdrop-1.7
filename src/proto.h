@@ -7,7 +7,7 @@
  * because they use structures in those
  * (saves including those .h files EVERY time) - Beldin
  *
- * $Id: proto.h,v 1.7 2004/08/27 05:34:18 wcc Exp $
+ * $Id: proto.h,v 1.8 2004/08/30 23:58:23 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -79,9 +79,6 @@ void debug_mem_to_dcc(int);
 /* misc.c */
 int egg_strcatn(char *, const char *, size_t);
 int my_strcpy(char *, char *);
-void putlog EGG_VARARGS(int, arg1);
-void flushlogs();
-void check_logsize();
 char *stristr(char *, char *);
 void splitc(char *, char *, char);
 void splitcn(char *, char *, char, size_t);
@@ -109,7 +106,6 @@ void show_banner(int i);
 void make_rand_str(char *, int);
 int oatoi(const char *);
 int is_file(const char *);
-void logsuffix_change(char *);
 char *str_escape(const char *, const char, const char);
 char *strchr_unescape(char *, const char, register const char);
 void str_unescape(char *, register const char);

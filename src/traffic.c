@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: traffic.c,v 1.2 2004/08/27 10:01:17 wcc Exp $
+ * $Id: traffic.c,v 1.3 2004/08/30 23:58:23 wcc Exp $
  */
 
 #include "main.h"
@@ -24,6 +24,7 @@
 #include "traffic.h"
 #include "dcc.h"     /* struct dcc_table, dcc */
 #include "dccutil.h" /* dprintf */
+#include "logfile.h" /* putlog, LOG_* */
 
 
 extern struct dcc_t *dcc;

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botcmd.c,v 1.6 2004/08/27 00:49:23 wcc Exp $
+ * $Id: botcmd.c,v 1.7 2004/08/30 23:58:23 wcc Exp $
  */
 
 #include "main.h"
@@ -31,6 +31,7 @@
                       * NEAT_BOTNET */
 #include "dcc.h"     /* DCC_*, DCT_*, BSTAT_*, PLSTAT_*, b_*, struct dcc_t */
 #include "dccutil.h" /* dprintf, chatout, sharein, chanout_but, lostdcc, do_boot */
+#include "logfile.h" /* putlog, LOG_* */
 #include "net.h"     /* killsock */
 #include "userrec.h" /* change_handle, touch_laston */
 

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dccutil.c,v 1.5 2004/08/27 00:49:23 wcc Exp $
+ * $Id: dccutil.c,v 1.6 2004/08/30 23:58:23 wcc Exp $
  */
 
 #include <sys/stat.h>
@@ -27,9 +27,10 @@
 #include "modules.h"
 
 #include "dccutil.h"
-#include "botmsg.h" /* botnet_send_* */
-#include "dcc.h"    /* DCC_*, DCT_*, STAT_* */
-#include "net.h"    /* SOCK_* , killsock, tputs, sock_list */
+#include "botmsg.h"  /* botnet_send_* */
+#include "dcc.h"     /* DCC_*, DCT_*, STAT_* */
+#include "logfile.h" /* putlog, LOG_* */
+#include "net.h"     /* SOCK_* , killsock, tputs, sock_list */
 
 
 extern struct dcc_t *dcc;

@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: eggdrop.h,v 1.5 2004/08/27 05:34:18 wcc Exp $
+ * $Id: eggdrop.h,v 1.6 2004/08/30 23:58:23 wcc Exp $
  */
 
 #ifndef _EGG_EGGDROP_H
@@ -49,12 +49,13 @@
  */
 #define NICKMAX  32  /* Valid values are HANDLEN to 32. */
 
-
+/* This is the maximum length for a log line.
+ */
+#define LOGLINEMAX  767
 
 /* Handy string lengths. */
 #define UHOSTMAX    291 + NICKMAX /* 32 (ident) + 3 (\0, !, @) + NICKMAX */
 #define DIRMAX      512
-#define LOGLINEMAX  767           /* For putlog(). */
 
 /* Invalid characters. */
 #define BADNICKCHARS "-,+*=:!.@#;$%&"
@@ -64,7 +65,6 @@
 #define NICKLEN     NICKMAX + 1
 #define UHOSTLEN    UHOSTMAX + 1
 #define DIRLEN      DIRMAX + 1
-#define LOGLINELEN  LOGLINEMAX + 1
 #define NOTENAMELEN ((HANDLEN * 2) + 1)
 
 
@@ -111,50 +111,6 @@
 
 #define FLOOD_CHAN_MAX   7
 #define FLOOD_GLOBAL_MAX 3
-
-/* Structure for internal logs */
-typedef struct {
-  char *filename;
-  unsigned int mask;            /* what to send to this log                 */
-  char *chname;                 /* which channel                            */
-  char szlast[LOGLINELEN];      /* for 'Last message repeated n times'
-                                 * stuff in misc.c/putlog() <cybah>         */
-  int repeats;                  /* number of times szLast has been repeated */
-  unsigned int flags;           /* other flags <rtc>                        */
-  FILE *f;                      /* existing file                            */
-} log_t;
-
-/* Logfile display flags
- */
-#define LOG_MSGS     0x000001   /* m   msgs/notice/ctcps                */
-#define LOG_PUBLIC   0x000002   /* p   public msg/notice/ctcps          */
-#define LOG_JOIN     0x000004   /* j   channel joins/parts/etc          */
-#define LOG_MODES    0x000008   /* k   mode changes/kicks/bans          */
-#define LOG_CMDS     0x000010   /* c   user dcc or msg commands         */
-#define LOG_MISC     0x000020   /* o   other misc bot things            */
-#define LOG_BOTS     0x000040   /* b   bot notices                      */
-#define LOG_RAW      0x000080   /* r   raw server stuff coming in       */
-#define LOG_FILES    0x000100   /* x   file transfer commands and stats */
-#define LOG_LEV1     0x000200   /* 1   user log level                   */
-#define LOG_LEV2     0x000400   /* 2   user log level                   */
-#define LOG_LEV3     0x000800   /* 3   user log level                   */
-#define LOG_LEV4     0x001000   /* 4   user log level                   */
-#define LOG_LEV5     0x002000   /* 5   user log level                   */
-#define LOG_LEV6     0x004000   /* 6   user log level                   */
-#define LOG_LEV7     0x008000   /* 7   user log level                   */
-#define LOG_LEV8     0x010000   /* 8   user log level                   */
-#define LOG_SERV     0x020000   /* s   server information               */
-#define LOG_DEBUG    0x040000   /* d   debug                            */
-#define LOG_WALL     0x080000   /* w   wallops                          */
-#define LOG_SRVOUT   0x100000   /* v   server output                    */
-#define LOG_BOTNET   0x200000   /* t   botnet traffic                   */
-#define LOG_BOTSHARE 0x400000   /* h   share traffic                    */
-#define LOG_ALL      0x7fffff   /* (dump to all logfiles)               */
-
-/* Internal logfile flags
- */
-#define LF_EXPIRING 0x000001    /* Logfile will be closed soon          */
-
 
 /* For local console */
 #define STDIN  0

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.h,v 1.8 2004/08/28 00:15:41 wcc Exp $
+ * $Id: main.h,v 1.9 2004/08/30 23:58:23 wcc Exp $
  */
 
 #ifndef _EGG_MAIN_H
@@ -179,8 +179,9 @@
 
 #include "lush.h"
 #include "eggdrop.h"
-#include "types.h" /* We need this basically everywhere. */
-#include "debug.h" /* Allow debugging everywhere. */
+#include "types.h"   /* We need this basically everywhere. */
+#include "debug.h"   /* Allow debugging everywhere. */
+#include "logfile.h" /* Just include this everywhere for now. FIXME */
 #include "lang.h"
 #include "flags.h"
 

@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.9 2004/08/27 09:34:10 wcc Exp $
+ * $Id: main.c,v 1.10 2004/08/30 23:58:23 wcc Exp $
  */
 
 #include "main.h"
@@ -45,6 +45,8 @@
 #include "dcc.h"     /* DCC_*, STRIP_*, STAT_*, struct chat_info, struct dcc_t */
 #include "dccutil.h" /* dprintf, dcc_chatter, lostdcc, tell_dcc, new_dcc,
                       * dcc_remove_lost */
+#include "logfile.h" /* log_t, LOG_*, putlog, logfile_init, logfile_expmem, flushlogs,
+                      * check_logsize */
 #include "net.h"     /* SOCK_*, getmyip, setsock, killsock, dequeue_sockets, sockgets */
 #include "traffic.h" /* traffic_update_out, traffic_reset, init_traffic */
 #include "userrec.h" /* adduser, count_users, write_userfile */
@@ -124,6 +126,28 @@ time_t online_since; /* Time that the bot was started.          */
 char quit_msg[1024]; /* Quit message.                           */
 
 
+int expmem_chanprog();
+int expmem_users();
+int expmem_misc();
+int expmem_dccutil();
+int expmem_botnet();
+int expmem_tcl();
+int expmem_tclhash();
+int expmem_net();
+int expmem_modules(int);
+int expmem_language();
+int expmem_tcldcc();
+int expmem_tclmisc();
+int init_mem();
+int init_dcc_max();
+int init_userent();
+int init_bots();
+int init_net();
+int init_modules();
+int init_tcl(int, char **);
+int init_language(int);
+
+
 void fatal(const char *s, int recoverable)
 {
   int i;
@@ -140,19 +164,6 @@ void fatal(const char *s, int recoverable)
   }
 }
 
-int expmem_chanprog();
-int expmem_users();
-int expmem_misc();
-int expmem_dccutil();
-int expmem_botnet();
-int expmem_tcl();
-int expmem_tclhash();
-int expmem_net();
-int expmem_modules(int);
-int expmem_language();
-int expmem_tcldcc();
-int expmem_tclmisc();
-
 /* For mem.c : calculate memory we SHOULD be using
  */
 int expected_memory(void)
@@ -162,7 +173,7 @@ int expected_memory(void)
   tot = expmem_chanprog() + expmem_users() + expmem_misc() + expmem_dccutil() +
         expmem_botnet() + expmem_tcl() + expmem_tclhash() + expmem_net() +
         expmem_modules(0) + expmem_language() + expmem_tcldcc() +
-        expmem_tclmisc();
+        expmem_tclmisc() + logfile_expmem();
   return tot;
 }
 
@@ -466,15 +477,6 @@ void check_static(char *, char *(*)());
 
 #include "mod/static.h"
 #endif
-int init_mem();
-int init_dcc_max();
-int init_userent();
-int init_misc();
-int init_bots();
-int init_net();
-int init_modules();
-int init_tcl(int, char **);
-int init_language(int);
 
 void patch(const char *str)
 {
@@ -589,7 +591,7 @@ int main(int argc, char **argv)
 
   init_dcc_max();
   init_userent();
-  init_misc();
+  logfile_init();
   init_bots();
   init_net();
   init_modules();

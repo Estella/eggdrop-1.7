@@ -1,6 +1,6 @@
 # Makefile for src/mod/.
 #
-# $Id: Makefile.in,v 1.2 2004/08/28 00:15:41 wcc Exp $
+# $Id: Makefile.in,v 1.3 2004/08/30 23:58:23 wcc Exp $
 
 SHELL = @SHELL@
 top_srcdir = @top_srcdir@
@@ -36,7 +36,7 @@ MAKE_MOD = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(CC)' 'LD=$(LD)' 'STRIP=$(STRIP)' \
 'MODULE_XLIBS=$(MODULE_XLIBS)'
 
 MAKE_MODDEPEND = $(MAKE) 'MAKE=$(MAKE)' 'CC=$(CC)' \
-'CFLAGS = -I../../.. -I../../../src/mod -DMAKING_DEPEND -DHAVE_CONFIG_H -DMAKING_MODS'
+'CFLAGS=-I../../.. -I../../../src/mod -DMAKING_DEPEND -DHAVE_CONFIG_H -DMAKING_MODS'
 
 
 doofus:

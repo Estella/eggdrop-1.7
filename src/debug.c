@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: debug.c,v 1.2 2004/08/27 10:01:17 wcc Exp $
+ * $Id: debug.c,v 1.3 2004/08/30 23:58:23 wcc Exp $
  */
 
 #include "main.h"
@@ -32,6 +32,7 @@
 #include "debug.h"
 #include "dcc.h"     /* SOCK_* */
 #include "dccutil.h" /* dprintf, tell_dcc */
+#include "logfile.h" /* putlog, LOG_* */
 #include "net.h"     /* setsock, killsock */
 
 
