@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: modules.c,v 1.12 2004/10/27 23:54:54 wcc Exp $
+ * $Id: modules.c,v 1.13 2004/11/24 22:37:32 wcc Exp $
  */
 
 #include <ctype.h>
@@ -106,9 +106,9 @@ extern char tempdir[], botnetnick[], botname[], natip[], hostname[],
 
 extern int parties, noshare, dcc_total, egg_numver, userfile_perm, do_restart,
            ignore_time, must_be_owner, raw_log, max_dcc, make_userfile,
-           default_flags, require_p, share_greet, use_invites, use_exempts,
-           password_timeout, force_expire, protect_readonly, reserved_port_min,
-           reserved_port_max, copy_to_tmp, quiet_reject;
+           default_flags, share_greet, use_invites, use_exempts, force_expire,
+           password_timeout, protect_readonly, reserved_port_min, copy_to_tmp,
+           reserved_port_max, quiet_reject;
 
 extern party_t *party;
 extern time_t now, online_since;
@@ -338,7 +338,7 @@ Function global_table[] = {
   (Function) & share_greet,       /* int                                 */
   /* 100 - 103 */
   (Function) & max_dcc,           /* int                                 */
-  (Function) & require_p,         /* int                                 */
+  (Function) 0,                   /* was require_p                       */
   (Function) & ignore_time,       /* int                                 */
   (Function) 0,                   /* was use_console_r <Wcc[02/02/03]>   */
   /* 104 - 107 */

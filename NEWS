@@ -1,7 +1,7 @@
-$Id: NEWS,v 1.3 2004/09/02 20:27:00 wcc Exp $
+$Id: NEWS,v 1.4 2004/11/24 22:37:31 wcc Exp $
 
 News
-Last revised: September 02, 2004
+Last revised: November 24, 2004
      _________________________________________________________________
 
                                    News
@@ -35,6 +35,8 @@ Last revised: September 02, 2004
       see ALL ident prefixes as '~'. For example, wcc!+wcc@eggheads.org would
       be seen as wcc!~@eggheads.org to the bot. See doc/settings/mod.server
       for more details.
+
+    * A new 'e' logging flag has been added to log Tcl errors.
   ________________________________________________________________________
 
 Copyright (C) 1997 Robey Pointer

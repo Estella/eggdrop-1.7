@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.c,v 1.15 2004/10/27 23:54:54 wcc Exp $
+ * $Id: cmds.c,v 1.16 2004/11/24 22:37:32 wcc Exp $
  */
 
 #include "main.h"
@@ -60,7 +60,7 @@ extern struct userrec *userlist;
 extern tcl_timer_t *timer, *utimer;
 extern log_t *logs;
 extern int dcc_total, remote_boots, backgrd, make_userfile, do_restart, term_z,
-           con_chan, conmask, require_p, must_be_owner, strict_ident, firewallport,
+           con_chan, conmask, must_be_owner, strict_ident, firewallport,
            cache_hit, cache_miss, default_flags, max_logs, ignore_time;
 extern Tcl_Interp *interp;
 extern char botnetnick[], origbotname[], ver[], network[], owner[], quit_msg[],
@@ -1473,11 +1473,10 @@ int check_dcc_attrs(struct userrec *u, int oatr)
           !(u->flags & USER_MASTER))
         stat |= STAT_PARTY;
       if ((stat & STAT_CHAT) && !(u->flags & USER_PARTY) &&
-          !(u->flags & USER_MASTER) && (!(u->flags & USER_OP) || require_p))
+          !(u->flags & USER_MASTER))
         stat &= ~STAT_CHAT;
       if ((dcc[i].type->flags & DCT_FILES) && !(stat & STAT_CHAT) &&
-          ((u->flags & USER_MASTER) || (u->flags & USER_PARTY) ||
-          ((u->flags & USER_OP) && !require_p)))
+          ((u->flags & USER_MASTER) || (u->flags & USER_PARTY)))
         stat |= STAT_CHAT;
       dcc[i].status = stat;
       /* Check if they no longer have access to wherever they are.
@@ -2237,8 +2236,7 @@ static void cmd_su(struct userrec *u, int idx, char *par)
     dprintf(idx, "You cannot currently double .su; try .su'ing directly.\n");
   else {
     get_user_flagrec(u, &fr, NULL);
-    if ((!glob_party(fr) && (require_p || !(glob_op(fr) || chan_op(fr)))) &&
-        !(atr & USER_BOTMAST))
+    if (!glob_party(fr) && !(atr & USER_BOTMAST))
       dprintf(idx, "No party line access permitted for %s.\n", par);
     else {
       correct_handle(par);

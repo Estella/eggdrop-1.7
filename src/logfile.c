@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: logfile.c,v 1.5 2004/09/10 01:10:50 wcc Exp $
+ * $Id: logfile.c,v 1.6 2004/11/24 22:37:32 wcc Exp $
  */
 
 #include "main.h"
@@ -39,7 +39,6 @@ extern time_t now;
 extern Tcl_Interp *interp;
 
 log_t *logs = 0;      /* Logfiles. */
-int shtime = 1;       /* Display the time with console output? */
 int max_logs = 5;     /* Current maximum log files. */
 int max_logsize = 0;  /* Maximum logfile size; 0 for no limit. */
 int raw_log = 0;      /* Allow logging of raw traffic? */
@@ -302,13 +301,9 @@ void putlog EGG_VARARGS_DEF(int, arg1)
 
   /* Create the timestamp. */
   t = localtime(&now2);
-  if (shtime) {
-    egg_strftime(stamp, sizeof(stamp) - 2, LOG_TS, t);
-    strcat(stamp, " ");
-    tsl = strlen(stamp);
-  }
-  else
-    *stamp = '\0';
+  egg_strftime(stamp, sizeof(stamp) - 2, LOG_TS, t);
+  strcat(stamp, " ");
+  tsl = strlen(stamp);
 
   /* Format log entry at offset 'tsl,' then i can prepend the timestamp. */
   out = s + tsl;
@@ -331,7 +326,7 @@ void putlog EGG_VARARGS_DEF(int, arg1)
     }
   }
   /* Place the timestamp in the string to be printed. */
-  if (out[0] && shtime) {
+  if (out[0]) {
     strncpy(s, stamp, tsl);
     out = s;
   }
@@ -384,8 +379,7 @@ void putlog EGG_VARARGS_DEF(int, arg1)
   if (!backgrd && !con_chan && !term_z)
     dprintf(DP_STDOUT, "%s", out);
   else if ((type & LOG_MISC) && use_stderr) {
-    if (shtime)
-      out += tsl;
+    out += tsl;
     dprintf(DP_STDERR, "%s", s);
   }
   va_end(va);

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.c,v 1.11 2004/10/27 23:54:54 wcc Exp $
+ * $Id: dcc.c,v 1.12 2004/11/24 22:37:32 wcc Exp $
  */
 
 #include "main.h"
@@ -59,7 +59,6 @@ extern int egg_numver, connect_timeout, conmask, backgrd, max_dcc, raw_log,
 
 struct dcc_t *dcc = NULL;   /* DCC list                                      */
 int dcc_total = 0;          /* Total dcc's                                   */
-int require_p = 0;          /* Require +p flag to access party line?         */
 int allow_new_telnets = 0;  /* Allow new users to add themselves via telnet? */
 int stealth_telnets = 0;    /* Just display 'Nickname' prompt for telnets.   */
 int use_telnet_banner = 0;  /* Display telnet banner?                        */
@@ -1367,11 +1366,7 @@ static void dcc_telnet_id(int idx, char *buf, int atr)
     dprintf(idx, "\nEnter the nickname you would like to use.\n");
     return;
   }
-  if (chan_op(fr)) {
-    if (!require_p)
-      ok = 1;
-  }
-  if (!ok && (glob_party(fr) || glob_bot(fr)))
+  if (glob_party(fr) || glob_bot(fr))
     ok = 1;
 
   if (!ok) {
@@ -1447,12 +1442,7 @@ static void dcc_telnet_pass(int idx, int atr)
   dcc[idx].timeval = now;
   if (glob_botmast(fr))
     ok = 1;
-  else if (chan_op(fr)) {
-    if (!require_p)
-      ok = 1;
-    else if (glob_party(fr))
-      ok = 1;
-  } else if (glob_party(fr)) {
+  else if (glob_party(fr)) {
     ok = 1;
     dcc[idx].status |= STAT_PARTY;
   }
@@ -2008,11 +1998,7 @@ static void dcc_telnet_got_ident(int i, char *host)
 
     u = get_user_by_host(x);
     /* Not a user or +p & require p OR +o */
-    if (!u)
-      ok = 0;
-    else if (require_p && !(u->flags & USER_PARTY))
-      ok = 0;
-    else if (!require_p && !(u->flags & USER_OP))
+    if (!u || !(u->flags & USER_PARTY))
       ok = 0;
     if (!ok && u && (u->flags & USER_BOT))
       ok = 1;

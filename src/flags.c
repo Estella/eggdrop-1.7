@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: flags.c,v 1.6 2004/10/06 00:04:32 wcc Exp $
+ * $Id: flags.c,v 1.7 2004/11/24 22:37:32 wcc Exp $
  */
 
 #include "main.h"
@@ -29,7 +29,7 @@
 #include "rfc1459.h"  /* rfc_casecmp */
 #include "userent.h"  /* list_type_kill */
 
-extern int raw_log, require_p, noshare, allow_dk_cmds;
+extern int raw_log, noshare, allow_dk_cmds;
 extern struct dcc_t *dcc;
 
 
@@ -346,8 +346,6 @@ int flagrec_ok(struct flag_record *req, struct flag_record *have)
     /* The +n/+m checks arent needed anymore since +n/+m
      * automatically add lower flags
      */
-    if (!require_p && ((hav & USER_OP) || (have->chan & USER_OWNER)))
-      hav |= USER_PARTY;
     if (hav & req->global)
       return 1;
     if (have->chan & req->chan)

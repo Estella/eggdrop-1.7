@@ -125,10 +125,6 @@
    If you want all dcc file transfers to use a particular portrange
    either because you're behind a firewall, or for other security
    reasons, set it here.
-%{help=set require-p}%{+n}
-###  %bset require-p%b <0/1>
-   Define here whether or not a +o user still needs the +p flag to
-   dcc the bot.
 %{help=set keep-all-logs}%{+n}
 ###  %bset keep-all-logs%b <0/1>
    If you want to keep your logfiles forever, turn this setting on.
@@ -165,9 +161,6 @@
    Enter the flags that all new users should get by default. See
    '.help whois' on the partyline for a list of flags and their
    descriptions.
-%{help=set log-time}%{+n}
-###  %bset log-time%b <0/1>
-   Use this feature to timestamp entries in the log file.
 %{help=set max-logsize}%{+n}
 ###  %bset max-logsize%b <filesize>
    This is the maximum size of your logfiles. Set it to 0 to disable.

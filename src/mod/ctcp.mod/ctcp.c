@@ -2,7 +2,7 @@
  * ctcp.c -- part of ctcp.mod
  *   all the ctcp handling (except DCC, it's special ;)
  *
- * $Id: ctcp.c,v 1.2 2004/08/25 01:51:04 wcc Exp $
+ * $Id: ctcp.c,v 1.3 2004/11/24 22:37:32 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -146,7 +146,7 @@ static int ctcp_CHAT(char *nick, char *uhost, char *handle, char *object,
   struct userrec *u = get_user_by_handle(userlist, handle);
   int atr = u ? u->flags : 0, i;
 
-  if ((atr & (USER_PARTY | USER_XFER)) || ((atr & USER_OP) && !require_p)) {
+  if (atr & (USER_PARTY | USER_XFER)) {
 
     if (u_pass_match(u, "-")) {
       simple_sprintf(ctcp_reply, "%s\001ERROR no password set\001",

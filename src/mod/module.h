@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: module.h,v 1.7 2004/10/27 23:54:55 wcc Exp $
+ * $Id: module.h,v 1.8 2004/11/24 22:37:32 wcc Exp $
  */
 
 #ifndef _EGG_MOD_MODULE_H
@@ -221,7 +221,7 @@
 #define share_greet (*(int *)global[99])
 /* 100 - 103 */
 #define max_dcc (*(int *)global[100])
-#define require_p (*(int *)global[101])
+/* was require_p */
 #define ignore_time (*(int *)(global[102]))
 /* was use_console_r <Wcc[02/02/03]> */
 /* 104 - 107 */
