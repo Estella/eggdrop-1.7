@@ -2,7 +2,7 @@
  * tcldcc.c -- handles:
  *   Tcl stubs for the dcc commands
  *
- * $Id: tcldcc.c,v 1.1 2004/08/25 01:02:05 wcc Exp $
+ * $Id: tcldcc.c,v 1.2 2004/08/25 06:39:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -26,6 +26,9 @@
 #include "main.h"
 #include "tandem.h"
 #include "modules.h"
+
+#include "botmsg.h" /* int_to_base10 */
+#include "botnet.h" /* lastbot, nextbot, botlink, butunlink */
 
 extern Tcl_Interp *interp;
 extern tcl_timer_t *timer, *utimer;

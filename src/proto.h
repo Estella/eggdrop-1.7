@@ -7,7 +7,7 @@
  * because they use structures in those
  * (saves including those .h files EVERY time) - Beldin
  *
- * $Id: proto.h,v 1.1 2004/08/25 01:02:06 wcc Exp $
+ * $Id: proto.h,v 1.2 2004/08/25 06:39:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -56,46 +56,6 @@ extern int (*rfc_toupper) (int);
 extern int (*rfc_tolower) (int);
 extern int (*match_noterej) (struct userrec *, char *);
 #endif
-
-/* botcmd.c */
-void bot_share(int, char *);
-int base64_to_int(char *);
-
-/* botnet.c */
-void answer_local_whom(int, int);
-char *lastbot(char *);
-int nextbot(char *);
-int in_chain(char *);
-void tell_bots(int);
-void tell_bottree(int, int);
-int botlink(char *, int, char *);
-int botunlink(int, char *, char *, char *);
-void dump_links(int);
-void addbot(char *, char *, char *, char, int);
-void updatebot(int, char *, char, int);
-void rembot(char *);
-struct tand_t_struct *findbot(char *);
-void unvia(int, struct tand_t_struct *);
-void check_botnet_pings();
-int partysock(char *, char *);
-int addparty(char *, char *, int, char, int, char *, int *);
-void remparty(char *, int);
-void partystat(char *, int, int, int);
-int partynick(char *, int, char *);
-int partyidle(char *, char *);
-void partysetidle(char *, int, int);
-void partyaway(char *, int, char *);
-void zapfbot(int);
-void tandem_relay(int, char *, int);
-int getparty(char *, int);
-
-/* botmsg.c */
-int add_note(char *, char *, char *, int, int);
-int simple_sprintf EGG_VARARGS(char *, arg1);
-void tandout_but EGG_VARARGS(int, arg1);
-char *int_to_base10(int);
-char *unsigned_int_to_base10(unsigned int);
-char *int_to_base64(unsigned int);
 
 /* chanprog.c */
 void tell_verbose_uptime(int);

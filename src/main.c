@@ -5,7 +5,7 @@
  *   command line arguments
  *   context and assert debugging
  *
- * $Id: main.c,v 1.2 2004/08/25 01:51:04 wcc Exp $
+ * $Id: main.c,v 1.3 2004/08/25 06:39:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -50,7 +50,7 @@
 #  endif
 #endif
 
-#ifdef STOP_UAC                         /* osf/1 complains a lot */
+#ifdef STOP_UAC                         /* OSF/1 complains a lot */
 #  include <sys/sysinfo.h>
 #  define UAC_NOPRINT 0x00000001        /* Don't report unaligned fixups */
 #endif
@@ -59,6 +59,8 @@
 #include "modules.h"
 #include "tandem.h"
 #include "bg.h"
+
+#include "botnet.h" /* check_botnet_pings */
 
 #ifndef ENABLE_STRIP
 #  include <sys/resource.h>

@@ -2,7 +2,7 @@
  * tcluser.c -- handles:
  *   Tcl stubs for the user-record-oriented commands
  *
- * $Id: tcluser.c,v 1.1 2004/08/25 01:02:04 wcc Exp $
+ * $Id: tcluser.c,v 1.2 2004/08/25 06:39:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -28,6 +28,9 @@
 #include "chan.h"
 #include "tandem.h"
 #include "modules.h"
+
+#include "botmsg.h" /* int_to_base10 */
+#include "botnet.h" /* nextbot */
 
 extern Tcl_Interp *interp;
 extern struct userrec *userlist;

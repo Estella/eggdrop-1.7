@@ -7,7 +7,7 @@
  *   linking, unlinking, and relaying to another bot
  *   pinging the bots periodically and checking leaf status
  *
- * $Id: botnet.c,v 1.1 2004/08/25 01:02:06 wcc Exp $
+ * $Id: botnet.c,v 1.2 2004/08/25 06:39:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -30,6 +30,9 @@
 
 #include "main.h"
 #include "tandem.h"
+
+#include "botnet.h"
+#include "botmsg.h" /* simple_sprintf, tandout_but */
 
 extern int dcc_total, backgrd, connect_timeout, max_dcc, egg_numver;
 extern struct userrec *userlist;

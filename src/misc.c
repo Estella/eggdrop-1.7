@@ -7,7 +7,7 @@
  *   help system
  *   motd display and %var substitution
  *
- * $Id: misc.c,v 1.1 2004/08/25 01:02:04 wcc Exp $
+ * $Id: misc.c,v 1.2 2004/08/25 06:39:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -42,6 +42,8 @@
 #endif
 
 #include "stat.h"
+
+#include "botmsg.h" /* simple_sprintf() */
 
 extern struct dcc_t *dcc;
 extern struct chanset_t *chanset;

@@ -2,7 +2,7 @@
  * tclmisc.c -- handles:
  *   Tcl stubs for everything else
  *
- * $Id: tclmisc.c,v 1.1 2004/08/25 01:02:04 wcc Exp $
+ * $Id: tclmisc.c,v 1.2 2004/08/25 06:39:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -27,6 +27,7 @@
 #include "modules.h"
 #include "tandem.h"
 #include "md5/md5.h"
+#include "botmsg.h" /* add_note() */
 
 #ifdef TIME_WITH_SYS_TIME
 #  include <sys/time.h>

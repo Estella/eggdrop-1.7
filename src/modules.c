@@ -4,7 +4,7 @@
  *
  * by Darrin Smith (beldin@light.iinet.net.au)
  *
- * $Id: modules.c,v 1.1 2004/08/25 01:02:04 wcc Exp $
+ * $Id: modules.c,v 1.2 2004/08/25 06:39:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -31,6 +31,10 @@
 #include "tandem.h"
 #include "md5/md5.h"
 #include "users.h"
+
+#include "botcmd.h"
+#include "botmsg.h"
+#include "botnet.h"
 
 #ifndef STATIC
 #  ifdef MOD_USE_SHL

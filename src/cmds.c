@@ -3,7 +3,7 @@
  *   commands from a user via dcc
  *   (split in 2, this portion contains no-irc commands)
  *
- * $Id: cmds.c,v 1.1 2004/08/25 01:02:02 wcc Exp $
+ * $Id: cmds.c,v 1.2 2004/08/25 06:39:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -28,6 +28,10 @@
 #include "tandem.h"
 #include "modules.h"
 #include <ctype.h>
+
+#include "botmsg.h" /* simple_sprintf */
+#include "botnet.h" /* answer_local_whom, lastbot, nextbot, tell_bots,
+                     * tell_bottree, botlink, botunlink, tandem_relay */
 
 extern struct chanset_t *chanset;
 extern struct dcc_t *dcc;

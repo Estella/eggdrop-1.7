@@ -3,7 +3,7 @@
  *   commands that comes across the botnet
  *   userfile transfer and update commands from sharebots
  *
- * $Id: botcmd.c,v 1.1 2004/08/25 01:02:05 wcc Exp $
+ * $Id: botcmd.c,v 1.2 2004/08/25 06:39:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -30,6 +30,10 @@
 #include "chan.h"
 #include "modules.h"
 
+#include "botcmd.h"
+#include "botnet.h"
+#include "botmsg.h" /* add_note, simple_sprintf, base64_to_int */
+
 extern char botnetnick[], ver[], admin[], network[], motdfile[];
 extern int dcc_total, remote_boots, noshare;
 extern struct dcc_t *dcc;
@@ -41,35 +45,6 @@ extern party_t *party;
 extern module_entry *module_list;
 
 static char TBUF[1024]; /* Static buffer for goofy bot stuff */
-
-static char base64to[256] = {
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 0, 0,
-  0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-  15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 62, 0, 63, 0, 0, 0, 26, 27, 28,
-  29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
-  49, 50, 51, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-};
-
-
-int base64_to_int(char *buf)
-{
-  int i = 0;
-
-  while (*buf) {
-    i = i << 6;
-    i += base64to[(int) *buf];
-    buf++;
-  }
-  return i;
-}
 
 /* Used for 1.0 compatibility: if a join message arrives with no sock#,
  * i'll just grab the next "fakesock" # (incrementing to assure uniqueness)
@@ -171,7 +146,7 @@ static void bot_chat(int idx, char *par)
   }
   chatout("*** (%s) %s\n", from, par);
   botnet_send_chat(idx, from, par);
-  check_tcl_bcst(from, -1, par);  
+  check_tcl_bcst(from, -1, par);
 }
 
 /* actchan <from> <chan> <text>
