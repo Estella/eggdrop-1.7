@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: logfile.c,v 1.3 2004/08/31 22:56:11 wcc Exp $
+ * $Id: logfile.c,v 1.4 2004/09/02 20:57:39 wcc Exp $
  */
 
 #include "main.h"
@@ -636,7 +636,9 @@ tcl_cmds logfile_tcl[] = {
 
 void logfile_init(int dotcl)
 {
-  if (dotcl) {
+  if (dotcl)
+    add_tcl_commands(logfile_tcl);
+  else {
     static int last = 0;
 
     if (max_logs < 1)
@@ -655,7 +657,5 @@ void logfile_init(int dotcl)
       logs[last].repeats   = 0;
       logs[last].flags     = 0;
     }
-  } else {
-    add_tcl_commands(logfile_tcl);
   }
 }
