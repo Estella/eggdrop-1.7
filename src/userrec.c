@@ -4,7 +4,7 @@
  *   a bunch of functions to find and change user records
  *   change and check user (and channel-specific) flags
  *
- * $Id: userrec.c,v 1.8 2004/08/30 23:58:23 wcc Exp $
+ * $Id: userrec.c,v 1.9 2004/08/31 01:48:21 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -521,7 +521,7 @@ void sort_userlist()
 
   again = 1;
   last = NULL;
-  while ((userlist != last) && (again)) {
+  while (userlist != last && again) {
     p = NULL;
     c = userlist;
     n = c->next;
@@ -748,7 +748,7 @@ int deluser(char *handle)
   struct userrec *u = userlist, *prev = NULL;
   int fnd = 0;
 
-  while ((u != NULL) && (!fnd)) {
+  while ((u != NULL) && !fnd) {
     if (!egg_strcasecmp(u->handle, handle))
       fnd = 1;
     else {

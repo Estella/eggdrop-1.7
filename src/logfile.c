@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: logfile.c,v 1.1 2004/08/30 23:58:23 wcc Exp $
+ * $Id: logfile.c,v 1.2 2004/08/31 01:48:21 wcc Exp $
  */
 
 #include "main.h"
@@ -41,6 +41,9 @@ int shtime = 1;       /* Display the time with console output? */
 int max_logs = 5;     /* Current maximum log files. */
 int max_logsize = 0;  /* Maximum logfile size; 0 for no limit. */
 int raw_log = 0;      /* Allow logging of raw traffic? */
+
+int conmask = LOG_TCLERROR | LOG_MODES | LOG_CMDS | LOG_MISC; /* Console mask. */
+
 
 void logfile_init()
 {
@@ -67,6 +70,232 @@ void logfile_init()
 int logfile_expmem()
 {
   return (max_logs * sizeof(log_t));
+}
+
+int logmodes(char *s)
+{
+  int i, res = 0;
+
+  for (i = 0; i < strlen(s); i++) {
+    switch (s[i]) {
+      case 'm':
+      case 'M':
+        res |= LOG_MSGS;
+        break;
+      case 'p':
+      case 'P':
+        res |= LOG_PUBLIC;
+        break;
+      case 'j':
+      case 'J':
+        res |= LOG_JOIN;
+        break;
+      case 'k':
+      case 'K':
+        res |= LOG_MODES;
+        break;
+      case 'c':
+      case 'C':
+        res |= LOG_CMDS;
+        break;
+      case 'o':
+      case 'O':
+        res |= LOG_MISC;
+        break;
+      case 'b':
+      case 'B':
+        res |= LOG_BOTS;
+        break;
+      case 'w':
+      case 'W':
+        res |= LOG_WALL;
+        break;
+      case 'x':
+      case 'X':
+        res |= LOG_FILES;
+        break;
+      case 's':
+      case 'S':
+        res |= LOG_SERV;
+        break;
+      case 'd':
+      case 'D':
+        res |= LOG_DEBUG;
+        break;
+      case 'r':
+      case 'R':
+        res |= raw_log ? LOG_RAW : 0;
+        break;
+      case 'v':
+      case 'V':
+        res |= raw_log ? LOG_SRVOUT : 0;
+        break;
+      case 't':
+      case 'T':
+        res |= raw_log ? LOG_BOTNET : 0;
+        break;
+      case 'h':
+      case 'H':
+        res |= raw_log ? LOG_BOTSHARE : 0;
+        break;
+      case 'e':
+      case 'E':
+        res |= LOG_TCLERROR;
+        break;
+      case '1':
+        res |= LOG_LEV1;
+        break;
+      case '2':
+        res |= LOG_LEV2;
+        break;
+      case '3':
+        res |= LOG_LEV3;
+        break;
+      case '4':
+        res |= LOG_LEV4;
+        break;
+      case '5':
+        res |= LOG_LEV5;
+        break;
+      case '6':
+        res |= LOG_LEV6;
+        break;
+      case '7':
+        res |= LOG_LEV7;
+        break;
+      case '8':
+        res |= LOG_LEV8;
+        break;
+      case '*':
+        res |= LOG_ALL;
+        break;
+    }
+  }
+
+  return res;
+}
+
+char *masktype(int x)
+{
+  static char s[26]; /* Change this if you change the levels. */
+  char *p = s;
+
+  if (x & LOG_MSGS)
+    *p++ = 'm';
+  if (x & LOG_PUBLIC)
+    *p++ = 'p';
+  if (x & LOG_JOIN)
+    *p++ = 'j';
+  if (x & LOG_MODES)
+    *p++ = 'k';
+  if (x & LOG_CMDS)
+    *p++ = 'c';
+  if (x & LOG_MISC)
+    *p++ = 'o';
+  if (x & LOG_BOTS)
+    *p++ = 'b';
+  if (x & LOG_FILES)
+    *p++ = 'x';
+  if (x & LOG_SERV)
+    *p++ = 's';
+  if (x & LOG_DEBUG)
+    *p++ = 'd';
+  if (x & LOG_WALL)
+    *p++ = 'w';
+  if ((x & LOG_RAW) && raw_log)
+    *p++ = 'r';
+  if ((x & LOG_SRVOUT) && raw_log)
+    *p++ = 'v';
+  if ((x & LOG_BOTNET) && raw_log)
+    *p++ = 't';
+  if ((x & LOG_BOTSHARE) && raw_log)
+    *p++ = 'h';
+  if ((x & LOG_TCLERROR))
+    *p++ = 'e';
+  if (x & LOG_LEV1)
+    *p++ = '1';
+  if (x & LOG_LEV2)
+    *p++ = '2';
+  if (x & LOG_LEV3)
+    *p++ = '3';
+  if (x & LOG_LEV4)
+    *p++ = '4';
+  if (x & LOG_LEV5)
+    *p++ = '5';
+  if (x & LOG_LEV6)
+    *p++ = '6';
+  if (x & LOG_LEV7)
+    *p++ = '7';
+  if (x & LOG_LEV8)
+    *p++ = '8';
+  if (p == s)
+    *p++ = '-';
+  *p = 0;
+
+  return s;
+}
+
+char *maskname(int x)
+{
+  static char s[256]; /* Change this if you change the levels. */
+  int i = 0;
+
+  s[0] = 0;
+  if (x & LOG_MSGS)
+    i += my_strcpy(s, "msgs, ");
+  if (x & LOG_PUBLIC)
+    i += my_strcpy(s + i, "public, ");
+  if (x & LOG_JOIN)
+    i += my_strcpy(s + i, "joins, ");
+  if (x & LOG_MODES)
+    i += my_strcpy(s + i, "kicks/modes, ");
+  if (x & LOG_CMDS)
+    i += my_strcpy(s + i, "cmds, ");
+  if (x & LOG_MISC)
+    i += my_strcpy(s + i, "misc, ");
+  if (x & LOG_BOTS)
+    i += my_strcpy(s + i, "bots, ");
+  if (x & LOG_FILES)
+    i += my_strcpy(s + i, "files, ");
+  if (x & LOG_SERV)
+    i += my_strcpy(s + i, "server, ");
+  if (x & LOG_DEBUG)
+    i += my_strcpy(s + i, "debug, ");
+  if (x & LOG_WALL)
+    i += my_strcpy(s + i, "wallops, ");
+  if ((x & LOG_RAW) && raw_log)
+    i += my_strcpy(s + i, "server raw (incoming), ");
+  if ((x & LOG_SRVOUT) && raw_log)
+    i += my_strcpy(s + i, "server raw (outgoing), ");
+  if ((x & LOG_BOTNET) && raw_log)
+    i += my_strcpy(s + i, "botnet traffic, ");
+  if ((x & LOG_BOTSHARE) && raw_log)
+    i += my_strcpy(s + i, "share traffic, ");
+  if ((x & LOG_TCLERROR))
+    i += my_strcpy(s + i, "Tcl errors, ");
+  if (x & LOG_LEV1)
+    i += my_strcpy(s + i, "level 1, ");
+  if (x & LOG_LEV2)
+    i += my_strcpy(s + i, "level 2, ");
+  if (x & LOG_LEV3)
+    i += my_strcpy(s + i, "level 3, ");
+  if (x & LOG_LEV4)
+    i += my_strcpy(s + i, "level 4, ");
+  if (x & LOG_LEV5)
+    i += my_strcpy(s + i, "level 5, ");
+  if (x & LOG_LEV6)
+    i += my_strcpy(s + i, "level 6, ");
+  if (x & LOG_LEV7)
+    i += my_strcpy(s + i, "level 7, ");
+  if (x & LOG_LEV8)
+    i += my_strcpy(s + i, "level 8, ");
+
+  if (i)
+    s[i - 2] = 0;
+  else
+    strcpy(s, "none");
+
+  return s;
 }
 
 void putlog EGG_VARARGS_DEF(int, arg1)

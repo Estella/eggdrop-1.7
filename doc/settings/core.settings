@@ -1,4 +1,4 @@
-$Id: core.settings,v 1.1 2004/08/25 01:01:59 wcc Exp $
+$Id: core.settings,v 1.2 2004/08/31 01:48:21 wcc Exp $
 
 Eggdrop Core Settings
 Last revised: April 17, 2003
@@ -129,6 +129,7 @@ Last revised: April 17, 2003
         b - information about bot linking and userfile sharing
         c - commands
         d - misc debug information
+        e - Tcl errors
         h - raw share traffic
         j - joins, parts, quits, and netsplits on the channel
         k - kicks, bans, and mode changes on the channel
@@ -154,12 +155,15 @@ Last revised: April 17, 2003
 
       logfile mco * "logs/eggdrop.log"
       logfile jpk #lamest "logs/lamest.log"
+      logfile e * "logs/tclerrors.log"
 
       In 'eggdrop.log', put private msgs/ctcps, commands, misc info, and errors
       from any channel.
 
       In 'lamest.log', log all joins, parts, kicks, bans, public chatter, and
       mode changes from #lamest.
+
+      In 'tclerrors.log', log all Tcl (script) errors.
 
 
     set log-time 1

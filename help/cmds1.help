@@ -241,6 +241,7 @@ See also: chhandle
    Masters only:
      %bb%b  information about bot linking and userfile sharing
      %bd%b  misc debug information
+     %be%b  Tcl errors
      %bc%b  commands
      %bo%b  misc info, errors, etc (IMPORTANT STUFF)
      %bw%b  wallops (make sure the bot sets +w in init-server)

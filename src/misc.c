@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: misc.c,v 1.9 2004/08/30 23:58:23 wcc Exp $
+ * $Id: misc.c,v 1.10 2004/08/31 01:48:21 wcc Exp $
  */
 
 #include "main.h"
@@ -49,8 +49,6 @@ extern char helpdir[], version[], botname[], admin[], network[], motdfile[],
 extern int con_chan, strict_ident;
 extern time_t now;
 
-
-int conmask = LOG_MODES | LOG_CMDS | LOG_MISC; /* Console mask */
 
 struct help_list_t {
   struct help_list_t *next;

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tclmisc.c,v 1.8 2004/08/30 23:58:23 wcc Exp $
+ * $Id: tclmisc.c,v 1.9 2004/08/31 01:48:21 wcc Exp $
  */
 
 #include "main.h"
@@ -43,7 +43,7 @@
 #include "md5/md5.h"
 #include "botmsg.h"  /* add_note */
 #include "dcc.h"     /* STRIP_*, strip_mirc_codes, struct dcc_t */
-#include "logfile.h" /* log_t, LF_EXPIRING, LOG_*, putlog */
+#include "logfile.h" /* log_t, LF_EXPIRING, LOG_*, putlog, logmodes, masktype */
 #include "match.h"   /* wild_match_per */
 #include "net.h"     /* getmyip */
 

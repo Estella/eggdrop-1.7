@@ -3,7 +3,7 @@
  * This is hereby released into the public domain.
  * Robey Pointer, robey@netcom.com
  *
- * $Id: net.c,v 1.6 2004/08/30 23:58:23 wcc Exp $
+ * $Id: net.c,v 1.7 2004/08/31 01:48:21 wcc Exp $
  */
 
 #include <fcntl.h>
@@ -585,7 +585,7 @@ static int sockread(char *s, int *len)
 
   for (i = 0; i < MAXSOCKS; i++) {
     if (!(socklist[i].flags & (SOCK_UNUSED | SOCK_VIRTUAL))) {
-      if ((socklist[i].sock == STDOUT) && !backgrd)
+      if (socklist[i].sock == STDOUT && !backgrd)
         fdtmp = STDIN;
       else
         fdtmp = socklist[i].sock;
@@ -607,10 +607,9 @@ static int sockread(char *s, int *len)
   if (x > 0) {
     /* Something happened */
     for (i = 0; i < MAXSOCKS; i++) {
-      if ((!(socklist[i].flags & SOCK_UNUSED)) &&
-          ((FD_ISSET(socklist[i].sock, &fd)) ||
-          ((socklist[i].sock == STDOUT) && (!backgrd) &&
-          (FD_ISSET(STDIN, &fd))))) {
+      if (!(socklist[i].flags & SOCK_UNUSED) &&
+          (FD_ISSET(socklist[i].sock, &fd) || (socklist[i].sock == STDOUT &&
+          !backgrd && FD_ISSET(STDIN, &fd)))) {
         if (socklist[i].flags & (SOCK_LISTEN | SOCK_CONNECT)) {
           /* Listening socket -- don't read, just return activity */
           /* Same for connection attempt */

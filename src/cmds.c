@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.c,v 1.10 2004/08/30 23:58:23 wcc Exp $
+ * $Id: cmds.c,v 1.11 2004/08/31 01:48:21 wcc Exp $
  */
 
 #include "main.h"
@@ -32,7 +32,7 @@
                       * struct dcc_t */
 #include "dccutil.h" /* get_data_ptr, dprintf, chanout_but, dcc_chatter, lostdcc,
                       * tell_dcc, not_away, set_away, do_boot, flush_lines */
-#include "logfile.h" /* putlog, LOG_* */
+#include "logfile.h" /* LOG_*, putlog, logmodes, masktype, maskname */
 #include "net.h"     /* killsock, tell_netdebug */
 #include "userrec.h" /* adduser, addhost_by_handle, u_pass_match, delhost_by_handle,
                       * deluser, change_handle, correct_handle, write_userfile */
@@ -672,7 +672,7 @@ static void cmd_console(struct userrec *u, int idx, char *par)
   if (nick[0] && !strchr(CHANMETA "+-*", nick[0]) && glob_master(fr)) {
     for (i = 0; i < dcc_total; i++)
       if (!egg_strcasecmp(nick, dcc[i].nick) &&
-          (dcc[i].type == &DCC_CHAT) && (!ok)) {
+          (dcc[i].type == &DCC_CHAT) && !ok) {
         ok = 1;
         dest = i;
       }
@@ -721,13 +721,13 @@ static void cmd_console(struct userrec *u, int idx, char *par)
         md = logmodes(s);
         if ((dest == idx) && !glob_master(fr) && pls) {
           if (chan_master(fr))
-            md &= ~(LOG_FILES | LOG_LEV1 | LOG_LEV2 | LOG_LEV3 |
-                    LOG_LEV4 | LOG_LEV5 | LOG_LEV6 | LOG_LEV7 |
-                    LOG_LEV8 | LOG_DEBUG);
+            md &= ~(LOG_FILES | LOG_LEV1 | LOG_LEV2 | LOG_LEV3 | LOG_LEV4 |
+                    LOG_LEV5 | LOG_LEV6 | LOG_LEV7 | LOG_LEV8 | LOG_TCLERROR |
+                    LOG_DEBUG);
           else
-            md &= ~(LOG_MISC | LOG_CMDS | LOG_FILES | LOG_LEV1 |
-                    LOG_LEV2 | LOG_LEV3 | LOG_LEV4 | LOG_LEV5 |
-                    LOG_LEV6 | LOG_LEV7 | LOG_LEV8 | LOG_WALL | LOG_DEBUG);
+            md &= ~(LOG_MISC | LOG_CMDS | LOG_FILES | LOG_LEV1 | LOG_LEV2 |
+                    LOG_LEV3 | LOG_LEV4 | LOG_LEV5 | LOG_LEV6 | LOG_LEV7 |
+                    LOG_LEV8 | LOG_WALL | LOG_TCLERROR | LOG_DEBUG);
         }
         if (!glob_owner(fr) && pls)
           md &= ~(LOG_RAW | LOG_SRVOUT | LOG_BOTNET | LOG_BOTSHARE);
@@ -1299,7 +1299,7 @@ int check_dcc_attrs(struct userrec *u, int oatr)
                                       LOG_FILES | LOG_LEV1 | LOG_LEV2 |
                                       LOG_LEV3 | LOG_LEV4 | LOG_LEV5 |
                                       LOG_LEV6 | LOG_LEV7 | LOG_LEV8 |
-                                      LOG_WALL | LOG_DEBUG);
+                                      LOG_WALL | LOG_TCLERROR | LOG_DEBUG);
         get_user_flagrec(u, &fr, NULL);
         if (!chan_master(fr))
           dcc[i].u.chat->con_flags |= (LOG_MISC | LOG_CMDS);
@@ -1411,7 +1411,7 @@ int check_dcc_chanattrs(struct userrec *u, char *chname, int chflags,
                                         LOG_LEV4 | LOG_LEV5 | LOG_LEV6 |
                                         LOG_LEV7 | LOG_LEV8 | LOG_RAW |
                                         LOG_DEBUG | LOG_WALL | LOG_FILES |
-                                        LOG_SRVOUT);
+                                        LOG_TCLERROR | LOG_SRVOUT);
         dprintf(i, "*** POOF! ***\n");
         dprintf(i, "You are now a master on %s.\n", chname);
       }

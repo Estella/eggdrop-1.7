@@ -1,5 +1,5 @@
 # Makefile for src/
-# $Id: Makefile.in,v 1.6 2004/08/30 23:58:23 wcc Exp $
+# $Id: Makefile.in,v 1.7 2004/08/31 01:48:21 wcc Exp $
 
 SHELL = @SHELL@
 top_srcdir = @top_srcdir@
@@ -157,7 +157,7 @@ logfile.o: logfile.c main.h ../config.h ../lush.h eggdrop.h types.h \
   debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
   tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
   ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h
+  compat/strcasecmp.h compat/strftime.h stat.h dcc.h dccutil.h rfc1459.h
 main.o: main.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
   logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
   tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botcmd.c,v 1.7 2004/08/30 23:58:23 wcc Exp $
+ * $Id: botcmd.c,v 1.8 2004/08/31 01:48:21 wcc Exp $
  */
 
 #include "main.h"
@@ -864,7 +864,7 @@ static void bot_reject(int idx, char *par)
         botnet_send_priv(idx, botnetnick, from, NULL, "%s", BOT_NOREMOTEBOOT);
         ok = 1;
       }
-      for (i = 0; (i < dcc_total) && (!ok); i++)
+      for (i = 0; (i < dcc_total) && !ok; i++)
         if ((!egg_strcasecmp(who, dcc[i].nick)) &&
             (dcc[i].type->flags & DCT_CHAT)) {
           u = get_user_by_handle(userlist, dcc[i].nick);

@@ -7,7 +7,7 @@
  * because they use structures in those
  * (saves including those .h files EVERY time) - Beldin
  *
- * $Id: proto.h,v 1.8 2004/08/30 23:58:23 wcc Exp $
+ * $Id: proto.h,v 1.9 2004/08/31 01:48:21 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -52,10 +52,7 @@ extern int (*match_noterej) (struct userrec *, char *);
 void tell_verbose_uptime(int);
 void tell_verbose_status(int);
 void tell_settings(int);
-int logmodes(char *);
 int isowner(char *);
-char *masktype(int);
-char *maskname(int);
 void reaffirm_owners();
 void rehash();
 void reload();
