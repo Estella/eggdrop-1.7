@@ -2,7 +2,7 @@
  * server.c -- part of server.mod
  *   basic irc server support
  *
- * $Id: server.c,v 1.2 2004/08/25 01:51:05 wcc Exp $
+ * $Id: server.c,v 1.3 2004/08/25 05:26:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -1786,48 +1786,46 @@ static Function server_table[] = {
   (Function) server_expmem,
   (Function) server_report,
   /* 4 - 7 */
-  (Function) NULL,              /* char * (points to botname later on)  */
-  (Function) botuserhost,       /* char *                               */
-  (Function) NULL,              /* Was quiet_reject <Wcc[01/21/03]>.    */
-  (Function) & serv,            /* int                                  */
+  (Function) NULL,                /* char * (points to botname later on) */
+  (Function) botuserhost,         /* char *                              */
+  (Function) & serv,              /* int                                 */
+  (Function) & flud_thr,          /* int                                 */
   /* 8 - 11 */
-  (Function) & flud_thr,        /* int                                  */
-  (Function) & flud_time,       /* int                                  */
-  (Function) & flud_ctcp_thr,   /* int                                  */
-  (Function) & flud_ctcp_time,  /* int                                  */
-  /* 12 - 15 */
+  (Function) & flud_time,         /* int                                 */
+  (Function) & flud_ctcp_thr,     /* int                                 */
+  (Function) & flud_ctcp_time,    /* int                                 */
   (Function) match_my_nick,
+  /* 12 - 15 */
   (Function) check_tcl_flud,
-  (Function) NULL,              /* fixfrom - moved to core (drummer)    */
-  (Function) & answer_ctcp,     /* int                                  */
-  /* 16 - 19 */
-  (Function) & trigger_on_ignore, /* int                                */
+  (Function) & answer_ctcp,       /* int                                 */
+  (Function) & trigger_on_ignore, /* int                                 */
   (Function) check_tcl_ctcpr,
+  /* 16 - 19 */
   (Function) detect_avalanche,
   (Function) nuke_server,
+  (Function) newserver,           /* char *                              */
+  (Function) & newserverport,     /* int                                 */
   /* 20 - 23 */
-  (Function) newserver,         /* char *                               */
-  (Function) & newserverport,   /* int                                  */
-  (Function) newserverpass,     /* char *                               */
-  (Function) & cycle_time,      /* int                                  */
+  (Function) newserverpass,       /* char *                              */
+  (Function) & cycle_time,        /* int                                 */
+  (Function) & default_port,      /* int                                 */
+  (Function) & server_online,     /* int                                 */
   /* 24 - 27 */
-  (Function) & default_port,    /* int                                  */
-  (Function) & server_online,   /* int                                  */
-  (Function) & min_servs,       /* int                                  */
-  (Function) & H_raw,           /* p_tcl_bind_list                      */
+  (Function) & min_servs,         /* int                                 */
+  (Function) & H_raw,             /* p_tcl_bind_list                     */
+  (Function) & H_wall,            /* p_tcl_bind_list                     */
+  (Function) & H_msg,             /* p_tcl_bind_list                     */
   /* 28 - 31 */
-  (Function) & H_wall,          /* p_tcl_bind_list                      */
-  (Function) & H_msg,           /* p_tcl_bind_list                      */
-  (Function) & H_msgm,          /* p_tcl_bind_list                      */
-  (Function) & H_notc,          /* p_tcl_bind_list                      */
+  (Function) & H_msgm,            /* p_tcl_bind_list                     */
+  (Function) & H_notc,            /* p_tcl_bind_list                     */
+  (Function) & H_flud,            /* p_tcl_bind_list                     */
+  (Function) & H_ctcp,            /* p_tcl_bind_list                     */
   /* 32 - 35 */
-  (Function) & H_flud,          /* p_tcl_bind_list                      */
-  (Function) & H_ctcp,          /* p_tcl_bind_list                      */
-  (Function) & H_ctcr,          /* p_tcl_bind_list                      */
+  (Function) & H_ctcr,            /* p_tcl_bind_list                     */
   (Function) ctcp_reply,
-  /* 36 - 38 */
-  (Function) get_altbotnick,    /* char *                               */
-  (Function) & nick_len,        /* int                                  */
+  (Function) get_altbotnick,      /* char *                              */
+  (Function) & nick_len,          /* int                                 */
+  /* 36 */
   (Function) check_tcl_notc
 };
 

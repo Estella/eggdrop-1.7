@@ -1,7 +1,7 @@
 /*
  * transfer.h -- part of transfer.mod
  *
- * $Id: transfer.h,v 1.1 2004/08/25 01:02:13 wcc Exp $
+ * $Id: transfer.h,v 1.2 2004/08/25 05:26:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -103,30 +103,29 @@ enum dccsend_types {
 #define TRANSFER_STAT_2             get_language(0xf42)
 
 #ifndef MAKING_TRANSFER
+
 /* 4 - 7 */
 #define DCC_FORK_SEND (*(struct dcc_table *)(transfer_funcs[4]))
 #define at_limit(a) (((int (*) (char *))transfer_funcs[5])(a))
-/* Was copy_to_tmp (moved to core) <Wcc[01/20/03]>. */
-#define fileq_cancel(a,b) (((void (*) (int,char *))transfer_funcs[7])(a,b))
+#define fileq_cancel(a,b) (((void (*) (int,char *))transfer_funcs[6])(a,b))
+#define queue_file(a,b,c,d) (((void (*)(char *,char *,char *,char *))transfer_funcs[7])(a,b,c,d))
 /* 8 - 11 */
-#define queue_file(a,b,c,d) (((void (*)(char *,char *,char *,char *))transfer_funcs[8])(a,b,c,d))
-#define raw_dcc_send(a,b,c,d) (((int (*) (char *,char *,char *,char *))transfer_funcs[9])(a,b,c,d))
-#define show_queued_files(a) (((void (*) (int))transfer_funcs[10])(a))
-#define wild_match_file(a,b) (((int (*)(register char *, register char *))transfer_funcs[11])(a,b))
+#define raw_dcc_send(a,b,c,d) (((int (*) (char *,char *,char *,char *))transfer_funcs[8])(a,b,c,d))
+#define show_queued_files(a) (((void (*) (int))transfer_funcs[9])(a))
+#define wild_match_file(a,b) (((int (*)(register char *, register char *))transfer_funcs[10])(a,b))
+#define wipe_tmp_filename(a,b) (((void (*) (char *,int))transfer_funcs[11])(a,b))
 /* 12 - 15 */
-#define wipe_tmp_filename(a,b) (((void (*) (char *,int))transfer_funcs[12])(a,b))
-#define DCC_GET (*(struct dcc_table *)(transfer_funcs[13]))
-#define H_rcvd (*(p_tcl_bind_list*)(transfer_funcs[14]))
-#define H_sent (*(p_tcl_bind_list*)(transfer_funcs[15]))
+#define DCC_GET (*(struct dcc_table *)(transfer_funcs[12]))
+#define H_rcvd (*(p_tcl_bind_list*)(transfer_funcs[13]))
+#define H_sent (*(p_tcl_bind_list*)(transfer_funcs[14]))
+#define USERENTRY_FSTAT (*(struct user_entry_type *)(transfer_funcs[15]))
 /* 16 - 19 */
-#define USERENTRY_FSTAT (*(struct user_entry_type *)(transfer_funcs[16]))
-/* Was quiet_reject (moved to core) <Wcc[01/20/03]>. */
-#define raw_dcc_resend(a,b,c,d) (((int (*) (char *,char *,char *,char *))transfer_funcs[18])(a,b,c,d))
-#define H_lost (*(p_tcl_bind_list*)(transfer_funcs[19]))
-/* 20 - 23 */
-#define H_tout (*(p_tcl_bind_list*)(transfer_funcs[20]))
-#define DCC_SEND (*(struct dcc_table *)(transfer_funcs[21]))
-#define DCC_GET_PENDING (*(struct dcc_table *)(transfer_funcs[22]))
+#define raw_dcc_resend(a,b,c,d) (((int (*) (char *,char *,char *,char *))transfer_funcs[16])(a,b,c,d))
+#define H_lost (*(p_tcl_bind_list*)(transfer_funcs[17]))
+#define H_tout (*(p_tcl_bind_list*)(transfer_funcs[18]))
+#define DCC_SEND (*(struct dcc_table *)(transfer_funcs[19]))
+/* 20 */
+#define DCC_GET_PENDING (*(struct dcc_table *)(transfer_funcs[20]))
 
 #else /* MAKING_TRANSFER */
 

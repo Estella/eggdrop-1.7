@@ -2,7 +2,7 @@
  * channels.c -- part of channels.mod
  *   support for channels within the bot
  *
- * $Id: channels.c,v 1.2 2004/08/25 01:51:04 wcc Exp $
+ * $Id: channels.c,v 1.3 2004/08/25 05:26:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -863,45 +863,31 @@ static Function channels_table[] = {
   (Function) clear_channel,
   /* 16 - 19 */
   (Function) set_handle_laston,
-  (Function) NULL,           /* [17] used to be ban_time <Wcc[07/19/02]>    */
   (Function) & use_info,
   (Function) get_handle_chaninfo,
-  /* 20 - 23 */
   (Function) u_sticky_mask,
+  /* 20 - 23 */
   (Function) ismasked,
   (Function) add_chanrec_by_handle,
-  (Function) NULL,           /* [23] used to be isexempted() <cybah>         */
-  /* 24 - 27 */
-  (Function) NULL,           /* [24] used to be exempt_time <Wcc[07/19/02]>  */
-  (Function) NULL,           /* [25] used to be isinvited() <cybah>          */
-  (Function) NULL,           /* [26] used to be ban_time <Wcc[07/19/02]>     */
-  (Function) NULL,
-  /* 28 - 31 */
-  (Function) NULL,           /* [28] used to be u_setsticky_exempt() <cybah> */
   (Function) u_delexempt,
   (Function) u_addexempt,
-  (Function) NULL,
-  /* 32 - 35 */
-  (Function) NULL,           /* [32] used to be u_sticky_exempt() <cybah>    */
-  (Function) NULL,
-  (Function) NULL,           /* [34] used to be killchanset().               */
+  /* 24 - 27 */
   (Function) u_delinvite,
-  /* 36 - 39 */
   (Function) u_addinvite,
   (Function) tcl_channel_add,
   (Function) tcl_channel_modify,
+  /* 28 - 31 */
   (Function) write_exempts,
-  /* 40 - 43 */
   (Function) write_invites,
   (Function) ismodeline,
   (Function) initudef,
+  /* 32 - 35 */
   (Function) ngetudef,
-  /* 44 - 47 */
   (Function) expired_mask,
   (Function) remove_channel,
   (Function) & global_ban_time,
+  /* 36 - 37 */
   (Function) & global_exempt_time,
-  /* 48 - 51 */
   (Function) & global_invite_time,
 };
 

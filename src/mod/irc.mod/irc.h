@@ -1,7 +1,7 @@
 /*
  * irc.h -- part of irc.mod
  *
- * $Id: irc.h,v 1.1 2004/08/25 01:02:14 wcc Exp $
+ * $Id: irc.h,v 1.2 2004/08/25 05:26:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -77,18 +77,15 @@ static void newmask(masklist *, char *, char *);
 static char *quickban(struct chanset_t *, char *);
 static void got_op(struct chanset_t *chan, char *nick, char *from, char *who,
                    struct userrec *opu, struct flag_record *opper);
-static void got_halfop(struct chanset_t *chan, char *nick, char *from,
-                       char *who, struct userrec *opu,
-                       struct flag_record *opper);
+static void got_halfop(struct chanset_t *, char *, char *,
+                       char *, struct userrec *, struct flag_record *);
 static int killmember(struct chanset_t *chan, char *nick);
 static void check_lonely_channel(struct chanset_t *chan);
 static int gotmode(char *, char *);
 
-#define newban(chan, mask, who)         newmask((chan)->channel.ban, mask, who)
-#define newexempt(chan, mask, who)      newmask((chan)->channel.exempt, mask, \
-                                                who)
-#define newinvite(chan, mask, who)      newmask((chan)->channel.invite, mask, \
-                                                who)
+#define newban(chan, mask, who)    newmask((chan)->channel.ban, mask, who)
+#define newexempt(chan, mask, who) newmask((chan)->channel.exempt, mask, who)
+#define newinvite(chan, mask, who) newmask((chan)->channel.invite, mask, who)
 
 #else
 /* 4 - 7 */
@@ -105,15 +102,15 @@ static int gotmode(char *, char *);
 #define H_pubm (*(p_tcl_bind_list*)(irc_funcs[12]))
 #define H_pub (*(p_tcl_bind_list*)(irc_funcs[13]))
 #define H_topc (*(p_tcl_bind_list*)(irc_funcs[14]))
-/* recheck_channel is here */
+/* recheck_channel is here (15) */
 /* 16 - 19 */
 #define me_op ((int(*)(struct chanset_t *))irc_funcs[16])
-/* recheck_channel_modes is here */
+/* recheck_channel_modes is here (17) */
 #define H_need (*(p_tcl_bind_list*)(irc_funcs[18]))
-/* do_channel_part is here. */
+/* do_channel_part is here (19) */
 /* 20 - 23 */
-/* check_this_ban is here. */
-/* check_this_user is here. */
+/* check_this_ban is here (20) */
+/* check_this_user is here (21) */
 #define me_halfop ((int(*)(struct chanset_t *))irc_funcs[22])
 #define me_voice ((int(*)(struct chanset_t *))irc_funcs[23])
 /* 24 - 27 */

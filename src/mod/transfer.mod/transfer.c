@@ -1,7 +1,7 @@
 /*
  * transfer.c -- part of transfer.mod
  *
- * $Id: transfer.c,v 1.2 2004/08/25 01:51:05 wcc Exp $
+ * $Id: transfer.c,v 1.3 2004/08/25 05:26:38 wcc Exp $
  *
  * Copyright (C) 1997 Robey Pointer
  * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
@@ -1187,29 +1187,27 @@ static Function transfer_table[] = {
   (Function) transfer_expmem,
   (Function) transfer_report,
   /* 4- 7 */
-  (Function) & DCC_FORK_SEND,   /* struct dcc_table             */
+  (Function) & DCC_FORK_SEND,   /* struct dcc_table       */
   (Function) at_limit,
-  (Function) NULL,              /* Was copy_to_tmp <Wcc[01/20/03]>. */
   (Function) fileq_cancel,
-  /* 8 - 11 */
   (Function) queue_file,
+  /* 8 - 11 */
   (Function) raw_dcc_send,
   (Function) show_queued_files,
   (Function) wild_match_file,
-  /* 12 - 15 */
   (Function) wipe_tmp_filename,
-  (Function) & DCC_GET,         /* struct dcc_table             */
-  (Function) & H_rcvd,          /* p_tcl_bind_list              */
-  (Function) & H_sent,          /* p_tcl_bind_list              */
+  /* 12 - 15 */
+  (Function) & DCC_GET,         /* struct dcc_table       */
+  (Function) & H_rcvd,          /* p_tcl_bind_list        */
+  (Function) & H_sent,          /* p_tcl_bind_list        */
+  (Function) & USERENTRY_FSTAT, /* struct user_entry_type */
   /* 16 - 19 */
-  (Function) & USERENTRY_FSTAT, /* struct user_entry_type       */
-  (Function) NULL,              /* Was quiet_reject <Wcc[01/20/03]>. */
   (Function) raw_dcc_resend,
-  (Function) & H_lost,          /* p_tcl_bind_list              */
-  /* 20 - 23 */
-  (Function) & H_tout,          /* p_tcl_bind_list              */
-  (Function) & DCC_SEND,        /* struct dcc_table             */
-  (Function) & DCC_GET_PENDING, /* struct dcc_table             */
+  (Function) & H_lost,          /* p_tcl_bind_list        */
+  (Function) & H_tout,          /* p_tcl_bind_list        */
+  (Function) & DCC_SEND,        /* struct dcc_table       */
+  /* 20 */
+  (Function) & DCC_GET_PENDING, /* struct dcc_table       */
 };
 
 char *transfer_start(Function *global_funcs)

@@ -1,7 +1,7 @@
 /*
  * channels.h -- part of channels.mod
  *
- * $Id: channels.h,v 1.1 2004/08/25 01:02:07 wcc Exp $
+ * $Id: channels.h,v 1.2 2004/08/25 05:26:38 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -132,46 +132,32 @@ inline static int chanset_unlink(struct chanset_t *chan);
 #define clear_channel ((void (*)(struct chanset_t *, int))channels_funcs[15])
 /* 16 - 19 */
 #define set_handle_laston ((void (*)(char *,struct userrec *,time_t))channels_funcs[16])
-/* *HOLE* channels_funcs[17] used to be ban_time <wcc[07/19/02]> */
-#define use_info (*(int *)(channels_funcs[18]))
-#define get_handle_chaninfo ((void (*)(char *, char *, char *))channels_funcs[19])
+#define use_info (*(int *)(channels_funcs[17]))
+#define get_handle_chaninfo ((void (*)(char *, char *, char *))channels_funcs[18])
+#define u_sticky_mask ((int (*)(maskrec *, char *))channels_funcs[19])
 /* 20 - 23 */
-#define u_sticky_mask ((int (*)(maskrec *, char *))channels_funcs[20])
-#define ismasked ((int (*)(masklist *, char *))channels_funcs[21])
-#define add_chanrec_by_handle ((void (*)(struct userrec *, char *, char *))channels_funcs[22])
-/* *HOLE* channels_funcs[23] used to be isexempted() <cybah> */
+#define ismasked ((int (*)(masklist *, char *))channels_funcs[20])
+#define add_chanrec_by_handle ((void (*)(struct userrec *, char *, char *))channels_funcs[21])
+#define u_delexempt ((int (*)(struct chanset_t *, char *, int))channels_funcs[22])
+#define u_addexempt ((int (*)(struct chanset_t *, char *, char *, char *, time_t, int))channels_funcs[23])
 /* 24 - 27 */
-/* *HOLE* channels_funcs[24] used to be exempt_time <wcc[07/19/02]> */
-/* *HOLE* channels_funcs[25] used to be isinvited() by arthur2 <cybah> */
-/* *HOLE* channels_funcs[26] used to be invite_time <wcc[07/19/02]> */
-/* *HOLE* channels_funcs[27] used to be u_match_exempt() by arthur2 <cybah> */
+#define u_delinvite ((int (*)(struct chanset_t *, char *, int))channels_funcs[24])
+#define u_addinvite ((int (*)(struct chanset_t *, char *, char *, char *, time_t, int))channels_funcs[5])
+#define tcl_channel_add ((int (*)(Tcl_Interp *, char *, char *))channels_funcs[26])
+#define tcl_channel_modify ((int (*)(Tcl_Interp *, struct chanset_t *, int, char **))channels_funcs[27])
 /* 28 - 31 */
-/* *HOLE* channels_funcs[28] used to be u_setsticky_exempt() <cybah> */
-#define u_delexempt ((int (*)(struct chanset_t *, char *, int))channels_funcs[29])
-#define u_addexempt ((int (*)(struct chanset_t *, char *, char *, char *, time_t, int))channels_funcs[30])
-/* *HOLE* channels_funcs[31] used to be u_equals_exempt() <cybah> */
+#define write_exempts ((int (*)(FILE *, int))channels_funcs[28])
+#define write_invites ((int (*)(FILE *, int))channels_funcs[29])
+#define ismodeline ((int(*)(masklist *, char *))channels_funcs[32])
+#define initudef ((void(*)(int, char *,int))channels_funcs[31])
 /* 32 - 35 */
-/* *HOLE* channels_funcs[32] used to be u_sticky_exempt() <cybah> */
-/* *HOLE* channels_funcs[33] used to be u_match_invite() <cybah> */
-/* *HOLE* channels_funcs[34] used to be killchanset(). */
-#define u_delinvite ((int (*)(struct chanset_t *, char *, int))channels_funcs[35])
-/* 36 - 39 */
-#define u_addinvite ((int (*)(struct chanset_t *, char *, char *, char *, time_t, int))channels_funcs[36])
-#define tcl_channel_add ((int (*)(Tcl_Interp *, char *, char *))channels_funcs[37])
-#define tcl_channel_modify ((int (*)(Tcl_Interp *, struct chanset_t *, int, char **))channels_funcs[38])
-#define write_exempts ((int (*)(FILE *, int))channels_funcs[39])
-/* 40 - 43 */
-#define write_invites ((int (*)(FILE *, int))channels_funcs[40])
-#define ismodeline ((int(*)(masklist *, char *))channels_funcs[41])
-#define initudef ((void(*)(int, char *,int))channels_funcs[42])
-#define ngetudef ((int(*)(char *, char *))channels_funcs[43])
-/* 44 - 47 */
-#define expired_mask ((int (*)(struct chanset_t *, char *))channels_funcs[44])
-#define remove_channel ((void (*)(struct chanset_t *))channels_funcs[45])
-#define global_ban_time (*(int *)(channels_funcs[46]))
-#define global_exempt_time (*(int *)(channels_funcs[47]))
-/* 48 - 51 */
-#define global_invite_time (*(int *)(channels_funcs[48]))
+#define ngetudef ((int(*)(char *, char *))channels_funcs[32])
+#define expired_mask ((int (*)(struct chanset_t *, char *))channels_funcs[33])
+#define remove_channel ((void (*)(struct chanset_t *))channels_funcs[34])
+#define global_ban_time (*(int *)(channels_funcs[35]))
+/* 36 - 37 */
+#define global_exempt_time (*(int *)(channels_funcs[36]))
+#define global_invite_time (*(int *)(channels_funcs[37]))
 
 #endif /* MAKING_CHANNELS */
 
