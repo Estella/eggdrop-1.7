@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.15 2004/11/25 02:01:39 wcc Exp $
+ * $Id: main.c,v 1.16 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include "main.h"
@@ -47,9 +47,10 @@
 #include "dcc.h"      /* DCC_*, STRIP_*, STAT_*, struct chat_info, struct dcc_t */
 #include "dccutil.h"  /* dprintf, dcc_chatter, lostdcc, tell_dcc, new_dcc,
                        * dcc_remove_lost */
-#include "help.h"     /* add_help_reference, help_expmem */
-#include "logfile.h"  /* log_t, LOG_*, LF_EXPIRING, putlog, logfile_init, logfile_expmem,
-                       * flushlogs, check_logsize */
+#include "help.h"     /* add_help_reference */
+#include "logfile.h"  /* log_t, LOG_*, LF_EXPIRING, putlog, logfile_init flushlogs,
+                       * check_logsize */
+#include "mem.h"      /* nfree, tell_mem_status */
 #include "misc.h"     /* strncpyz, newsplit, make_rand_str */
 #include "net.h"      /* SOCK_*, getmyip, setsock, killsock, dequeue_sockets, sockgets */
 #include "traffic.h"  /* traffic_update_out, traffic_reset, init_traffic */
@@ -93,17 +94,15 @@ extern int cx_line[], cx_ptr;
 #endif
 
 
-/*
- * Please use patch.h instead of directly altering the version string. Also
+/* Please use patch.h instead of directly altering the version string. Also
  * please read the README file regarding your rights to distribute modified
  * versions of this bot.
  */
-char egg_version[1024] = "1.7.0";
-int egg_numver = 1070000;
-
-char version[81];    /* Version info (long).  */
-char ver[41];        /* Version info (short). */
-char egg_xtra[2048]; /* Patch info.           */
+char egg_version[1024] = "1.7.0"; /* Text version.         */
+int egg_numver = 1070000;         /* Numeric version.      */
+char ver[41];                     /* Version info (short). */
+char version[81];                 /* Version info (long).  */
+char egg_xtra[2048];              /* Patch info.           */
 
 char configfile[121] = "eggdrop.conf"; /* Default config file name. */
 
@@ -115,17 +114,14 @@ int use_stderr = 1; /* Send stuff to stderr instead of logfiles?     */
 char notify_new[121] = ""; /* Person to send a note to for new users. */
 int default_flags = 0;     /* Default user flags.                     */
 int default_uflags = 0;    /* Default user-definied flags.            */
-
-char pid_file[120];                    /* Name of the pid file.     */
-char helpdir[121] = "help/";           /* Directory of help files.  */
-char textdir[121] = "text/";           /* Directory for text files. */
-char tempdir[121] = "";                /* Directory for temp files. */
-char admin[121] = "";                  /* Admin info.               */
-
-int keep_all_logs = 0;                 /* Never erase logfiles?     */
-char logfile_suffix[21] = ".%d%b%Y";   /* Format of logfile suffix. */
-int switch_logfiles_at = 300;          /* When to switch logfiles.  */
-
+char pid_file[120];          /* Name of the pid file.     */
+char helpdir[121] = "help/"; /* Directory of help files.  */
+char textdir[121] = "text/"; /* Directory for text files. */
+char tempdir[121] = "";      /* Directory for temp files. */
+char admin[121] = "";        /* Admin info.               */
+int keep_all_logs = 0;               /* Never erase logfiles?     */
+char logfile_suffix[21] = ".%d%b%Y"; /* Format of logfile suffix. */
+int switch_logfiles_at = 300;        /* When to switch logfiles.  */
 int make_userfile = 0;    /* Using bot in userfile-creation mode?            */
 char owner[121] = "";     /* Permanent owner(s) of the bot                   */
 int save_users_at = 0;    /* Minutes past the hour to save the userfile?     */
@@ -133,30 +129,17 @@ int notify_users_at = 0;  /* Minutes past the hour to notify users of notes? */
 int die_on_sighup = 0;    /* Die if bot receives SIGHUP                      */
 int die_on_sigterm = 1;   /* Die if bot receives SIGTERM                     */
 int resolve_timeout = 15; /* Hostname/address lookup timeout                 */
-
 char origbotname[NICKLEN + 1]; /* Bot's nick.      */
 char botname[NICKLEN + 1];     /* Primary botname. */
-
 int do_restart = 0;  /* .restart has been called; restart ASAP. */
+char quit_msg[1024]; /* Quit message. */
 
 time_t now;
 static time_t then;
 static int lastmin = 99;
 static struct tm nowtm;
-time_t online_since; /* Time that the bot was started.          */
+time_t online_since; /* Time that the bot was started. */
 
-char quit_msg[1024]; /* Quit message. */
-
-
-int expmem_users();
-int expmem_dccutil();
-int expmem_botnet();
-int expmem_tcl();
-int expmem_tclhash();
-int expmem_net();
-int expmem_modules(int);
-int expmem_language();
-int expmem_tcldcc();
 int init_mem();
 int init_dcc_max();
 int init_userent();
@@ -186,17 +169,6 @@ void fatal(const char *s, int recoverable)
   }
 }
 
-int expected_memory()
-{
-  int tot;
-
-  tot = expmem_users() + expmem_dccutil() +
-        expmem_botnet() + expmem_tcl() + expmem_tclhash() + expmem_net() +
-        expmem_modules(0) + expmem_language() + expmem_tcldcc() +
-        logfile_expmem() + help_expmem();
-  return tot;
-}
-
 static void check_expired_dcc()
 {
   int i;
@@ -210,7 +182,7 @@ static void check_expired_dcc()
         dcc[i].type->eof(i);
       else
         continue;
-      /* Only timeout 1 socket per cycle, too risky for more */
+      /* Only timeout 1 socket per cycle, too risky for more. */
       return;
     }
 }
@@ -464,7 +436,7 @@ static void core_secondly()
       tell_verbose_status(DP_STDOUT);
       do_module_report(DP_STDOUT, 0, "server");
       do_module_report(DP_STDOUT, 0, "channels");
-      tell_mem_status_dcc(DP_STDOUT);
+      tell_mem_status(DP_STDOUT);
     }
   }
   egg_memcpy(&nowtm, localtime(&now), sizeof(struct tm));

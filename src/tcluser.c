@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcluser.c,v 1.8 2004/10/27 23:54:54 wcc Exp $
+ * $Id: tcluser.c,v 1.9 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include "main.h"
@@ -29,6 +29,7 @@
 #include "botnet.h"   /* nextbot */
 #include "chanprog.h" /* findchan_by_dname, reload */
 #include "dcc.h"      /* DCC_*, BSTAT_*, struct dcc_t */
+#include "mem.h"      /* nfree */
 #include "misc.h"     /* strncpyz */
 #include "userfile.h" /* reloaduserfile, writeuserfile */
 #include "userrec.h"  /* adduser, u_pass_match, delhost_by_handle, count_users,

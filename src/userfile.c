@@ -18,7 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: userfile.c,v 1.1 2004/10/27 23:54:54 wcc Exp $
+ * $Id: userfile.c,v 1.2 2004/11/26 05:35:27 wcc Exp $
  */
 
 
@@ -30,6 +30,7 @@
 #include "userfile.h"
 #include "chanprog.h" /* findchan_by_dname */
 #include "dcc.h"      /* DCC_*, struct dcc_t */
+#include "mem.h"      /* nmalloc, nfree */
 #include "misc.h"     /* splitc, newsplit, rmspace */
 #include "rfc1459.h"  /* rfc_casecmp */
 #include "userrec.h"  /* clear_masks */

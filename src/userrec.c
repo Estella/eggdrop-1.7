@@ -1,14 +1,7 @@
-/*
- * userrec.c -- handles:
- *   add_q() del_q() str2flags() flags2str() str2chflags() chflags2str()
- *   a bunch of functions to find and change user records
- *   change and check user (and channel-specific) flags
+/* userrec.c
  *
- * $Id: userrec.c,v 1.13 2004/10/27 23:54:54 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: userrec.c,v 1.14 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include "main.h"
@@ -37,6 +32,7 @@
 #include "chanprog.h" /* findchan_by_dname */
 #include "logfile.h"  /* putlog, LOG_* */
 #include "match.h"    /* wild_match */
+#include "mem.h"      /* n_malloc, nmalloc, n_realloc, nrealloc, nfree */
 #include "misc.h"     /* strncpyz, str_escape, rmspace */
 #include "rfc1459.h"  /* rfc_casecmp */
 #include "userent.h"  /* list_type_expmem */

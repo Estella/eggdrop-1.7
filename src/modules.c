@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: modules.c,v 1.13 2004/11/24 22:37:32 wcc Exp $
+ * $Id: modules.c,v 1.14 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include <ctype.h>
@@ -39,6 +39,7 @@
 #include "help.h"
 #include "language.h"
 #include "match.h"
+#include "mem.h"
 #include "misc.h"
 #include "logfile.h"
 #include "net.h"
@@ -423,7 +424,7 @@ Function global_table[] = {
   (Function) flush_lines,
   /* 168 - 171 */
   (Function) expected_memory,
-  (Function) tell_mem_status,
+  (Function) 0,
   (Function) & do_restart,        /* int                                 */
   (Function) check_tcl_filt,
   /* 172 - 175 */

@@ -18,7 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dns.c,v 1.6 2004/09/10 01:10:50 wcc Exp $
+ * $Id: dns.c,v 1.7 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include "main.h"
@@ -32,6 +32,7 @@
 #include "dcc.h"     /* DCT_*, struct dcc_table, struct dcc_t, struct dns_info */
 #include "dccutil.h" /* get_data_ptr, lostdcc */
 #include "logfile.h" /* putlog, LOG_* */
+#include "mem.h"     /* nmalloc, nfree */
 #include "misc.h"    /* strncpyz */
 #include "net.h"     /* killsock, iptostr */
 

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dccutil.c,v 1.8 2004/10/06 00:04:32 wcc Exp $
+ * $Id: dccutil.c,v 1.9 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include <sys/stat.h>
@@ -31,6 +31,7 @@
 #include "dcc.h"     /* DCC_*, DCT_*, STAT_* */
 #include "help.h"    /* help_subst */
 #include "logfile.h" /* putlog, LOG_* */
+#include "mem.h"     /* n_malloc, nmalloc, nrealloc, nfree */
 #include "misc.h"    /* randint, make_rand_str */
 #include "net.h"     /* SOCK_* , killsock, tputs, sock_list */
 

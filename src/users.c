@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: users.c,v 1.11 2004/10/27 23:54:54 wcc Exp $
+ * $Id: users.c,v 1.12 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include "main.h"
@@ -37,6 +37,7 @@
 #include "chanprog.h" /* findchan_by_dname */
 #include "logfile.h"  /* putlog, LOG_* */
 #include "match.h"    /* wild_match */
+#include "mem.h"      /* nfree */
 #include "misc.h"     /* DAY_*, splitc, newsplit, strncpyz, days, str_escape,
                        * strchr_unescape, rmspace */
 #include "net.h"      /* killsock */

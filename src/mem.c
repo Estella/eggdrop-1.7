@@ -1,13 +1,7 @@
-/*
- * mem.c -- handles:
- *   memory allocation and deallocation
- *   keeping track of what memory is being used by whom
+/* mem.c: memory allocation, tracking, debugging, etc.
  *
- * $Id: mem.c,v 1.8 2004/10/06 00:04:32 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,9 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: mem.c,v 1.9 2004/11/26 05:35:27 wcc Exp $
  */
 
-#define MEMTBLSIZE 25000        /* yikes! */
 #define COMPILING_MEM
 
 #include "main.h"
@@ -36,42 +31,22 @@
 
 #include "mod/modvals.h"
 
+#include "mem.h"
 #include "dccutil.h" /* dprintf */
 #include "help.h"    /* help_expmem */
-#include "logfile.h" /* LOG_*, putlog, logfile_expmem */
+#include "logfile.h" /* logfile_expmem */
 
 extern module_entry *module_list;
+
 
 #ifdef DEBUG_MEM
 unsigned long memused = 0;
 static int lastused = 0;
-
-struct {
-  void *ptr;
-  int size;
-  short line;
-  char file[20];
-} memtbl[MEMTBLSIZE];
+struct memory_table memtbl[MEMTBLSIZE];
 #endif
 
-/* Prototypes */
-int expected_memory();
-int expmem_chanprog();
-int expmem_fileq();
-int expmem_users();
-int expmem_dccutil();
-int expmem_botnet();
-int expmem_tcl();
-int expmem_tclhash();
-int expmem_net();
-int expmem_modules();
-int expmem_language();
-int expmem_tcldcc();
-int expmem_dns();
 
-
-/* Initialize the memory structure
- */
+/* Initialize the memory structure. */
 void init_mem()
 {
 #ifdef DEBUG_MEM
@@ -82,158 +57,157 @@ void init_mem()
 #endif
 }
 
-/* Tell someone the gory memory details
- */
-void tell_mem_status(char *nick)
+/* Return expected memoray usage. */
+int expected_memory()
 {
-#ifdef DEBUG_MEM
-  float per;
-
-  per = ((lastused * 1.0) / (MEMTBLSIZE * 1.0)) * 100.0;
-  dprintf(DP_HELP, "NOTICE %s :Memory table usage: %d/%d (%.1f%% full)\n",
-          nick, lastused, MEMTBLSIZE, per);
-#endif
-  dprintf(DP_HELP, "NOTICE %s :Think I'm using about %dk.\n", nick,
-          (int) (expected_memory() / 1024));
+  return (expmem_users() + expmem_dccutil() + expmem_botnet() + expmem_tcl() +
+    expmem_tclhash() + expmem_net() + expmem_modules(0) + expmem_language() +
+    expmem_tcldcc() + logfile_expmem() + help_expmem());
 }
 
-void tell_mem_status_dcc(int idx)
+/* Tell memory table status to an IDX. */
+void tell_mem_status(int idx)
 {
 #ifdef DEBUG_MEM
-  int exp;
-  float per;
+  int expected;
+  float percent;
 
-  exp = expected_memory();      /* in main.c ? */
-  per = ((lastused * 1.0) / (MEMTBLSIZE * 1.0)) * 100.0;
-  dprintf(idx, "Memory table: %d/%d (%.1f%% full)\n", lastused, MEMTBLSIZE,
-          per);
-  per = ((exp * 1.0) / (memused * 1.0)) * 100.0;
-  if (per != 100.0)
-    dprintf(idx, "Memory fault: only accounting for %d/%ld (%.1f%%)\n",
-            exp, memused, per);
-  dprintf(idx, "Memory table itself occupies an additional %dk static\n",
+  expected = expected_memory();
+  percent = ((lastused * 1.0) / (MEMTBLSIZE * 1.0)) * 100.0;
+  dprintf(idx, "Memory table: %d/%d (%.1f%% full).\n", lastused, MEMTBLSIZE,
+          percent);
+  percent = ((expected * 1.0) / (memused * 1.0)) * 100.0;
+  if (percent != 100.0)
+    dprintf(idx, "Memory fault: only accounting for %d/%ld (%.1f%%).\n",
+            expected, memused, percent);
+  dprintf(idx, "Memory table itself occupies an additional %dk static.\n",
           (int) (sizeof(memtbl) / 1024));
 #endif
 }
 
+/* Tell memory debugging information to an IDX. */
 void debug_mem_to_dcc(int idx)
 {
 #ifdef DEBUG_MEM
-#  define MAX_MEM 13
-  unsigned long exp[MAX_MEM], use[MAX_MEM], l;
-  int i, j;
-  char fn[20], sofar[81], *p;
   module_entry *me;
+  unsigned long expected[MAX_MEM], using[MAX_MEM];
+  unsigned long l;
+  char filename[20], sofar[81], *p;
+  int i, j;
 
-  exp[0] = expmem_language();
-  exp[1] = expmem_users();
-  exp[2] = expmem_net();
-  exp[3] = expmem_dccutil();
-  exp[4] = expmem_botnet();
-  exp[5] = expmem_tcl();
-  exp[6] = expmem_tclhash();
-  exp[7] = expmem_modules(1);
-  exp[8] = expmem_tcldcc();
-  exp[9] = expmem_dns();
-  exp[10] = help_expmem();
-  exp[11] = logfile_expmem();
+  /* Initialize the expected memory array. */
+  expected[0]  = expmem_language();
+  expected[1]  = expmem_users();
+  expected[2]  = expmem_net();
+  expected[3]  = expmem_dccutil();
+  expected[4]  = expmem_botnet();
+  expected[5]  = expmem_tcl();
+  expected[6]  = expmem_tclhash();
+  expected[7]  = expmem_modules(1);
+  expected[8]  = expmem_tcldcc();
+  expected[9]  = expmem_dns();
+  expected[10] = help_expmem();
+  expected[11] = logfile_expmem();
 
   for (me = module_list; me; me = me->next)
     me->mem_work = 0;
 
   for (i = 0; i < MAX_MEM; i++)
-    use[i] = 0;
+    using[i] = 0;
 
   for (i = 0; i < lastused; i++) {
-    strcpy(fn, memtbl[i].file);
-    p = strchr(fn, ':');
+    strcpy(filename, memtbl[i].file);
+    p = strchr(filename, ':');
     if (p)
       *p = 0;
     l = memtbl[i].size;
-    if (!strcmp(fn, "language.c"))
-      use[0] += l;
-    else if (!strcmp(fn, "userrec.c"))
-      use[1] += l;
-    else if (!strcmp(fn, "net.c"))
-      use[0] += l;
-    else if (!strcmp(fn, "dccutil.c"))
-      use[3] += l;
-    else if (!strcmp(fn, "botnet.c"))
-      use[4] += l;
-    else if (!strcmp(fn, "tcl.c"))
-      use[5] += l;
-    else if (!strcmp(fn, "tclhash.c"))
-      use[6] += l;
-    else if (!strcmp(fn, "modules.c"))
-      use[7] += l;
-    else if (!strcmp(fn, "tcldcc.c"))
-      use[8] += l;
-    else if (!strcmp(fn, "dns.c"))
-      use[9] += l;
-    else if (!strcmp(fn, "help.c"))
-      use[10] += l;
-    else if (!strcmp(fn, "logfile.c"))
-      use[11] += l;
+    if (!strcmp(filename, "language.c"))
+      using[0] += l;
+    else if (!strcmp(filename, "userrec.c"))
+      using[1] += l;
+    else if (!strcmp(filename, "net.c"))
+      using[0] += l;
+    else if (!strcmp(filename, "dccutil.c"))
+      using[3] += l;
+    else if (!strcmp(filename, "botnet.c"))
+      using[4] += l;
+    else if (!strcmp(filename, "tcl.c"))
+      using[5] += l;
+    else if (!strcmp(filename, "tclhash.c"))
+      using[6] += l;
+    else if (!strcmp(filename, "modules.c"))
+      using[7] += l;
+    else if (!strcmp(filename, "tcldcc.c"))
+      using[8] += l;
+    else if (!strcmp(filename, "dns.c"))
+      using[9] += l;
+    else if (!strcmp(filename, "help.c"))
+      using[10] += l;
+    else if (!strcmp(filename, "logfile.c"))
+      using[11] += l;
     else if (p) {
-      for (me = module_list; me; me = me->next)
-        if (!strcmp(fn, me->name))
+      for (me = module_list; me; me = me->next) {
+        if (!strcmp(filename, me->name))
           me->mem_work += l;
-    } else
-      dprintf(idx, "Not logging file %s!\n", fn);
+      }
+    }
+    else
+      dprintf(idx, "Not logging file '%s'!\n", filename);
   }
 
   for (i = 0; i < MAX_MEM; i++) {
     switch (i) {
       case 0:
-        strcpy(fn, "language.c");
+        strcpy(filename, "language.c");
         break;
       case 1:
-        strcpy(fn, "userrec.c");
+        strcpy(filename, "userrec.c");
         break;
       case 2:
-        strcpy(fn, "net.c");
+        strcpy(filename, "net.c");
         break;
       case 3:
-        strcpy(fn, "dccutil.c");
+        strcpy(filename, "dccutil.c");
         break;
       case 4:
-        strcpy(fn, "botnet.c");
+        strcpy(filename, "botnet.c");
         break;
       case 5:
-        strcpy(fn, "tcl.c");
+        strcpy(filename, "tcl.c");
         break;
       case 6:
-        strcpy(fn, "tclhash.c");
+        strcpy(filename, "tclhash.c");
         break;
       case 7:
-        strcpy(fn, "modules.c");
+        strcpy(filename, "modules.c");
         break;
       case 8:
-        strcpy(fn, "tcldcc.c");
+        strcpy(filename, "tcldcc.c");
         break;
       case 9:
-        strcpy(fn, "dns.c");
+        strcpy(filename, "dns.c");
         break;
       case 10:
-        strcpy(fn, "help.c");
+        strcpy(filename, "help.c");
         break;
       case 11:
-        strcpy(fn, "logfile.c");
+        strcpy(filename, "logfile.c");
         break;
     }
 
-    if (use[i] == exp[i])
-      dprintf(idx, "File '%-10s' accounted for %lu/%lu (ok)\n", fn, exp[i],
-              use[i]);
+    if (using[i] == expected[i])
+      dprintf(idx, "File '%-10s': accounted for %lu/%lu (ok).\n",
+              filename, expected[i], using[i]);
     else {
-      dprintf(idx, "File '%-10s' accounted for %lu/%lu (debug follows:)\n",
-              fn, exp[i], use[i]);
+      dprintf(idx, "File '%-10s': accounted for %lu/%lu (debug follows):\n",
+              filename, expected[i], using[i]);
       strcpy(sofar, "   ");
       for (j = 0; j < lastused; j++) {
-        if ((p = strchr(memtbl[j].file, ':')))
+        p = strchr(memtbl[j].file, ':');
+        if (p != NULL)
           *p = 0;
-        if (!egg_strcasecmp(memtbl[j].file, fn)) {
-          if (p)
+        if (!egg_strcasecmp(memtbl[j].file, filename)) {
+          if (p != NULL)
             sprintf(&sofar[strlen(sofar)], "%-10s/%-4d:(%04d) ",
                     p + 1, memtbl[j].line, memtbl[j].size);
           else
@@ -246,7 +220,7 @@ void debug_mem_to_dcc(int idx)
             strcpy(sofar, "   ");
           }
         }
-        if (p)
+        if (p != NULL)
           *p = ':';
       }
       if (sofar[0]) {
@@ -260,21 +234,22 @@ void debug_mem_to_dcc(int idx)
     Function *f = me->funcs;
     int expt = 0;
 
-    if ((f != NULL) && (f[MODCALL_EXPMEM] != NULL))
+    if (f != NULL && f[MODCALL_EXPMEM] != NULL)
       expt = f[MODCALL_EXPMEM] ();
+
     if (me->mem_work == expt)
-      dprintf(idx, "Module '%-10s' accounted for %lu/%lu (ok)\n", me->name,
+      dprintf(idx, "Module '%-10s': accounted for %lu/%lu (ok).\n", me->name,
               expt, me->mem_work);
     else {
-      dprintf(idx, "Module '%-10s' accounted for %lu/%lu (debug follows:)\n",
+      dprintf(idx, "Module '%-10s': accounted for %lu/%lu (debug follows):\n",
               me->name, expt, me->mem_work);
       strcpy(sofar, "   ");
       for (j = 0; j < lastused; j++) {
-        strcpy(fn, memtbl[j].file);
-        p = strchr(fn, ':');
+        strcpy(filename, memtbl[j].file);
+        p = strchr(filename, ':');
         if (p != NULL) {
           *p = 0;
-          if (!egg_strcasecmp(fn, me->name)) {
+          if (!egg_strcasecmp(filename, me->name)) {
             sprintf(&sofar[strlen(sofar)], "%-10s/%-4d:(%04X) ", p + 1,
                     memtbl[j].line, memtbl[j].size);
             if (strlen(sofar) > 60) {
@@ -301,20 +276,21 @@ void *n_malloc(int size, const char *file, int line)
 {
   void *x;
 #ifdef DEBUG_MEM
-  int i = 0;
   char *p;
+  int i = 0;
 #endif
 
   x = (void *) malloc(size);
   if (x == NULL) {
-    putlog(LOG_MISC, "*", "*** FAILED MALLOC %s (%d) (%d): %s", file, line,
+    putlog(LOG_MISC, "*", "*** FAILED MALLOC %s (%d) (%d): %s.", file, line,
            size, strerror(errno));
-    fatal("Memory allocation failed", 0);
+    fatal("Memory allocation failed.", 0);
   }
+
 #ifdef DEBUG_MEM
   if (lastused == MEMTBLSIZE) {
-    putlog(LOG_MISC, "*", "*** MEMORY TABLE FULL: %s (%d)", file, line);
-    fatal("Memory table full", 0);
+    putlog(LOG_MISC, "*", "*** MEMORY TABLE FULL: %s (%d).", file, line);
+    fatal("Memory table full.", 0);
   }
   i = lastused;
   memtbl[i].ptr = x;
@@ -326,33 +302,34 @@ void *n_malloc(int size, const char *file, int line)
   memused += size;
   lastused++;
 #endif
+
   return x;
 }
 
 void *n_realloc(void *ptr, int size, const char *file, int line)
 {
   void *x;
-  int i = 0;
-
 #ifdef DEBUG_MEM
   char *p;
 #endif
+  int i = 0;
 
-  /* ptr == NULL is valid. Avoiding duplicate code further down */
+  /* ptr == NULL is valid. Avoiding duplicate code further down. */
   if (!ptr)
     return n_malloc(size, file, line);
 
   x = (void *) realloc(ptr, size);
   if (x == NULL && size > 0) {
     i = i;
-    putlog(LOG_MISC, "*", "*** FAILED REALLOC %s (%d)", file, line);
+    putlog(LOG_MISC, "*", "*** FAILED REALLOC %s (%d).", file, line);
     return NULL;
   }
+
 #ifdef DEBUG_MEM
-  for (i = 0; (i < lastused) && (memtbl[i].ptr != ptr); i++);
+  for (i = 0; i < lastused && memtbl[i].ptr != ptr; i++);
   if (i == lastused) {
-    putlog(LOG_MISC, "*", "*** ATTEMPTING TO REALLOC NON-MALLOC'D PTR: %s (%d)",
-           file, line);
+    putlog(LOG_MISC, "*", "*** ATTEMPTING TO REALLOC NON-MALLOC'D POINTER:"
+           " %s (%d).", file, line);
     return NULL;
   }
   memused -= memtbl[i].size;
@@ -364,6 +341,7 @@ void *n_realloc(void *ptr, int size, const char *file, int line)
   memtbl[i].file[19] = 0;
   memused += size;
 #endif
+
   return x;
 }
 
@@ -372,17 +350,18 @@ void n_free(void *ptr, const char *file, int line)
   int i = 0;
 
   if (ptr == NULL) {
-    putlog(LOG_MISC, "*", "*** ATTEMPTING TO FREE NULL PTR: %s (%d)",
+    putlog(LOG_MISC, "*", "*** ATTEMPTING TO FREE NULL POINTER: %s (%d).",
            file, line);
-    i = i;
+    i = i; /* WTF? */
     return;
   }
+
 #ifdef DEBUG_MEM
   /* Give tcl builtins an escape mechanism */
   if (line) {
-    for (i = 0; (i < lastused) && (memtbl[i].ptr != ptr); i++);
+    for (i = 0; i < lastused && memtbl[i].ptr != ptr; i++);
     if (i == lastused) {
-      putlog(LOG_MISC, "*", "*** ATTEMPTING TO FREE NON-MALLOC'D PTR: %s (%d)",
+      putlog(LOG_MISC, "*", "*** ATTEMPTING TO FREE NON-MALLOC'D POINTER: %s (%d).",
              file, line);
       return;
     }
@@ -396,6 +375,7 @@ void n_free(void *ptr, const char *file, int line)
       strcpy(memtbl[i].file, memtbl[lastused].file);
     }
   }
+
 #endif
   free(ptr);
 }

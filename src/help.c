@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: help.c,v 1.2 2004/09/10 01:10:50 wcc Exp $
+ * $Id: help.c,v 1.3 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include "main.h"
@@ -31,6 +31,7 @@
 #include "botmsg.h"  /* simple_sprintf */
 #include "dccutil.h" /* dprintf */
 #include "match.h"   /* wild_match */
+#include "mem.h"     /* nmalloc, nrealloc, nfree */
 #include "misc.h"    /* my_strcpy, strncpyz */
 
 

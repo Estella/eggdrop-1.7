@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.h,v 1.11 2004/10/27 23:54:54 wcc Exp $
+ * $Id: main.h,v 1.12 2004/11/26 05:35:27 wcc Exp $
  */
 
 #ifndef _EGG_MAIN_H
@@ -200,6 +200,7 @@
 
 /* For pre Tcl7.5p1 versions */
 #ifndef HAVE_TCL_FREE
+#  include "mem.h" /* n_free */
 #  define Tcl_Free(x) n_free(x, "", 0)
 #endif
 
@@ -231,7 +232,6 @@
 
 #ifndef MAKING_MODS
 void fatal(const char *, int);
-int expected_memory();
 void patch(const char *);
 #endif
 

@@ -3,7 +3,7 @@
  * This is hereby released into the public domain.
  * Robey Pointer, robey@netcom.com
  *
- * $Id: net.c,v 1.11 2004/10/06 00:04:33 wcc Exp $
+ * $Id: net.c,v 1.12 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include <fcntl.h>
@@ -27,6 +27,7 @@
 #include "net.h"
 #include "dcc.h"     /* struct dcc_t */
 #include "dccutil.h" /* dprintf, findanyidx */
+#include "mem.h"     /* nmalloc, nrealloc, nfree */
 #include "misc.h"    /* strncpyz, extracthostname */
 #include "logfile.h" /* putlog, LOG_* */
 #include "traffic.h" /* traffic_update_out */

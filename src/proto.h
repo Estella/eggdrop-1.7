@@ -7,7 +7,7 @@
  * because they use structures in those
  * (saves including those .h files EVERY time) - Beldin
  *
- * $Id: proto.h,v 1.13 2004/10/27 23:54:54 wcc Exp $
+ * $Id: proto.h,v 1.14 2004/11/26 05:35:27 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -47,14 +47,6 @@ extern char *(*encrypt_string) (char *, char *);
 extern char *(*decrypt_string) (char *, char *);
 extern int (*match_noterej) (struct userrec *, char *);
 #endif
-
-/* mem.c */
-void *n_malloc(int, const char *, int);
-void *n_realloc(void *, int, const char *, int);
-void n_free(void *, const char *, int);
-void tell_mem_status(char *);
-void tell_mem_status_dcc(int);
-void debug_mem_to_dcc(int);
 
 /* tcl.c */
 void protect_tcl();

@@ -2,7 +2,7 @@
  * msgcmds.c -- part of irc.mod
  *   all commands entered via /MSG
  *
- * $Id: msgcmds.c,v 1.3 2004/10/27 23:54:55 wcc Exp $
+ * $Id: msgcmds.c,v 1.4 2004/11/26 05:35:27 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -874,31 +874,6 @@ static int msg_status(char *nick, char *host, struct userrec *u, char *par)
   return 1;
 }
 
-static int msg_memory(char *nick, char *host, struct userrec *u, char *par)
-{
-  char *pass;
-
-  if (match_my_nick(nick))
-    return 1;
-
-  if (!u_pass_match(u, "-")) {
-    pass = newsplit(&par);
-    if (!u_pass_match(u, pass)) {
-      putlog(LOG_CMDS, "*", "(%s!%s) !%s! failed MEMORY", nick, host,
-             u->handle);
-      return 1;
-    }
-  } else {
-    putlog(LOG_CMDS, "*", "(%s!%s) !%s! failed MEMORY", nick, host, u->handle);
-    if (!quiet_reject)
-      dprintf(DP_HELP, "NOTICE %s :%s\n", nick, IRC_NOPASS);
-    return 1;
-  }
-  putlog(LOG_CMDS, "*", "(%s!%s) !%s! MEMORY", nick, host, u->handle);
-  tell_mem_status(nick);
-  return 1;
-}
-
 static int msg_die(char *nick, char *host, struct userrec *u, char *par)
 {
   char s[1024];
@@ -1127,7 +1102,6 @@ static cmd_t C_msg[] = {
   {"invite",  "o|o", (Function) msg_invite,  NULL},
   {"jump",    "m",   (Function) msg_jump,    NULL},
   {"key",     "o|o", (Function) msg_key,     NULL},
-  {"memory",  "m",   (Function) msg_memory,  NULL},
   {"op",      "",    (Function) msg_op,      NULL},
   {"halfop",  "",    (Function) msg_halfop,  NULL},
   {"pass",    "",    (Function) msg_pass,    NULL},

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcl.c,v 1.10 2004/11/24 22:37:32 wcc Exp $
+ * $Id: tcl.c,v 1.11 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include <stdlib.h>             /* getenv()                             */
@@ -28,6 +28,7 @@
 #include "dcc.h"     /* DCT_*, struct dcc_t */
 #include "logfile.h" /* LOG_*, putlog, logsuffix_change, logfile_init, logmodes,
                         masktype */
+#include "mem.h"     /* nmalloc, nfree */
 #include "misc.h"    /* splitc, oatoi */
 
 

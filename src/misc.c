@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: misc.c,v 1.14 2004/10/27 23:54:54 wcc Exp $
+ * $Id: misc.c,v 1.15 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include "main.h"
@@ -36,6 +36,7 @@
 #include "dccutil.h"  /* dprintf, chatout */
 #include "help.h"     /* help_subst */
 #include "match.h"    /* wild_match */
+#include "mem.h"      /* nmalloc, nrealloc */
 #include "rfc1459.h"  /* rfc_casecmp */
 #include "userfile.h" /* writeuserfile */
 

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: flags.c,v 1.7 2004/11/24 22:37:32 wcc Exp $
+ * $Id: flags.c,v 1.8 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include "main.h"
@@ -25,6 +25,7 @@
 #include "chanprog.h" /* findchan_by_dname */
 #include "dcc.h"      /* struct dcc_t */
 #include "dccutil.h"  /* shareout */
+#include "mem.h"      /* nfree */
 #include "misc.h"     /* strncpyz */
 #include "rfc1459.h"  /* rfc_casecmp */
 #include "userent.h"  /* list_type_kill */

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.c,v 1.16 2004/11/24 22:37:32 wcc Exp $
+ * $Id: cmds.c,v 1.17 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include "main.h"
@@ -46,6 +46,8 @@
                        * tell_dcc, not_away, set_away, do_boot, flush_lines, show_motd */
 #include "help.h"     /* debug_help */
 #include "logfile.h"  /* LOG_*, putlog, logmodes, masktype, maskname */
+#include "mem.h"      /* expected_memory, nmalloc, nfree, tell_mem_status,
+                       * debug_mem_to_dcc */
 #include "misc.h"     /* my_strcpy, splitcn, strncpyz, newsplit, dumplots, kill_bot */
 #include "net.h"      /* killsock, tell_netdebug */
 #include "userfile.h" /* reloaduserfile, writeuserfile */
@@ -712,14 +714,14 @@ static void cmd_status(struct userrec *u, int idx, char *par)
     }
     putlog(LOG_CMDS, "*", "#%s# status all", dcc[idx].nick);
     tell_verbose_status(idx);
-    tell_mem_status_dcc(idx);
+    tell_mem_status(idx);
     dprintf(idx, "\n");
     tell_settings(idx);
     do_module_report(idx, 1, NULL);
   } else {
     putlog(LOG_CMDS, "*", "#%s# status", dcc[idx].nick);
     tell_verbose_status(idx);
-    tell_mem_status_dcc(idx);
+    tell_mem_status(idx);
     do_module_report(idx, 0, NULL);
   }
 }

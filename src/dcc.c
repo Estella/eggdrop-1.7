@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.c,v 1.12 2004/11/24 22:37:32 wcc Exp $
+ * $Id: dcc.c,v 1.13 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include "main.h"
@@ -41,6 +41,7 @@
 #include "help.h"     /* help_subst */
 #include "logfile.h"  /* putlog, LOG_* */
 #include "match.h"    /* wild_match */
+#include "mem.h"      /* nfree */
 #include "misc.h"     /* splitc, strncpyz, newsplit, rmspace */
 #include "net.h"      /* SOCK_*, EGG_OPTION_*, neterror, getsock, killsock, answer,
                        * open_telnet, tputs, open_telnet_raw, iptostr, sockoptions */

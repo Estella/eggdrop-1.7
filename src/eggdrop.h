@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: eggdrop.h,v 1.6 2004/08/30 23:58:23 wcc Exp $
+ * $Id: eggdrop.h,v 1.7 2004/11/26 05:35:27 wcc Exp $
  */
 
 #ifndef _EGG_EGGDROP_H
@@ -79,10 +79,6 @@
 #if HANDLEN > NICKMAX
 #  include "Error: HANDLEN MUST BE <= NICKMAX."
 #endif
-
-#define nmalloc(x)    n_malloc((x),__FILE__,__LINE__)
-#define nrealloc(x,y) n_realloc((x),(y),__FILE__,__LINE__)
-#define nfree(x)      n_free((x),__FILE__,__LINE__)
 
 #ifndef COMPILING_MEM
 #  undef malloc

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botnet.c,v 1.10 2004/11/25 02:10:53 wcc Exp $
+ * $Id: botnet.c,v 1.11 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include "main.h"
@@ -31,6 +31,7 @@
                       * new_dcc, changeover_dcc */
 #include "dns.h"     /* RES_*, dcc_dnsipbyhost */
 #include "logfile.h" /* putlog, LOG_* */
+#include "mem.h"     /* nmalloc, nrealloc, nfree */
 #include "net.h"     /* SOCK_*, getsock, killsock, open_telnet_raw, tputs, iptostr */
 #include "userrec.h" /* correct_handle, touch_laston */
 

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: module.h,v 1.8 2004/11/24 22:37:32 wcc Exp $
+ * $Id: module.h,v 1.9 2004/11/26 05:35:27 wcc Exp $
  */
 
 #ifndef _EGG_MOD_MODULE_H
@@ -306,7 +306,7 @@
 #define flush_lines ((void(*)(int,struct chat_info*))global[167])
 /* 168 - 171 */
 #define expected_memory ((int(*)(void))global[168])
-#define tell_mem_status ((void(*)(char *))global[169])
+/* was tell_mem_status */
 #define do_restart (*(int *)(global[170]))
 #define check_tcl_filt ((const char *(*)(int, const char *))global[171])
 /* 172 - 175 */

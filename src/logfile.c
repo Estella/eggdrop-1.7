@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: logfile.c,v 1.6 2004/11/24 22:37:32 wcc Exp $
+ * $Id: logfile.c,v 1.7 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include "main.h"
@@ -27,6 +27,7 @@
 #include "logfile.h"
 #include "dcc.h"     /* DCC_* struct dcc_t */
 #include "dccutil.h" /* dprintf */
+#include "mem.h"     /* nmalloc, nrealloc */
 #include "misc.h"    /* my_strcpy, strncpyz */
 #include "rfc1459.h" /* rfc_casecmp */
 

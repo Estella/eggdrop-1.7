@@ -1,12 +1,7 @@
-/*
- * language.c -- handles:
- *   language support code
+/* language.c
  *
- * $Id: language.c,v 1.5 2004/09/10 01:10:50 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,16 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
-
-/*
+ *
+ *
  * DOES:
  *              Nothing <- typical BB code :)
  *
  * ENVIRONMENT VARIABLES:
- *              EGG_LANG       - language to use (default: "english")
- *              EGG_LANGDIR    - directory with all lang files
- *                               (default: "./language")
+ *              EGG_LANG    - language to use (default: "english")
+ *              EGG_LANGDIR - directory with all lang files (default: "./language")
+ *
  * WILL DO:
  *              Upon loading:
  *              o       default loads section core, if possible.
@@ -43,34 +37,39 @@
  *              DCC .ldump
  *              DCC .lstat
  *
- * FILE FORMAT: language.lang
- *              <textidx>,<text>
+ * FILE FORMAT: <section>.<language>.lang
+ *              <textindex>,<text>
+ *
  * TEXT MESSAGE USAGE:
- *              get_language(<textidx> [,<PARMS>])
+ *              get_language(<textindex> [,<PARMS>])
  *
  * ADDING LANGUAGES:
- *              o       Copy an existing <section>.<oldlanguage>.lang to a
- *                      new .lang file and modify as needed.
- *                      Use %s or %d where necessary, for plug-in
- *                      insertions of parameters (see core.english.lang).
- *              o       Ensure <section>.<newlanguage>.lang is in the lang
- *                      directory.
- *              o       .+lang <newlanguage>
- * ADDING SECTIONS:
- *              o       Create a <newsection>.english.lang file.
- *              o       Add add_lang_section("<newsection>"); to your module
- *                      startup function.
+ *              o  Copy an existing <section>.<oldlanguage>.lang to a new .lang
+ *                 file and modify as needed. Use %s or %d where necessary, for
+ *                 plug-in insertions of parameters (see core.english.lang).
  *
+ *              o  Ensure that <section>.<newlanguage>.lang is in the language
+ *                 directory.
+ *
+ *              o  .+lang <newlanguage>
+ *
+ * ADDING SECTIONS:
+ *              o  Create a <newsection>.english.lang file.
+ *              o  Add add_lang_section("<newsection>"); to your module's
+ *                 startup function.
+ *
+ * $Id: language.c,v 1.6 2004/11/26 05:35:27 wcc Exp $
  */
 
 #include "main.h"
 
 #include "language.h"
-#include "dcc.h"      /* struct dcc_t */
-#include "dccutil.h"  /* dprintf */
-#include "help.h"     /* help_subst */
-#include "logfile.h"  /* putlog, LOG_* */
-#include "misc.h"     /* strncpyz */
+#include "dcc.h"     /* struct dcc_t */
+#include "dccutil.h" /* dprintf */
+#include "help.h"    /* help_subst */
+#include "logfile.h" /* putlog, LOG_* */
+#include "mem.h"     /* nmalloc, nrealloc, nfree */
+#include "misc.h"    /* strncpyz */
 
 
 extern struct dcc_t *dcc;
