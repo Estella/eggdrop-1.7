@@ -4,7 +4,7 @@
  *   provides the code used by the bot if the DNS module is not loaded
  *   DNS Tcl commands
  *
- * $Id: dns.c,v 1.1 2004/08/25 01:02:01 wcc Exp $
+ * $Id: dns.c,v 1.2 2004/08/25 07:41:36 wcc Exp $
  */
 /*
  * Written by Fabian Knittel <fknittel@gmx.de>
@@ -34,6 +34,7 @@
 #include <arpa/inet.h>
 
 #include "dns.h"
+#include "dccutil.h" /* get_data_ptr, lostdcc */
 
 extern struct dcc_t *dcc;
 extern int dcc_total;

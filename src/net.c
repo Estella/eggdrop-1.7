@@ -2,7 +2,7 @@
  * net.c -- handles:
  *   all raw network i/o
  *
- * $Id: net.c,v 1.1 2004/08/25 01:02:01 wcc Exp $
+ * $Id: net.c,v 1.2 2004/08/25 07:41:36 wcc Exp $
  */
 /*
  * This is hereby released into the public domain.
@@ -33,6 +33,8 @@
 #    define getdtablesize() 200
 #  endif
 #endif
+
+#include "dccutil.h" /* dprintf */
 
 extern struct dcc_t *dcc;
 extern int backgrd, use_stderr, resolve_timeout, dcc_total;

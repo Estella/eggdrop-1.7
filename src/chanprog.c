@@ -7,7 +7,7 @@
  *   telling the current programmed settings
  *   initializing a lot of stuff and loading the tcl scripts
  *
- * $Id: chanprog.c,v 1.1 2004/08/25 01:02:05 wcc Exp $
+ * $Id: chanprog.c,v 1.2 2004/08/25 07:41:36 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -42,6 +42,8 @@
 #endif
 
 #include "modules.h"
+
+#include "dccutil.h" /* dprintf */
 
 extern struct userrec *userlist;
 extern log_t *logs;

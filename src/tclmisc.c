@@ -2,7 +2,7 @@
  * tclmisc.c -- handles:
  *   Tcl stubs for everything else
  *
- * $Id: tclmisc.c,v 1.2 2004/08/25 06:39:38 wcc Exp $
+ * $Id: tclmisc.c,v 1.3 2004/08/25 07:41:36 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -26,8 +26,6 @@
 #include "main.h"
 #include "modules.h"
 #include "tandem.h"
-#include "md5/md5.h"
-#include "botmsg.h" /* add_note() */
 
 #ifdef TIME_WITH_SYS_TIME
 #  include <sys/time.h>
@@ -45,6 +43,10 @@
 #ifdef HAVE_UNAME
 #  include <sys/utsname.h>
 #endif
+
+#include "md5/md5.h"
+#include "botmsg.h" /* add_note */
+#include "dcc.h"    /* strip_mirc_codes */
 
 extern p_tcl_bind_list bind_table_list;
 extern tcl_timer_t *timer, *utimer;

@@ -4,7 +4,7 @@
  *   disconnect on a dcc socket
  *   ...and that's it!  (but it's a LOT)
  *
- * $Id: dcc.c,v 1.2 2004/08/25 06:39:38 wcc Exp $
+ * $Id: dcc.c,v 1.3 2004/08/25 07:41:36 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -31,10 +31,15 @@
 #include "modules.h"
 #include "tandem.h"
 
+#include "dcc.h"
 #include "md5/md5.h" /* MD5 challenge/response stuff */
-#include "botcmd.h" /* bot_share */
-#include "botmsg.h" /* add_note, simple_sprintf */
-#include "botnet.h" /* nextbot, in_chain, dump_links, addbot, rembot, findbot, unvia */
+#include "botcmd.h"  /* bot_share */
+#include "botmsg.h"  /* add_note, simple_sprintf */
+#include "botnet.h"  /* nextbot, in_chain, dump_links, addbot, rembot, findbot, unvia */
+#include "cmds.h"    /* check_dcc_attrs */
+#include "dccutil.h" /* get_data_ptr, dprintf, chatout, chanout_but, dcc_chatter,
+                      * lostdcc, makepass, not_away, do_boot, detect_dcc_flood,
+                      * flush_lines, new_dcc, add_cr, changeover_dcc */
 
 extern struct userrec *userlist;
 extern struct chanset_t *chanset;

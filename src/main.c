@@ -5,7 +5,7 @@
  *   command line arguments
  *   context and assert debugging
  *
- * $Id: main.c,v 1.3 2004/08/25 06:39:38 wcc Exp $
+ * $Id: main.c,v 1.4 2004/08/25 07:41:36 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -60,7 +60,9 @@
 #include "tandem.h"
 #include "bg.h"
 
-#include "botnet.h" /* check_botnet_pings */
+#include "botnet.h"  /* check_botnet_pings */
+#include "dccutil.h" /* dprintf, dcc_chatter, lostdcc, tell_dcc, new_dcc,
+                      * dcc_remove_lost */
 
 #ifndef ENABLE_STRIP
 #  include <sys/resource.h>

@@ -2,7 +2,7 @@
  * main.h
  *   include file to include most other include files
  *
- * $Id: main.h,v 1.1 2004/08/25 01:02:03 wcc Exp $
+ * $Id: main.h,v 1.2 2004/08/25 07:41:36 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -94,6 +94,8 @@
 #ifndef MAKING_MODS
 #  include "proto.h"
 #endif
+
+#include "language.h"
 
 #include "cmdt.h"
 #include "tclegg.h"

@@ -3,7 +3,7 @@
  *   memory allocation and deallocation
  *   keeping track of what memory is being used by whom
  *
- * $Id: mem.c,v 1.1 2004/08/25 01:02:01 wcc Exp $
+ * $Id: mem.c,v 1.2 2004/08/25 07:41:36 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -35,6 +35,7 @@
 
 #include "mod/modvals.h"
 
+#include "dccutil.h" /* dprintf */
 
 extern module_entry *module_list;
 

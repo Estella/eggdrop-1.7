@@ -7,7 +7,7 @@
  * because they use structures in those
  * (saves including those .h files EVERY time) - Beldin
  *
- * $Id: proto.h,v 1.2 2004/08/25 06:39:38 wcc Exp $
+ * $Id: proto.h,v 1.3 2004/08/25 07:41:36 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -77,43 +77,6 @@ void set_chanlist(const char *host, struct userrec *rec);
 void clear_chanlist(void);
 void clear_chanlist_member(const char *nick);
 
-/* cmds.c */
-int check_dcc_attrs(struct userrec *, int);
-int check_dcc_chanattrs(struct userrec *, char *, int, int);
-int stripmodes(char *);
-char *stripmasktype(int);
-
-/* dcc.c */
-void failed_link(int);
-void strip_mirc_codes(int, char *);
-int check_ansi(char *);
-void dupwait_notify(char *);
-
-/* dccutil.c */
-void dprintf EGG_VARARGS(int, arg1);
-void chatout EGG_VARARGS(char *, arg1);
-extern void (*shareout) ();
-extern void (*sharein) (int, char *);
-void chanout_but EGG_VARARGS(int, arg1);
-void dcc_chatter(int);
-void lostdcc(int);
-void killtransfer(int);
-void removedcc(int);
-void makepass(char *);
-void tell_dcc(int);
-void not_away(int);
-void set_away(int, char *);
-void *_get_data_ptr(int, char *, int);
-void dcc_remove_lost(void);
-
-#define get_data_ptr(x) _get_data_ptr(x,__FILE__,__LINE__)
-void flush_lines(int, struct chat_info *);
-struct dcc_t *find_idx(int);
-int new_dcc(struct dcc_table *, int);
-void del_dcc(int);
-char *add_cr(char *);
-void changeover_dcc(int, struct dcc_table *, int);
-
 /* dns.c */
 extern void (*dns_hostbyip) (IP);
 extern void (*dns_ipbyhost) (char *);
@@ -123,18 +86,6 @@ void call_hostbyip(IP, char *, int);
 void call_ipbyhost(char *, IP, int);
 void dcc_dnshostbyip(IP);
 void dcc_dnsipbyhost(char *);
-
-/* gotdcc.c */
-void gotdcc(char *, char *, struct userrec *, char *);
-void do_boot(int, char *, char *);
-int detect_dcc_flood(time_t *, struct chat_info *, int);
-
-/* language.c */
-char *get_language(int);
-int cmd_loadlanguage(struct userrec *, int, char *);
-void add_lang_section(char *);
-int del_lang_section(char *);
-int exist_lang_section(char *);
 
 /* main.c */
 void fatal(const char *, int);
