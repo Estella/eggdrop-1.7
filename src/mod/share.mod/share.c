@@ -1,7 +1,7 @@
 /*
  * share.c -- part of share.mod
  *
- * $Id: share.c,v 1.2 2004/08/25 01:51:05 wcc Exp $
+ * $Id: share.c,v 1.3 2004/08/26 03:21:15 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -35,6 +35,8 @@
 #include "src/users.h"
 #include "transfer.mod/transfer.h"
 #include "channels.mod/channels.h"
+
+#include "src/botcmd.h"  /* bot_share, botcmd_t */
 
 /* Minimum version I will share with. */
 static const int min_share = 1029900;

@@ -2,7 +2,7 @@
  * tcldcc.c -- handles:
  *   Tcl stubs for the dcc commands
  *
- * $Id: tcldcc.c,v 1.3 2004/08/25 07:41:36 wcc Exp $
+ * $Id: tcldcc.c,v 1.4 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -30,8 +30,11 @@
 #include "botmsg.h"  /* int_to_base10 */
 #include "botnet.h"  /* lastbot, nextbot, botlink, butunlink */
 #include "cmds.h"    /* stripmodes, stripmasktype */
+#include "dcc.h"     /* struct script_info, DCC_*, struct dcc_t */
 #include "dccutil.h" /* get_data_ptr, chatout, chanout_but, lostdcc,
                       * killtransfer, not_away, set_away, do_boot, new_dcc */
+#include "userrec.h" /* write_userfile */
+
 
 extern Tcl_Interp *interp;
 extern tcl_timer_t *timer, *utimer;

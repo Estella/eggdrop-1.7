@@ -7,7 +7,7 @@
  * because they use structures in those
  * (saves including those .h files EVERY time) - Beldin
  *
- * $Id: proto.h,v 1.3 2004/08/25 07:41:36 wcc Exp $
+ * $Id: proto.h,v 1.4 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -34,10 +34,6 @@
 #include "lush.h"
 #include "misc_file.h"
 
-#ifdef HAVE_DPRINTF
-#  define dprintf dprintf_eggdrop
-#endif
-
 struct chanset_t;               /* keeps the compiler warnings down :) */
 struct userrec;
 struct maskrec;
@@ -50,10 +46,6 @@ struct tand_t_struct;
 extern void (*encrypt_pass) (char *, char *);
 extern char *(*encrypt_string) (char *, char *);
 extern char *(*decrypt_string) (char *, char *);
-extern int (*rfc_casecmp) (const char *, const char *);
-extern int (*rfc_ncasecmp) (const char *, const char *, int);
-extern int (*rfc_toupper) (int);
-extern int (*rfc_tolower) (int);
 extern int (*match_noterej) (struct userrec *, char *);
 #endif
 
@@ -190,32 +182,6 @@ int readtclprog(char *fname);
 int findidx(int);
 int findanyidx(int);
 
-/* userent.c */
-void list_type_kill(struct list_type *);
-int list_type_expmem(struct list_type *);
-int xtra_set();
-
-/* userrec.c */
-struct userrec *adduser(struct userrec *, char *, char *, char *, int);
-void addhost_by_handle(char *, char *);
-void clear_masks(struct maskrec *);
-void clear_userlist(struct userrec *);
-int u_pass_match(struct userrec *, char *);
-int delhost_by_handle(char *, char *);
-int ishost_for_handle(char *, char *);
-int count_users(struct userrec *);
-int deluser(char *);
-void freeuser(struct userrec *);
-int change_handle(struct userrec *, char *);
-void correct_handle(char *);
-int write_user(struct userrec *, FILE *, int);
-int write_ignores(FILE *f, int);
-void write_userfile(int);
-struct userrec *check_dcclist_hand(char *);
-void touch_laston(struct userrec *, char *, time_t);
-void user_del_chan(char *);
-char *fixfrom(char *);
-
 /* users.c */
 void addignore(char *, char *, char *, time_t);
 int delignore(char *);
@@ -227,11 +193,5 @@ void tell_file_stats(int, char *);
 void tell_user_ident(int, char *, int);
 void tell_users_match(int, char *, int, int, int, char *);
 int readuserfile(char *, struct userrec **);
-
-/* rfc1459.c */
-int _rfc_casecmp(const char *, const char *);
-int _rfc_ncasecmp(const char *, const char *, int);
-int _rfc_toupper(int);
-int _rfc_tolower(int);
 
 #endif /* _EGG_PROTO_H */

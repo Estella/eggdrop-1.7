@@ -1,4 +1,4 @@
-/* botmsg.h
+/* types.h
  *
  * Copyright (C) 2004 Eggheads Development Team
  *
@@ -16,20 +16,43 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botmsg.h,v 1.2 2004/08/26 03:21:13 wcc Exp $
+ * $Id: types.h,v 1.1 2004/08/26 03:21:14 wcc Exp $
  */
 
-#ifndef _EGG_BOTMSG_H
-#define _EGG_BOTMSG_H
+#ifndef _EGG_TYPES_H
+#define _EGG_TYPES_H
 
-#ifndef MAKING_MODS
-int add_note(char *, char *, char *, int, int);
-int simple_sprintf EGG_VARARGS(char *, arg1);
-void tandout_but EGG_VARARGS(int, arg1);
-char *int_to_base10(int);
-char *unsigned_int_to_base10(unsigned int);
-char *int_to_base64(unsigned int);
-int base64_to_int(char *);
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
 #endif
 
-#endif /* !_EGG_BOTMSG_H */
+#ifndef NULL
+#  define NULL 0
+#endif
+
+typedef int (*Function) ();
+
+typedef struct {
+  char *name;
+  char *flags;
+  Function func;
+  char *funcname;
+} cmd_t;
+
+/* 32 bit type */
+#if (SIZEOF_INT == 4)
+typedef unsigned int u_32bit_t;
+#else
+#  if (SIZEOF_LONG == 4)
+typedef unsigned long u_32bit_t;
+#  else
+#    include "Error: Can't find 32bit type."
+#  endif
+#endif
+
+typedef unsigned short int u_16bit_t; /* 16 bit type */
+typedef unsigned char u_8bit_t;       /* 8 bit type  */
+
+typedef u_32bit_t IP; /* IP type */
+
+#endif /* _EGG_TYPES_H */

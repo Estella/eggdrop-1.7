@@ -1,4 +1,4 @@
-/* botcmd.h: prototypes for functions in botcmd.c
+/* botcmd.h
  *
  * Copyright (C) 2004 Eggheads Development Team
  *
@@ -16,12 +16,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botcmd.h,v 1.1 2004/08/25 06:39:38 wcc Exp $
+ * $Id: botcmd.h,v 1.2 2004/08/26 03:21:13 wcc Exp $
  */
 
 #ifndef _EGG_BOTCMD_H
 #define _EGG_BOTCMD_H
 
+#include "types.h" /* Function */
+
+typedef struct {
+  char *name;
+  Function func;
+} botcmd_t;
+
+
+#ifndef MAKING_MODS
 void bot_share(int, char *);
+#endif
 
 #endif /* !_EGG_BOTCMD_H */

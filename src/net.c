@@ -2,7 +2,7 @@
  * net.c -- handles:
  *   all raw network i/o
  *
- * $Id: net.c,v 1.2 2004/08/25 07:41:36 wcc Exp $
+ * $Id: net.c,v 1.3 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * This is hereby released into the public domain.
@@ -34,6 +34,7 @@
 #  endif
 #endif
 
+#include "dcc.h"     /* struct dcc_t */
 #include "dccutil.h" /* dprintf */
 
 extern struct dcc_t *dcc;

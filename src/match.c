@@ -2,7 +2,7 @@
  * match.c
  *   wildcard matching functions
  *
- * $Id: match.c,v 1.1 2004/08/25 01:02:01 wcc Exp $
+ * $Id: match.c,v 1.2 2004/08/26 03:21:14 wcc Exp $
  *
  * Once this code was working, I added support for % so that I could
  * use the same code both in Eggdrop and in my IrcII client.
@@ -23,6 +23,8 @@
  *
  */
 #include "main.h"
+
+#include "rfc1459.h" /* rfc_toupper */
 
 #define QUOTE '\\' /* quoting character (overrides wildcards) */
 #define WILDS '*'  /* matches 0 or more characters (including spaces) */

@@ -1,4 +1,4 @@
-/* botmsg.h
+/* rfc1459.h: prototypes for functions in rfc1459.c
  *
  * Copyright (C) 2004 Eggheads Development Team
  *
@@ -16,20 +16,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botmsg.h,v 1.2 2004/08/26 03:21:13 wcc Exp $
+ * $Id: rfc1459.h,v 1.1 2004/08/26 03:21:14 wcc Exp $
  */
 
-#ifndef _EGG_BOTMSG_H
-#define _EGG_BOTMSG_H
+#ifndef _EGG_RFC1459_H
+#define _EGG_RFC1459_H
 
 #ifndef MAKING_MODS
-int add_note(char *, char *, char *, int, int);
-int simple_sprintf EGG_VARARGS(char *, arg1);
-void tandout_but EGG_VARARGS(int, arg1);
-char *int_to_base10(int);
-char *unsigned_int_to_base10(unsigned int);
-char *int_to_base64(unsigned int);
-int base64_to_int(char *);
+extern int (*rfc_casecmp) (const char *, const char *);
+extern int (*rfc_ncasecmp) (const char *, const char *, int);
+extern int (*rfc_toupper) (int);
+extern int (*rfc_tolower) (int);
 #endif
 
-#endif /* !_EGG_BOTMSG_H */
+#ifndef MAKING_MODS
+int _rfc_casecmp(const char *, const char *);
+int _rfc_ncasecmp(const char *, const char *, int);
+int _rfc_toupper(int);
+int _rfc_tolower(int);
+#endif
+
+#endif /* !_EGG_RFC1459_H */

@@ -5,7 +5,7 @@
  *
  * by Darrin Smith (beldin@light.iinet.net.au)
  *
- * $Id: botmsg.c,v 1.3 2004/08/25 07:41:36 wcc Exp $
+ * $Id: botmsg.c,v 1.4 2004/08/26 03:21:13 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -30,7 +30,8 @@
 #include "tandem.h"
 
 #include "botmsg.h"
-#include "botnet.h" /* lastbot, nextbot, getparty */
+#include "botnet.h"  /* lastbot, nextbot, getparty */
+#include "dcc.h"     /* DCC_*, struct dcc_t */
 #include "dccutil.h" /* dprintf */
 
 extern struct dcc_t *dcc;

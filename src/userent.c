@@ -2,7 +2,7 @@
  * userent.c -- handles:
  *   user-entry handling, new stylem more versatile.
  *
- * $Id: userent.c,v 1.3 2004/08/25 07:41:36 wcc Exp $
+ * $Id: userent.c,v 1.4 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -25,8 +25,13 @@
 
 #include "main.h"
 #include "users.h"
-#include "botmsg.h" /* simple_sprintf, int_to_base10 */
+
+#include "userent.h"
+#include "botmsg.h"  /* simple_sprintf, int_to_base10 */
+#include "dcc.h"     /* struct dcc_t */
 #include "dccutil.h" /* dprintf, shareout */
+#include "rfc1459.h" /* rfc_casecmp */
+#include "userrec.h" /* addhost_by_handle */
 
 extern int noshare;
 extern struct userrec *userlist;

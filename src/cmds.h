@@ -1,4 +1,4 @@
-/* cmds.h: prototypes for functions in cmds.c
+/* cmds.h
  *
  * Copyright (C) 2004 Eggheads Development Team
  *
@@ -16,15 +16,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.h,v 1.1 2004/08/25 07:41:36 wcc Exp $
+ * $Id: cmds.h,v 1.2 2004/08/26 03:21:13 wcc Exp $
  */
 
 #ifndef _EGG_CMDS_H
 #define _EGG_CMDS_H
 
+#include "types.h" /* Function */
+
+#define CMD_LEAVE (Function)(-1)
+
+
+#ifndef MAKING_MODS
 int check_dcc_attrs(struct userrec *, int);
 int check_dcc_chanattrs(struct userrec *, char *, int, int);
 int stripmodes(char *);
 char *stripmasktype(int);
+#endif
 
 #endif /* !_EGG_CMDS_H */

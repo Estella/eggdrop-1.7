@@ -2,7 +2,7 @@
  * tcluser.c -- handles:
  *   Tcl stubs for the user-record-oriented commands
  *
- * $Id: tcluser.c,v 1.2 2004/08/25 06:39:38 wcc Exp $
+ * $Id: tcluser.c,v 1.3 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -29,8 +29,11 @@
 #include "tandem.h"
 #include "modules.h"
 
-#include "botmsg.h" /* int_to_base10 */
-#include "botnet.h" /* nextbot */
+#include "botmsg.h"  /* int_to_base10 */
+#include "botnet.h"  /* nextbot */
+#include "dcc.h"     /* DCC_*, struct dcc_t */
+#include "userrec.h" /* adduser, u_pass_match, delhost_by_handle, count_users,
+                      * deluser, change_handle, write_userfile */
 
 extern Tcl_Interp *interp;
 extern struct userrec *userlist;

@@ -10,7 +10,7 @@
  *
  * dprintf'ized, 9nov1995
  *
- * $Id: users.c,v 1.3 2004/08/25 07:41:36 wcc Exp $
+ * $Id: users.c,v 1.4 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -41,8 +41,13 @@ char natip[121] = "";
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#include "botnet.h" /* nextbot, in_chain, botlink, rembot */
+#include "botnet.h"  /* nextbot, in_chain, botlink, rembot */
+#include "dcc.h"     /* DCC_*, struct dcc_t */
 #include "dccutil.h" /* dprintf, chatout, shareout, lostdcc */
+#include "rfc1459.h" /* rfc_casecmp */
+#include "userrec.h" /* adduser, clear_masks */
+
+#include "users.h"
 
 extern struct dcc_t *dcc;
 extern struct userrec *userlist, *lastuser;

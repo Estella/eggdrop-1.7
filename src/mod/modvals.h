@@ -1,7 +1,7 @@
 /*
  * modvals.h
  *
- * $Id: modvals.h,v 1.1 2004/08/25 01:02:06 wcc Exp $
+ * $Id: modvals.h,v 1.2 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -24,6 +24,8 @@
 
 #ifndef _EGG_MOD_MODVALS_H
 #define _EGG_MOD_MODVALS_H
+
+#include "src/types.h" /* Function */
 
 /* #define HOOK_GET_FLAGREC       0     */
 /* #define HOOK_BUILD_FLAGREC     1     */

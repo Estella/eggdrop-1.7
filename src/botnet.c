@@ -1,17 +1,7 @@
-/*
- * botnet.c -- handles:
- *   keeping track of which bot's connected where in the chain
- *   dumping a list of bots or a bot tree to a user
- *   channel name associations on the party line
- *   rejecting a bot
- *   linking, unlinking, and relaying to another bot
- *   pinging the bots periodically and checking leaf status
+/* botnet.c
  *
- * $Id: botnet.c,v 1.3 2004/08/25 07:41:36 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: botnet.c,v 1.4 2004/08/26 03:21:13 wcc Exp $
  */
 
 #include "main.h"
@@ -33,9 +25,13 @@
 
 #include "botnet.h"
 #include "botmsg.h"  /* simple_sprintf, tandout_but */
-#include "dcc.h"     /* failed_link, dupwait_notify */
+#include "dcc.h"     /* failed_link, dupwait_notify, struct bot_info, struct relay_info,
+                      * struct chat_info,  DCC_*, struct dcc_t, struct dns_info */
 #include "dccutil.h" /* get_data_ptr, dprintf, chatout, chanout_but, lostdcc,
                       * new_dcc, changeover_dcc */
+#include "dns.h"     /* RES_* */
+#include "userrec.h" /* correct_handle, touch_laston */
+
 
 extern int dcc_total, backgrd, connect_timeout, max_dcc, egg_numver;
 extern struct userrec *userlist;

@@ -4,7 +4,7 @@
  *
  *   IF YOU ALTER THIS FILE, YOU NEED TO RECOMPILE THE BOT.
  *
- * $Id: eggdrop.h,v 1.1 2004/08/25 01:02:03 wcc Exp $
+ * $Id: eggdrop.h,v 1.2 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -255,23 +255,6 @@ typedef int socklen_t;
 #  define free(x)   dont_use_old_free(x)
 #endif /* !COMPILING_MEM */
 
-/* 32 bit type */
-#if (SIZEOF_INT == 4)
-typedef unsigned int u_32bit_t;
-#else
-#  if (SIZEOF_LONG == 4)
-typedef unsigned long u_32bit_t;
-#  else
-#    include "Error: Can't find 32bit type."
-#  endif
-#endif
-
-typedef unsigned short int u_16bit_t;
-typedef unsigned char u_8bit_t;
-
-/* IP type */
-typedef u_32bit_t IP;
-
 #define debug0(x)             putlog(LOG_DEBUG,"*",x)
 #define debug1(x,a1)          putlog(LOG_DEBUG,"*",x,a1)
 #define debug2(x,a1,a2)       putlog(LOG_DEBUG,"*",x,a1,a2)
@@ -287,9 +270,6 @@ typedef u_32bit_t IP;
 
 /***********************************************************************/
 
-/* It's used in so many places, let's put it here */
-typedef int (*Function) ();
-
 /* Public structure for the listening port map */
 struct portmap {
   int realport;
@@ -297,150 +277,9 @@ struct portmap {
   struct portmap *next;
 };
 
-/* Public structure of all the dcc connections */
-struct dcc_table {
-  char *name;
-  int flags;
-  void (*eof) (int);
-  void (*activity) (int, char *, int);
-  int *timeout_val;
-  void (*timeout) ();
-  void (*display) (int, char *);
-  int (*expmem) (void *);
-  void (*kill) (int, void *);
-  void (*output) (int, char *, void *);
-  void (*outdone) (int);
-};
 
-struct userrec;
 
-struct dcc_t {
-  long sock;                    /* This should be a long to keep 64-bit machines sane */
-  IP addr;                      /* IP address in host byte order */
-  unsigned int port;
-  struct userrec *user;
-  char nick[NICKLEN];
-  char host[UHOSTLEN];
-  struct dcc_table *type;
-  time_t timeval;               /* This is used for timeout checking  */
-  unsigned long status;         /* A LOT of dcc types have status things; makes it more avaliabe */
-  union {
-    struct chat_info *chat;
-    struct file_info *file;
-    struct edit_info *edit;
-    struct xfer_info *xfer;
-    struct bot_info *bot;
-    struct relay_info *relay;
-    struct script_info *script;
-    struct dns_info *dns;
-    struct dupwait_info *dupwait;
-    int ident_sock;
-    void *other;
-  } u;                          /* Special use depending on type        */
-};
 
-struct chat_info {
-  char *away;                   /* non-NULL if user is away             */
-  int msgs_per_sec;             /* used to stop flooding                */
-  int con_flags;                /* with console: what to show           */
-  int strip_flags;              /* what codes to strip (b,r,u,c,a,g,*)  */
-  char con_chan[81];            /* with console: what channel to view   */
-  int channel;                  /* 0=party line, -1=off                 */
-  struct msgq *buffer;          /* a buffer of outgoing lines
-                                 * (for .page cmd)                      */
-  int max_line;                 /* maximum lines at once                */
-  int line_count;               /* number of lines sent since last page */
-  int current_lines;            /* number of lines total stored         */
-  char *su_nick;
-};
-
-struct file_info {
-  struct chat_info *chat;
-  char dir[161];
-};
-
-struct xfer_info {
-  char *filename;
-  char *origname;
-  char dir[DIRLEN];             /* used when uploads go to the current dir */
-  unsigned long length;
-  unsigned long acked;
-  char buf[4];                  /* you only need 5 bytes!                  */
-  unsigned char sofar;          /* how much of the byte count received     */
-  char from[NICKLEN];           /* [GET] user who offered the file         */
-  FILE *f;                      /* pointer to file being sent/received     */
-  unsigned int type;            /* xfer connection type, see enum below    */
-  unsigned short ack_type;      /* type of ack                             */
-  unsigned long offset;         /* offset from beginning of file, during
-                                 * resend.                                 */
-  unsigned long block_pending;  /* bytes of this DCC block which weren't
-                                 * sent yet.                               */
-  time_t start_time;            /* Time when a xfer was started.           */
-};
-
-enum {                          /* transfer connection handling a ...   */
-  XFER_SEND,                    /*  ... normal file-send to s.o.        */
-  XFER_RESEND,                  /*  ... file-resend to s.o.             */
-  XFER_RESEND_PEND,             /*  ... (as above) and waiting for info */
-  XFER_RESUME,                  /*  ... file-send-resume to s.o.        */
-  XFER_RESUME_PEND,             /*  ... (as above) and waiting for conn */
-  XFER_GET                      /*  ... file-get from s.o.              */
-};
-
-enum {
-  XFER_ACK_UNKNOWN,             /* We don't know how blocks are acked.  */
-  XFER_ACK_WITH_OFFSET,         /* Skipped data is also counted as
-                                 * received.                            */
-  XFER_ACK_WITHOUT_OFFSET       /* Skipped data is NOT counted in ack.  */
-};
-
-struct bot_info {
-  char version[121];            /* channel/version info                 */
-  char linker[NOTENAMELEN + 1]; /* who requested this link              */
-  int numver;
-  int port;                     /* base port                            */
-  int uff_flags;                /* user file feature flags              */
-};
-
-struct relay_info {
-  struct chat_info *chat;
-  int sock;
-  int port;
-  int old_status;
-};
-
-struct script_info {
-  struct dcc_table *type;
-  union {
-    struct chat_info *chat;
-    struct file_info *file;
-    void *other;
-  } u;
-  char command[121];
-};
-
-struct dns_info {
-  void (*dns_success) (int);    /* is called if the dns request succeeds   */
-  void (*dns_failure) (int);    /* is called if it fails                   */
-  char *host;                   /* hostname                                */
-  char *cbuf;                   /* temporary buffer. Memory will be free'd
-                                 * as soon as dns_info is free'd           */
-  char *cptr;                   /* temporary pointer                       */
-  IP ip;                        /* IP address                              */
-  int ibuf;                     /* temporary buffer for one integer        */
-  char dns_type;                /* lookup type, e.g. RES_HOSTBYIP          */
-  struct dcc_table *type;       /* type of the dcc table we are making the
-                                 * lookup for                              */
-};
-
-/* Flags for dns_type. */
-#define RES_HOSTBYIP  1         /* hostname to IP address               */
-#define RES_IPBYHOST  2         /* IP address to hostname               */
-
-struct dupwait_info {
-  int atr;                      /* the bots attributes                  */
-  struct chat_info *chat;       /* holds current chat data              */
-};
 
 /* Flags for dcc types. */
 #define DCT_CHAT      0x00000001        /* this dcc type receives botnet
@@ -472,15 +311,6 @@ struct dupwait_info {
 #define STAT_USRONLY 0x00040    /* telnet on users-only connect         */
 #define STAT_PAGE    0x00080    /* page output to the user              */
 
-/* For stripping out mIRC codes. */
-#define STRIP_COLOR  0x00001    /* remove mIRC color codes              */
-#define STRIP_BOLD   0x00002    /* remove bold codes                    */
-#define STRIP_REV    0x00004    /* remove reverse video codes           */
-#define STRIP_UNDER  0x00008    /* remove underline codes               */
-#define STRIP_ANSI   0x00010    /* remove ALL ANSI codes                */
-#define STRIP_BELLS  0x00020    /* remote ctrl-g's                      */
-#define STRIP_ALL    0x00040    /* remove every damn thing!             */
-
 /* For dcc bot links. */
 #define STAT_PINGED  0x00001    /* waiting for ping to return            */
 #define STAT_SHARE   0x00002    /* sharing user data with the bot        */
@@ -508,11 +338,6 @@ struct dupwait_info {
 
 #define FLOOD_CHAN_MAX   7
 #define FLOOD_GLOBAL_MAX 3
-
-/* For local console: */
-#define STDIN  0
-#define STDOUT 1
-#define STDERR 2
 
 /* Structure for internal logs */
 typedef struct {
@@ -599,6 +424,14 @@ enum {
 #define NORMAL          0
 #define QUICK           1
 
+
+
+/* For local console */
+#define STDIN  0
+#define STDOUT 1
+#define STDERR 2
+
+
 /* Return codes for add_note */
 #define NOTE_ERROR      0       /* error                        */
 #define NOTE_OK         1       /* success                      */
@@ -632,22 +465,5 @@ enum {
   EGG_OPTION_SET = 1,           /* Set option(s).               */
   EGG_OPTION_UNSET = 2          /* Unset option(s).             */
 };
-
-/* Telnet codes.  See "TELNET Protocol Specification" (RFC 854) and
- * "TELNET Echo Option" (RFC 875) for details. */
-#define TLN_AYT         246     /* Are You There        */
-#define TLN_WILL        251     /* Will                 */
-#define TLN_WILL_C      "\373"
-#define TLN_WONT        252     /* Won't                */
-#define TLN_WONT_C      "\374"
-#define TLN_DO          253     /* Do                   */
-#define TLN_DO_C        "\375"
-#define TLN_DONT        254     /* Don't                */
-#define TLN_DONT_C      "\376"
-#define TLN_IAC         255     /* Interpret As Command */
-#define TLN_IAC_C       "\377"
-
-#define TLN_ECHO        1       /* Echo                 */
-#define TLN_ECHO_C      "\001"
 
 #endif /* _EGG_EGGDROP_H */

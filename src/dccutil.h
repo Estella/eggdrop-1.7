@@ -16,11 +16,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dccutil.h,v 1.1 2004/08/25 07:41:36 wcc Exp $
+ * $Id: dccutil.h,v 1.2 2004/08/26 03:21:14 wcc Exp $
  */
 
 #ifndef _EGG_DCCUTIL_H
 #define _EGG_DCCUTIL_H
+
+#include "dcc.h" /* struct dcc_table, struct chat_info */
+
+#ifdef HAVE_DPRINTF
+#  undef dprintf
+#endif
 
 #define get_data_ptr(x) _get_data_ptr(x,__FILE__,__LINE__)
 

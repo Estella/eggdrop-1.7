@@ -1,14 +1,7 @@
-/*
- * dcc.c -- handles:
- *   activity on a dcc socket
- *   disconnect on a dcc socket
- *   ...and that's it!  (but it's a LOT)
+/* dcc.c
  *
- * $Id: dcc.c,v 1.3 2004/08/25 07:41:36 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: dcc.c,v 1.4 2004/08/26 03:21:13 wcc Exp $
  */
 
 #include "main.h"
@@ -33,13 +28,17 @@
 
 #include "dcc.h"
 #include "md5/md5.h" /* MD5 challenge/response stuff */
-#include "botcmd.h"  /* bot_share */
+#include "botcmd.h"  /* bot_share, botcmd_t */
 #include "botmsg.h"  /* add_note, simple_sprintf */
 #include "botnet.h"  /* nextbot, in_chain, dump_links, addbot, rembot, findbot, unvia */
 #include "cmds.h"    /* check_dcc_attrs */
 #include "dccutil.h" /* get_data_ptr, dprintf, chatout, chanout_but, dcc_chatter,
                       * lostdcc, makepass, not_away, do_boot, detect_dcc_flood,
                       * flush_lines, new_dcc, add_cr, changeover_dcc */
+#include "dns.h"     /* RES_* */
+#include "userrec.h" /* adduser, u_pass_match, deluser, correct_handle, write_userfile,
+                      * touch_laston */
+
 
 extern struct userrec *userlist;
 extern struct chanset_t *chanset;
@@ -49,6 +48,7 @@ extern char botnetnick[], ver[], origbotname[], notify_new[];
 extern int egg_numver, connect_timeout, conmask, backgrd, max_dcc,
            make_userfile, default_flags, raw_log, ignore_time,
            par_telnet_flood;
+
 
 struct dcc_t *dcc = NULL;       /* DCC list                                */
 int dcc_total = 0;              /* Total dcc's                             */
@@ -70,6 +70,7 @@ int flood_telnet_thr = 5;       /* Number of telnet connections to be
                                  * considered a flood                      */
 int flood_telnet_time = 60;     /* In how many seconds?                    */
 char bannerfile[121] = "text/banner";   /* File displayed on telnet login */
+
 
 static void dcc_telnet_hostresolved(int);
 static void dcc_telnet_got_ident(int, char *);

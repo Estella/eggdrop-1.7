@@ -1,11 +1,7 @@
-/*
- * module.h
+/* module.h
  *
- * $Id: module.h,v 1.1 2004/08/25 01:02:06 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,15 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: module.h,v 1.2 2004/08/26 03:21:14 wcc Exp $
  */
 
 #ifndef _EGG_MOD_MODULE_H
 #define _EGG_MOD_MODULE_H
 
-/* Just include *all* the include files...it's slower but EASIER */
 #include "src/main.h"
 #include "modvals.h"
 #include "src/tandem.h"
+
+#include "src/types.h"
+#include "src/dcc.h"
+#include "src/dns.h"
 
 /*
  * This file contains all the horrible stuff required to do the lookup

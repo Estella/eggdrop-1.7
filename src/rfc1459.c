@@ -1,7 +1,7 @@
 /*
  * rfc1459.c
  *
- * $Id: rfc1459.c,v 1.1 2004/08/25 01:02:00 wcc Exp $
+ * $Id: rfc1459.c,v 1.2 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1990 Jarkko Oikarinen
@@ -26,6 +26,7 @@
  */
 
 #include "main.h"
+#include "rfc1459.h"
 
 int _rfc_casecmp(const char *s1, const char *s2)
 {

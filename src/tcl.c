@@ -4,7 +4,7 @@
  *   Tcl initialization
  *   getting and setting Tcl/eggdrop variables
  *
- * $Id: tcl.c,v 1.1 2004/08/25 01:02:01 wcc Exp $
+ * $Id: tcl.c,v 1.2 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -27,7 +27,9 @@
 
 #include <stdlib.h>             /* getenv()                             */
 #include <locale.h>             /* setlocale()                          */
+
 #include "main.h"
+#include "dcc.h"  /* struct dcc_t */
 
 /* Used for read/write to internal strings */
 typedef struct {

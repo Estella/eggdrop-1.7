@@ -2,7 +2,7 @@
  * tclmisc.c -- handles:
  *   Tcl stubs for everything else
  *
- * $Id: tclmisc.c,v 1.3 2004/08/25 07:41:36 wcc Exp $
+ * $Id: tclmisc.c,v 1.4 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -46,7 +46,7 @@
 
 #include "md5/md5.h"
 #include "botmsg.h" /* add_note */
-#include "dcc.h"    /* strip_mirc_codes */
+#include "dcc.h"    /* STRIP_*, strip_mirc_codes, struct dcc_t */
 
 extern p_tcl_bind_list bind_table_list;
 extern tcl_timer_t *timer, *utimer;

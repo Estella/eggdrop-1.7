@@ -1,7 +1,7 @@
 /*
  * flags.h
  *
- * $Id: flags.h,v 1.1 2004/08/25 01:02:02 wcc Exp $
+ * $Id: flags.h,v 1.2 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -171,9 +171,9 @@ struct flag_record {
 #define bot_chan(x)             ((x).chan & BOT_AGGRESSIVE)
 #define bot_shared(x)           ((x).bot & BOT_SHARE)
 
+struct userrec;
 
 #ifndef MAKING_MODS
-
 void get_user_flagrec(struct userrec *, struct flag_record *, const char *);
 void set_user_flagrec(struct userrec *, struct flag_record *, const char *);
 void break_down_flags(const char *, struct flag_record *, struct flag_record *);
@@ -183,7 +183,6 @@ int flagrec_ok(struct flag_record *, struct flag_record *);
 int sanity_check(int);
 int chan_sanity_check(int, int);
 char geticon(int);
-
 #endif /* MAKING_MODS */
 
 #endif /* _EGG_FLAGS_H */

@@ -3,7 +3,7 @@
  *   commands from a user via dcc
  *   (split in 2, this portion contains no-irc commands)
  *
- * $Id: cmds.c,v 1.3 2004/08/25 07:41:36 wcc Exp $
+ * $Id: cmds.c,v 1.4 2004/08/26 03:21:13 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -33,8 +33,11 @@
 #include "botmsg.h"  /* simple_sprintf */
 #include "botnet.h"  /* answer_local_whom, lastbot, nextbot, tell_bots,
                       * tell_bottree, botlink, botunlink, tandem_relay */
+#include "dcc.h"     /* struct chat_info, DCC_*, STRIP_*, struct dcc_t */
 #include "dccutil.h" /* get_data_ptr, dprintf, chanout_but, dcc_chatter, lostdcc,
                       * tell_dcc, not_away, set_away, do_boot, flush_lines */
+#include "userrec.h" /* adduser, addhost_by_handle, u_pass_match, delhost_by_handle,
+                      * deluser, change_handle, correct_handle, write_userfile */
 
 extern struct chanset_t *chanset;
 extern struct dcc_t *dcc;

@@ -1,5 +1,5 @@
 # Makefile for src/mod/filesys.mod/
-# $Id: Makefile,v 1.1 2004/08/25 01:02:09 wcc Exp $
+# $Id: Makefile,v 1.2 2004/08/26 03:21:14 wcc Exp $
 
 srcdir = .
 
@@ -32,18 +32,3 @@ clean:
 distclean: clean
 
 #safety hash
-../filesys.o: .././filesys.mod/filesys.c ../../../config.h \
- ../../../src/mod/module.h ../../../src/main.h ../../../src/lang.h \
- ../../../src/eggdrop.h ../../../src/flags.h ../../../src/proto.h \
- ../../../lush.h ../../../src/misc_file.h ../../../src/cmdt.h \
- ../../../src/tclegg.h ../../../src/tclhash.h ../../../src/chan.h \
- ../../../src/users.h ../../../src/compat/compat.h \
- ../../../src/compat/inet_aton.h \
- ../../../src/compat/snprintf.h ../../../src/compat/memset.h \
- ../../../src/compat/memcpy.h ../../../src/compat/strcasecmp.h \
- ../../../src/compat/strftime.h ../../../src/mod/modvals.h \
- ../../../src/tandem.h ../filesys.mod/filedb3.h ../filesys.mod/filesys.h \
- ../../../src/mod/transfer.mod/transfer.h ../filesys.mod/files.h \
- ../filesys.mod/dbcompat.h ../filesys.mod/filelist.h ../filesys.mod/files.c \
- ../../../src/stat.h ../filesys.mod/filedb3.c ../filesys.mod/tclfiles.c \
- ../filesys.mod/dbcompat.c ../filesys.mod/filelist.c

@@ -6,7 +6,7 @@
  *   memory management for dcc structures
  *   timeout checking for dcc connections
  *
- * $Id: dccutil.c,v 1.2 2004/08/25 07:41:36 wcc Exp $
+ * $Id: dccutil.c,v 1.3 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -35,6 +35,7 @@
 #include "tandem.h"
 
 #include "dccutil.h"
+#include "dcc.h" /* DCC_* */
 
 extern struct dcc_t *dcc;
 extern int dcc_total, max_dcc, dcc_flood_thr, backgrd, copy_to_tmp, MAXSOCKS;

@@ -2,7 +2,7 @@
  * filesys.c -- part of filesys.mod
  *   main file of the filesys eggdrop module
  *
- * $Id: filesys.c,v 1.2 2004/08/25 01:51:04 wcc Exp $
+ * $Id: filesys.c,v 1.3 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -66,6 +66,8 @@
 #include "files.h"
 #include "dbcompat.h"
 #include "filelist.h"
+
+#include "src/cmds.h" /* CMD_LEAVE */
 
 static p_tcl_bind_list H_fil;
 static Function *transfer_funcs = NULL;

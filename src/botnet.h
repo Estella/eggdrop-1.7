@@ -1,4 +1,4 @@
-/* botnet.h: prototypes for functions in botnet.c
+/* botnet.h
  *
  * Copyright (C) 2004 Eggheads Development Team
  *
@@ -16,12 +16,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botnet.h,v 1.1 2004/08/25 06:39:38 wcc Exp $
+ * $Id: botnet.h,v 1.2 2004/08/26 03:21:13 wcc Exp $
  */
 
 #ifndef _EGG_BOTNET_H
 #define _EGG_BOTNET_H
 
+#ifndef MAKING_MODS
 void answer_local_whom(int, int);
 char *lastbot(char *);
 int nextbot(char *);
@@ -48,5 +49,6 @@ void partyaway(char *, int, char *);
 void zapfbot(int);
 void tandem_relay(int, char *, int);
 int getparty(char *, int);
+#endif
 
 #endif /* !_EGG_BOTNET_H */

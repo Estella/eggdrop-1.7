@@ -1,5 +1,5 @@
 # Makefile for src/mod/blowfish.mod/
-# $Id: Makefile,v 1.1 2004/08/25 01:02:11 wcc Exp $
+# $Id: Makefile,v 1.2 2004/08/26 03:21:14 wcc Exp $
 
 srcdir = .
 
@@ -32,14 +32,3 @@ clean:
 distclean: clean
 
 #safety hash
-../blowfish.o: .././blowfish.mod/blowfish.c ../../../src/mod/module.h \
- ../../../src/main.h ../../../config.h ../../../src/lang.h \
- ../../../src/eggdrop.h ../../../src/flags.h ../../../src/proto.h \
- ../../../lush.h ../../../src/misc_file.h ../../../src/cmdt.h \
- ../../../src/tclegg.h ../../../src/tclhash.h ../../../src/chan.h \
- ../../../src/users.h ../../../src/compat/compat.h \
- ../../../src/compat/inet_aton.h \
- ../../../src/compat/snprintf.h ../../../src/compat/memset.h \
- ../../../src/compat/memcpy.h ../../../src/compat/strcasecmp.h \
- ../../../src/compat/strftime.h ../../../src/mod/modvals.h \
- ../../../src/tandem.h ../blowfish.mod/blowfish.h ../blowfish.mod/bf_tab.h

@@ -2,7 +2,7 @@
  * main.h
  *   include file to include most other include files
  *
- * $Id: main.h,v 1.2 2004/08/25 07:41:36 wcc Exp $
+ * $Id: main.h,v 1.3 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -29,6 +29,8 @@
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
+
+#include "types.h" /* We need this basically everywhere. */
 
 #include "lush.h"
 
@@ -97,7 +99,6 @@
 
 #include "language.h"
 
-#include "cmdt.h"
 #include "tclegg.h"
 #include "tclhash.h"
 #include "chan.h"
@@ -112,14 +113,6 @@
 /* For pre7.6 Tcl versions */
 #ifndef TCL_PATCH_LEVEL
 #  define TCL_PATCH_LEVEL Tcl_GetVar(interp, "tcl_patchLevel", TCL_GLOBAL_ONLY)
-#endif
-
-#ifndef MAKING_MODS
-extern struct dcc_table DCC_CHAT, DCC_BOT, DCC_LOST, DCC_SCRIPT, DCC_BOT_NEW,
-                        DCC_RELAY, DCC_RELAYING, DCC_FORK_RELAY, DCC_PRE_RELAY,
-                        DCC_CHAT_PASS, DCC_FORK_BOT, DCC_SOCKET, DCC_TELNET_ID,
-                        DCC_TELNET_NEW, DCC_TELNET_PW, DCC_TELNET, DCC_IDENT,
-                        DCC_IDENTWAIT, DCC_DNSWAIT;
 #endif
 
 #define iptolong(a) (0xffffffff & (long) (htonl((unsigned long) a)))

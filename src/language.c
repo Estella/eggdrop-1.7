@@ -2,7 +2,7 @@
  * language.c -- handles:
  *   language support code
  *
- * $Id: language.c,v 1.2 2004/08/25 07:41:36 wcc Exp $
+ * $Id: language.c,v 1.3 2004/08/26 03:21:14 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -66,7 +66,8 @@
 #include "main.h"
 
 #include "language.h"
-#include "dccutil.h" /* dprintf */
+#include "dcc.h"      /* struct dcc_t */
+#include "dccutil.h"  /* dprintf */
 
 extern struct dcc_t *dcc;
 
