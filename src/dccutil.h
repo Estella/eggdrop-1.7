@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dccutil.h,v 1.3 2004/08/26 10:36:51 wcc Exp $
+ * $Id: dccutil.h,v 1.4 2004/08/27 10:01:17 wcc Exp $
  */
 
 #ifndef _EGG_DCCUTIL_H
