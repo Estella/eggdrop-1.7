@@ -1,13 +1,9 @@
-/*
- * bg.c -- handles:
- *   moving the process to the background, i.e. forking, while keeping threads
- *   happy.
+/* bg.c
  *
- * $Id: bg.c,v 1.1 2004/08/25 01:02:00 wcc Exp $
- */
-/*
+ * Originally by Darrin Smith (beldin@light.iinet.net.au)
+ *
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,32 +18,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
-
-#include "main.h"
-#include <signal.h>
-#include "bg.h"
-
-#ifdef HAVE_TCL_THREADS
-#  define SUPPORT_THREADS
-#endif
-
-extern char pid_file[];
-
-#ifdef SUPPORT_THREADS
-
-/* When threads are started during eggdrop's init phase, we can't simply
- * fork() later on, because that only copies the VM space over and
- * doesn't actually duplicate the threads.
  *
- * To work around this, we fork() very early and let the parent process
- * wait in an event loop. As soon as the init phase is completed and we
- * would normally move to the background, the child process simply
- * messages it's parent that it may now quit. This allows us to control
- * the terminal long enough to, e.g. properly feed error messages to
- * cron scripts and let the user abort the loading process by hitting
- * CTRL+C.
  *
+ * When threads are started during eggdrop's init phase, we can't simply
+ * fork() later on, because that only copies the VM space over and doesn't
+ * actually duplicate the threads.
+ *
+ * To work around this, we fork() very early and let the parent process wait
+ * in an event loop. As soon as the init phase is completed and we would
+ * normally move to the background, the child process simply messages it's
+ * parent that it may now quit. This allows us to control the terminal long
+ * enough to, e.g. properly feed error messages to cron scripts and let the
+ * user abort the loading process by hitting CTRL+C.
  *
  * [ Parent process                  ] [ Child process                   ]
  *
@@ -67,90 +49,77 @@ extern char pid_file[];
  *       receives quit message.            continues to main loop.
  *       writes PID to file.               ...
  *       exits.
+ *
+ *
+ * $Id: bg.c,v 1.2 2004/11/25 02:01:39 wcc Exp $
  */
 
-/* Format of messages sent from the newly forked process to the
- * original process, connected to the terminal.
- */
-typedef struct {
-  enum {
-    BG_COMM_QUIT,      /* Quit original process. Write PID file, detach. */
-    BG_COMM_ABORT,     /* Quit original process.                         */
-    BG_COMM_TRANSFERPF /* Sending pid_file.                              */
-  } comm_type;
-  union {
-    struct {           /* Data for BG_COMM_TRANSFERPF.                   */
-      int len;         /* Length of the file name.                       */
-    } transferpf;
-  } comm_data;
-} bg_comm_t;
+#include "main.h"
+#include <signal.h>
 
-typedef enum {
-  BG_NONE = 0,         /* No forking has taken place yet.                */
-  BG_SPLIT,            /* I'm the newly forked process.                  */
-  BG_PARENT            /* I'm the original process.                      */
-} bg_state_t;
+#include "bg.h"
 
-typedef struct {
-  int comm_recv;        /* Receives messages from the child process.     */
-  int comm_send;        /* Sends messages to the parent process.         */
-  bg_state_t state;     /* Current state, see above enum descriptions.   */
-  pid_t child_pid;      /* PID of split process.                         */
-} bg_t;
 
+#ifdef HAVE_TCL_THREADS
+#  define SUPPORT_THREADS
+#endif
+
+
+extern char pid_file[];
+
+
+#ifdef SUPPORT_THREADS
 static bg_t bg = { 0 };
+#endif
 
-#endif /* SUPPORT_THREADS */
 
-
-/* Do everything we normally do after we have split off a new
- * process to the background. This includes writing a PID file
- * and informing the user of the split.
+/* Do everything we normally do after we have split off a new process to
+ * the background. This includes writing a PID file and informing the user
+ * of the split.
  */
 static void bg_do_detach(pid_t p)
 {
   FILE *fp;
 
-  /* Need to attempt to write pid now, not later. */
+  /* Need to attempt to write PID now, not later. */
   unlink(pid_file);
   fp = fopen(pid_file, "w");
-  if (fp != NULL) {
+  if (fp == NULL)
+    printf("Cannot not write to '%s' (PID file). Check for correct file "
+           "permissions.", pid_file);
+  else {
     fprintf(fp, "%u\n", p);
     if (fflush(fp)) {
       /* Kill bot incase a botchk is run from crond. */
-      printf(EGG_NOWRITE, pid_file);
-      printf("  Try freeing some disk space\n");
+      printf("Cannot not write to '%s' (PID file). Make sure you have "
+             "sufficient disk space.\n", pid_file);
       fclose(fp);
       unlink(pid_file);
       exit(1);
     }
     fclose(fp);
-  } else
-    printf(EGG_NOWRITE, pid_file);
-  printf("Launched into the background  (pid: %d)\n\n", p);
+  }
+  printf("Launched into the background (PID: %d)\n\n", p);
 #ifdef HAVE_SETPGID
   setpgid(p, p);
 #endif
   exit(0);
 }
 
-void bg_prepare_split(void)
+void bg_prepare_split()
 {
 #ifdef SUPPORT_THREADS
   /* Create a pipe between parent and split process, fork to create a
    * parent and a split process and wait for messages on the pipe. */
   pid_t p;
   bg_comm_t message;
+  int comm_pair[2];
 
-  {
-    int comm_pair[2];
+  if (pipe(comm_pair) < 0)
+    fatal("CANNOT OPEN PIPE.", 0);
 
-    if (pipe(comm_pair) < 0)
-      fatal("CANNOT OPEN PIPE.", 0);
-
-    bg.comm_recv = comm_pair[0];
-    bg.comm_send = comm_pair[1];
-  }
+  bg.comm_recv = comm_pair[0];
+  bg.comm_send = comm_pair[1];
 
   p = fork();
   if (p == -1)
@@ -158,7 +127,8 @@ void bg_prepare_split(void)
   if (p == 0) {
     bg.state = BG_SPLIT;
     return;
-  } else {
+  }
+  else {
     bg.child_pid = p;
     bg.state = BG_PARENT;
   }
@@ -172,8 +142,7 @@ void bg_prepare_split(void)
       exit(1);
       break;
     case BG_COMM_TRANSFERPF:
-      /* Now transferring file from split process.
-       */
+      /* Now transferring file from split process. */
       if (message.comm_data.transferpf.len >= 40)
         message.comm_data.transferpf.len = 40 - 1;
       /* Next message contains data. */
@@ -185,10 +154,9 @@ void bg_prepare_split(void)
   }
 
 error:
-  /* We only reach this point in case of an error.
-   */
+  /* We only reach this point in case of an error. */
   fatal("COMMUNICATION THROUGH PIPE BROKE.", 0);
-#endif
+#endif /* SUPPORT_THREADS */
 }
 
 #ifdef SUPPORT_THREADS
@@ -196,7 +164,7 @@ error:
  * as the pid_file[] buffer has changed in this fork by now, but the
  * parent needs an up-to-date version.
  */
-static void bg_send_pidfile(void)
+static void bg_send_pidfile()
 {
   bg_comm_t message;
 
@@ -213,40 +181,42 @@ static void bg_send_pidfile(void)
 error:
   fatal("COMMUNICATION THROUGH PIPE BROKE.", 0);
 }
-#endif
+#endif /* SUPPORT_THREADS */
 
 void bg_send_quit(bg_quit_t q)
 {
 #ifdef SUPPORT_THREADS
-  if (bg.state == BG_PARENT) {
+  if (bg.state == BG_PARENT)
     kill(bg.child_pid, SIGKILL);
-  } else if (bg.state == BG_SPLIT) {
+  else if (bg.state == BG_SPLIT) {
     bg_comm_t message;
 
     if (q == BG_QUIT) {
       bg_send_pidfile();
       message.comm_type = BG_COMM_QUIT;
-    } else
+    }
+    else
       message.comm_type = BG_COMM_ABORT;
     /* Send message. */
     if (write(bg.comm_send, &message, sizeof(message)) < 0)
       fatal("COMMUNICATION THROUGH PIPE BROKE.", 0);
   }
-#endif
+#endif /* SUPPORT_THREADS */
 }
 
-void bg_do_split(void)
+void bg_do_split()
 {
 #ifdef SUPPORT_THREADS
   /* Tell our parent process to go away now, as we don't need it anymore. */
   bg_send_quit(BG_QUIT);
 #else
   /* Split off a new process. */
-  int xx = fork();
+  int x;
 
-  if (xx == -1)
+  x = fork();
+  if (x == -1)
     fatal("CANNOT FORK PROCESS.", 0);
-  if (xx != 0)
-    bg_do_detach(xx);
-#endif
+  if (x != 0)
+    bg_do_detach(x);
+#endif /* SUPPORT_THREADS */
 }

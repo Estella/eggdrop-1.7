@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.14 2004/10/27 23:54:54 wcc Exp $
+ * $Id: main.c,v 1.15 2004/11/25 02:01:39 wcc Exp $
  */
 
 #include "main.h"
@@ -56,6 +56,11 @@
 #include "userfile.h" /* readuserfile, writeuserfile, backupuserfile */
 #include "userrec.h"  /* adduser, count_users */
 
+#ifdef STATIC
+void check_static(char *, char *(*)());
+#  include "mod/static.h"
+#endif
+
 #ifndef ENABLE_STRIP
 #  include <sys/resource.h>
 #endif
@@ -76,6 +81,7 @@ extern int dcc_total, conmask, cache_hit, cache_miss, max_logs, quick_logs,
 extern struct dcc_t *dcc;
 extern struct userrec *userlist;
 extern struct chanset_t *chanset;
+extern module_entry *module_list;
 extern log_t *logs;
 extern Tcl_Interp *interp;
 extern tcl_timer_t *timer, *utimer;
@@ -159,6 +165,8 @@ int init_net();
 int init_modules();
 int init_tcl(int, char **);
 int init_language(int);
+void kill_tcl();
+void restart_chons();
 
 
 void fatal(const char *s, int recoverable)
@@ -167,9 +175,10 @@ void fatal(const char *s, int recoverable)
 
   putlog(LOG_MISC, "*", "* %s", s);
   flushlogs();
-  for (i = 0; i < dcc_total; i++)
+  for (i = 0; i < dcc_total; i++) {
     if (dcc[i].sock >= 0)
       killsock(dcc[i].sock);
+  }
   unlink(pid_file);
   if (!recoverable) {
     bg_send_quit(BG_ABORT);
@@ -177,9 +186,7 @@ void fatal(const char *s, int recoverable)
   }
 }
 
-/* For mem.c : calculate memory we SHOULD be using
- */
-int expected_memory(void)
+int expected_memory()
 {
   int tot;
 
@@ -251,7 +258,8 @@ static void got_term(int z)
   if (die_on_sigterm) {
     botnet_send_chat(-1, botnetnick, "ACK, I've been terminated!");
     fatal("RECEIVED TERMINATE SIGNAL -- SIGNING OFF!", 0);
-  } else
+  }
+  else
     putlog(LOG_MISC, "*", "Received TERM signal (ignoring).");
 }
 
@@ -268,7 +276,8 @@ static void got_hup(int z)
   check_tcl_event("sighup");
   if (die_on_sighup) {
     fatal("HANGUP SIGNAL -- SIGNING OFF", 0);
-  } else
+  }
+  else
     putlog(LOG_MISC, "*", "Received HUP signal: rehashing...");
   do_restart = -2;
   return;
@@ -332,9 +341,9 @@ static void do_arg(char *s)
         break; /* This should never be reached. */
       }
     }
-  } else {
-    strncpyz(configfile, s, sizeof configfile);
   }
+  else
+    strncpyz(configfile, s, sizeof configfile);
 }
 
 static void readconfig()
@@ -398,18 +407,17 @@ static void readconfig()
     if (module_find("server", 0, 0))
       printf(MISC_USERFCREATE1, origbotname);
     printf("%s\n\n", MISC_USERFCREATE2);
-  } else if (make_userfile) {
+  }
+  else if (make_userfile) {
     make_userfile = 0;
     printf("%s\n", MISC_USERFEXISTS);
   }
 
-  if (helpdir[0])
-    if (helpdir[strlen(helpdir) - 1] != '/')
-      strcat(helpdir, "/");
+  if (helpdir[0] && helpdir[strlen(helpdir) - 1] != '/')
+    strcat(helpdir, "/");
 
-  if (tempdir[0])
-    if (tempdir[strlen(tempdir) - 1] != '/')
-      strcat(tempdir, "/");
+  if (tempdir[0] && tempdir[strlen(tempdir) - 1] != '/')
+    strcat(tempdir, "/");
 
   /* Test tempdir: it's vital.
    *
@@ -440,10 +448,7 @@ static void rehash()
   readconfig();
 }
 
-/* Called once a second.
- *
- * Note:  Try to not put any Context lines in here (guppy 21Mar2000).
- */
+/* Called once a second. */
 static void core_secondly()
 {
   static int cnt = 0;
@@ -499,10 +504,10 @@ static void core_secondly()
         putlog(LOG_ALL, "*", "--- %.11s%s", s, s + 20);
         call_hook(HOOK_BACKUP);
         for (j = 0; j < max_logs; j++) {
-          if (logs[j].filename != NULL && logs[j].f != NULL) {
-            fclose(logs[j].f);
-            logs[j].f = NULL;
-          }
+          if (!logs[j].filename || !logs[j].f)
+            continue;
+          fclose(logs[j].f);
+          logs[j].f = NULL;
         }
       }
     }
@@ -515,7 +520,7 @@ static void core_secondly()
       call_hook(HOOK_DAILY);
       if (!keep_all_logs) {
         putlog(LOG_MISC, "*", MISC_LOGSWITCH);
-        for (i = 0; i < max_logs; i++)
+        for (i = 0; i < max_logs; i++) {
           if (logs[i].filename) {
             char s[1024];
 
@@ -527,6 +532,7 @@ static void core_secondly()
             unlink(s);
             movefile(logs[i].filename, s);
           }
+        }
       }
     }
   }
@@ -572,16 +578,6 @@ static void event_loaded()
   check_tcl_event("loaded");
 }
 
-void kill_tcl();
-extern module_entry *module_list;
-void restart_chons();
-
-#ifdef STATIC
-void check_static(char *, char *(*)());
-
-#include "mod/static.h"
-#endif
-
 void patch(const char *str)
 {
   char *p = strchr(egg_version, '+');
@@ -593,7 +589,7 @@ void patch(const char *str)
   sprintf(&egg_xtra[strlen(egg_xtra)], " %s", str);
 }
 
-static inline void garbage_collect(void)
+static inline void garbage_collect()
 {
   static u_8bit_t run_cnt = 0;
 
@@ -684,9 +680,10 @@ int main(int argc, char **argv)
   srandom((unsigned int) (now % (getpid() + getppid())));
   init_mem();
   init_language(1);
-  if (argc > 1)
+  if (argc > 1) {
     for (i = 1; i < argc; i++)
       do_arg(argv[i]);
+  }
   printf("\n%s\n", version);
 
   init_dcc_max();
@@ -745,7 +742,8 @@ int main(int argc, char **argv)
   if (backgrd) {
 #ifndef CYGWIN_HACKS
     bg_do_split();
-  } else { /* !backgrd */
+  }
+  else {
 #endif
     xx = getpid();
     if (xx != 0) {
@@ -758,15 +756,17 @@ int main(int argc, char **argv)
         fprintf(fp, "%u\n", xx);
         if (fflush(fp)) {
           /* Let the bot live since this doesn't appear to be a botchk. */
-          printf(EGG_NOWRITE, pid_file);
+          printf("Cannot not write to '%s' (PID file).\n", pid_file);
           fclose(fp);
           unlink(pid_file);
-        } else
+        }
+        else
           fclose(fp);
-      } else
-        printf(EGG_NOWRITE, pid_file);
+      }
+      else
+        printf("Cannot not write to '%s' (PID file).\n", pid_file);
 #ifdef CYGWIN_HACKS
-      printf("Launched into the background  (pid: %d)\n\n", xx);
+      printf("Launched into the background (PID: %d)\n\n", xx);
 #endif
     }
   }
@@ -857,7 +857,8 @@ int main(int argc, char **argv)
 
       /* Check for server or dcc activity. */
       dequeue_sockets();
-    } else
+    }
+    else
       socket_cleanup--;
 
     /* Free unused structures. */
@@ -867,23 +868,26 @@ int main(int argc, char **argv)
     if (xx >= 0) {              /* Non-error */
       int idx;
 
-      for (idx = 0; idx < dcc_total; idx++)
+      for (idx = 0; idx < dcc_total; idx++) {
         if (dcc[idx].sock == xx) {
           if (dcc[idx].type && dcc[idx].type->activity) {
             traffic_update_in(dcc[idx].type, (strlen(buf) + 1)); /* Traffic stats. */
             dcc[idx].type->activity(idx, buf, i);
-          } else
+          }
+          else
             putlog(LOG_MISC, "*",
                    "!!! untrapped dcc activity: type %s, sock %d",
                    dcc[idx].type->name, dcc[idx].sock);
           break;
         }
-    } else if (xx == -1) {        /* EOF from someone */
+      }
+    }
+    else if (xx == -1) {        /* EOF from someone */
       int idx;
 
       if (i == STDOUT && !backgrd)
         fatal("END OF FILE ON TERMINAL", 0);
-      for (idx = 0; idx < dcc_total; idx++)
+      for (idx = 0; idx < dcc_total; idx++) {
         if (dcc[idx].sock == i) {
           if (dcc[idx].type && dcc[idx].type->eof)
             dcc[idx].type->eof(idx);
@@ -896,13 +900,15 @@ int main(int argc, char **argv)
           }
           idx = dcc_total + 1;
         }
+      }
       if (idx == dcc_total) {
         putlog(LOG_MISC, "*",
                "(@) EOF socket %d, not a dcc socket, not anything.", i);
         close(i);
         killsock(i);
       }
-    } else if (xx == -2 && errno != EINTR) {      /* select() error */
+    }
+    else if (xx == -2 && errno != EINTR) {      /* select() error */
       putlog(LOG_MISC, "*", "* Socket error #%d; recovering.", errno);
       for (i = 0; i < dcc_total; i++) {
         if ((fcntl(dcc[i].sock, F_GETFD, 0) == -1) && (errno == EBADF)) {
@@ -914,7 +920,8 @@ int main(int argc, char **argv)
           i--;
         }
       }
-    } else if (xx == -3) {
+    }
+    else if (xx == -3) {
       call_hook(HOOK_IDLE);
       socket_cleanup = 0;       /* If we've been idle, cleanup & flush */
     }

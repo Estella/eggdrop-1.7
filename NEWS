@@ -1,4 +1,4 @@
-$Id: NEWS,v 1.4 2004/11/24 22:37:31 wcc Exp $
+$Id: NEWS,v 1.5 2004/11/25 02:01:39 wcc Exp $
 
 News
 Last revised: November 24, 2004
@@ -37,6 +37,8 @@ Last revised: November 24, 2004
       for more details.
 
     * A new 'e' logging flag has been added to log Tcl errors.
+
+    * The 'require-p' and 'log-time' config settings have been removed.
   ________________________________________________________________________
 
 Copyright (C) 1997 Robey Pointer
