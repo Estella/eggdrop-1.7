@@ -6,7 +6,7 @@
  *   user kickban, kick, op, deop
  *   idle kicking
  *
- * $Id: chan.c,v 1.1 2004/08/25 01:02:15 wcc Exp $
+ * $Id: chan.c,v 1.2 2004/08/26 10:36:52 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -137,7 +137,7 @@ static void check_exemptlist(struct chanset_t *chan, char *from)
       ok = 1;
     }
   if (prevent_mixing && ok)
-    flush_mode(chan, QUICK);
+    flush_mode(chan, IRC_QUICK);
 }
 
 /* Check a channel and clean-out any more-specific matching masks.
@@ -151,7 +151,7 @@ static void do_mask(struct chanset_t *chan, masklist *m, char *mask, char mode)
     if (wild_match(mask, m->mask) && rfc_casecmp(mask, m->mask))
       add_mode(chan, '-', mode, m->mask);
   add_mode(chan, '+', mode, mask);
-  flush_mode(chan, QUICK);
+  flush_mode(chan, IRC_QUICK);
 }
 
 /* This is a clone of detect_flood, but works for channel specificity now
@@ -381,7 +381,7 @@ static void kick_all(struct chanset_t *chan, char *hostmask, char *comment,
         (chan_op(fr) || (glob_op(fr) && !chan_deop(fr))))) {
       if (!flushed) {
         /* We need to kick someone, flush eventual bans first */
-        flush_mode(chan, QUICK);
+        flush_mode(chan, IRC_QUICK);
         flushed += 1;
       }
       m->flags |= SENTKICK;     /* Mark as pending kick */
@@ -963,8 +963,8 @@ static int got324(char *from, char *msg)
           !strcmp("*", chan->channel.key)))
         /* Undernet use to show a blank channel key if one was set when
          * you first joined a channel; however, this has been replaced by
-         * an asterisk and this has been agreed upon by other major IRC 
-         * networks so we'll check for an asterisk here as well 
+         * an asterisk and this has been agreed upon by other major IRC
+         * networks so we'll check for an asterisk here as well
          * (guppy 22Dec2001) */
         chan->status |= CHAN_ASKEDMODES;
     }
@@ -2141,7 +2141,7 @@ static int gotquit(char *from, char *msg)
         /* If you remove this, the bot will crash when the user record in
          * question is removed/modified during the tcl binds below, and the
          * users was on more than one monitored channel */
-        set_handle_laston(chan->dname, u, now); 
+        set_handle_laston(chan->dname, u, now);
       if (split) {
         m->split = now;
         check_tcl_splt(nick, from, u, chan->dname);

@@ -1,20 +1,7 @@
-/*
- * users.c -- handles:
- *   testing and enforcing ignores
- *   adding and removing ignores
- *   listing ignores
- *   auto-linking bots
- *   sending and receiving a userfile from a bot
- *   listing users ('.whois' and '.match')
- *   reading the user file
+/* users.c: userfile mask handling, userfile reading
  *
- * dprintf'ized, 9nov1995
- *
- * $Id: users.c,v 1.4 2004/08/26 03:21:14 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: users.c,v 1.5 2004/08/26 10:36:51 wcc Exp $
  */
 
 #include "main.h"
@@ -45,6 +34,7 @@ char natip[121] = "";
 #include "dcc.h"     /* DCC_*, struct dcc_t */
 #include "dccutil.h" /* dprintf, chatout, shareout, lostdcc */
 #include "rfc1459.h" /* rfc_casecmp */
+#include "net.h"     /* killsock */
 #include "userrec.h" /* adduser, clear_masks */
 
 #include "users.h"

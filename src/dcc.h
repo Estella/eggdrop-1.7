@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.h,v 1.2 2004/08/26 03:21:13 wcc Exp $
+ * $Id: dcc.h,v 1.3 2004/08/26 10:36:51 wcc Exp $
  */
 
 #ifndef _EGG_DCC_H
@@ -25,28 +25,70 @@
 #include "types.h" /* u_8bit_t */
 
 /* Telnet codes. See RFC 854 RFC 875 for details. */
-#define TLN_AYT     246     /* Are You There        */
-#define TLN_WILL    251     /* Will                 */
-#define TLN_WILL_C  "\373"
-#define TLN_WONT    252     /* Won't                */
-#define TLN_WONT_C  "\374"
-#define TLN_DO      253     /* Do                   */
-#define TLN_DO_C    "\375"
-#define TLN_DONT    254     /* Don't                */
-#define TLN_DONT_C  "\376"
-#define TLN_IAC     255     /* Interpret As Command */
-#define TLN_IAC_C   "\377"
-#define TLN_ECHO    1       /* Echo                 */
-#define TLN_ECHO_C  "\001"
+#define TLN_AYT  246  /* Are You There        */
+#define TLN_WILL 251  /* Will                 */
+#define TLN_WONT 252  /* Won't                */
+#define TLN_DO   253  /* Do                   */
+#define TLN_DONT 254  /* Don't                */
+#define TLN_IAC  255  /* Interpret As Command */
+#define TLN_ECHO 1    /* Echo                 */
 
-/* For stripping out mIRC codes. */
-#define STRIP_COLOR 0x00001  /* remove all color codes         */
-#define STRIP_BOLD  0x00002  /* remove all boldface codes      */
-#define STRIP_REV   0x00004  /* remove all reverse video codes */
-#define STRIP_UNDER 0x00008  /* remove underline codes         */
-#define STRIP_ANSI  0x00010  /* remove all ANSI codes          */
-#define STRIP_BELLS 0x00020  /* remove all ctrl-g (bell) codes */
-#define STRIP_ALL   0x00040  /* remove all of the above        */
+#define TLN_WILL_C "\373"
+#define TLN_WONT_C "\374"
+#define TLN_DO_C   "\375"
+#define TLN_DONT_C "\376"
+#define TLN_IAC_C  "\377"
+#define TLN_ECHO_C "\001"
+
+/* For stripping mIRC/ANSI codes. */
+#define STRIP_COLOR 0x00001  /* Remove all color codes.         */
+#define STRIP_BOLD  0x00002  /* Remove all boldface codes.      */
+#define STRIP_REV   0x00004  /* Remove all reverse video codes. */
+#define STRIP_UNDER 0x00008  /* Remove underline codes.         */
+#define STRIP_ANSI  0x00010  /* Remove all ANSI codes.          */
+#define STRIP_BELLS 0x00020  /* Remove all ctrl-g (bell) codes. */
+#define STRIP_ALL   0x00040  /* Remove all of the above.        */
+
+/* Flags for DCC types. */
+#define DCT_CHAT      0x00000001  /* Can receive chat?                       */
+#define DCT_MASTER    0x00000002  /* Can receive master-only chat?           */
+#define DCT_SHOWWHO   0x00000004  /* Show in who?                            */
+#define DCT_REMOTEWHO 0x00000008  /* Show in remote who?                     */
+#define DCT_VALIDIDX  0x00000010  /* Report IDX as valid to tcl_valididx?    */
+#define DCT_SIMUL     0x00000020  /* Can be tcl_simul/.simul'd?              */
+#define DCT_CANBOOT   0x00000040  /* Can be booted?                          */
+#define DCT_FILES     0x00000080  /* In the file ares?                       */
+#define DCT_BOT       0x00000100  /* Bot connection?                         */
+#define DCT_FORKTYPE  0x00000200  /* DCT_FILESEND from outside transfer.mod. */
+#define DCT_FILETRAN  0x00000400  /* A file transfer of some sort.           */
+#define DCT_FILESEND  0x00000800  /* A send *TO* the bot (FIXME!).           */
+#define DCT_LISTEN    0x00001000  /* A listening port of some sort.          */
+#define DCT_GETNOTES  DCT_CHAT    /* Can receive notes?                      */
+
+/* Flags for listening sockets. */
+#define LSTN_PUBLIC 0x000001  /* No access restrictions. */
+
+/* Status flags for DCC/file area connections. */
+#define STAT_ECHO    0x00001 /* Echo commands back?                           */
+#define STAT_DENY    0x00002 /* Bad username (ignore pass & deny access)      */
+#define STAT_CHAT    0x00004 /* Can return to partyline if in file area.      */
+#define STAT_TELNET  0x00008 /* Connected via telnet (or CTCP chat (FIXME!)). */
+#define STAT_PARTY   0x00010 /* Has the 'p' flag but isn't an op.             */
+#define STAT_BOTONLY 0x00020 /* Bot-only listen port.                         */
+#define STAT_USRONLY 0x00040 /* User-only port.                               */
+#define STAT_PAGE    0x00080 /* Page output to the user.                      */
+
+/* Status flags for bot links. */
+#define BSTAT_PINGED      0x00001 /* Sent a pink, waiting for a pong.         */
+#define BSTAT_SHARE       0x00002 /* This is a share-bot.                     */
+#define BSTAT_CALLED      0x00004 /* This remote bot initiated the link.      */
+#define BSTAT_OFFERED     0x00008 /* A userfile transfer has been offered.    */
+#define BSTAT_SENDING     0x00010 /* In the process of sending a user list.   */
+#define BSTAT_GETTING     0x00020 /* In the process of getting a user list.   */
+#define BSTAT_WARNED      0x00040 /* Warned about unleaflike behavior.        */
+#define BSTAT_LEAF        0x00080 /* This bot cannot act as a hub; leaf only. */
+#define BSTAT_LINKING     0x00100 /* Bot is in the process of linking.        */
+#define BSTAT_AGGRESSIVE  0x00200 /* Aggressively sharing with this bot.      */
 
 struct dcc_table {
   char *name;

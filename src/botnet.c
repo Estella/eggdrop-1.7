@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botnet.c,v 1.4 2004/08/26 03:21:13 wcc Exp $
+ * $Id: botnet.c,v 1.5 2004/08/26 10:36:50 wcc Exp $
  */
 
 #include "main.h"
@@ -25,11 +25,13 @@
 
 #include "botnet.h"
 #include "botmsg.h"  /* simple_sprintf, tandout_but */
-#include "dcc.h"     /* failed_link, dupwait_notify, struct bot_info, struct relay_info,
-                      * struct chat_info,  DCC_*, struct dcc_t, struct dns_info */
+#include "dcc.h"     /* DCC_*, STAT_*, BSTAT_*, struct bot_info, struct relay_info,
+                      * struct chat_info, struct dcc_t, struct dns_info, failed_link,
+                      * dupwait_notify */
 #include "dccutil.h" /* get_data_ptr, dprintf, chatout, chanout_but, lostdcc,
                       * new_dcc, changeover_dcc */
 #include "dns.h"     /* RES_* */
+#include "net.h"     /* SOCK_*, getsock, killsock, open_telnet_raw, tputs, iptostr */
 #include "userrec.h" /* correct_handle, touch_laston */
 
 
@@ -39,13 +41,14 @@ extern struct dcc_t *dcc;
 extern time_t now;
 extern Tcl_Interp *interp;
 
-tand_t *tandbot;                   /* Keep track of tandem bots on the botnet */
-party_t *party;                    /* Keep track of people on the botnet */
-static int maxparty = 50;          /* Maximum space for party line members */
-int tands = 0;                     /* Number of bots on the botnet */
-int parties = 0;                   /* Number of people on the botnet */
-char botnetnick[HANDLEN + 1] = ""; /* Botnet nickname */
-int share_unlinks = 0;             /* Allow remote unlinks of my sharebots? */
+
+tand_t *tandbot;                   /* Keep track of tandem bots on the botnet. */
+party_t *party;                    /* Keep track of people on the botnet.      */
+static int maxparty = 50;          /* Maximum space for party line members.    */
+int tands = 0;                     /* Number of bots on the botnet.            */
+int parties = 0;                   /* Number of people on the botnet.          */
+char botnetnick[HANDLEN + 1] = ""; /* Botnet nickname.                         */
+int share_unlinks = 0;             /* Allow remote unlinks of my sharebots?    */
 
 
 int expmem_botnet()
@@ -896,7 +899,7 @@ int botunlink(int idx, char *nick, char *reason, char *from)
 
         if (idx >= 0)
           dprintf(idx, "%s %s.\n", BOT_BREAKLINK, dcc[i].nick);
-        else if ((idx == -3) && (b_status(i) & STAT_SHARE) && !share_unlinks)
+        else if ((idx == -3) && (b_status(i) & BSTAT_SHARE) && !share_unlinks)
           return -1;
         bot = findbot(dcc[i].nick);
         bots = bots_in_subtree(bot);
@@ -1595,7 +1598,7 @@ void check_botnet_pings()
 
   for (i = 0; i < dcc_total; i++)
     if (dcc[i].type == &DCC_BOT)
-      if (dcc[i].status & STAT_PINGED) {
+      if (dcc[i].status & BSTAT_PINGED) {
         char s[1024];
 
         putlog(LOG_BOTS, "*", "%s: %s", BOT_PINGTIMEOUT, dcc[i].nick);
@@ -1613,16 +1616,16 @@ void check_botnet_pings()
   for (i = 0; i < dcc_total; i++)
     if (dcc[i].type == &DCC_BOT) {
       botnet_send_ping(i);
-      dcc[i].status |= STAT_PINGED;
+      dcc[i].status |= BSTAT_PINGED;
     }
   for (i = 0; i < dcc_total; i++)
-    if ((dcc[i].type == &DCC_BOT) && (dcc[i].status & STAT_LEAF)) {
+    if ((dcc[i].type == &DCC_BOT) && (dcc[i].status & BSTAT_LEAF)) {
       tand_t *bot, *via = findbot(dcc[i].nick);
 
       for (bot = tandbot; bot; bot = bot->next) {
         if ((via == bot->via) && (bot != via)) {
           /* Not leaflike behavior */
-          if (dcc[i].status & STAT_WARNED) {
+          if (dcc[i].status & BSTAT_WARNED) {
             char s[1024];
 
             putlog(LOG_BOTS, "*", "%s %s (%s).", BOT_DISCONNECTED,
@@ -1641,10 +1644,10 @@ void check_botnet_pings()
             lostdcc(i);
           } else {
             botnet_send_reject(i, botnetnick, NULL, bot->bot, NULL, NULL);
-            dcc[i].status |= STAT_WARNED;
+            dcc[i].status |= BSTAT_WARNED;
           }
         } else
-          dcc[i].status &= ~STAT_WARNED;
+          dcc[i].status &= ~BSTAT_WARNED;
       }
     }
 }

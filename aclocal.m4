@@ -16,7 +16,7 @@ dnl You should have received a copy of the GNU General Public License
 dnl along with this program; if not, write to the Free Software
 dnl Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 dnl
-dnl $Id: aclocal.m4,v 1.1 2004/08/25 01:01:51 wcc Exp $
+dnl $Id: aclocal.m4,v 1.2 2004/08/26 10:36:50 wcc Exp $
 dnl
 
 
@@ -724,7 +724,7 @@ AC_DEFUN([EGG_CHECK_OS],
     *)
       if test -r /mach; then
         # At this point, we're guessing this is NeXT Step.
-        AC_DEFINE(BORGCUBES, 1, [Define if running on NeXT Step.])
+        AC_DEFINE(NEXT_HACKS, 1, [Define if running on NeXT Step.])
       else
         if test -r /cmds; then
           # Probably QNX.

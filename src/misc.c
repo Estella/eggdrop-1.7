@@ -1,17 +1,7 @@
-/*
- * misc.c -- handles:
- *   split() maskhost() dumplots() daysago() days() daysdur()
- *   logging things
- *   queueing output for the bot (msg and help)
- *   resync buffers for sharebots
- *   help system
- *   motd display and %var substitution
+/* misc.c
  *
- * $Id: misc.c,v 1.4 2004/08/26 03:21:14 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: misc.c,v 1.5 2004/08/26 10:36:51 wcc Exp $
  */
 
 #include "main.h"
@@ -44,7 +36,7 @@
 #include "stat.h"
 
 #include "botmsg.h"  /* simple_sprintf */
-#include "dcc.h"     /* DCC_*, struct dcc_t */
+#include "dcc.h"     /* DCC_*, STAT_*, struct dcc_t */
 #include "dccutil.h" /* dprintf, chatout */
 #include "rfc1459.h" /* rfc_casecmp */
 #include "userrec.h" /* write_userfile */
@@ -52,14 +44,12 @@
 extern struct dcc_t *dcc;
 extern struct chanset_t *chanset;
 
-extern char helpdir[], version[], origbotname[], botname[], admin[], network[],
-            motdfile[], ver[], botnetnick[], bannerfile[], logfile_suffix[],
-            textdir[];
+extern char helpdir[], version[], botname[], admin[], network[], motdfile[],
+            ver[], botnetnick[], bannerfile[], logfile_suffix[], textdir[];
 extern int  backgrd, con_chan, term_z, use_stderr, dcc_total, keep_all_logs,
             quick_logs, strict_host;
 
 extern time_t now;
-extern Tcl_Interp *interp;
 
 
 int shtime = 1;                 /* Display the time with console output */

@@ -1,15 +1,8 @@
-/*
- * dns.c -- handles:
- *   DNS resolve calls and events
- *   provides the code used by the bot if the DNS module is not loaded
- *   DNS Tcl commands
+/* dns.c
  *
- * $Id: dns.c,v 1.3 2004/08/26 03:21:14 wcc Exp $
- */
-/*
- * Written by Fabian Knittel <fknittel@gmx.de>
+ * Originally by Fabian Knittel <fknittel@gmx.de>
  *
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,6 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: dns.c,v 1.4 2004/08/26 10:36:51 wcc Exp $
  */
 
 #include "main.h"
@@ -34,8 +29,9 @@
 #include <arpa/inet.h>
 
 #include "dns.h"
-#include "dcc.h"     /* struct dcc_table, struct dcc_t, struct dns_info */
+#include "dcc.h"     /* DCT_*, struct dcc_table, struct dcc_t, struct dns_info */
 #include "dccutil.h" /* get_data_ptr, lostdcc */
+#include "net.h"     /* killsock, iptostr */
 
 extern struct dcc_t *dcc;
 extern int dcc_total;

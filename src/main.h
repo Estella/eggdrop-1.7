@@ -1,12 +1,7 @@
-/*
- * main.h
- *   include file to include most other include files
+/* main.h
  *
- * $Id: main.h,v 1.3 2004/08/26 03:21:14 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: main.h,v 1.4 2004/08/26 10:36:51 wcc Exp $
  */
 
 #ifndef _EGG_MAIN_H
@@ -115,7 +112,6 @@
 #  define TCL_PATCH_LEVEL Tcl_GetVar(interp, "tcl_patchLevel", TCL_GLOBAL_ONLY)
 #endif
 
-#define iptolong(a) (0xffffffff & (long) (htonl((unsigned long) a)))
 #define fixcolon(x) do {                                                \
         if ((x)[0] == ':')                                              \
           (x)++;                                                        \
@@ -131,9 +127,18 @@
         (_target)[(_len) - 1] = 0;                                      \
 } while (0)
 
-#ifdef BORGCUBES
-#  define O_NONBLOCK 00000004 /* POSIX non-blocking I/O */
-#endif /* BORGUBES */
+#ifndef HAVE_SIGACTION
+#  define sigaction sigvec
+#  ifndef sa_handler
+#    define sa_handler sv_handler
+#    define sa_mask sv_mask
+#    define sa_flags sv_flags
+#  endif
+#endif
+
+#ifndef HAVE_SIGEMPTYSET
+#  define sigemptyset(x) ((*(int *)(x))=0)
+#endif
 
 /* Use high-order bits for getting the random integer. With random()
  * modulo would probably be sufficient but on systems lacking random(),

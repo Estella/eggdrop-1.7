@@ -1,7 +1,7 @@
 /*
  * tclirc.c -- part of irc.mod
  *
- * $Id: tclirc.c,v 1.2 2004/08/25 06:39:38 wcc Exp $
+ * $Id: tclirc.c,v 1.3 2004/08/26 10:36:52 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -670,7 +670,7 @@ static int tcl_flushmode STDVAR
     Tcl_AppendResult(irp, "invalid channel: ", argv[1], NULL);
     return TCL_ERROR;
   }
-  flush_mode(chan, NORMAL);
+  flush_mode(chan, IRC_NORMAL);
   return TCL_OK;
 }
 

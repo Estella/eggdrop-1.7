@@ -1,7 +1,7 @@
 /*
  * transfer.c -- part of transfer.mod
  *
- * $Id: transfer.c,v 1.3 2004/08/25 05:26:38 wcc Exp $
+ * $Id: transfer.c,v 1.4 2004/08/26 10:36:52 wcc Exp $
  *
  * Copyright (C) 1997 Robey Pointer
  * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
@@ -271,8 +271,8 @@ static void eof_dcc_fork_send(int idx)
         break;
       }
     if (y != 0) {
-      dcc[y].status &= ~STAT_GETTING;
-      dcc[y].status &= ~STAT_SHARE;
+      dcc[y].status &= ~BSTAT_GETTING;
+      dcc[y].status &= ~BSTAT_SHARE;
     }
     putlog(LOG_BOTS, "*", USERF_FAILEDXFER);
     unlink(dcc[idx].u.xfer->filename);
@@ -543,7 +543,7 @@ static void dcc_get(int idx, char *buf, int len)
             (dcc[x].type->flags & DCT_BOT))
           y = x;
       if (y != 0)
-        dcc[y].status &= ~STAT_SENDING;
+        dcc[y].status &= ~BSTAT_SENDING;
       putlog(LOG_BOTS, "*", TRANSFER_COMPLETED_USERFILE, dcc[y].nick);
       unlink(dcc[idx].u.xfer->filename);
       /* Any sharebot things that were queued: */
@@ -677,8 +677,8 @@ static void transfer_get_timeout(int i)
           (dcc[x].type->flags & DCT_BOT))
         y = x;
     if (y != 0) {
-      dcc[y].status &= ~STAT_SENDING;
-      dcc[y].status &= ~STAT_SHARE;
+      dcc[y].status &= ~BSTAT_SENDING;
+      dcc[y].status &= ~BSTAT_SHARE;
     }
     unlink(dcc[i].u.xfer->filename);
     putlog(LOG_BOTS, "*", TRANSFER_USERFILE_TIMEOUT);
@@ -732,8 +732,8 @@ static void tout_dcc_send(int idx)
           (dcc[x].type->flags & DCT_BOT))
         y = x;
     if (y != 0) {
-      dcc[y].status &= ~STAT_GETTING;
-      dcc[y].status &= ~STAT_SHARE;
+      dcc[y].status &= ~BSTAT_GETTING;
+      dcc[y].status &= ~BSTAT_SHARE;
     }
     unlink(dcc[idx].u.xfer->filename);
     putlog(LOG_BOTS, "*", TRANSFER_USERFILE_TIMEOUT);

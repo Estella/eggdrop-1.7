@@ -1,15 +1,9 @@
-/*
- * botmsg.c -- handles:
- *   formatting of messages to be sent on the botnet
- *   sending differnet messages to different versioned bots
+/* botmsg.c
  *
- * by Darrin Smith (beldin@light.iinet.net.au)
+ * Originally by Darrin Smith (beldin@light.iinet.net.au)
  *
- * $Id: botmsg.c,v 1.4 2004/08/26 03:21:13 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,6 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: botmsg.c,v 1.5 2004/08/26 10:36:50 wcc Exp $
  */
 
 #include "main.h"
@@ -31,8 +27,10 @@
 
 #include "botmsg.h"
 #include "botnet.h"  /* lastbot, nextbot, getparty */
-#include "dcc.h"     /* DCC_*, struct dcc_t */
+#include "dcc.h"     /* DCC_*, DCT_*, struct dcc_t */
 #include "dccutil.h" /* dprintf */
+#include "net.h"     /* tputs */
+
 
 extern struct dcc_t *dcc;
 extern int dcc_total, tands;
@@ -40,6 +38,7 @@ extern char botnetnick[];
 extern party_t *party;
 extern Tcl_Interp *interp;
 extern struct userrec *userlist;
+
 
 static char OBUF[1024];
 

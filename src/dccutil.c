@@ -1,16 +1,7 @@
-/*
- * dccutil.c -- handles:
- *   lots of little functions to send formatted text to
- *   varying types of connections
- *   '.who', '.whom', and '.dccstat' code
- *   memory management for dcc structures
- *   timeout checking for dcc connections
+/* dccutil.c
  *
- * $Id: dccutil.c,v 1.3 2004/08/26 03:21:14 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: dccutil.c,v 1.4 2004/08/26 10:36:51 wcc Exp $
  */
 
 #include <sys/stat.h>
@@ -35,21 +28,22 @@
 #include "tandem.h"
 
 #include "dccutil.h"
-#include "dcc.h" /* DCC_* */
+#include "dcc.h" /* DCC_*, DCT_*, STAT_* */
+#include "net.h" /* SOCK_* , killsock, tputs, sock_list */
+
 
 extern struct dcc_t *dcc;
 extern int dcc_total, max_dcc, dcc_flood_thr, backgrd, copy_to_tmp, MAXSOCKS;
 extern char botnetnick[], version[];
 extern time_t now;
 extern sock_list *socklist;
-extern Tcl_Interp *interp;
 
-char motdfile[121] = "text/motd";       /* File where the motd is stored */
-int connect_timeout = 15;       /* How long to wait before a telnet
-                                 * connection times out */
 
+char motdfile[121] = "text/motd"; /* File where the MOTD is stored.         */
+int connect_timeout = 15;         /* Timeout value for a telnet connection. */
 int reserved_port_min = 0;
 int reserved_port_max = 0;
+
 
 void init_dcc_max()
 {

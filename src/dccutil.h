@@ -16,20 +16,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dccutil.h,v 1.2 2004/08/26 03:21:14 wcc Exp $
+ * $Id: dccutil.h,v 1.3 2004/08/26 10:36:51 wcc Exp $
  */
 
 #ifndef _EGG_DCCUTIL_H
 #define _EGG_DCCUTIL_H
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+
 #include "dcc.h" /* struct dcc_table, struct chat_info */
 
 #ifdef HAVE_DPRINTF
-#  undef dprintf
+#  define dprintf eggdrop_dprintf
 #endif
 
-#define get_data_ptr(x) _get_data_ptr(x,__FILE__,__LINE__)
+/* Fake idx's for dprintf - these should be ridiculously large +ve nums. */
+#define DP_STDOUT       0x7FF1
+#define DP_LOG          0x7FF2
+#define DP_SERVER       0x7FF3
+#define DP_HELP         0x7FF4
+#define DP_STDERR       0x7FF5
+#define DP_MODE         0x7FF6
+#define DP_MODE_NEXT    0x7FF7
+#define DP_SERVER_NEXT  0x7FF8
+#define DP_HELP_NEXT    0x7FF9
 
+#ifndef MAKING_MODS
+#  define get_data_ptr(x) _get_data_ptr(x,__FILE__,__LINE__)
+#endif
+
+#ifndef MAKING_MODS
 void dprintf EGG_VARARGS(int, arg1);
 void chatout EGG_VARARGS(char *, arg1);
 extern void (*shareout) ();
@@ -51,5 +69,6 @@ void flush_lines(int, struct chat_info *);
 int new_dcc(struct dcc_table *, int);
 char *add_cr(char *);
 void changeover_dcc(int, struct dcc_table *, int);
+#endif
 
 #endif /* !_EGG_DCCUTIL_H */

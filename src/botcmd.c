@@ -1,13 +1,7 @@
-/*
- * botcmd.c -- handles:
- *   commands that comes across the botnet
- *   userfile transfer and update commands from sharebots
+/* botcmd.c
  *
- * $Id: botcmd.c,v 1.4 2004/08/26 03:21:13 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: botcmd.c,v 1.5 2004/08/26 10:36:50 wcc Exp $
  */
 
 #include "main.h"
@@ -33,9 +29,11 @@
 #include "botcmd.h"
 #include "botnet.h"
 #include "botmsg.h"  /* add_note, simple_sprintf, base64_to_int */
-#include "dcc.h"     /* DCC_*, struct dcc_t */
+#include "dcc.h"     /* DCC_*, DCT_*, BSTAT_*, struct dcc_t */
 #include "dccutil.h" /* dprintf, chatout, sharein, chanout_but, lostdcc, do_boot */
+#include "net.h"     /* killsock */
 #include "userrec.h" /* change_handle, touch_laston */
+
 
 extern char botnetnick[], ver[], admin[], network[], motdfile[];
 extern int dcc_total, remote_boots, noshare;
@@ -47,12 +45,15 @@ extern time_t now, online_since;
 extern party_t *party;
 extern module_entry *module_list;
 
+
 static char TBUF[1024]; /* Static buffer for goofy bot stuff */
 
 /* Used for 1.0 compatibility: if a join message arrives with no sock#,
  * i'll just grab the next "fakesock" # (incrementing to assure uniqueness)
  */
 static int fakesock = 2300;
+
+
 
 static void fake_alert(int idx, char *item, char *extra)
 {
@@ -362,8 +363,8 @@ static void remote_tell_who(int idx, char *nick, int chan)
         botnet_send_priv(idx, botnetnick, nick, NULL, "%s:", BOT_BOTSCONNECTED);
       }
       sprintf(s, "  %s%c%-15s %s",
-              dcc[i].status & STAT_CALLED ? "<-" : "->",
-              dcc[i].status & STAT_SHARE ? '+' : ' ',
+              dcc[i].status & BSTAT_CALLED ? "<-" : "->",
+              dcc[i].status & BSTAT_SHARE ? '+' : ' ',
               dcc[i].nick, dcc[i].u.bot->version);
       botnet_send_priv(idx, botnetnick, nick, NULL, "%s", s);
     }
@@ -423,7 +424,7 @@ static void bot_who(int idx, char *par)
 
 static void bot_endlink(int idx, char *par)
 {
-  dcc[idx].status &= ~STAT_LINKING;
+  dcc[idx].status &= ~BSTAT_LINKING;
 }
 
 /* info? <from@bot>   -> send priv
@@ -492,7 +493,7 @@ static void bot_ping(int idx, char *par)
 
 static void bot_pong(int idx, char *par)
 {
-  dcc[idx].status &= ~STAT_PINGED;
+  dcc[idx].status &= ~BSTAT_PINGED;
 }
 
 /* link <from@bot> <who> <to-whom>
@@ -901,7 +902,7 @@ static void bot_thisbot(int idx, char *par)
     return;
   }
   if (bot_flags(dcc[idx].user) & BOT_LEAF)
-    dcc[idx].status |= STAT_LEAF;
+    dcc[idx].status |= BSTAT_LEAF;
   /* Set capitalization the way they want it */
   noshare = 1;
   change_handle(dcc[idx].user, par);
@@ -1185,7 +1186,7 @@ static void bot_join(int idx, char *par)
       linking = 1;
       bot++;
     }
-  if (b_status(idx) & STAT_LINKING) {
+  if (b_status(idx) & BSTAT_LINKING) {
     linking = 1;
   }
   nick = newsplit(&par);
@@ -1314,7 +1315,7 @@ static void bot_away(int idx, char *par)
       linking = 1;
       bot++;
     }
-  if (b_status(idx) & STAT_LINKING) {
+  if (b_status(idx) & BSTAT_LINKING) {
     linking = 1;
   }
   etc = newsplit(&par);
@@ -1385,9 +1386,9 @@ static void bot_idle(int idx, char *par)
 static void bot_ufno(int idx, char *par)
 {
   putlog(LOG_BOTS, "*", "%s %s: %s", USERF_REJECTED, dcc[idx].nick, par);
-  dcc[idx].status &= ~STAT_OFFERED;
-  if (!(dcc[idx].status & STAT_GETTING))
-    dcc[idx].status &= ~STAT_SHARE;
+  dcc[idx].status &= ~BSTAT_OFFERED;
+  if (!(dcc[idx].status & BSTAT_GETTING))
+    dcc[idx].status &= ~BSTAT_SHARE;
 }
 
 static void bot_old_userfile(int idx, char *par)

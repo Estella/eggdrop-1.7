@@ -4,7 +4,7 @@
  *
  *   IF YOU ALTER THIS FILE, YOU NEED TO RECOMPILE THE BOT.
  *
- * $Id: eggdrop.h,v 1.2 2004/08/26 03:21:14 wcc Exp $
+ * $Id: eggdrop.h,v 1.3 2004/08/26 10:36:51 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -205,19 +205,6 @@
 #  define random() (rand()/16)
 #endif
 
-#ifndef HAVE_SIGACTION /* old "weird signals" */
-#  define sigaction sigvec
-#  ifndef sa_handler
-#    define sa_handler sv_handler
-#    define sa_mask sv_mask
-#    define sa_flags sv_flags
-#  endif
-#endif
-
-#ifndef HAVE_SIGEMPTYSET
-#  define sigemptyset(x) ((*(int *)(x))=0)
-#endif
-
 #ifndef HAVE_SOCKLEN_T
 typedef int socklen_t;
 #endif
@@ -269,63 +256,6 @@ typedef int socklen_t;
 #define egg_islower(x)  islower((int)  (unsigned char) (x))
 
 /***********************************************************************/
-
-/* Public structure for the listening port map */
-struct portmap {
-  int realport;
-  int mappedto;
-  struct portmap *next;
-};
-
-
-
-
-
-/* Flags for dcc types. */
-#define DCT_CHAT      0x00000001        /* this dcc type receives botnet
-                                         * chatter                          */
-#define DCT_MASTER    0x00000002        /* received master chatter          */
-#define DCT_SHOWWHO   0x00000004        /* show the user in .who            */
-#define DCT_REMOTEWHO 0x00000008        /* show in remote who               */
-#define DCT_VALIDIDX  0x00000010        /* valid idx for outputting to
-                                         * in tcl                           */
-#define DCT_SIMUL     0x00000020        /* can be tcl_simul'd               */
-#define DCT_CANBOOT   0x00000040        /* can be booted                    */
-#define DCT_GETNOTES  DCT_CHAT          /* can receive notes                */
-#define DCT_FILES     0x00000080        /* gratuitous hack ;)               */
-#define DCT_FORKTYPE  0x00000100        /* a forking type                   */
-#define DCT_BOT       0x00000200        /* a bot connection of some sort... */
-#define DCT_FILETRAN  0x00000400        /* a file transfer of some sort     */
-#define DCT_FILESEND  0x00000800        /* a sending file transfer,
-                                         * getting = !this                  */
-#define DCT_LISTEN    0x00001000        /* a listening port of some sort    */
-
-/* For dcc chat & files. */
-#define STAT_ECHO    0x00001    /* echo commands back?                  */
-#define STAT_DENY    0x00002    /* bad username (ignore password & deny
-                                 * access)                              */
-#define STAT_CHAT    0x00004    /* in file-system but may return        */
-#define STAT_TELNET  0x00008    /* connected via telnet                 */
-#define STAT_PARTY   0x00010    /* only on party line via 'p' flag      */
-#define STAT_BOTONLY 0x00020    /* telnet on bots-only connect          */
-#define STAT_USRONLY 0x00040    /* telnet on users-only connect         */
-#define STAT_PAGE    0x00080    /* page output to the user              */
-
-/* For dcc bot links. */
-#define STAT_PINGED  0x00001    /* waiting for ping to return            */
-#define STAT_SHARE   0x00002    /* sharing user data with the bot        */
-#define STAT_CALLED  0x00004    /* this bot called me                    */
-#define STAT_OFFERED 0x00008    /* offered her the user file             */
-#define STAT_SENDING 0x00010    /* in the process of sending a user list */
-#define STAT_GETTING 0x00020    /* in the process of getting a user list */
-#define STAT_WARNED  0x00040    /* warned him about unleaflike behavior  */
-#define STAT_LEAF    0x00080    /* this bot is a leaf only               */
-#define STAT_LINKING 0x00100    /* the bot is currently going through
-                                 * the linking stage                     */
-#define STAT_AGGRESSIVE   0x200 /* aggressively sharing with this bot    */
-
-/* Flags for listening sockets */
-#define LSTN_PUBLIC  0x000001   /* No access restrictions               */
 
 /* chan & global */
 #define FLOOD_PRIVMSG    0
@@ -382,49 +312,6 @@ typedef struct {
  */
 #define LF_EXPIRING 0x000001    /* Logfile will be closed soon          */
 
-#define FILEDB_HIDE     1
-#define FILEDB_UNHIDE   2
-#define FILEDB_SHARE    3
-#define FILEDB_UNSHARE  4
-
-/* Socket flags:
- */
-#define SOCK_UNUSED     0x0001  /* empty socket                         */
-#define SOCK_BINARY     0x0002  /* do not buffer input                  */
-#define SOCK_LISTEN     0x0004  /* listening port                       */
-#define SOCK_CONNECT    0x0008  /* connection attempt                   */
-#define SOCK_NONSOCK    0x0010  /* used for file i/o on debug           */
-#define SOCK_STRONGCONN 0x0020  /* don't report success until sure      */
-#define SOCK_EOFD       0x0040  /* it EOF'd recently during a write     */
-#define SOCK_PROXYWAIT  0x0080  /* waiting for SOCKS traversal          */
-#define SOCK_PASS       0x0100  /* passed on; only notify in case
-                                 * of traffic                           */
-#define SOCK_VIRTUAL    0x0200  /* not-connected socket (dont read it!) */
-#define SOCK_BUFFER     0x0400  /* buffer data; don't notify dcc funcs  */
-
-/* Flags to sock_has_data
- */
-enum {
-  SOCK_DATA_OUTGOING,           /* Data in out-queue?                   */
-  SOCK_DATA_INCOMING            /* Data in in-queue?                    */
-};
-
-/* Fake idx's for dprintf - these should be ridiculously large +ve nums
- */
-#define DP_STDOUT       0x7FF1
-#define DP_LOG          0x7FF2
-#define DP_SERVER       0x7FF3
-#define DP_HELP         0x7FF4
-#define DP_STDERR       0x7FF5
-#define DP_MODE         0x7FF6
-#define DP_MODE_NEXT    0x7FF7
-#define DP_SERVER_NEXT  0x7FF8
-#define DP_HELP_NEXT    0x7FF9
-
-#define NORMAL          0
-#define QUICK           1
-
-
 
 /* For local console */
 #define STDIN  0
@@ -448,22 +335,5 @@ enum {
 #define HELP_DCC        1
 #define HELP_TEXT       2
 #define HELP_IRC        16
-
-/* This is used by the net module to keep track of sockets and what's
- * queued on them
- */
-typedef struct {
-  int sock;
-  short flags;
-  char *inbuf;
-  char *outbuf;
-  unsigned long outbuflen;      /* Outbuf could be binary data  */
-  unsigned long inbuflen;       /* Inbuf could be binary data   */
-} sock_list;
-
-enum {
-  EGG_OPTION_SET = 1,           /* Set option(s).               */
-  EGG_OPTION_UNSET = 2          /* Unset option(s).             */
-};
 
 #endif /* _EGG_EGGDROP_H */

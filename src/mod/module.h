@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: module.h,v 1.2 2004/08/26 03:21:14 wcc Exp $
+ * $Id: module.h,v 1.3 2004/08/26 10:36:51 wcc Exp $
  */
 
 #ifndef _EGG_MOD_MODULE_H
@@ -29,7 +29,9 @@
 
 #include "src/types.h"
 #include "src/dcc.h"
+#include "src/dccutil.h"
 #include "src/dns.h"
+#include "src/net.h"
 
 /*
  * This file contains all the horrible stuff required to do the lookup
@@ -449,7 +451,7 @@
  */
 #define socklist (*(struct sock_list **)global[268])
 #define sockoptions ((int (*)(int, int, int))global[269])
-#define flush_inbuf ((int (*)(int))global[270])
+/* Was unused function flush_inbuf() - Wcc (270) */
 #define kill_bot ((void (*)(char *, char *))global[271])
 /* 272 - 275 */
 #define quit_msg ((char *)(global[272]))

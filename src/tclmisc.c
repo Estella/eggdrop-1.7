@@ -1,12 +1,7 @@
-/*
- * tclmisc.c -- handles:
- *   Tcl stubs for everything else
+/* tclmisc.c
  *
- * $Id: tclmisc.c,v 1.4 2004/08/26 03:21:14 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: tclmisc.c,v 1.5 2004/08/26 10:36:51 wcc Exp $
  */
 
 #include "main.h"
@@ -47,17 +44,20 @@
 #include "md5/md5.h"
 #include "botmsg.h" /* add_note */
 #include "dcc.h"    /* STRIP_*, strip_mirc_codes, struct dcc_t */
+#include "net.h"    /* getmyip */
+
 
 extern p_tcl_bind_list bind_table_list;
 extern tcl_timer_t *timer, *utimer;
 extern struct dcc_t *dcc;
-extern char origbotname[], botnetnick[], quit_msg[];
+extern char botnetnick[], quit_msg[];
 extern struct userrec *userlist;
 extern time_t now;
 extern module_entry *module_list;
 extern int max_logs;
 extern log_t *logs;
 extern Tcl_Interp *interp;
+
 
 int expmem_tclmisc()
 {

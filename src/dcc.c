@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.c,v 1.4 2004/08/26 03:21:13 wcc Exp $
+ * $Id: dcc.c,v 1.5 2004/08/26 10:36:51 wcc Exp $
  */
 
 #include "main.h"
@@ -36,6 +36,8 @@
                       * lostdcc, makepass, not_away, do_boot, detect_dcc_flood,
                       * flush_lines, new_dcc, add_cr, changeover_dcc */
 #include "dns.h"     /* RES_* */
+#include "net.h"     /* SOCK_*, EGG_OPTION_*, neterror, getsock, killsock, answer,
+                      * open_telnet, tputs, open_telnet_raw, iptostr, sockoptions */
 #include "userrec.h" /* adduser, u_pass_match, deluser, correct_handle, write_userfile,
                       * touch_laston */
 
@@ -45,31 +47,26 @@ extern struct chanset_t *chanset;
 extern Tcl_Interp *interp;
 extern time_t now;
 extern char botnetnick[], ver[], origbotname[], notify_new[];
-extern int egg_numver, connect_timeout, conmask, backgrd, max_dcc,
-           make_userfile, default_flags, raw_log, ignore_time,
-           par_telnet_flood;
+extern int egg_numver, connect_timeout, conmask, backgrd, max_dcc, raw_log,
+           make_userfile, default_flags, ignore_time, par_telnet_flood;
 
 
-struct dcc_t *dcc = NULL;       /* DCC list                                */
-int dcc_total = 0;              /* Total dcc's                             */
-char tempdir[121] = "";         /* Temporary directory
-                                 * (default: current directory)            */
-int require_p = 0;              /* Require 'p' access to get on the
-                                 * party line?                             */
-int allow_new_telnets = 0;      /* Allow people to introduce themselves
-                                 * via telnet                              */
-int stealth_telnets = 0;        /* Be paranoid? <cybah>                    */
-int use_telnet_banner = 0;      /* Display telnet banner?                  */
-char network[41] = "unknown-net";       /* Name of the IRC network you're on  */
-int password_timeout = 180;     /* Time to wait for a password from a user */
-int bot_timeout = 60;           /* Bot timeout value                       */
-int identtimeout = 5;           /* Timeout value for ident lookups         */
-int dupwait_timeout = 5;        /* Timeout for rejecting duplicate entries */
-int protect_telnet = 1;         /* Even bother with ident lookups :)       */
-int flood_telnet_thr = 5;       /* Number of telnet connections to be
-                                 * considered a flood                      */
-int flood_telnet_time = 60;     /* In how many seconds?                    */
-char bannerfile[121] = "text/banner";   /* File displayed on telnet login */
+struct dcc_t *dcc = NULL;   /* DCC list                                      */
+int dcc_total = 0;          /* Total dcc's                                   */
+char tempdir[121] = "";     /* Temp directory (default: CWD)                 */
+int require_p = 0;          /* Require +p flag to access party line?         */
+int allow_new_telnets = 0;  /* Allow new users to add themselves via telnet? */
+int stealth_telnets = 0;    /* Just display 'Nickname' prompt for telnets.   */
+int use_telnet_banner = 0;  /* Display telnet banner?                        */
+int password_timeout = 180; /* Time to wait for a password from a user.      */
+int bot_timeout = 60;       /* Bot timeout value.                            */
+int identtimeout = 5;       /* Timeout value for ident lookups.              */
+int dupwait_timeout = 5;    /* Timeout for rejecting duplicate entries.      */
+int protect_telnet = 1;     /* Only accept telnet from known hosts?          */
+int flood_telnet_thr = 5;   /* Telnet flood threshold.                       */
+int flood_telnet_time = 60; /* In how many seconds?                          */
+char bannerfile[121] = "text/banner"; /* File displayed on telnet login.     */
+char network[41] = "unknown-net";     /* Name of the IRC network you're on.  */
 
 
 static void dcc_telnet_hostresolved(int);
@@ -140,8 +137,8 @@ static void greet_new_bot(int idx)
     return;
   }
   if (bfl & BOT_LEAF)
-    dcc[idx].status |= STAT_LEAF;
-  dcc[idx].status |= STAT_LINKING;
+    dcc[idx].status |= BSTAT_LEAF;
+  dcc[idx].status |= BSTAT_LINKING;
 #ifndef NO_OLD_BOTNET
   dprintf(idx, "version %d %d %s <%s>\n", egg_numver, HANDLEN, ver, network);
 #else
@@ -456,16 +453,16 @@ static void display_dcc_bot(int idx, char *buf)
 {
   int i = simple_sprintf(buf, "bot   flags: ");
 
-  buf[i++] = b_status(idx) & STAT_PINGED ? 'P' : 'p';
-  buf[i++] = b_status(idx) & STAT_SHARE ? 'U' : 'u';
-  buf[i++] = b_status(idx) & STAT_CALLED ? 'C' : 'c';
-  buf[i++] = b_status(idx) & STAT_OFFERED ? 'O' : 'o';
-  buf[i++] = b_status(idx) & STAT_SENDING ? 'S' : 's';
-  buf[i++] = b_status(idx) & STAT_GETTING ? 'G' : 'g';
-  buf[i++] = b_status(idx) & STAT_WARNED ? 'W' : 'w';
-  buf[i++] = b_status(idx) & STAT_LEAF ? 'L' : 'l';
-  buf[i++] = b_status(idx) & STAT_LINKING ? 'I' : 'i';
-  buf[i++] = b_status(idx) & STAT_AGGRESSIVE ? 'a' : 'A';
+  buf[i++] = b_status(idx) & BSTAT_PINGED ? 'P' : 'p';
+  buf[i++] = b_status(idx) & BSTAT_SHARE ? 'U' : 'u';
+  buf[i++] = b_status(idx) & BSTAT_CALLED ? 'C' : 'c';
+  buf[i++] = b_status(idx) & BSTAT_OFFERED ? 'O' : 'o';
+  buf[i++] = b_status(idx) & BSTAT_SENDING ? 'S' : 's';
+  buf[i++] = b_status(idx) & BSTAT_GETTING ? 'G' : 'g';
+  buf[i++] = b_status(idx) & BSTAT_WARNED ? 'W' : 'w';
+  buf[i++] = b_status(idx) & BSTAT_LEAF ? 'L' : 'l';
+  buf[i++] = b_status(idx) & BSTAT_LINKING ? 'I' : 'i';
+  buf[i++] = b_status(idx) & BSTAT_AGGRESSIVE ? 'a' : 'A';
   buf[i++] = 0;
 }
 
@@ -554,7 +551,7 @@ static void dcc_chat_pass(int idx, char *buf, int atr)
       nfree(dcc[idx].u.chat);
       dcc[idx].type = &DCC_BOT_NEW;
       dcc[idx].u.bot = get_data_ptr(sizeof(struct bot_info));
-      dcc[idx].status = STAT_CALLED;
+      dcc[idx].status = BSTAT_CALLED;
       dprintf(idx, "*hello!\n");
       greet_new_bot(idx);
       return;
@@ -575,7 +572,7 @@ static void dcc_chat_pass(int idx, char *buf, int atr)
       dcc[idx].type = &DCC_BOT_NEW;
       dcc[idx].u.bot = get_data_ptr(sizeof(struct bot_info));
 
-      dcc[idx].status = STAT_CALLED;
+      dcc[idx].status = BSTAT_CALLED;
       dprintf(idx, "*hello!\n");
       greet_new_bot(idx);
     } else {
@@ -1417,7 +1414,7 @@ static void dcc_telnet_pass(int idx, int atr)
       set_user(&USERENTRY_PASS, dcc[idx].user, ps);
       changeover_dcc(idx, &DCC_BOT_NEW, sizeof(struct bot_info));
 
-      dcc[idx].status = STAT_CALLED;
+      dcc[idx].status = BSTAT_CALLED;
       dprintf(idx, "*hello!\n");
       greet_new_bot(idx);
 #ifdef NO_OLD_BOTNET

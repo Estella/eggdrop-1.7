@@ -1,12 +1,9 @@
-/*
- * net.c -- handles:
- *   all raw network i/o
+/* net.c
  *
- * $Id: net.c,v 1.3 2004/08/26 03:21:14 wcc Exp $
- */
-/*
  * This is hereby released into the public domain.
  * Robey Pointer, robey@netcom.com
+ *
+ * $Id: net.c,v 1.4 2004/08/26 10:36:51 wcc Exp $
  */
 
 #include <fcntl.h>
@@ -26,16 +23,11 @@
 #endif
 #include <setjmp.h>
 
-#ifndef HAVE_GETDTABLESIZE
-#  ifdef FD_SETSIZE
-#    define getdtablesize() FD_SETSIZE
-#  else
-#    define getdtablesize() 200
-#  endif
-#endif
 
+#include "net.h"
 #include "dcc.h"     /* struct dcc_t */
 #include "dccutil.h" /* dprintf */
+
 
 extern struct dcc_t *dcc;
 extern int backgrd, use_stderr, resolve_timeout, dcc_total;
@@ -50,7 +42,7 @@ int firewallport = 1080;      /* Default port of socks 4/5 firewalls.         */
 char botuser[21] = "eggdrop"; /* Username of the user running the bot.        */
 int dcc_sanitycheck = 0;      /* Do some sanity checking on dcc connections.  */
 
-sock_list *socklist = NULL;   /* Enough to be safe.                           */
+sock_list *socklist = NULL;
 int MAXSOCKS = 0;
 jmp_buf alarmret;             /* Env buffer for alarm() returns.              */
 
@@ -58,31 +50,14 @@ jmp_buf alarmret;             /* Env buffer for alarm() returns.              */
 #define PROXY_SOCKS   1
 #define PROXY_SUN     2
 
+#ifndef HAVE_GETDTABLESIZE
+#  ifdef FD_SETSIZE
+#    define getdtablesize() FD_SETSIZE
+#  else
+#    define getdtablesize() 200
+#  endif
+#endif
 
-/* I need an UNSIGNED long for dcc type stuff
- */
-IP my_atoul(char *s)
-{
-  IP ret = 0;
-
-  while ((*s >= '0') && (*s <= '9')) {
-    ret *= 10;
-    ret += ((*s) - '0');
-    s++;
-  }
-  return ret;
-}
-
-/* Initialize the socklist
- */
-void init_net()
-{
-  int i;
-
-  for (i = 0; i < MAXSOCKS; i++) {
-    socklist[i].flags = SOCK_UNUSED;
-  }
-}
 
 int expmem_net()
 {
@@ -99,8 +74,29 @@ int expmem_net()
   return tot;
 }
 
-/* Get my ip number
- */
+IP my_atoul(char *s)
+{
+  IP ret = 0;
+
+  while ((*s >= '0') && (*s <= '9')) {
+    ret *= 10;
+    ret += ((*s) - '0');
+    s++;
+  }
+  return ret;
+}
+
+/* Initialize the socklist */
+void init_net()
+{
+  int i;
+
+  for (i = 0; i < MAXSOCKS; i++) {
+    socklist[i].flags = SOCK_UNUSED;
+  }
+}
+
+/* Get my ip number */
 IP getmyip()
 {
   struct hostent *hp;
@@ -492,35 +488,6 @@ inline int open_listen(int *port)
   return open_address_listen(myip[0] ? getmyip() : INADDR_ANY, port);
 }
 
-/* Given a network-style IP address, returns the hostname. The hostname
- * will be in the "##.##.##.##" format if there was an error.
- *
- * NOTE: This function is depreciated. Try using the async dns approach
- *       instead.
- */
-char *hostnamefromip(unsigned long ip)
-{
-  struct hostent *hp;
-  unsigned long addr = ip;
-  unsigned char *p;
-  static char s[UHOSTLEN];
-
-  if (!setjmp(alarmret)) {
-    alarm(resolve_timeout);
-    hp = gethostbyaddr((char *) &addr, sizeof(addr), AF_INET);
-    alarm(0);
-  } else {
-    hp = NULL;
-  }
-  if (hp == NULL) {
-    p = (unsigned char *) &addr;
-    sprintf(s, "%u.%u.%u.%u", p[0], p[1], p[2], p[3]);
-    return s;
-  }
-  strncpyz(s, hp->h_name, sizeof s);
-  return s;
-}
-
 /* Returns the given network byte order IP address in the
  * dotted format - "##.##.##.##"
  */
@@ -548,18 +515,16 @@ int answer(int sock, char *caller, unsigned long *ip, unsigned short *port,
 
   if (new_sock < 0)
     return -1;
+
   if (ip != NULL) {
     *ip = from.sin_addr.s_addr;
-    /* This is now done asynchronously. We now only provide the IP address.
-     *
-     * strncpy(caller, hostnamefromip(*ip), 120);
-     */
     strncpyz(caller, iptostr(*ip), 121);
     *ip = ntohl(*ip);
   }
+
   if (port != NULL)
     *port = ntohs(from.sin_port);
-  /* Set up all the normal socket crap */
+
   setsock(new_sock, (binary ? SOCK_BINARY : 0));
   return new_sock;
 }
@@ -1198,40 +1163,4 @@ int sock_has_data(int type, int sock)
   } else
     debug1("sock_has_data: could not find socket #%d, returning false.", sock);
   return ret;
-}
-
-/* flush_inbuf():
- * checks if there's data in the incoming buffer of an connection
- * and flushs the buffer if possible
- *
- * returns: -1 if the dcc entry wasn't found
- *          -2 if dcc[idx].type->activity doesn't exist and the data couldn't
- *             be handled
- *          0 if buffer was empty
- *          otherwise length of flushed buffer
- */
-int flush_inbuf(int idx)
-{
-  int i, len;
-  char *inbuf;
-
-  Assert((idx >= 0) && (idx < dcc_total));
-  for (i = 0; i < MAXSOCKS; i++) {
-    if ((dcc[idx].sock == socklist[i].sock) &&
-        !(socklist[i].flags & SOCK_UNUSED)) {
-      len = socklist[i].inbuflen;
-      if ((len > 0) && socklist[i].inbuf) {
-        if (dcc[idx].type && dcc[idx].type->activity) {
-          inbuf = socklist[i].inbuf;
-          socklist[i].inbuf = NULL;
-          dcc[idx].type->activity(idx, inbuf, len);
-          nfree(inbuf);
-          return len;
-        } else
-          return -2;
-      } else
-        return 0;
-    }
-  }
-  return -1;
 }

@@ -2,7 +2,7 @@
  * assoc.c -- part of assoc.mod
  *   the assoc code, moved here mainly from botnet.c for module work
  *
- * $Id: assoc.c,v 1.2 2004/08/25 01:51:04 wcc Exp $
+ * $Id: assoc.c,v 1.3 2004/08/26 10:36:51 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -319,7 +319,7 @@ static void zapf_assoc(char *botnick, char *code, char *par)
 
   if ((idx >= 0) && !(bot_flags(dcc[idx].user) & BOT_ISOLATE)) {
     if (!egg_strcasecmp(dcc[idx].nick, botnick))
-      linking = b_status(idx) & STAT_LINKING;
+      linking = b_status(idx) & BSTAT_LINKING;
     s = newsplit(&par);
     chan = base64_to_int(s);
     if ((chan > 0) || (chan < GLOBAL_CHANS)) {

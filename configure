@@ -5318,7 +5318,7 @@ _ACEOF
         # At this point, we're guessing this is NeXT Step.
 
 cat >>confdefs.h <<\_ACEOF
-#define BORGCUBES 1
+#define NEXT_HACKS 1
 _ACEOF
 
       else

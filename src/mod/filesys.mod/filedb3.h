@@ -4,7 +4,7 @@
  *
  * Written by Fabian Knittel <fknittel@gmx.de>
  *
- * $Id: filedb3.h,v 1.1 2004/08/25 01:02:09 wcc Exp $
+ * $Id: filedb3.h,v 1.2 2004/08/26 10:36:51 wcc Exp $
  */
 /*
  * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
@@ -26,6 +26,11 @@
 
 #ifndef _EGG_MOD_FILESYS_FILEDB3_H
 #define _EGG_MOD_FILESYS_FILEDB3_H
+
+#define FILEDB_HIDE     1
+#define FILEDB_UNHIDE   2
+#define FILEDB_SHARE    3
+#define FILEDB_UNSHARE  4
 
 /* Top of each DB */
 typedef struct {

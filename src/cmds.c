@@ -1,13 +1,7 @@
-/*
- * cmds.c -- handles:
- *   commands from a user via dcc
- *   (split in 2, this portion contains no-irc commands)
+/* cmds.c: core partyline commands
  *
- * $Id: cmds.c,v 1.4 2004/08/26 03:21:13 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: cmds.c,v 1.5 2004/08/26 10:36:51 wcc Exp $
  */
 
 #include "main.h"
@@ -33,9 +29,11 @@
 #include "botmsg.h"  /* simple_sprintf */
 #include "botnet.h"  /* answer_local_whom, lastbot, nextbot, tell_bots,
                       * tell_bottree, botlink, botunlink, tandem_relay */
-#include "dcc.h"     /* struct chat_info, DCC_*, STRIP_*, struct dcc_t */
+#include "dcc.h"     /* DCC_*, DCT_*, STRIP_*, STAT_*, BSTAT_*, struct chat_info,
+                      * struct dcc_t */
 #include "dccutil.h" /* get_data_ptr, dprintf, chanout_but, dcc_chatter, lostdcc,
                       * tell_dcc, not_away, set_away, do_boot, flush_lines */
+#include "net.h"     /* killsock */
 #include "userrec.h" /* adduser, addhost_by_handle, u_pass_match, delhost_by_handle,
                       * deluser, change_handle, correct_handle, write_userfile */
 
@@ -174,14 +172,14 @@ static void tell_who(struct userrec *u, int idx, int chan)
         egg_snprintf(format, sizeof format,
                      "  [%%.2lu]  %%s%%c%%-%us (%%s) %%s\n", nicklen);
         dprintf(idx, format, dcc[i].sock,
-                dcc[i].status & STAT_CALLED ? "<-" : "->",
-                dcc[i].status & STAT_SHARE ? '+' : ' ', dcc[i].nick, s,
+                dcc[i].status & BSTAT_CALLED ? "<-" : "->",
+                dcc[i].status & BSTAT_SHARE ? '+' : ' ', dcc[i].nick, s,
                 dcc[i].u.bot->version);
       } else {
         egg_snprintf(format, sizeof format, "  %%s%%c%%-%us (%%s) %%s\n",
                      nicklen);
-        dprintf(idx, format, dcc[i].status & STAT_CALLED ? "<-" : "->",
-                dcc[i].status & STAT_SHARE ? '+' : ' ', dcc[i].nick, s,
+        dprintf(idx, format, dcc[i].status & BSTAT_CALLED ? "<-" : "->",
+                dcc[i].status & BSTAT_SHARE ? '+' : ' ', dcc[i].nick, s,
                 dcc[i].u.bot->version);
       }
     }
@@ -1387,10 +1385,10 @@ int check_dcc_attrs(struct userrec *u, int oatr)
     }
 
     if (dcc[i].type == &DCC_BOT && !egg_strcasecmp(u->handle, dcc[i].nick)) {
-      if ((dcc[i].status & STAT_LEAF) && !(bot_flags(u) & BOT_LEAF))
-        dcc[i].status &= ~(STAT_LEAF | STAT_WARNED);
-      if (!(dcc[i].status & STAT_LEAF) && (bot_flags(u) & BOT_LEAF))
-        dcc[i].status |= STAT_LEAF;
+      if ((dcc[i].status & BSTAT_LEAF) && !(bot_flags(u) & BOT_LEAF))
+        dcc[i].status &= ~(BSTAT_LEAF | BSTAT_WARNED);
+      if (!(dcc[i].status & BSTAT_LEAF) && (bot_flags(u) & BOT_LEAF))
+        dcc[i].status |= BSTAT_LEAF;
     }
   }
 

@@ -1,15 +1,9 @@
-/*
- * main.c -- handles:
- *   core event handling
- *   signal handling
- *   command line arguments
- *   context and assert debugging
+/* main.c
  *
- * $Id: main.c,v 1.5 2004/08/26 03:21:14 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
+ *
+ * http://www.eggheads.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,11 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
-/*
- * The author (Robey Pointer) can be reached at:  robey@netcom.com
- * NOTE: Robey is no long working on this code, there is a discussion
- * list available at eggheads@eggheads.org.
+ *
+ * $Id: main.c,v 1.6 2004/08/26 10:36:51 wcc Exp $
  */
 
 #include "main.h"
@@ -61,9 +52,10 @@
 #include "bg.h"
 
 #include "botnet.h"  /* check_botnet_pings */
-#include "dcc.h"     /* struct chat_info, DCC_*, STRIP_*, struct dcc_t */
+#include "dcc.h"     /* DCC_*, STRIP_*, STAT_*, struct chat_info, struct dcc_t */
 #include "dccutil.h" /* dprintf, dcc_chatter, lostdcc, tell_dcc, new_dcc,
                       * dcc_remove_lost */
+#include "net.h"     /* SOCK_*, getmyip, setsock, killsock, dequeue_sockets, sockgets */
 #include "userrec.h" /* adduser, count_users, write_userfile */
 
 #ifndef ENABLE_STRIP

@@ -3,9 +3,6 @@
 #ifndef _EGG_CONFIG_H
 #define _EGG_CONFIG_H
 
-/* Define if running on NeXT Step. */
-#undef BORGCUBES
-
 /* Define to use Eggdrop's snprintf functions regardless of HAVE_SNPRINTF. */
 #undef BROKEN_SNPRINTF
 
@@ -281,6 +278,9 @@
 
 /* Define if modules should be loaded using the shl_*() functions. */
 #undef MOD_USE_SHL
+
+/* Define if running on NeXT Step. */
+#undef NEXT_HACKS
 
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT

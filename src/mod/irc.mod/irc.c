@@ -2,7 +2,7 @@
  * irc.c -- part of irc.mod
  *   support for channels within the bot
  *
- * $Id: irc.c,v 1.2 2004/08/25 01:51:04 wcc Exp $
+ * $Id: irc.c,v 1.3 2004/08/26 10:36:52 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -214,7 +214,7 @@ static void punish_badguy(struct chanset_t *chan, char *whobad,
     u_addban(chan, s1, botnetnick, s, now + (60 * chan->ban_time), 0);
     if (!mevictim && HALFOP_CANDOMODE('b')) {
       add_mode(chan, '+', 'b', s1);
-      flush_mode(chan, QUICK);
+      flush_mode(chan, IRC_QUICK);
     }
   }
   /* Kick the offender */
@@ -926,7 +926,7 @@ static void flush_modes()
         }
       }
     }
-    flush_mode(chan, NORMAL);
+    flush_mode(chan, IRC_NORMAL);
   }
 }
 

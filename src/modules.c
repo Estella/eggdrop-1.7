@@ -1,14 +1,9 @@
-/*
- * modules.c -- handles:
- *   support for modules in eggdrop
+/* modules.c
  *
- * by Darrin Smith (beldin@light.iinet.net.au)
+ * Originally by Darrin Smith (beldin@light.iinet.net.au)
  *
- * $Id: modules.c,v 1.4 2004/08/26 03:21:14 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: modules.c,v 1.5 2004/08/26 10:36:51 wcc Exp $
  */
 
 #include <ctype.h>
@@ -39,6 +36,7 @@
 #include "dcc.h"
 #include "dccutil.h"
 #include "language.h"
+#include "net.h"
 #include "rfc1459.h"
 #include "userent.h"
 #include "userrec.h"
@@ -169,9 +167,9 @@ static void null_share(int idx, char *x)
 {
   if ((x[0] == 'u') && (x[1] == 'n')) {
     putlog(LOG_BOTS, "*", "User file rejected by %s: %s", dcc[idx].nick, x + 3);
-    dcc[idx].status &= ~STAT_OFFERED;
-    if (!(dcc[idx].status & STAT_GETTING)) {
-      dcc[idx].status &= ~STAT_SHARE;
+    dcc[idx].status &= ~BSTAT_OFFERED;
+    if (!(dcc[idx].status & BSTAT_GETTING)) {
+      dcc[idx].status &= ~BSTAT_SHARE;
     }
   } else if ((x[0] != 'v') && (x[0] != 'e')) {
     dprintf(idx, "s un Not sharing userfile.\n");
@@ -552,7 +550,7 @@ Function global_table[] = {
   /* 268 - 271 */
   (Function) & socklist,          /* sock_list *                         */
   (Function) sockoptions,
-  (Function) flush_inbuf,
+  (Function) 0,                   /* Unused function flush_inbuf() - Wcc (270) */
   (Function) kill_bot,
   /* 272 - 275 */
   (Function) quit_msg,            /* char *                              */

@@ -2,7 +2,7 @@
  * userent.c -- handles:
  *   user-entry handling, new stylem more versatile.
  *
- * $Id: userent.c,v 1.4 2004/08/26 03:21:14 wcc Exp $
+ * $Id: userent.c,v 1.5 2004/08/26 10:36:51 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -28,7 +28,7 @@
 
 #include "userent.h"
 #include "botmsg.h"  /* simple_sprintf, int_to_base10 */
-#include "dcc.h"     /* struct dcc_t */
+#include "dcc.h"     /* BSTAT_*, struct dcc_t */
 #include "dccutil.h" /* dprintf, shareout */
 #include "rfc1459.h" /* rfc_casecmp */
 #include "userrec.h" /* addhost_by_handle */
@@ -618,7 +618,7 @@ static int botaddr_gotshare(struct userrec *u, struct user_entry *e,
     bi->telnet_port = 3333;
   if (!bi->relay_port)
     bi->relay_port = bi->telnet_port;
-  if (!(dcc[idx].status & STAT_GETTING))
+  if (!(dcc[idx].status & BSTAT_GETTING))
     putlog(LOG_CMDS, "*", "%s: change botaddr %s", dcc[idx].nick, u->handle);
   return botaddr_set(u, e, bi);
 }

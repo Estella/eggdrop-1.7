@@ -1,12 +1,7 @@
-/*
- * tcluser.c -- handles:
- *   Tcl stubs for the user-record-oriented commands
+/* tcluser.c
  *
- * $Id: tcluser.c,v 1.3 2004/08/26 03:21:14 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: tcluser.c,v 1.4 2004/08/26 10:36:51 wcc Exp $
  */
 
 #include "main.h"
@@ -31,7 +28,7 @@
 
 #include "botmsg.h"  /* int_to_base10 */
 #include "botnet.h"  /* nextbot */
-#include "dcc.h"     /* DCC_*, struct dcc_t */
+#include "dcc.h"     /* DCC_*, BSTAT_*, struct dcc_t */
 #include "userrec.h" /* adduser, u_pass_match, delhost_by_handle, count_users,
                       * deluser, change_handle, write_userfile */
 
@@ -39,7 +36,7 @@ extern Tcl_Interp *interp;
 extern struct userrec *userlist;
 extern int default_flags, dcc_total, ignore_time;
 extern struct dcc_t *dcc;
-extern char origbotname[], botnetnick[];
+extern char botnetnick[];
 extern time_t now;
 
 
@@ -428,7 +425,7 @@ static int tcl_getting_users STDVAR
   BADARGS(1, 1, "");
 
   for (i = 0; i < dcc_total; i++) {
-    if (dcc[i].type == &DCC_BOT && dcc[i].status & STAT_GETTING) {
+    if (dcc[i].type == &DCC_BOT && dcc[i].status & BSTAT_GETTING) {
       Tcl_AppendResult(irp, "1", NULL);
       return TCL_OK;
     }

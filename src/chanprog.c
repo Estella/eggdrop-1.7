@@ -7,7 +7,7 @@
  *   telling the current programmed settings
  *   initializing a lot of stuff and loading the tcl scripts
  *
- * $Id: chanprog.c,v 1.3 2004/08/26 03:21:13 wcc Exp $
+ * $Id: chanprog.c,v 1.4 2004/08/26 10:36:51 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -47,6 +47,7 @@
 #include "rfc1459.h" /* rfc_casecmp */
 #include "userrec.h" /* clear_userlist, count_users */
 
+
 extern struct userrec *userlist;
 extern log_t *logs;
 extern Tcl_Interp *interp;
@@ -57,14 +58,14 @@ extern int backgrd, term_z, con_chan, cache_hit, cache_miss, firewallport,
            default_flags, max_logs, conmask, protect_readonly, make_userfile,
            noshare, ignore_time;
 
-tcl_timer_t *timer = NULL;         /* Minutely timer               */
-tcl_timer_t *utimer = NULL;        /* Secondly timer               */
-unsigned long timer_id = 1;        /* Next timer of any sort will
-                                    * have this number             */
-struct chanset_t *chanset = NULL;  /* Channel list                 */
-char admin[121] = "";              /* Admin info                   */
-char origbotname[NICKLEN + 1];
-char botname[NICKLEN + 1];         /* Primary botname              */
+
+tcl_timer_t *timer = NULL;        /* Minutely timer               */
+tcl_timer_t *utimer = NULL;       /* Secondly timer               */
+unsigned long timer_id = 1;       /* Next timer will have this ID */
+struct chanset_t *chanset = NULL; /* Channel list                 */
+char admin[121] = "";             /* Admin info                   */
+char origbotname[NICKLEN + 1];    /* Bot's nick                   */
+char botname[NICKLEN + 1];        /* Primary botname              */
 
 
 /* Remove leading and trailing whitespaces.

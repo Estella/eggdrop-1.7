@@ -1,14 +1,7 @@
-/*
- * tcl.c -- handles:
- *   the code for every command eggdrop adds to Tcl
- *   Tcl initialization
- *   getting and setting Tcl/eggdrop variables
+/* tcl.c
  *
- * $Id: tcl.c,v 1.2 2004/08/26 03:21:14 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,13 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: tcl.c,v 1.3 2004/08/26 10:36:51 wcc Exp $
  */
 
 #include <stdlib.h>             /* getenv()                             */
 #include <locale.h>             /* setlocale()                          */
 
 #include "main.h"
-#include "dcc.h"  /* struct dcc_t */
+#include "dcc.h"  /* DCT_*, struct dcc_t */
 
 /* Used for read/write to internal strings */
 typedef struct {
@@ -46,31 +41,27 @@ typedef struct {
 
 
 extern time_t online_since;
-
 extern char origbotname[], botuser[], motdfile[], admin[], userfile[],
             firewall[], helpdir[], notify_new[], hostname[], myip[], moddir[],
             tempdir[], owner[], network[], botnetnick[], bannerfile[],
             egg_version[], natip[], configfile[], logfile_suffix[], textdir[],
             pid_file[];
-
-extern int backgrd, flood_telnet_thr, flood_telnet_time, shtime, share_greet,
-           require_p, keep_all_logs, allow_new_telnets, stealth_telnets,
-           use_telnet_banner, default_flags, conmask, switch_logfiles_at,
-           connect_timeout, firewallport, notify_users_at, flood_thr, tands,
-           ignore_time, reserved_port_min, reserved_port_max, die_on_sighup,
-           die_on_sigterm, max_logs, max_logsize, dcc_total, raw_log,
-           identtimeout, dcc_sanitycheck, dupwait_timeout, egg_numver,
-           share_unlinks, protect_telnet, sort_users, strict_host,
-           resolve_timeout, default_uflags, userfile_perm;
-
+extern int flood_telnet_thr, flood_telnet_time, shtime, require_p, conmask,
+           keep_all_logs, allow_new_telnets, stealth_telnets, default_flags,
+           use_telnet_banner, switch_logfiles_at, connect_timeout, strict_host,
+           firewallport, notify_users_at, flood_thr, ignore_time, raw_log,
+           reserved_port_min, reserved_port_max, die_on_sighup, die_on_sigterm,
+           max_logs, max_logsize, dcc_total, identtimeout, dcc_sanitycheck,
+           dupwait_timeout, egg_numver, share_unlinks, protect_telnet,
+           sort_users, resolve_timeout, default_uflags, userfile_perm, tands;
 extern struct dcc_t *dcc;
 extern tcl_timer_t *timer, *utimer;
-
 Tcl_Interp *interp;
 
-int protect_readonly = 0; /* Enable read-only protection? */
-char whois_fields[1025] = "";
 
+int protect_readonly = 0; /* Enable read-only protection? */
+
+char whois_fields[1025] = "";
 int dcc_flood_thr = 3;
 int use_invites = 0;
 int use_exempts = 0;
@@ -90,8 +81,7 @@ int utftot = 0;
 int clientdata_stuff = 0;
 
 /* Compatability for removed settings.*/
-int strict_servernames = 0, enable_simul = 1, use_console_r = 0,
-    debug_output = 0;
+int strict_servernames = 0, enable_simul = 1, use_console_r = 0, debug_output = 0;
 
 
 /* Prototypes for Tcl */

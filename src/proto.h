@@ -7,7 +7,7 @@
  * because they use structures in those
  * (saves including those .h files EVERY time) - Beldin
  *
- * $Id: proto.h,v 1.4 2004/08/26 03:21:14 wcc Exp $
+ * $Id: proto.h,v 1.5 2004/08/26 10:36:51 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -146,33 +146,6 @@ void kill_bot(char *, char *);
 void _maskhost(const char *, char *, int);
 #define maskhost(a,b) _maskhost((a),(b),1)
 #define maskban(a,b)  _maskhost((a),(b),0)
-
-/* net.c */
-IP my_atoul(char *);
-unsigned long iptolong(IP);
-IP getmyip();
-void neterror(char *);
-void setsock(int, int);
-int allocsock(int, int);
-int getsock(int);
-char *hostnamefromip(unsigned long);
-void killsock(int);
-int answer(int, char *, unsigned long *, unsigned short *, int);
-inline int open_listen(int *);
-int open_address_listen(IP addr, int *);
-int open_telnet(char *, int);
-int open_telnet_dcc(int, char *, char *);
-int open_telnet_raw(int, char *, int);
-void tputs(int, char *, unsigned int);
-void dequeue_sockets();
-int sockgets(char *, int *);
-void tell_netdebug(int);
-int sanitycheck_dcc(char *, char *, char *, char *);
-int hostsanitycheck_dcc(char *, char *, IP, char *, char *);
-char *iptostr(IP);
-int sock_has_data(int, int);
-int sockoptions(int sock, int operation, int sock_options);
-int flush_inbuf(int idx);
 
 /* tcl.c */
 void protect_tcl();

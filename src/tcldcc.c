@@ -1,12 +1,7 @@
-/*
- * tcldcc.c -- handles:
- *   Tcl stubs for the dcc commands
+/* tcldcc.c
  *
- * $Id: tcldcc.c,v 1.4 2004/08/26 03:21:14 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,18 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: tcldcc.c,v 1.5 2004/08/26 10:36:51 wcc Exp $
  */
 
 #include "main.h"
 #include "tandem.h"
 #include "modules.h"
 
+#include "tcldcc.h"
 #include "botmsg.h"  /* int_to_base10 */
 #include "botnet.h"  /* lastbot, nextbot, botlink, butunlink */
 #include "cmds.h"    /* stripmodes, stripmasktype */
-#include "dcc.h"     /* struct script_info, DCC_*, struct dcc_t */
-#include "dccutil.h" /* get_data_ptr, chatout, chanout_but, lostdcc,
-                      * killtransfer, not_away, set_away, do_boot, new_dcc */
+#include "dcc.h"     /* DCC_*, DCT_*, LSTN_*, STAT_*, EGG_OPTION_*, struct script_info,
+                      * struct dcc_t */
+#include "dccutil.h" /* get_data_ptr, chatout, chanout_but, lostdcc, killtransfer,
+                      * not_away, set_away, do_boot, new_dcc */
+#include "net.h"     /* SOCK_*, getmyip, neterror, getsock, killsock, open_listen,
+                      * tputs, open_telnet_raw, sockoptions */
 #include "userrec.h" /* write_userfile */
 
 

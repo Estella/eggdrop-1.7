@@ -4,7 +4,7 @@
  *   channel mode changes and the bot's reaction to them
  *   setting and getting the current wanted channel modes
  *
- * $Id: mode.c,v 1.1 2004/08/25 01:02:15 wcc Exp $
+ * $Id: mode.c,v 1.2 2004/08/26 10:36:52 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -165,7 +165,7 @@ static void flush_mode(struct chanset_t *chan, int pri)
     egg_strcatn(out, post, sizeof(out));
   }
   if (out[0]) {
-    if (pri == QUICK)
+    if (pri == IRC_QUICK)
       dprintf(DP_MODE, "MODE %s %s\n", chan->name, out);
     else
       dprintf(DP_SERVER, "MODE %s %s\n", chan->name, out);
@@ -234,9 +234,9 @@ static void real_add_mode(struct chanset_t *chan,
       chan->compat = 1;
   } else if (mode == 'e' || mode == 'I') {
     if (prevent_mixing && chan->compat == 1)
-      flush_mode(chan, NORMAL);
+      flush_mode(chan, IRC_NORMAL);
   } else if (prevent_mixing && chan->compat == 2)
-    flush_mode(chan, NORMAL);
+    flush_mode(chan, IRC_NORMAL);
 
   if (mode == 'o' || mode == 'h' || mode == 'b' || mode == 'v' || mode == 'e' ||
       mode == 'I') {
@@ -290,7 +290,7 @@ static void real_add_mode(struct chanset_t *chan,
         return;                 /* Already in there :- duplicate */
     l = strlen(op) + 1;
     if (chan->bytes + l > mode_buf_len)
-      flush_mode(chan, NORMAL);
+      flush_mode(chan, IRC_NORMAL);
     for (i = 0; i < modesperline; i++)
       if (chan->cmode[i].type == 0) {
         chan->cmode[i].type = type;
@@ -347,7 +347,7 @@ static void real_add_mode(struct chanset_t *chan,
   if (include_lk && chan->key)
     modes--;
   if (modes < 1)
-    flush_mode(chan, NORMAL);   /* Full buffer! Flush modes. */
+    flush_mode(chan, IRC_NORMAL);   /* Full buffer! Flush modes. */
 }
 
 

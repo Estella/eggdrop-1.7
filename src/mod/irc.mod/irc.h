@@ -1,7 +1,7 @@
 /*
  * irc.h -- part of irc.mod
  *
- * $Id: irc.h,v 1.2 2004/08/25 05:26:38 wcc Exp $
+ * $Id: irc.h,v 1.3 2004/08/26 10:36:52 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -33,6 +33,9 @@
 #define check_tcl_nick(a,b,c,d,e) check_tcl_signtopcnick(a,b,c,d,e,H_nick)
 #define check_tcl_mode(a,b,c,d,e,f) check_tcl_kickmode(a,b,c,d,e,f,H_mode)
 #define check_tcl_kick(a,b,c,d,e,f) check_tcl_kickmode(a,b,c,d,e,f,H_kick)
+
+#define IRC_NORMAL          0
+#define IRC_QUICK           1
 
 #define REVENGE_KICK 1          /* Kicked victim        */
 #define REVENGE_DEOP 2          /* Took op              */
