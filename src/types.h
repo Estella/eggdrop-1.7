@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: types.h,v 1.2 2004/08/27 00:49:24 wcc Exp $
+ * $Id: types.h,v 1.3 2004/08/27 05:34:18 wcc Exp $
  */
 
 #ifndef _EGG_TYPES_H
@@ -45,6 +45,10 @@ typedef unsigned short int u_16bit_t; /* 16 bit type   */
 typedef unsigned char u_8bit_t;       /* 8 bit type    */
 typedef u_32bit_t IP;                 /* IP type       */
 typedef int (*Function) ();           /* Function type */
+
+#ifndef HAVE_SOCKLEN_T
+typedef int socklen_t;
+#endif
 
 typedef struct _tand_t {
   char bot[HANDLEN + 1];

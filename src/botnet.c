@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botnet.c,v 1.6 2004/08/27 00:49:23 wcc Exp $
+ * $Id: botnet.c,v 1.7 2004/08/27 05:34:18 wcc Exp $
  */
 
 #include "main.h"
@@ -29,7 +29,7 @@
                       * struct dns_info, dupwait_notify, failed_link */
 #include "dccutil.h" /* get_data_ptr, dprintf, chatout, chanout_but, lostdcc,
                       * new_dcc, changeover_dcc */
-#include "dns.h"     /* RES_* */
+#include "dns.h"     /* RES_*, dcc_dnsipbyhost */
 #include "net.h"     /* SOCK_*, getsock, killsock, open_telnet_raw, tputs, iptostr */
 #include "userrec.h" /* correct_handle, touch_laston */
 
@@ -954,7 +954,6 @@ int botunlink(int idx, char *nick, char *reason, char *from)
       rembot(tandbot->bot);
     while (parties) {
       parties--;
-      /* Assert? */
       if (party[i].chan >= 0)
         check_tcl_chpt(party[i].bot, party[i].nick, party[i].sock,
                        party[i].chan);

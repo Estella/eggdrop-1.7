@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: users.c,v 1.6 2004/08/27 00:49:24 wcc Exp $
+ * $Id: users.c,v 1.7 2004/08/27 05:34:18 wcc Exp $
  */
 
 #include "main.h"
@@ -33,8 +33,9 @@ char natip[121] = "";
 #include "botnet.h"  /* nextbot, in_chain, botlink, rembot */
 #include "dcc.h"     /* DCC_*, struct dcc_t */
 #include "dccutil.h" /* dprintf, chatout, shareout, lostdcc */
-#include "rfc1459.h" /* rfc_casecmp */
+#include "match.h"   /* wild_match */
 #include "net.h"     /* killsock */
+#include "rfc1459.h" /* rfc_casecmp */
 #include "userrec.h" /* adduser, clear_masks */
 
 #include "users.h"

@@ -2,7 +2,7 @@
  * misc_file.c -- handles:
  *   copyfile() movefile() file_readable()
  *
- * $Id: misc_file.c,v 1.1 2004/08/25 01:02:01 wcc Exp $
+ * $Id: misc_file.c,v 1.2 2004/08/27 05:34:18 wcc Exp $
  */
 /*
  * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
@@ -24,8 +24,11 @@
 
 #include "main.h"
 #include <sys/stat.h>
-#include <unistd.h>
+#if HAVE_UNISTD_H
+#  include <unistd.h>
+#endif
 #include <fcntl.h>
+
 #include "stat.h"
 
 

@@ -3,7 +3,7 @@
  *   memory allocation and deallocation
  *   keeping track of what memory is being used by whom
  *
- * $Id: mem.c,v 1.4 2004/08/26 10:36:51 wcc Exp $
+ * $Id: mem.c,v 1.5 2004/08/27 05:34:18 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -37,7 +37,6 @@
 #include "mod/modvals.h"
 
 #include "dccutil.h" /* dprintf */
-#include "net.h"     /* tell_netdebug */
 
 extern module_entry *module_list;
 
@@ -304,7 +303,6 @@ void debug_mem_to_dcc(int idx)
 #else
   dprintf(idx, "Compiled without extensive memory debugging (sorry).\n");
 #endif
-  tell_netdebug(idx);
 }
 
 void *n_malloc(int size, const char *file, int line)

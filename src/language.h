@@ -1,4 +1,4 @@
-/* language.h: prototypes for functions in language.c
+/* language.h
  *
  * Copyright (C) 2004 Eggheads Development Team
  *
@@ -16,16 +16,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: language.h,v 1.1 2004/08/25 07:41:36 wcc Exp $
+ * $Id: language.h,v 1.2 2004/08/27 05:34:18 wcc Exp $
  */
 
 #ifndef _EGG_LANGUAGE_H
 #define _EGG_LANGUAGE_H
 
+/* Language file directory. */
+#define LANGDIR "./language"
+
+/* This is the base language, loaded before all others. DO NOT CHANGE. */
+#define BASELANG "english"
+
+#ifndef MAKING_MODS
 char *get_language(int);
 int cmd_loadlanguage(struct userrec *, int, char *);
 void add_lang_section(char *);
 int del_lang_section(char *);
 int exist_lang_section(char *);
+#endif
 
 #endif /* !_EGG_LANGUAGE_H */

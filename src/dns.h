@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dns.h,v 1.2 2004/08/26 03:21:14 wcc Exp $
+ * $Id: dns.h,v 1.3 2004/08/27 05:34:18 wcc Exp $
  */
 
 #ifndef _EGG_DNS_H
@@ -47,5 +47,16 @@ typedef struct devent_str {
   } res_data;
   void *other;             /* data specific to the event type           */
 } devent_t;
+
+#ifndef MAKING_MODS
+extern void (*dns_hostbyip) (IP);
+extern void (*dns_ipbyhost) (char *);
+void block_dns_hostbyip(IP);
+void block_dns_ipbyhost(char *);
+void call_hostbyip(IP, char *, int);
+void call_ipbyhost(char *, IP, int);
+void dcc_dnshostbyip(IP);
+void dcc_dnsipbyhost(char *);
+#endif
 
 #endif /* _EGG_DNS_H */

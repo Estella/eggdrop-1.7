@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.c,v 1.6 2004/08/27 00:49:23 wcc Exp $
+ * $Id: cmds.c,v 1.7 2004/08/27 05:34:18 wcc Exp $
  */
 
 #include "main.h"
@@ -32,7 +32,7 @@
                       * struct dcc_t */
 #include "dccutil.h" /* get_data_ptr, dprintf, chanout_but, dcc_chatter, lostdcc,
                       * tell_dcc, not_away, set_away, do_boot, flush_lines */
-#include "net.h"     /* killsock */
+#include "net.h"     /* killsock, tell_netdebug */
 #include "userrec.h" /* adduser, addhost_by_handle, u_pass_match, delhost_by_handle,
                       * deluser, change_handle, correct_handle, write_userfile */
 
@@ -1127,6 +1127,7 @@ static void cmd_debug(struct userrec *u, int idx, char *par)
   } else {
     putlog(LOG_CMDS, "*", "#%s# debug", dcc[idx].nick);
     debug_mem_to_dcc(idx);
+    tell_netdebug(idx);
   }
 }
 

@@ -1,14 +1,9 @@
-/*
- * eggdrop.h
- *   Eggdrop compile-time settings
+/* eggdrop.h: compile-time settings
  *
- *   IF YOU ALTER THIS FILE, YOU NEED TO RECOMPILE THE BOT.
+ * IF YOU ALTER THIS FILE, YOU NEED TO RECOMPILE THE BOT.
  *
- * $Id: eggdrop.h,v 1.4 2004/08/27 00:49:23 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,140 +18,55 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: eggdrop.h,v 1.5 2004/08/27 05:34:18 wcc Exp $
  */
 
 #ifndef _EGG_EGGDROP_H
 #define _EGG_EGGDROP_H
 
-/*
- * If you're *only* going to link to new version bots (1.3.0 or higher)
+/* If you're *only* going to link to new version bots (1.3.0 or higher), then
  * then you can safely define this.
  */
 #undef NO_OLD_BOTNET
 
-/*
- * Undefine this to completely disable context debugging.
- * WARNING: DO NOT send in bug reports if you undefine this!
+/* Set the following to the timestamp for the logfile entries. Popular times
+ * might be "[%H:%M]" (hour, min), or "[%H:%M:%S]" (hour, min, sec). Read
+ * 'man strftime' for more formatting options. Keep it below 32 characters.
  */
-#define DEBUG_CONTEXT
+#define LOG_TS  "[%H:%M]"
 
-/*
- * Set the following to the timestamp for the logfile entries.
- * Popular times might be "[%H:%M]" (hour, min), or "[%H:%M:%S]" (hour, min, sec)
- * Read `man strftime' for more formatting options.  Keep it below 32 chars.
- */
-#define LOG_TS "[%H:%M]"
-
-/*
- * HANDLEN note:
- *       HANDLEN defines the maximum length a handle on the bot can be.
- *       Standard (and minimum) is 9 characters long.
+/* HANDLEN defines the maximum length a handle on the bot can be. Standard
+ * (and minimum) is 9 characters long.
  *
- *       Beware that using lengths over 9 chars is 'non-standard' and if
- *       you wish to link to other bots, they _must_ both have the same
- *       maximum handle length.
- *
- * NICKMAX note:
- *       You should leave this at 32 characters and modify nick-len in the
- *       configuration file instead.
+ * Beware that using lengths over 9 chars is 'non-standard', and if you wish
+ * to link to other bots, they _must_ both have the same maximum handle length.
  */
-#define HANDLEN 9   /* valid values 9->NICKMAX  */
-#define NICKMAX 32  /* valid values HANDLEN->32 */
+#define HANDLEN  9 /* Valid values are 9 to NICKMAX. */
+
+/* You should leave this at 32 characters and modify nick-len in the
+ * configuration file instead.
+ */
+#define NICKMAX  32  /* Valid values are HANDLEN to 32. */
 
 
-/* Handy string lengths */
+
+/* Handy string lengths. */
 #define UHOSTMAX    291 + NICKMAX /* 32 (ident) + 3 (\0, !, @) + NICKMAX */
-#define DIRMAX      512           /* paranoia                            */
-#define LOGLINEMAX  767           /* for misc.c/putlog() <cybah>         */
+#define DIRMAX      512
+#define LOGLINEMAX  767           /* For putlog(). */
 
-/* Invalid characters */
+/* Invalid characters. */
 #define BADNICKCHARS "-,+*=:!.@#;$%&"
 #define BADHANDCHARS "-,+*=:!.@#;$%&"
 
 
-/* Language stuff */
-#define LANGDIR  "./language" /* language file directory                   */
-#define BASELANG "english"    /* language which always gets loaded before
-                                 all other languages. You do not want to
-                                 change this.                              */
+#define NICKLEN     NICKMAX + 1
+#define UHOSTLEN    UHOSTMAX + 1
+#define DIRLEN      DIRMAX + 1
+#define LOGLINELEN  LOGLINEMAX + 1
+#define NOTENAMELEN ((HANDLEN * 2) + 1)
 
-
-/* The 'configure' script should make this next part automatic, so you
- * shouldn't need to adjust anything below.
- */
-#define NICKLEN      NICKMAX + 1
-#define UHOSTLEN     UHOSTMAX + 1
-#define DIRLEN       DIRMAX + 1
-#define LOGLINELEN   LOGLINEMAX + 1
-#define NOTENAMELEN  ((HANDLEN * 2) + 1)
-
-
-/* We have to generate compiler errors in a weird way since not all compilers
- * support the #error preprocessor directive. */
-#ifndef STDC_HEADERS
-#  include "Error: Your system must have standard ANSI C headers."
-#endif
-
-#ifndef HAVE_VPRINTF
-#  include "Error: You need vsprintf to compile eggdrop."
-#endif
-
-#ifdef HAVE_UNISTD_H
-#  include <unistd.h>
-#endif
-
-/* This allows us to make things a lot less messy in modules.c. */
-#ifndef STATIC
-#  if !defined(MODULES_OK) || (!defined(MOD_USE_DL) && !defined(MOD_USE_SHL) && !defined(MOD_USE_DYLD) && !defined(MOD_USE_RLD) && !defined(MOD_USE_LOADER))
-#    include "Error: You can't compile with module support on this system (try make static)."
-#  else
-#    ifdef MOD_USE_DL
-#      ifndef HAVE_DLOPEN
-#        include "Error: We have detected that dlopen() should be used to load modules on this OS; but it was not found. Please use 'make static'."
-#      endif
-#      undef MOD_USE_SHL
-#      undef MOD_USE_DYLD
-#      undef MOD_USE_RLD
-#      undef MOD_USE_LOADER
-#    endif
-#    ifdef MOD_USE_SHL
-#      ifndef HAVE_SHL_LOAD
-#        include "Error: We have detected that shl_load() should be used to load modules on this OS; but it was not found. Please use 'make static'."
-#      endif
-#      undef MOD_USE_DL
-#      undef MOD_USE_DYLD
-#      undef MOD_USE_RLD
-#      undef MOD_USE_LOADER
-#    endif
-#    ifdef MOD_USE_DYLD
-#      ifndef HAVE_NSLINKMODULE
-#        include "Error: We have detected that NSLinkModule() should be used to load modules on this OS; but it was not found. Please use 'make static'."
-#      endif
-#      undef MOD_USE_DL
-#      undef MOD_USE_SHL
-#      undef MOD_USE_RLD
-#      undef MOD_USE_LOADER
-#    endif
-#    ifdef MOD_USE_RLD
-#      ifndef HAVE_RLD_LOAD
-#        include "Error: We have detected that rld_load() should be used to load modules on this OS; but it was not found. Please use 'make static'."
-#      endif
-#      undef MOD_USE_DL
-#      undef MOD_USE_SHL
-#      undef MOD_USE_DYLD
-#      undef MOD_USE_LOADER
-#    endif
-#    ifdef MOD_USE_LOADER
-#      ifndef HAVE_LOAD
-#        include "Error: We have detected that load() should be used to load modules on this OS; but it was not found. Please use 'make static'."
-#      endif
-#      undef MOD_USE_DL
-#      undef MOD_USE_SHL
-#      undef MOD_USE_DYLD
-#      undef MOD_USE_RLD
-#    endif
-#  endif
-#endif
 
 #if (NICKMAX < 9) || (NICKMAX > 32)
 #  include "Error: Invalid NICKMAX value."
@@ -170,70 +80,9 @@
 #  include "Error: HANDLEN MUST BE <= NICKMAX."
 #endif
 
-#ifdef HAVE_SYS_PARAM_H
-#  include <sys/param.h>
-#endif
-
-/* NAME_MAX is what POSIX defines, but BSD calls it MAXNAMLEN.
- * Use 255 if we can't find anything else.
- */
-#ifndef NAME_MAX
-#  ifdef MAXNAMLEN
-#    define NAME_MAX    MAXNAMLEN
-#  else
-#    define NAME_MAX    255
-#  endif
-#endif
-
-/* Almost every module needs some sort of time thingy, so... */
-#ifdef TIME_WITH_SYS_TIME
-#  include <sys/time.h>
-#  include <time.h>
-#else
-#  ifdef HAVE_SYS_TIME_H
-#    include <sys/time.h>
-#  else
-#    include <time.h>
-#  endif
-#endif
-
-#ifndef HAVE_SRANDOM
-#  define srandom(x) srand(x)
-#endif
-
-#ifndef HAVE_RANDOM
-#  define random() (rand()/16)
-#endif
-
-#ifndef HAVE_SOCKLEN_T
-typedef int socklen_t;
-#endif
-
-/*
- *    Handy aliases for memory tracking and core dumps
- */
-
 #define nmalloc(x)    n_malloc((x),__FILE__,__LINE__)
 #define nrealloc(x,y) n_realloc((x),(y),__FILE__,__LINE__)
 #define nfree(x)      n_free((x),__FILE__,__LINE__)
-
-#ifdef DEBUG_CONTEXT
-#  define Context           eggContext(__FILE__, __LINE__, NULL)
-#  define ContextNote(note) eggContextNote(__FILE__, __LINE__, NULL, note)
-#else
-#  define Context           {}
-#  define ContextNote(note) {}
-#endif
-
-#ifdef DEBUG_ASSERT
-#  define Assert(expr) do {                                             \
-          if (!(expr))                                                  \
-            eggAssert(__FILE__, __LINE__, NULL);                        \
-} while (0)
-#else
-#  define Assert(expr) do {                                             \
-} while (0)
-#endif
 
 #ifndef COMPILING_MEM
 #  undef malloc
@@ -241,12 +90,6 @@ typedef int socklen_t;
 #  undef free
 #  define free(x)   dont_use_old_free(x)
 #endif /* !COMPILING_MEM */
-
-#define debug0(x)             putlog(LOG_DEBUG,"*",x)
-#define debug1(x,a1)          putlog(LOG_DEBUG,"*",x,a1)
-#define debug2(x,a1,a2)       putlog(LOG_DEBUG,"*",x,a1,a2)
-#define debug3(x,a1,a2,a3)    putlog(LOG_DEBUG,"*",x,a1,a2,a3)
-#define debug4(x,a1,a2,a3,a4) putlog(LOG_DEBUG,"*",x,a1,a2,a3,a4)
 
 /* These apparently are unsafe without recasting. */
 #define egg_isdigit(x)  isdigit((int)  (unsigned char) (x))

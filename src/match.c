@@ -1,8 +1,4 @@
-/*
- * match.c
- *   wildcard matching functions
- *
- * $Id: match.c,v 1.2 2004/08/26 03:21:14 wcc Exp $
+/* match.c: wildcard matching functions
  *
  * Once this code was working, I added support for % so that I could
  * use the same code both in Eggdrop and in my IrcII client.
@@ -11,7 +7,7 @@
  * though, for sanity reasons).
  *
  * This code would not have been possible without the prior work and
- * suggestions of various sourced.  Special thanks to Robey for
+ * suggestions of various sourced. Special thanks to Robey for
  * all his time/help tracking down bugs and his ever-helpful advice.
  *
  * 04/09:  Fixed the "*\*" against "*a" bug (caused an endless loop)
@@ -19,22 +15,16 @@
  *   Chris Fuller  (aka Fred1@IRC & Fwitz@IRC)
  *     crf@cfox.bchs.uh.edu
  *
- * I hereby release this code into the public domain
+ * I hereby release this code into the public domain.
  *
+ * $Id: match.c,v 1.3 2004/08/27 05:34:18 wcc Exp $
  */
+
 #include "main.h"
 
+#include "match.h"
 #include "rfc1459.h" /* rfc_toupper */
 
-#define QUOTE '\\' /* quoting character (overrides wildcards) */
-#define WILDS '*'  /* matches 0 or more characters (including spaces) */
-#define WILDP '%'  /* matches 0 or more non-space characters */
-#define WILDQ '?'  /* matches ecactly one character */
-#define WILDT '~'  /* matches 1 or more spaces */
-
-#define NOMATCH 0
-#define MATCH (match+sofar)
-#define PERMATCH (match+saved+sofar)
 
 int _wild_match_per(register unsigned char *m, register unsigned char *n)
 {
@@ -42,7 +32,7 @@ int _wild_match_per(register unsigned char *m, register unsigned char *n)
   int match = 1, saved = 0, space;
   register unsigned int sofar = 0;
 
-  /* null strings should never match */
+  /* NULL strings should never match */
   if ((m == 0) || (n == 0) || (!*n))
     return NOMATCH;
 
@@ -69,7 +59,7 @@ int _wild_match_per(register unsigned char *m, register unsigned char *n)
         do
           m--;                  /* Search backwards */
         while ((m > ma) && (*m == '?'));        /* For first non-? char */
-        if ((m > ma) ? ((*m == '*') && (m[-1] != QUOTE)) : (*m == '*'))
+        if ((m > ma) ? ((*m == '*') && (m[-1] != WILDQUOTE)) : (*m == '*'))
           return PERMATCH;      /* nonquoted * = match */
         break;
       case WILDP:
@@ -98,7 +88,7 @@ int _wild_match_per(register unsigned char *m, register unsigned char *n)
         m++;
         n++;
         continue;               /* Match one char */
-      case QUOTE:
+      case WILDQUOTE:
         m++;                    /* Handle quoting */
       }
       if (rfc_toupper(*m) == rfc_toupper(*n)) { /* If matching */

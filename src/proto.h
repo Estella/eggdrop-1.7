@@ -7,7 +7,7 @@
  * because they use structures in those
  * (saves including those .h files EVERY time) - Beldin
  *
- * $Id: proto.h,v 1.6 2004/08/27 00:49:24 wcc Exp $
+ * $Id: proto.h,v 1.7 2004/08/27 05:34:18 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -67,32 +67,6 @@ void check_timers();
 void set_chanlist(const char *host, struct userrec *rec);
 void clear_chanlist(void);
 void clear_chanlist_member(const char *nick);
-
-/* dns.c */
-extern void (*dns_hostbyip) (IP);
-extern void (*dns_ipbyhost) (char *);
-void block_dns_hostbyip(IP);
-void block_dns_ipbyhost(char *);
-void call_hostbyip(IP, char *, int);
-void call_ipbyhost(char *, IP, int);
-void dcc_dnshostbyip(IP);
-void dcc_dnsipbyhost(char *);
-
-/* main.c */
-void fatal(const char *, int);
-int expected_memory(void);
-void patch(const char *);
-void eggContext(const char *, int, const char *);
-void eggContextNote(const char *, int, const char *, const char *);
-void eggAssert(const char *, int, const char *);
-void backup_userfile(void);
-
-/* match.c */
-int _wild_match(register unsigned char *, register unsigned char *);
-int _wild_match_per(register unsigned char *, register unsigned char *);
-
-#define wild_match(a,b) _wild_match((unsigned char *)(a),(unsigned char *)(b))
-#define wild_match_per(a,b) _wild_match_per((unsigned char *)(a),(unsigned char *)(b))
 
 /* mem.c */
 void *n_malloc(int, const char *, int);

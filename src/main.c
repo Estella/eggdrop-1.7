@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.7 2004/08/27 00:49:23 wcc Exp $
+ * $Id: main.c,v 1.8 2004/08/27 05:34:18 wcc Exp $
  */
 
 #include "main.h"
@@ -30,20 +30,10 @@
 #include <netdb.h>
 #include <setjmp.h>
 
-#ifdef TIME_WITH_SYS_TIME
-#  include <sys/time.h>
-#  include <time.h>
-#else
-#  ifdef HAVE_SYS_TIME_H
-#    include <sys/time.h>
-#  else
-#    include <time.h>
-#  endif
-#endif
-
-#ifdef STOP_UAC                         /* OSF/1 complains a lot */
+/* OSF/1 needs this. */
+#ifdef STOP_UAC
 #  include <sys/sysinfo.h>
-#  define UAC_NOPRINT 0x00000001        /* Don't report unaligned fixups */
+#  define UAC_NOPRINT 0x00000001 /* Don't report unaligned fixups. */
 #endif
 
 #include "chan.h"
@@ -66,9 +56,11 @@
 #  include <windows.h>
 #endif
 
+/* Solaris needs this. */
 #ifndef _POSIX_SOURCE
-#  define _POSIX_SOURCE 1 /* Solaris needs this */
+#  define _POSIX_SOURCE 1
 #endif
+
 
 extern char origbotname[], userfile[], botnetnick[];
 extern int dcc_total, conmask, cache_hit, cache_miss, max_logs, quick_logs;
@@ -79,55 +71,59 @@ extern log_t *logs;
 extern Tcl_Interp *interp;
 extern tcl_timer_t *timer, *utimer;
 extern jmp_buf alarmret;
-time_t now;
+
+#ifdef DEBUG_CONTEXT
+extern char cx_file[16][30], cx_note[16][256];
+extern int cx_line[], cx_ptr;
+#endif
+
 
 /*
- * Please use the PATCH macro instead of directly altering the version
- * string from now on (it makes it much easier to maintain patches).
- * Also please read the README file regarding your rights to distribute
- * modified versions of this bot.
+ * Please use patch.h instead of directly altering the version string. Also
+ * please read the README file regarding your rights to distribute modified
+ * versions of this bot.
  */
-
 char egg_version[1024] = "1.7.0";
 int egg_numver = 1070000;
 
-char notify_new[121] = "";      /* Person to send a note to for new users */
-int default_flags = 0;          /* Default user flags                     */
-int default_uflags = 0;         /* Default user-definied flags            */
+char version[81];    /* Version info (long).  */
+char ver[41];        /* Version info (short). */
+char egg_xtra[2048]; /* Patch info.           */
 
-int backgrd = 1;        /* Run in the background?                        */
-int con_chan = 0;       /* Foreground: constantly display channel stats? */
-int term_z = 0;         /* Foreground: use the terminal as a partyline?  */
-int use_stderr = 1;     /* Send stuff to stderr instead of logfiles?     */
+char configfile[121] = "eggdrop.conf"; /* Default config file name. */
 
-char configfile[121] = "eggdrop.conf";  /* Default config file name */
-char pid_file[120];                     /* Name of the pid file     */
-char helpdir[121] = "help/";            /* Directory of help files  */
-char textdir[121] = "text/";            /* Directory for text files */
+int backgrd = 1;    /* Run in the background?                        */
+int con_chan = 0;   /* Foreground: constantly display channel stats? */
+int term_z = 0;     /* Foreground: use the terminal as a partyline?  */
+int use_stderr = 1; /* Send stuff to stderr instead of logfiles?     */
 
-int keep_all_logs = 0;                  /* Never erase logfiles?    */
-char logfile_suffix[21] = ".%d%b%Y";    /* Format of logfile suffix */
-int switch_logfiles_at = 300;           /* When to switch logfiles  */
+char notify_new[121] = ""; /* Person to send a note to for new users. */
+int default_flags = 0;     /* Default user flags.                     */
+int default_uflags = 0;    /* Default user-definied flags.            */
 
-time_t online_since;    /* time that the bot was started */
+char pid_file[120];                    /* Name of the pid file.     */
+char helpdir[121] = "help/";           /* Directory of help files.  */
+char textdir[121] = "text/";           /* Directory for text files. */
 
-int make_userfile = 0; /* Using bot in userfile-creation mode? */
-char owner[121] = "";  /* Permanent owner(s) of the bot        */
+int keep_all_logs = 0;                 /* Never erase logfiles?     */
+char logfile_suffix[21] = ".%d%b%Y";   /* Format of logfile suffix. */
+int switch_logfiles_at = 300;          /* When to switch logfiles.  */
 
-int save_users_at = 0;   /* Minutes past the hour to save the userfile?     */
-int notify_users_at = 0; /* Minutes past the hour to notify users of notes? */
+int make_userfile = 0;    /* Using bot in userfile-creation mode?            */
+char owner[121] = "";     /* Permanent owner(s) of the bot                   */
+int save_users_at = 0;    /* Minutes past the hour to save the userfile?     */
+int notify_users_at = 0;  /* Minutes past the hour to notify users of notes? */
+int die_on_sighup = 0;    /* Die if bot receives SIGHUP                      */
+int die_on_sigterm = 1;   /* Die if bot receives SIGTERM                     */
+int resolve_timeout = 15; /* Hostname/address lookup timeout                 */
 
-char version[81];    /* Version info (long form)  */
-char ver[41];        /* Version info (short form) */
-char egg_xtra[2048]; /* Patch info                */
+int do_restart = 0;  /* .restart has been called; restart ASAP. */
+time_t now;
+time_t online_since; /* Time that the bot was started.          */
+char quit_msg[1024]; /* Quit message.                           */
 
-int do_restart = 0;       /* .restart has been called, restart ASAP */
-int die_on_sighup = 0;    /* Die if bot receives SIGHUP             */
-int die_on_sigterm = 1;   /* Die if bot receives SIGTERM            */
-int resolve_timeout = 15; /* Hostname/address lookup timeout        */
-char quit_msg[1024];      /* Quit message                           */
 
-/* Traffic stats */
+/* Traffic stats. FIXME: move this to a structure. */
 unsigned long otraffic_irc = 0;
 unsigned long otraffic_irc_today = 0;
 unsigned long otraffic_bn = 0;
@@ -150,14 +146,6 @@ unsigned long itraffic_trans = 0;
 unsigned long itraffic_trans_today = 0;
 unsigned long itraffic_unknown = 0;
 unsigned long itraffic_unknown_today = 0;
-
-#ifdef DEBUG_CONTEXT
-/* Context storage for fatal crashes */
-char cx_file[16][30];
-char cx_note[16][256];
-int cx_line[16];
-int cx_ptr = 0;
-#endif
 
 
 void fatal(const char *s, int recoverable)
@@ -219,104 +207,6 @@ static void check_expired_dcc()
       return;
     }
 }
-
-#ifdef DEBUG_CONTEXT
-static int nested_debug = 0;
-
-void write_debug()
-{
-  int x;
-  char s[25];
-  int y;
-
-  if (nested_debug) {
-    /* Yoicks, if we have this there's serious trouble!
-     * All of these are pretty reliable, so we'll try these.
-     *
-     * NOTE: dont try and display context-notes in here, it's
-     *       _not_ safe <cybah>
-     */
-    x = creat("DEBUG.DEBUG", 0644);
-    setsock(x, SOCK_NONSOCK);
-    if (x >= 0) {
-      strncpyz(s, ctime(&now), sizeof s);
-      dprintf(-x, "Debug (%s) written %s\n", ver, s);
-      dprintf(-x, "Please report problem to bugs@eggheads.org\n");
-      dprintf(-x, "after a visit to http://www.eggheads.org/bugzilla/\n");
-      dprintf(-x, "Full Patch List: %s\n", egg_xtra);
-      dprintf(-x, "Context: ");
-      cx_ptr = cx_ptr & 15;
-      for (y = ((cx_ptr + 1) & 15); y != cx_ptr; y = ((y + 1) & 15))
-        dprintf(-x, "%s/%d,\n         ", cx_file[y], cx_line[y]);
-      dprintf(-x, "%s/%d\n\n", cx_file[y], cx_line[y]);
-      killsock(x);
-      close(x);
-    }
-    bg_send_quit(BG_ABORT);
-    exit(1);                    /* Dont even try & tell people about, that may
-                                 * have caused the fault last time. */
-  } else
-    nested_debug = 1;
-  putlog(LOG_MISC, "*", "* Last context: %s/%d [%s]", cx_file[cx_ptr],
-         cx_line[cx_ptr], cx_note[cx_ptr][0] ? cx_note[cx_ptr] : "");
-  putlog(LOG_MISC, "*", "* Please REPORT this BUG!");
-  putlog(LOG_MISC, "*", "* Check doc/BUG-REPORT on how to do so.");
-  x = creat("DEBUG", 0644);
-  setsock(x, SOCK_NONSOCK);
-  if (x < 0) {
-    putlog(LOG_MISC, "*", "* Failed to write DEBUG");
-  } else {
-    strncpyz(s, ctime(&now), sizeof s);
-    dprintf(-x, "Debug (%s) written %s\n", ver, s);
-    dprintf(-x, "Full Patch List: %s\n", egg_xtra);
-#ifdef STATIC
-    dprintf(-x, "STATICALLY LINKED\n");
-#endif
-
-    /* info library */
-    dprintf(-x, "Tcl library: %s\n",
-            ((interp) && (Tcl_Eval(interp, "info library") == TCL_OK)) ?
-            interp->result : "*unknown*");
-
-    /* info tclversion/patchlevel */
-    dprintf(-x, "Tcl version: %s (header version %s)\n",
-            ((interp) && (Tcl_Eval(interp, "info patchlevel") == TCL_OK)) ?
-            interp->result : (Tcl_Eval(interp, "info tclversion") == TCL_OK) ?
-            interp->result : "*unknown*", TCL_PATCH_LEVEL ? TCL_PATCH_LEVEL :
-            "*unknown*");
-
-#ifdef HAVE_TCL_THREADS
-    dprintf(-x, "Tcl is threaded\n");
-#endif
-
-#ifdef CCFLAGS
-    dprintf(-x, "Compile flags: %s\n", CCFLAGS);
-#endif
-
-#ifdef LDFLAGS
-    dprintf(-x, "Link flags: %s\n", LDFLAGS);
-#endif
-
-#ifdef STRIPFLAGS
-    dprintf(-x, "Strip flags: %s\n", STRIPFLAGS);
-#endif
-
-    dprintf(-x, "Context: ");
-    cx_ptr = cx_ptr & 15;
-    for (y = ((cx_ptr + 1) & 15); y != cx_ptr; y = ((y + 1) & 15))
-      dprintf(-x, "%s/%d, [%s]\n         ", cx_file[y], cx_line[y],
-              (cx_note[y][0]) ? cx_note[y] : "");
-    dprintf(-x, "%s/%d [%s]\n\n", cx_file[cx_ptr], cx_line[cx_ptr],
-            (cx_note[cx_ptr][0]) ? cx_note[cx_ptr] : "");
-    tell_dcc(-x);
-    dprintf(-x, "\n");
-    debug_mem_to_dcc(-x);
-    killsock(x);
-    close(x);
-    putlog(LOG_MISC, "*", "* Wrote DEBUG");
-  }
-}
-#endif /* DEBUG_CONTEXT */
 
 static void got_bus(int z)
 {
@@ -403,59 +293,6 @@ static void got_ill(int z)
          cx_line[cx_ptr], (cx_note[cx_ptr][0]) ? cx_note[cx_ptr] : "");
 #endif
 }
-
-#ifdef DEBUG_CONTEXT
-/* Context */
-void eggContext(const char *file, int line, const char *module)
-{
-  char x[31], *p;
-
-  p = strrchr(file, '/');
-  if (!module) {
-    strncpyz(x, p ? p + 1 : file, sizeof x);
-  } else
-    egg_snprintf(x, 31, "%s:%s", module, p ? p + 1 : file);
-  cx_ptr = ((cx_ptr + 1) & 15);
-  strcpy(cx_file[cx_ptr], x);
-  cx_line[cx_ptr] = line;
-  cx_note[cx_ptr][0] = 0;
-}
-
-/* Called from the ContextNote macro.
- */
-void eggContextNote(const char *file, int line, const char *module,
-                    const char *note)
-{
-  char x[31], *p;
-
-  p = strrchr(file, '/');
-  if (!module)
-    strncpyz(x, p ? p + 1 : file, sizeof x);
-  else
-    egg_snprintf(x, 31, "%s:%s", module, p ? p + 1 : file);
-  cx_ptr = ((cx_ptr + 1) & 15);
-  strcpy(cx_file[cx_ptr], x);
-  cx_line[cx_ptr] = line;
-  strncpyz(cx_note[cx_ptr], note, sizeof cx_note[cx_ptr]);
-}
-#endif /* DEBUG_CONTEXT */
-
-#ifdef DEBUG_ASSERT
-/* Called from the Assert macro.
- */
-void eggAssert(const char *file, int line, const char *module)
-{
-#ifdef DEBUG_CONTEXT
-  write_debug();
-#endif
-  if (!module)
-    putlog(LOG_MISC, "*", "* In file %s, line %u", file, line);
-  else
-    putlog(LOG_MISC, "*", "* In file %s:%s, line %u", module, file, line);
-  fatal("ASSERT FAILED -- CRASHING!", 1);
-}
-#endif
-
 static void do_arg(char *s)
 {
   char x[1024], *z = x;

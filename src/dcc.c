@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.c,v 1.6 2004/08/27 00:49:23 wcc Exp $
+ * $Id: dcc.c,v 1.7 2004/08/27 05:34:18 wcc Exp $
  */
 
 #include "main.h"
@@ -36,7 +36,8 @@
 #include "dccutil.h" /* get_data_ptr, dprintf, chatout, chanout_but, dcc_chatter,
                       * lostdcc, makepass, not_away, do_boot, detect_dcc_flood,
                       * flush_lines, new_dcc, add_cr, changeover_dcc */
-#include "dns.h"     /* RES_* */
+#include "dns.h"     /* RES_*, dcc_dnshostbyip */
+#include "match.h"   /* wild_match */
 #include "net.h"     /* SOCK_*, EGG_OPTION_*, neterror, getsock, killsock, answer,
                       * open_telnet, tputs, open_telnet_raw, iptostr, sockoptions */
 #include "userrec.h" /* adduser, u_pass_match, deluser, correct_handle,
