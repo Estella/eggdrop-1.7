@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.13 2004/10/06 00:04:32 wcc Exp $
+ * $Id: main.c,v 1.14 2004/10/27 23:54:54 wcc Exp $
  */
 
 #include "main.h"
@@ -53,7 +53,8 @@
 #include "misc.h"     /* strncpyz, newsplit, make_rand_str */
 #include "net.h"      /* SOCK_*, getmyip, setsock, killsock, dequeue_sockets, sockgets */
 #include "traffic.h"  /* traffic_update_out, traffic_reset, init_traffic */
-#include "userrec.h"  /* adduser, count_users, write_userfile */
+#include "userfile.h" /* readuserfile, writeuserfile, backupuserfile */
+#include "userrec.h"  /* adduser, count_users */
 
 #ifndef ENABLE_STRIP
 #  include <sys/resource.h>
@@ -245,7 +246,7 @@ static void got_fpe(int z)
 
 static void got_term(int z)
 {
-  write_userfile(-1);
+  writeuserfile(-1);
   check_tcl_event("sigterm");
   if (die_on_sigterm) {
     botnet_send_chat(-1, botnetnick, "ACK, I've been terminated!");
@@ -263,7 +264,7 @@ static void got_quit(int z)
 
 static void got_hup(int z)
 {
-  write_userfile(-1);
+  writeuserfile(-1);
   check_tcl_event("sighup");
   if (die_on_sighup) {
     fatal("HANGUP SIGNAL -- SIGNING OFF", 0);
@@ -334,15 +335,6 @@ static void do_arg(char *s)
   } else {
     strncpyz(configfile, s, sizeof configfile);
   }
-}
-
-void backup_userfile(void)
-{
-  char s[125];
-
-  putlog(LOG_MISC, "*", USERF_BACKUP);
-  egg_snprintf(s, sizeof s, "%s~bak", userfile);
-  copyfile(userfile, s);
 }
 
 static void readconfig()
@@ -552,7 +544,7 @@ static void core_minutely()
 
 static void core_hourly()
 {
-  write_userfile(-1);
+  writeuserfile(-1);
 }
 
 static void event_rehash()
@@ -830,7 +822,7 @@ int main(int argc, char **argv)
   add_hook(HOOK_REHASH, (Function) event_rehash);
   add_hook(HOOK_PRE_REHASH, (Function) event_prerehash);
   add_hook(HOOK_USERFILE, (Function) event_save);
-  add_hook(HOOK_BACKUP, (Function) backup_userfile);
+  add_hook(HOOK_BACKUP, (Function) backupuserfile);
   add_hook(HOOK_DAILY, (Function) event_logfile);
   add_hook(HOOK_DAILY, (Function) traffic_reset);
   add_hook(HOOK_LOADED, (Function) event_loaded);

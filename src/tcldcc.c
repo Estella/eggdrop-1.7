@@ -17,26 +17,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcldcc.c,v 1.11 2004/10/06 00:04:33 wcc Exp $
+ * $Id: tcldcc.c,v 1.12 2004/10/27 23:54:54 wcc Exp $
  */
 
 #include "main.h"
 #include "modules.h"
 
 #include "tcldcc.h"
-#include "botmsg.h"   /* int_to_base10, botnet_send_* */
-#include "botnet.h"   /* lastbot, nextbot, botlink, butunlink */
-#include "chanprog.h" /* findchan_by_dname */
-#include "cmds.h"     /* stripmodes, stripmasktype */
-#include "dcc.h"      /* DCC_*, DCT_*, LSTN_*, STAT_*, PLSTAT_*, EGG_OPTION_*,
-                       * struct script_info, struct dcc_t */
-#include "dccutil.h"  /* get_data_ptr, chatout, chanout_but, lostdcc, killtransfer,
-                       * not_away, set_away, do_boot, new_dcc, findidx */
-#include "logfile.h"  /* LOG_*, putlog, logmodes, masktype */
-#include "misc.h"     /* splitc, strncpyz, dumplots */
-#include "net.h"      /* SOCK_*, getmyip, neterror, getsock, killsock, open_listen,
-                       * tputs, open_telnet_raw, sockoptions */
-#include "userrec.h"  /* write_userfile */
+#include "botmsg.h"    /* int_to_base10, botnet_send_* */
+#include "botnet.h"    /* lastbot, nextbot, botlink, butunlink */
+#include "chanprog.h"  /* findchan_by_dname */
+#include "cmds.h"      /* stripmodes, stripmasktype */
+#include "dcc.h"       /* DCC_*, DCT_*, LSTN_*, STAT_*, PLSTAT_*, EGG_OPTION_*,
+                        * struct script_info, struct dcc_t */
+#include "dccutil.h"   /* get_data_ptr, chatout, chanout_but, lostdcc, killtransfer,
+                        * not_away, set_away, do_boot, new_dcc, findidx */
+#include "logfile.h"   /* LOG_*, putlog, logmodes, masktype */
+#include "misc.h"      /* splitc, strncpyz, dumplots */
+#include "net.h"       /* SOCK_*, getmyip, neterror, getsock, killsock, open_listen,
+                        * tputs, open_telnet_raw, sockoptions */
+#include "userfile.h"  /* writeuserfile */
 
 
 extern Tcl_Interp *interp;
@@ -1045,7 +1045,7 @@ static int tcl_rehash STDVAR
     putlog(LOG_MISC, "*", USERF_NONEEDNEW);
     make_userfile = 0;
   }
-  write_userfile(-1);
+  writeuserfile(-1);
 
   putlog(LOG_MISC, "*", USERF_REHASHING);
   do_restart = -2;
@@ -1064,7 +1064,7 @@ static int tcl_restart STDVAR
     putlog(LOG_MISC, "*", USERF_NONEEDNEW);
     make_userfile = 0;
   }
-  write_userfile(-1);
+  writeuserfile(-1);
   putlog(LOG_MISC, "*", MISC_RESTARTING);
   wipe_timers(interp, &utimer);
   wipe_timers(interp, &timer);

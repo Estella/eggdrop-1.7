@@ -4,7 +4,7 @@
  *   a bunch of functions to find and change user records
  *   change and check user (and channel-specific) flags
  *
- * $Id: userrec.c,v 1.12 2004/10/06 00:04:33 wcc Exp $
+ * $Id: userrec.c,v 1.13 2004/10/27 23:54:54 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -25,7 +25,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include <sys/stat.h>
 #include "main.h"
 #include "users.h"
 #include "chan.h"
@@ -44,19 +43,17 @@
 
 extern struct dcc_t *dcc;
 extern struct chanset_t *chanset;
-extern int default_flags, default_uflags, quiet_save, dcc_total, share_greet;
-extern char userfile[], ver[], botnetnick[];
+extern int default_flags, default_uflags, dcc_total, noxtra;
 extern time_t now;
 
 int noshare = 1;                   /* don't send out to sharebots   */
-int sort_users = 0;                /* sort the userlist when saving */
 struct userrec *userlist = NULL;   /* user records are stored here  */
 struct userrec *lastuser = NULL;   /* last accessed user record     */
 maskrec *global_bans = NULL, *global_exempts = NULL, *global_invites = NULL;
 struct igrec *global_ign = NULL;
 int cache_hit = 0, cache_miss = 0; /* temporary cache accounting    */
 int strict_ident = 1;
-int userfile_perm = 0600;          /* Userfile permissions (default rw-------) */
+
 
 
 void set_chanlist(const char *host, struct userrec *rec)
@@ -495,199 +492,6 @@ int u_pass_match(struct userrec *u, char *pass)
   return 0;
 }
 
-int write_user(struct userrec *u, FILE *f, int idx)
-{
-  char s[181];
-  struct chanuserrec *ch;
-  struct chanset_t *cst;
-  struct user_entry *ue;
-  struct flag_record fr = { FR_GLOBAL, 0, 0, 0, 0, 0 };
-
-  fr.global = u->flags;
-
-  fr.udef_global = u->flags_udef;
-  build_flags(s, &fr, NULL);
-  if (fprintf(f, "%-10s - %-24s\n", u->handle, s) == EOF)
-    return 0;
-  for (ch = u->chanrec; ch; ch = ch->next) {
-    cst = findchan_by_dname(ch->channel);
-    if (cst && ((idx < 0) || channel_shared(cst))) {
-      if (idx >= 0) {
-        fr.match = (FR_CHAN | FR_BOT);
-        get_user_flagrec(dcc[idx].user, &fr, ch->channel);
-      } else
-        fr.chan = BOT_SHARE;
-      if ((fr.chan & BOT_SHARE) || (fr.bot & BOT_GLOBAL)) {
-        fr.match = FR_CHAN;
-        fr.chan = ch->flags;
-        fr.udef_chan = ch->flags_udef;
-        build_flags(s, &fr, NULL);
-        if (fprintf(f, "! %-20s %lu %-10s %s\n", ch->channel, ch->laston, s,
-            (((idx < 0) || share_greet) && ch->info) ? ch->info : "") == EOF)
-          return 0;
-      }
-    }
-  }
-  for (ue = u->entries; ue; ue = ue->next) {
-    if (ue->name) {
-      struct list_type *lt;
-
-      for (lt = ue->u.list; lt; lt = lt->next)
-        if (fprintf(f, "--%s %s\n", ue->name, lt->extra) == EOF)
-          return 0;
-    } else if (!ue->type->write_userfile(f, u, ue))
-      return 0;
-  }
-  return 1;
-}
-
-int write_ignores(FILE *f, int idx)
-{
-  struct igrec *i;
-  char *mask;
-
-  if (global_ign)
-    if (fprintf(f, IGNORE_NAME " - -\n") == EOF)        /* Daemus */
-      return 0;
-  for (i = global_ign; i; i = i->next) {
-    mask = str_escape(i->igmask, ':', '\\');
-    if (!mask ||
-        fprintf(f, "- %s:%s%lu:%s:%lu:%s\n", mask,
-                (i->flags & IGREC_PERM) ? "+" : "", i->expire,
-                i->user ? i->user : botnetnick, i->added,
-                i->msg ? i->msg : "") == EOF) {
-      if (mask)
-        nfree(mask);
-      return 0;
-    }
-    nfree(mask);
-  }
-  return 1;
-}
-
-int sort_compare(struct userrec *a, struct userrec *b)
-{
-  /* Order by flags, then alphabetically
-   * first bots: +h / +a / +l / other bots
-   * then users: +n / +m / +o / other users
-   * return true if (a > b)
-   */
-  if (a->flags & b->flags & USER_BOT) {
-    if (~bot_flags(a) & bot_flags(b) & BOT_HUB)
-      return 1;
-    if (bot_flags(a) & ~bot_flags(b) & BOT_HUB)
-      return 0;
-    if (~bot_flags(a) & bot_flags(b) & BOT_ALT)
-      return 1;
-    if (bot_flags(a) & ~bot_flags(b) & BOT_ALT)
-      return 0;
-    if (~bot_flags(a) & bot_flags(b) & BOT_LEAF)
-      return 1;
-    if (bot_flags(a) & ~bot_flags(b) & BOT_LEAF)
-      return 0;
-  } else {
-    if (~a->flags & b->flags & USER_BOT)
-      return 1;
-    if (a->flags & ~b->flags & USER_BOT)
-      return 0;
-    if (~a->flags & b->flags & USER_OWNER)
-      return 1;
-    if (a->flags & ~b->flags & USER_OWNER)
-      return 0;
-    if (~a->flags & b->flags & USER_MASTER)
-      return 1;
-    if (a->flags & ~b->flags & USER_MASTER)
-      return 0;
-    if (~a->flags & b->flags & USER_OP)
-      return 1;
-    if (a->flags & ~b->flags & USER_OP)
-      return 0;
-    if (~a->flags & b->flags & USER_HALFOP)
-      return 1;
-    if (a->flags & ~b->flags & USER_HALFOP)
-      return 0;
-  }
-  return (egg_strcasecmp(a->handle, b->handle) > 0);
-}
-
-void sort_userlist()
-{
-  int again;
-  struct userrec *last, *p, *c, *n;
-
-  again = 1;
-  last = NULL;
-  while (userlist != last && again) {
-    p = NULL;
-    c = userlist;
-    n = c->next;
-    again = 0;
-    while (n != last) {
-      if (sort_compare(c, n)) {
-        again = 1;
-        c->next = n->next;
-        n->next = c;
-        if (p == NULL)
-          userlist = n;
-        else
-          p->next = n;
-      }
-      p = c;
-      c = n;
-      n = n->next;
-    }
-    last = c;
-  }
-}
-
-/* Rewrite the entire user file. Call USERFILE hook as well, probably
- * causing the channel file to be rewritten as well.
- */
-void write_userfile(int idx)
-{
-  FILE *f;
-  char *new_userfile;
-  char s1[81];
-  time_t tt;
-  struct userrec *u;
-  int ok;
-
-  if (userlist == NULL)
-    return;                     /* No point in saving userfile */
-
-  new_userfile = nmalloc(strlen(userfile) + 5);
-  sprintf(new_userfile, "%s~new", userfile);
-
-  f = fopen(new_userfile, "w");
-  chmod(new_userfile, userfile_perm);
-  if (f == NULL) {
-    putlog(LOG_MISC, "*", USERF_ERRWRITE);
-    nfree(new_userfile);
-    return;
-  }
-  if (!quiet_save)
-    putlog(LOG_MISC, "*", USERF_WRITING);
-  if (sort_users)
-    sort_userlist();
-  tt = now;
-  strcpy(s1, ctime(&tt));
-  fprintf(f, "#4v: %s -- %s -- written %s", ver, botnetnick, s1);
-  ok = 1;
-  for (u = userlist; u && ok; u = u->next)
-    if (!write_user(u, f, idx))
-      ok = 0;
-  if (!ok || !write_ignores(f, -1) || fflush(f)) {
-    putlog(LOG_MISC, "*", "%s (%s)", USERF_ERRWRITE, strerror(ferror(f)));
-    fclose(f);
-    nfree(new_userfile);
-    return;
-  }
-  fclose(f);
-  call_hook(HOOK_USERFILE);
-  movefile(new_userfile, userfile);
-  nfree(new_userfile);
-}
-
 int change_handle(struct userrec *u, char *newh)
 {
   int i;
@@ -716,8 +520,6 @@ int change_handle(struct userrec *u, char *newh)
     }
   return 1;
 }
-
-extern int noxtra;
 
 struct userrec *adduser(struct userrec *bu, char *handle, char *host,
                         char *pass, int flags)

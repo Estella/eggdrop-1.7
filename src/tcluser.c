@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcluser.c,v 1.7 2004/10/06 00:04:33 wcc Exp $
+ * $Id: tcluser.c,v 1.8 2004/10/27 23:54:54 wcc Exp $
  */
 
 #include "main.h"
@@ -30,8 +30,9 @@
 #include "chanprog.h" /* findchan_by_dname, reload */
 #include "dcc.h"      /* DCC_*, BSTAT_*, struct dcc_t */
 #include "misc.h"     /* strncpyz */
+#include "userfile.h" /* reloaduserfile, writeuserfile */
 #include "userrec.h"  /* adduser, u_pass_match, delhost_by_handle, count_users,
-                       * deluser, change_handle, write_userfile */
+                       * deluser, change_handle */
 #include "users.h"    /* reload */
 
 
@@ -376,13 +377,13 @@ static int tcl_userlist STDVAR
 
 static int tcl_save STDVAR
 {
-  write_userfile(-1);
+  writeuserfile(-1);
   return TCL_OK;
 }
 
 static int tcl_reload STDVAR
 {
-  reload();
+  reloaduserfile();
   return TCL_OK;
 }
 

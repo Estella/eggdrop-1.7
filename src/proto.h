@@ -7,7 +7,7 @@
  * because they use structures in those
  * (saves including those .h files EVERY time) - Beldin
  *
- * $Id: proto.h,v 1.12 2004/10/06 00:04:33 wcc Exp $
+ * $Id: proto.h,v 1.13 2004/10/27 23:54:54 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -72,6 +72,5 @@ void autolink_cycle(char *);
 void tell_file_stats(int, char *);
 void tell_user_ident(int, char *, int);
 void tell_users_match(int, char *, int, int, int, char *);
-int readuserfile(char *, struct userrec **);
 
 #endif /* _EGG_PROTO_H */

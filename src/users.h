@@ -2,7 +2,7 @@
  * users.h
  *   structures and definitions used by users.c and userrec.c
  *
- * $Id: users.h,v 1.2 2004/10/06 00:04:33 wcc Exp $
+ * $Id: users.h,v 1.3 2004/10/27 23:54:54 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -36,6 +36,7 @@ struct list_type {
         (b)->next = *(a);                                               \
         *(a) = (b);                                                     \
 }
+
 int list_append(struct list_type **, struct list_type *);
 int list_delete(struct list_type **, struct list_type *);
 int list_contains(struct list_type *, struct list_type *);
@@ -168,10 +169,6 @@ struct igrec {
 extern struct igrec *global_ign;
 
 #define IGREC_PERM   2
-
-/*
- * Note: Flags are in eggdrop.h
- */
 
 struct userrec *adduser();
 struct userrec *get_user_by_handle(struct userrec *, char *);

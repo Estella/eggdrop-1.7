@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: userrec.h,v 1.3 2004/10/06 00:04:33 wcc Exp $
+ * $Id: userrec.h,v 1.4 2004/10/27 23:54:54 wcc Exp $
  */
 
 #ifndef _EGG_USERREC_H
@@ -37,9 +37,6 @@ int deluser(char *);
 void freeuser(struct userrec *);
 int change_handle(struct userrec *, char *);
 void correct_handle(char *);
-int write_user(struct userrec *, FILE *, int);
-int write_ignores(FILE *f, int);
-void write_userfile(int);
 struct userrec *check_dcclist_hand(char *);
 void touch_laston(struct userrec *, char *, time_t);
 void user_del_chan(char *);

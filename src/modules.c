@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: modules.c,v 1.11 2004/10/06 00:04:33 wcc Exp $
+ * $Id: modules.c,v 1.12 2004/10/27 23:54:54 wcc Exp $
  */
 
 #include <ctype.h>
@@ -43,6 +43,7 @@
 #include "logfile.h"
 #include "net.h"
 #include "rfc1459.h"
+#include "userfile.h"
 #include "userent.h"
 #include "userrec.h"
 
@@ -279,7 +280,7 @@ Function global_table[] = {
   (Function) addhost_by_handle,
   (Function) delhost_by_handle,
   (Function) readuserfile,
-  (Function) write_userfile,
+  (Function) writeuserfile,
   /* 56 - 59 */
   (Function) geticon,
   (Function) clear_chanlist,

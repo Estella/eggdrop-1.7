@@ -2,7 +2,7 @@
  * msgcmds.c -- part of irc.mod
  *   all commands entered via /MSG
  *
- * $Id: msgcmds.c,v 1.2 2004/09/10 01:10:51 wcc Exp $
+ * $Id: msgcmds.c,v 1.3 2004/10/27 23:54:55 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -90,7 +90,7 @@ static int msg_hello(char *nick, char *h, struct userrec *u, char *p)
     dprintf(DP_HELP, IRC_NEWBOT2, nick);
     putlog(LOG_MISC, "*", IRC_INIT1, handle);
     make_userfile = 0;
-    write_userfile(-1);
+    writeuserfile(-1);
     add_note(handle, botnetnick, IRC_INITNOTE, -1, 0);
   } else {
     dprintf(DP_HELP, IRC_INTRO1, nick, botname);
@@ -932,7 +932,7 @@ static int msg_die(char *nick, char *host, struct userrec *u, char *par)
     nuke_server(nick);
   else
     nuke_server(par);
-  write_userfile(-1);
+  writeuserfile(-1);
   sleep(1);                     /* Give the server time to understand */
   egg_snprintf(s, sizeof s, "DEAD BY REQUEST OF %s!%s", nick, host);
   fatal(s, 0);
@@ -949,7 +949,7 @@ static int msg_rehash(char *nick, char *host, struct userrec *u, char *par)
     dprintf(DP_HELP, "NOTICE %s :%s\n", nick, USERF_REHASHING);
     if (make_userfile)
       make_userfile = 0;
-    write_userfile(-1);
+    writeuserfile(-1);
     do_restart = -2;
     return 1;
   }
@@ -965,7 +965,7 @@ static int msg_save(char *nick, char *host, struct userrec *u, char *par)
   if (u_pass_match(u, par)) {
     putlog(LOG_CMDS, "*", "(%s!%s) !%s! SAVE", nick, host, u->handle);
     dprintf(DP_HELP, "NOTICE %s :Saving user file...\n", nick);
-    write_userfile(-1);
+    writeuserfile(-1);
     return 1;
   }
   putlog(LOG_CMDS, "*", "(%s!%s) !%s! failed SAVE", nick, host, u->handle);

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.c,v 1.14 2004/10/06 00:04:32 wcc Exp $
+ * $Id: cmds.c,v 1.15 2004/10/27 23:54:54 wcc Exp $
  */
 
 #include "main.h"
@@ -48,9 +48,9 @@
 #include "logfile.h"  /* LOG_*, putlog, logmodes, masktype, maskname */
 #include "misc.h"     /* my_strcpy, splitcn, strncpyz, newsplit, dumplots, kill_bot */
 #include "net.h"      /* killsock, tell_netdebug */
+#include "userfile.h" /* reloaduserfile, writeuserfile */
 #include "userrec.h"  /* adduser, addhost_by_handle, u_pass_match, delhost_by_handle,
-                       * deluser, change_handle, correct_handle, write_userfile,
-                       * count_users */
+                       * deluser, change_handle, correct_handle, count_users */
 #include "users.h"    /* reload */
 
 
@@ -1200,7 +1200,7 @@ static void cmd_restart(struct userrec *u, int idx, char *par)
     putlog(LOG_MISC, "*", "Uh, guess you don't need to create a new userfile.");
     make_userfile = 0;
   }
-  write_userfile(-1);
+  writeuserfile(-1);
   putlog(LOG_MISC, "*", "Restarting ...");
   wipe_timers(interp, &utimer);
   wipe_timers(interp, &timer);
@@ -1215,7 +1215,7 @@ static void cmd_rehash(struct userrec *u, int idx, char *par)
     putlog(LOG_MISC, "*", "Uh, guess you don't need to create a new userfile.");
     make_userfile = 0;
   }
-  write_userfile(-1);
+  writeuserfile(-1);
   putlog(LOG_MISC, "*", "Rehashing ...");
   do_restart = -2;
 }
@@ -1224,7 +1224,7 @@ static void cmd_reload(struct userrec *u, int idx, char *par)
 {
   putlog(LOG_CMDS, "*", "#%s# reload", dcc[idx].nick);
   dprintf(idx, "Reloading user file...\n");
-  reload();
+  reloaduserfile();
 }
 
 void cmd_die(struct userrec *u, int idx, char *par)
@@ -1355,7 +1355,7 @@ static void cmd_save(struct userrec *u, int idx, char *par)
 {
   putlog(LOG_CMDS, "*", "#%s# save", dcc[idx].nick);
   dprintf(idx, "Saving user file...\n");
-  write_userfile(-1);
+  writeuserfile(-1);
 }
 
 static void cmd_backup(struct userrec *u, int idx, char *par)

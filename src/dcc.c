@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.c,v 1.10 2004/10/06 00:04:32 wcc Exp $
+ * $Id: dcc.c,v 1.11 2004/10/27 23:54:54 wcc Exp $
  */
 
 #include "main.h"
@@ -44,8 +44,8 @@
 #include "misc.h"     /* splitc, strncpyz, newsplit, rmspace */
 #include "net.h"      /* SOCK_*, EGG_OPTION_*, neterror, getsock, killsock, answer,
                        * open_telnet, tputs, open_telnet_raw, iptostr, sockoptions */
-#include "userrec.h"  /* adduser, u_pass_match, deluser, correct_handle,
-                       * write_userfile, touch_laston */
+#include "userfile.h" /* writeuserfile */
+#include "userrec.h"  /* adduser, u_pass_match, deluser, correct_handle, touch_laston */
 
 
 extern struct userrec *userlist;
@@ -1584,7 +1584,7 @@ static void dcc_telnet_new(int idx, char *buf, int x)
       dprintf(idx, IRC_LIMBO);
       putlog(LOG_MISC, "*", DCC_INSTCOMPL, buf);
       make_userfile = 0;
-      write_userfile(-1);
+      writeuserfile(-1);
       add_note(buf, botnetnick, "Welcome to eggdrop! :)", -1, 0);
     }
     dprintf(idx, "\nOkay, now choose and enter a password:\n");

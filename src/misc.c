@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: misc.c,v 1.13 2004/10/06 00:04:33 wcc Exp $
+ * $Id: misc.c,v 1.14 2004/10/27 23:54:54 wcc Exp $
  */
 
 #include "main.h"
@@ -31,13 +31,13 @@
 #include "stat.h"
 
 #include "misc.h"
-#include "botmsg.h"  /* simple_sprintf, botnet_send_* */
-#include "dcc.h"     /* DCC_*, STAT_*, struct dcc_t */
-#include "dccutil.h" /* dprintf, chatout */
-#include "help.h"    /* help_subst */
-#include "match.h"   /* wild_match */
-#include "rfc1459.h" /* rfc_casecmp */
-#include "userrec.h" /* write_userfile */
+#include "botmsg.h"   /* simple_sprintf, botnet_send_* */
+#include "dcc.h"      /* DCC_*, STAT_*, struct dcc_t */
+#include "dccutil.h"  /* dprintf, chatout */
+#include "help.h"     /* help_subst */
+#include "match.h"    /* wild_match */
+#include "rfc1459.h"  /* rfc_casecmp */
+#include "userfile.h" /* writeuserfile */
 
 
 extern char botnetnick[];
@@ -536,6 +536,6 @@ void kill_bot(char *s1, char *s2)
   chatout("*** %s\n", s1);
   botnet_send_chat(-1, botnetnick, s1);
   botnet_send_bye();
-  write_userfile(-1);
+  writeuserfile(-1);
   fatal(s2, 0);
 }

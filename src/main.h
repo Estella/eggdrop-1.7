@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.h,v 1.10 2004/09/10 01:10:50 wcc Exp $
+ * $Id: main.h,v 1.11 2004/10/27 23:54:54 wcc Exp $
  */
 
 #ifndef _EGG_MAIN_H
@@ -231,9 +231,8 @@
 
 #ifndef MAKING_MODS
 void fatal(const char *, int);
-int expected_memory(void);
+int expected_memory();
 void patch(const char *);
-void backup_userfile(void);
 #endif
 
 #endif /* _EGG_MAIN_H */
