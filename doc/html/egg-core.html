@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<!-- $Id: egg-core.html,v 1.2 2004/08/31 01:48:21 wcc Exp $ -->
+<!-- $Id: egg-core.html,v 1.3 2004/09/02 20:27:00 wcc Exp $ -->
 
 <html>
   <head>
@@ -713,12 +713,16 @@
 
     <blockquote>
       <dl>
-        <dt><strong>set firewall &quot;!sun-barr.ebay:3666&quot;</strong></dt>
+        <dt><strong>set firewall &quot;!my-sub-passthru.org:3666&quot;<br>
+        set firewall &quot;@my-http-proxy.org:8080&quot;<br>
+        set firewall &quot;my-socks4-proxy.org:1080&quot;</strong></dt>
 
         <dd>
-          <p>Set this to your socks host if your Eggdrop sits behind a
+          <p>Set this to your proxy host if your Eggdrop sits behind a
           firewall. If you use a Sun &quot;telnet passthru&quot; firewall,
-          prefix the host with a &quot;!&quot;.</p>
+          prefix the host with a &#39;!&#39;. If you use an HTTP proxy, prefix
+          the host with a &#39;@&#39;. If you use a socks4 proxy, don&#39;t use
+          a prefix. These are the only supported types of proxies.</p>
         </dd>
 
         <dt><strong>set nat-ip &quot;127.0.0.1&quot;</strong></dt>

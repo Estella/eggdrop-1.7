@@ -1,4 +1,4 @@
-$Id: FIRST-SCRIPT,v 1.1 2004/08/25 01:01:56 wcc Exp $
+$Id: FIRST-SCRIPT,v 1.2 2004/09/02 20:27:00 wcc Exp $
 
 Your First Eggdrop Script
 Last revised: December 07, 2003
@@ -20,10 +20,10 @@ Last revised: December 07, 2003
   make sure nobody else has access to your bot. The .tcl and .set commands
   are helpful in debugging and testing your code.
 
-  First, read through the script. You may be unfamiliar with some of the
-  commands, especially if you haven't at least browsed through
-  tcl-commands.doc. You may find it helpful to open up tcl-commands.doc in
-  another window so that you can immediately look up commands you don't know.
+  First, read through the script. You may be unfamiliar with a few commands,
+  especially if you haven't at least browsed through doc/TCL-COMMANDS. You may
+  find it helpful to open up doc/TCL-COMMANDS in another window so that you
+  can immediately look up commands you don't know.
 
   Then, open up another window and copy the script into its own file. If you
   have the .tcl command enabled, you can type '.tcl source scripts/file.tcl'

@@ -1,4 +1,4 @@
-$Id: README,v 1.2 2004/08/25 01:51:03 wcc Exp $
+$Id: README,v 1.3 2004/09/02 20:27:00 wcc Exp $
 
 Readme
 Last revised: August 24, 2004
@@ -286,7 +286,7 @@ Last revised: August 24, 2004
       Tcl is a scripting language written by John Ousterhout. It's much better
       than most "built-in" script languages (like the one in ircII) and is
       meant to be linked with anything needing a  scripting language, so I
-      linked it with Eggdrop. The file "tcl-commands.doc" in the doc directory
+      linked it with Eggdrop. The file "TCL-COMMANDS" in the doc directory
       contains a list of additional Tcl commands provided by Eggdrop. There
       are also several example scripts in the scripts/ directory, and one in
       the doc directory called first_script.txt. Hundreds of scripts floating

@@ -3,7 +3,7 @@
  * This is hereby released into the public domain.
  * Robey Pointer, robey@netcom.com
  *
- * $Id: net.c,v 1.8 2004/08/31 22:56:12 wcc Exp $
+ * $Id: net.c,v 1.9 2004/09/02 20:27:00 wcc Exp $
  */
 
 #include <fcntl.h>
@@ -49,8 +49,10 @@ int MAXSOCKS = 0;
 jmp_buf alarmret;             /* Env buffer for alarm() returns.              */
 
 /* Types of proxies */
+#define PROXY_NONE    0
 #define PROXY_SOCKS   1
 #define PROXY_SUN     2
+#define PROXY_HTTP    3
 
 #ifndef HAVE_GETDTABLESIZE
 #  ifdef FD_SETSIZE
@@ -342,10 +344,13 @@ static int proxy_connect(int sock, char *host, int port, int proxy)
         socklist[i].flags |= SOCK_PROXYWAIT;    /* drummer */
       egg_snprintf(s, sizeof s, "\004\001%c%c%c%c%c%c%s", (port >> 8) % 256,
                    (port % 256), x[0], x[1], x[2], x[3], botuser);
-    tputs(sock, s, strlen(botuser) + 9);        /* drummer */
+    tputs(sock, s, strlen(botuser) + 9);
   } else if (proxy == PROXY_SUN) {
     egg_snprintf(s, sizeof s, "%s %d\n", host, port);
-    tputs(sock, s, strlen(s));  /* drummer */
+    tputs(sock, s, strlen(s));
+  } else if (proxy == PROXY_HTTP) {
+     egg_snprintf(s, sizeof s, "CONNECT %s:%d\n\n", host, port);
+     tputs(sock, s, strlen(s));
   }
   return sock;
 }
@@ -368,10 +373,12 @@ int open_telnet_raw(int sock, char *server, int sport)
   int i, port, rc;
   volatile int proxy;
 
-  /* firewall?  use socks */
   if (firewall[0]) {
     if (firewall[0] == '!') {
       proxy = PROXY_SUN;
+      strcpy(host, &firewall[1]);
+    } else if (firewall[0] == '@') {
+      proxy = PROXY_HTTP;
       strcpy(host, &firewall[1]);
     } else {
       proxy = PROXY_SOCKS;
@@ -379,7 +386,7 @@ int open_telnet_raw(int sock, char *server, int sport)
     }
     port = firewallport;
   } else {
-    proxy = 0;
+    proxy = PROXY_NONE;
     strcpy(host, server);
     port = sport;
   }
