@@ -1,0 +1,6 @@
+# $Id: modinfo,v 1.1 2004/08/25 01:02:13 wcc Exp $
+DESC:The transfer module provides DCC SEND/GET support and bot userfile
+DESC:transfer support (not sharing).
+DESC:
+DESC:If you enabled the filesys and/or share modules, you will want to
+DESC:ENABLE this module too.

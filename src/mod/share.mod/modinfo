@@ -1,0 +1,6 @@
+# $Id: modinfo,v 1.1 2004/08/25 01:02:12 wcc Exp $
+DESC:This provides the userfile sharing support. You also have to enable the
+DESC:channels & transfer modules to use it.
+DESC:
+DESC:If unsure, ENABLE it.
+DEPENDS:transfer channels

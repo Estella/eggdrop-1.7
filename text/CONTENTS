@@ -1,0 +1,20 @@
+$Id: CONTENTS,v 1.1 2004/08/25 01:02:21 wcc Exp $
+
+Directory Contents - text/
+Last revised: December 02, 2003
+    _____________________________________________________________________
+
+                         Directory Contents - text/
+
+
+  banner
+    The contents of this file are displayed before logging in whenever a user
+    telnets to the bot.
+
+  motd
+    The text of this file is displayed anytime a user successfully logs in and
+    joins the party line.
+
+    _____________________________________________________________________
+
+  Copyright (C) 2003, 2004 Eggheads Development Team
