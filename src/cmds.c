@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.c,v 1.8 2004/08/27 09:34:10 wcc Exp $
+ * $Id: cmds.c,v 1.9 2004/08/28 03:24:45 takeda Exp $
  */
 
 #include "main.h"
@@ -41,7 +41,7 @@ extern struct dcc_t *dcc;
 extern struct userrec *userlist;
 extern tcl_timer_t *timer, *utimer;
 extern int dcc_total, remote_boots, backgrd, make_userfile, do_restart,
-           conmask, require_p, must_be_owner, strict_host;
+           conmask, require_p, must_be_owner, strict_ident;
 extern Tcl_Interp *interp;
 extern char botnetnick[], origbotname[], ver[], network[], owner[], quit_msg[];
 extern time_t now, online_since;
@@ -69,11 +69,8 @@ static int add_bot_hostmask(int idx, char *nick)
                   nick, u->handle);
           return 0;
         }
-        if (strchr("~^+=-", m->userhost[0]))
-          egg_snprintf(s, sizeof s, "*!%s%s", strict_host ? "?" : "",
-                       m->userhost + 1);
-        else
-          egg_snprintf(s, sizeof s, "*!%s", m->userhost);
+        egg_snprintf(s, sizeof s, "*!%s", m->userhost);
+        fixfrom(s); /* more restrictive hostmasks (takeda) */
         dprintf(idx, "(Added hostmask for %s from %s)\n", nick, chan->dname);
         addhost_by_handle(nick, s);
         return 1;

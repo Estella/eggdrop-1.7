@@ -2,7 +2,7 @@
  * chancmds.c -- part of irc.mod
  *   handles commands directly relating to channel interaction
  *
- * $Id: cmdsirc.c,v 1.1 2004/08/25 01:02:15 wcc Exp $
+ * $Id: cmdsirc.c,v 1.2 2004/08/28 03:24:46 takeda Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -1042,17 +1042,7 @@ static void cmd_adduser(struct userrec *u, int idx, char *par)
     maskhost(s, s1);
   else {
     strncpyz(s1, s, sizeof s1);
-    p1 = strchr(s1, '!');
-    if (strchr("~^+=-", p1[1])) {
-      if (strict_host)
-        p1[1] = '?';
-      else {
-        p1[1] = '!';
-        p1++;
-      }
-    }
-    p1--;
-    p1[0] = '*';
+    fixfrom(s1);
   }
   if (!u) {
     dprintf(idx, "Added [%s]%s with no password.\n", hand, p1);

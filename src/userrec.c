@@ -4,7 +4,7 @@
  *   a bunch of functions to find and change user records
  *   change and check user (and channel-specific) flags
  *
- * $Id: userrec.c,v 1.6 2004/08/27 05:34:18 wcc Exp $
+ * $Id: userrec.c,v 1.7 2004/08/28 03:24:46 takeda Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -52,7 +52,7 @@ struct userrec *lastuser = NULL;   /* last accessed user record     */
 maskrec *global_bans = NULL, *global_exempts = NULL, *global_invites = NULL;
 struct igrec *global_ign = NULL;
 int cache_hit = 0, cache_miss = 0; /* temporary cache accounting    */
-int strict_host = 0;
+int strict_ident = 1;
 int userfile_perm = 0600;         /* Userfile permissions
                                    * (default rw-------) */
 
@@ -170,14 +170,16 @@ int count_users(struct userrec *bu)
   return tot;
 }
 
-/* Removes a username prefix (~+-^=) from a userhost.
- * e.g, "nick!~user@host" -> "nick!user@host"
+/* Removes a username prefix '+' from a userhost.
+ * and changes prefixes '-', '^', '=' into '~'
+ * e.g, "nick!+user@host" -> "nick!user@host"
+ *      "nick!^user@host" -> "nick!~user@host"
  */
 char *fixfrom(char *s)
 {
   char *p = NULL;
 
-  if (!s || !*s || strict_host)
+  if (!s || !*s || strict_ident)
     return s;
 
   if ((p = strchr(s, '!'))) {
@@ -186,8 +188,13 @@ char *fixfrom(char *s)
   } else
     p = s; /* There's no nick. */
 
-  if (strchr("~+-^=", *p) && *(p + 1) != '@')
+  if (*(p + 1) == '@') /* is that checking needed? (takeda) */
+    return s;
+
+  if (*p == '+')
     memmove(p, p + 1, strlen(p)); /* NUL is included without +1. */
+  else if (strchr("-^=", *p))
+    *p = '~';
 
   return s;
 }
@@ -349,6 +356,8 @@ struct userrec *get_user_by_host(char *host)
 }
 
 /* use fixfrom() or dont? (drummer)
+ *
+ * looks like that function is used nowhere in eggdrop (takeda)
  */
 struct userrec *get_user_by_equal_host(char *host)
 {
@@ -869,7 +878,7 @@ struct userrec *get_user_by_nick(char *nick)
 
         egg_snprintf(word, sizeof word, "%s!%s", m->nick, m->userhost);
         /* No need to check the return value ourself */
-        return get_user_by_host(word);;
+        return get_user_by_host(word);
       }
     }
   }

@@ -1,4 +1,4 @@
-$Id: mod.server,v 1.1 2004/08/25 01:02:00 wcc Exp $
+$Id: mod.server,v 1.2 2004/08/28 03:24:45 takeda Exp $
 
 Server Module
 Last revised: February 12, 2003
@@ -135,9 +135,10 @@ Last revised: February 12, 2003
       want to raise this. 300 is fine for most people though.
 
 
-    set strict-host 0
-      Set this to 1 if you don't want your the bot to strip a leading '~'
-      on user@hosts.
+    set strict-ident 1
+      Set this to 0 if you want eggdrop to translate all ident prefixes, so in
+      userlist there will be only one prefix '~' which means that there is no
+      ident working and can be spoofed.
 
 
     set quiet-reject 1

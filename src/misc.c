@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: misc.c,v 1.7 2004/08/27 05:34:18 wcc Exp $
+ * $Id: misc.c,v 1.8 2004/08/28 03:24:45 takeda Exp $
  */
 
 #include "main.h"
@@ -47,7 +47,7 @@ extern struct chanset_t *chanset;
 extern char helpdir[], version[], botname[], admin[], network[], motdfile[],
             ver[], botnetnick[], bannerfile[], logfile_suffix[], textdir[];
 extern int  backgrd, con_chan, term_z, use_stderr, dcc_total, keep_all_logs,
-            quick_logs, strict_host;
+            quick_logs, strict_ident;
 
 extern time_t now;
 
@@ -295,6 +295,7 @@ void _maskhost(const char *s, char *nw, int host)
 {
   register const char *p, *q, *e, *f;
   int i;
+  char *newmask = nw;
 
   *nw++ = '*';
   *nw++ = '!';
@@ -310,13 +311,14 @@ void _maskhost(const char *s, char *nw, int host)
     } else
       i = 0;
     while (*p != '@') {
-      if (!fl && strchr("~+-^=", *p)) {
-        if (strict_host)
+      if (!fl && strchr("~+-^=", *p) && !host) {
+        /* depends on ban, we change prefix to '?' or '*'
+         * but since if it's ban isn't better just to put '*'? (takeda)
+         */
+        if (strict_ident)
           nw[i] = '?';
-        else if (!host)
-          nw[i] = '*';
         else
-          i--;
+          nw[i] = '*';
       } else
         nw[i] = *p;
       fl++;
@@ -385,6 +387,8 @@ void _maskhost(const char *s, char *nw, int host)
       }
     }
   }
+  if (host && !strict_ident)
+    fixfrom(newmask);
 }
 
 /* Dump a potentially super-long string of text.

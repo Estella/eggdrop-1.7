@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcl.c,v 1.4 2004/08/28 03:07:49 takeda Exp $
+ * $Id: tcl.c,v 1.5 2004/08/28 03:24:46 takeda Exp $
  */
 
 #include <stdlib.h>             /* getenv()                             */
@@ -48,7 +48,7 @@ extern char origbotname[], botuser[], motdfile[], admin[], userfile[],
             pid_file[];
 extern int flood_telnet_thr, flood_telnet_time, shtime, require_p, conmask,
            keep_all_logs, allow_new_telnets, stealth_telnets, default_flags,
-           use_telnet_banner, switch_logfiles_at, connect_timeout, strict_host,
+           use_telnet_banner, switch_logfiles_at, connect_timeout, strict_ident,
            firewallport, notify_users_at, flood_thr, ignore_time, raw_log,
            reserved_port_min, reserved_port_max, die_on_sighup, die_on_sigterm,
            max_logs, max_logsize, dcc_total, identtimeout, dcc_sanitycheck,
@@ -508,7 +508,7 @@ static tcl_ints def_tcl_ints[] = {
   {"quiet-save",            &quiet_save,           0},
   {"force-expire",          &force_expire,         0},
   {"dupwait-timeout",       &dupwait_timeout,      0},
-  {"strict-host",           &strict_host,          0},
+  {"strict-ident",          &strict_ident,         0},
   {"userfile-perm",         &userfile_perm,        0},
   {"copy-to-tmp",           &copy_to_tmp,          0},
   {"quiet-reject",          &quiet_reject,         0},

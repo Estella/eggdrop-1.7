@@ -2,7 +2,7 @@
  * irc.c -- part of irc.mod
  *   support for channels within the bot
  *
- * $Id: irc.c,v 1.3 2004/08/26 10:36:52 wcc Exp $
+ * $Id: irc.c,v 1.4 2004/08/28 03:24:46 takeda Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -42,7 +42,7 @@ static Function *global = NULL, *channels_funcs = NULL, *server_funcs = NULL;
 
 static int ctcp_mode;
 static int net_type;
-static int strict_host;
+static int strict_ident;
 static int wait_split = 300;    /* Time to wait for user to return from net-split. */
 static int max_bans = 20;       /* Modified by net-type 1-4 */
 static int max_exempts = 20;    /* Modified by net-type 1-4 */
@@ -888,7 +888,7 @@ static tcl_ints myints[] = {
   {"max-invites",     &max_invites,     0},
   {"max-modes",       &max_modes,       0},
   {"net-type",        &net_type,        0},
-  {"strict-host",     &strict_host,     0}, /* arthur2 */
+  {"strict-ident",    &strict_ident,    0}, /* arthur2 */
   {"ctcp-mode",       &ctcp_mode,       0}, /* arthur2 */
   {"keep-nick",       &keepnick,        0}, /* guppy */
   {"prevent-mixing",  &prevent_mixing,  0},
