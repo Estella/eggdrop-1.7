@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
-# $Id: modconfig,v 1.1 2004/08/25 01:02:21 wcc Exp $
+# $Id: modconfig,v 1.2 2004/12/02 22:15:52 wcc Exp $
 
 
 mc_pn=`echo $0 | sed -e 's/^.*\///'`
@@ -213,6 +213,10 @@ xmodules-still-exist)
 		for mc_mod in ${mc_known_mods}; do
 			echo ${mc_n} ".${mc_c}" >&6
 			if test ! -d ${mc_mod_dir}/${mc_mod}; then
+				grep -v "^${mc_mod}$" ${mc_fknownmods} > ${mc_fknownmods}_new
+				mv ${mc_fknownmods}_new ${mc_fknownmods}
+			fi
+			if test ! -f ${mc_mod_dir}/${mc_mod}/Makefile && test ! -f ${mc_mod_dir}/${mc_mod}/Makefile.in; then
 				grep -v "^${mc_mod}$" ${mc_fknownmods} > ${mc_fknownmods}_new
 				mv ${mc_fknownmods}_new ${mc_fknownmods}
 			fi
@@ -458,25 +462,20 @@ xadd)
 		#  Add module to the list of known modules.
 		if grep "^${mc_mod}\.mod$" ${mc_fknownmods} 1>&7 2>&7; then
 			if test ! -d ${mc_mod_dir}/${mc_mod}.mod; then
-				grep -v "^${mc_mod}\.mod$" ${mc_fknownmods} \
-					> ${mc_fknownmods}_new
+				grep -v "^${mc_mod}\.mod$" ${mc_fknownmods} > ${mc_fknownmods}_new
 				mv ${mc_fknownmods}_new ${mc_fknownmods}
 			fi
-		else
-			if test ! -d ${mc_mod_dir}/${mc_mod}.mod; then
-				:
-			else
+		elif test -d ${mc_mod_dir}/${mc_mod}.mod; then
+			if test -f ${mc_mod_dir}/${mc_mod}.mod/Makefile || test -f ${mc_mod_dir}/${mc_mod}.mod/Makefile.in; then
 				echo ${mc_mod}.mod 1>> ${mc_fknownmods}
 			fi
 		fi
 
 		#  Add module to the list of active modules.
-		if grep "^${mc_mod}\.mod$" ${mc_fmodules} 1>&7 2>&7; then
-			:
-		else
+		if ! grep "^${mc_mod}\.mod$" ${mc_fmodules} 1>&7 2>&7; then
 			if test ! -d ${mc_mod_dir}/${mc_mod}.mod; then
 				echo "${mc_pn}: warning: module does not exist: \`${mc_mod}', ignoring." 1>&2
-			else
+			elif test -f ${mc_mod_dir}/${mc_mod}.mod/Makefile || test -f ${mc_mod_dir}/${mc_mod}.mod/Makefile.in; then
 				echo "${mc_pn}: enabling eggdrop module: ${mc_mod}" 1>&6
 
 				#  Add it to the file

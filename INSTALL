@@ -1,7 +1,7 @@
-$Id: INSTALL,v 1.1 2004/08/25 01:01:54 wcc Exp $
+$Id: INSTALL,v 1.2 2004/12/02 22:15:52 wcc Exp $
 
 Compilation and Installation of Eggdrop
-Last revised: July 24, 2004
+Last revised: November 29, 2004
     _____________________________________________________________________
 
                    Compilation and Installation of Eggdrop
@@ -42,8 +42,8 @@ Last revised: July 24, 2004
 
       2. Type either 'make config' or 'make iconfig' to determine which
          modules will be compiled. 'make config' compiles the default modules
-         (everything but woobie.mod). If you want to choose which modules to
-         compile, use 'make iconfig'.
+         (everything but modules you choose to add to disabled_modules). If
+         you want to choose which modules to compile, use 'make iconfig'.
 
       3. Type 'make' from the Eggdrop directory, or to force a statically
          linked module bot, type 'make static'. Otherwise, the Makefile will

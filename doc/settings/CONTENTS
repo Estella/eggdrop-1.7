@@ -1,7 +1,7 @@
-$Id: CONTENTS,v 1.1 2004/08/25 01:01:59 wcc Exp $
+$Id: CONTENTS,v 1.2 2004/12/02 22:15:52 wcc Exp $
 
 Directory Contents - doc/settings/
-Last revised: April 16, 2003
+Last revised: November 29, 2004
     _____________________________________________________________________
 
                       Directory Contents - doc/settings
@@ -57,9 +57,6 @@ Last revised: April 16, 2003
 
   mod.wire
     Documentation for the wire module is provided in this file.
-
-  mod.woobie
-    Documentation for the woobie module is provided in this file.
     ________________________________________________________________________
 
   Copyright (C) 2003, 2004 Eggheads Development Team
