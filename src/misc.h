@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: misc.h,v 1.4 2004/09/10 01:10:50 wcc Exp $
+ * $Id: misc.h,v 1.5 2004/10/06 00:04:33 wcc Exp $
  */
 
 #ifndef _EGG_MISC_H
@@ -61,6 +61,7 @@ int my_strcpy(char *, char *);
 void splitc(char *, char *, char);
 void splitcn(char *, char *, char, size_t);
 char *newsplit(char **);
+void rmspace(char *);
 void maskhost(const char *, char *, int);
 char *splitnick(char **);
 void dumplots(int, const char *, char *);

@@ -1,6 +1,6 @@
 # Makefile for src/mod/uptime.mod/.
 #
-# $Id: Makefile,v 1.6 2004/09/10 01:10:52 wcc Exp $
+# $Id: Makefile,v 1.7 2004/10/06 00:04:34 wcc Exp $
 
 MOD_NAME = uptime
 srcdir = .
@@ -36,13 +36,14 @@ distclean: clean
 #safety hash
 ../uptime.o: uptime.c uptime.h ../module.h ../../../src/main.h \
   ../../../config.h ../../../lush.h ../../../src/eggdrop.h \
-  ../../../src/types.h ../../../src/debug.h ../../../src/logfile.h \
-  ../../../src/lang.h ../../../src/flags.h ../../../src/language.h \
-  ../../../src/tclegg.h ../../../src/tclhash.h ../../../src/chan.h \
-  ../../../src/users.h ../../../src/compat/compat.h \
-  ../../../src/compat/inet_aton.h ../../../src/compat/snprintf.h \
-  ../../../src/compat/memset.h ../../../src/compat/memcpy.h \
-  ../../../src/compat/strcasecmp.h ../../../src/compat/strftime.h \
-  ../modvals.h ../../../src/botmsg.h ../../../src/dcc.h \
-  ../../../src/dccutil.h ../../../src/dns.h ../../../src/misc.h \
-  ../../../src/net.h ../server.mod/server.h
+  ../../../src/types.h ../../../config.h ../../../src/debug.h \
+  ../../../src/logfile.h ../../../src/lang.h ../../../src/flags.h \
+  ../../../src/language.h ../../../src/tclegg.h ../../../src/tclhash.h \
+  ../../../src/chan.h ../../../src/users.h ../../../src/compat/compat.h \
+  ../../../src/compat/inet_aton.h ../../../src/main.h \
+  ../../../src/compat/snprintf.h ../../../src/compat/memset.h \
+  ../../../src/compat/memcpy.h ../../../src/compat/strcasecmp.h \
+  ../../../src/compat/strftime.h ../modvals.h ../../../src/types.h \
+  ../../../src/botmsg.h ../../../src/dcc.h ../../../src/dccutil.h \
+  ../../../src/dcc.h ../../../src/dns.h ../../../src/logfile.h \
+  ../../../src/misc.h ../../../src/net.h ../server.mod/server.h

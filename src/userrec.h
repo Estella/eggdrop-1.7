@@ -16,13 +16,16 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: userrec.h,v 1.2 2004/08/27 10:01:17 wcc Exp $
+ * $Id: userrec.h,v 1.3 2004/10/06 00:04:33 wcc Exp $
  */
 
 #ifndef _EGG_USERREC_H
 #define _EGG_USERREC_H
 
 #ifndef MAKING_MODS
+void set_chanlist(const char *, struct userrec *);
+void clear_chanlist(void);
+void clear_chanlist_member(const char *);
 struct userrec *adduser(struct userrec *, char *, char *, char *, int);
 void addhost_by_handle(char *, char *);
 void clear_masks(struct maskrec *);

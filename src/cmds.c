@@ -17,36 +17,55 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.c,v 1.13 2004/09/10 01:10:50 wcc Exp $
+ * $Id: cmds.c,v 1.14 2004/10/06 00:04:32 wcc Exp $
  */
 
 #include "main.h"
 #include "modules.h"
 #include <ctype.h>
 
+#ifdef HAVE_UNAME
+#  include <sys/utsname.h>
+#endif
+
+#ifdef HAVE_GETRUSAGE
+#  include <sys/resource.h>
+#  ifdef HAVE_SYS_RUSAGE_H
+#    include <sys/rusage.h>
+#  endif
+#endif
+
 #include "cmds.h"
-#include "botmsg.h"  /* simple_sprintf, botnet_send_* */
-#include "botnet.h"  /* answer_local_whom, lastbot, nextbot, tell_bots,
-                      * tell_bottree, botlink, botunlink, tandem_relay */
-#include "dcc.h"     /* DCC_*, DCT_*, STRIP_*, STAT_*, BSTAT_*, struct chat_info,
-                      * struct dcc_t */
-#include "dccutil.h" /* get_data_ptr, dprintf, chanout_but, dcc_chatter, lostdcc,
-                      * tell_dcc, not_away, set_away, do_boot, flush_lines, show_motd */
-#include "help.h"    /* debug_help */
-#include "logfile.h" /* LOG_*, putlog, logmodes, masktype, maskname */
-#include "misc.h"    /* my_strcpy, splitcn, strncpyz, newsplit, dumplots, kill_bot */
-#include "net.h"     /* killsock, tell_netdebug */
-#include "userrec.h" /* adduser, addhost_by_handle, u_pass_match, delhost_by_handle,
-                      * deluser, change_handle, correct_handle, write_userfile */
+#include "chanprog.h" /* ismember, findchan_by_dname, reload */
+#include "botmsg.h"   /* simple_sprintf, botnet_send_* */
+#include "botnet.h"   /* answer_local_whom, lastbot, nextbot, tell_bots,
+                       * tell_bottree, botlink, botunlink, tandem_relay */
+#include "dcc.h"      /* DCC_*, DCT_*, STRIP_*, STAT_*, BSTAT_*, struct chat_info,
+                       * struct dcc_t */
+#include "dccutil.h"  /* get_data_ptr, dprintf, chanout_but, dcc_chatter, lostdcc,
+                       * tell_dcc, not_away, set_away, do_boot, flush_lines, show_motd */
+#include "help.h"     /* debug_help */
+#include "logfile.h"  /* LOG_*, putlog, logmodes, masktype, maskname */
+#include "misc.h"     /* my_strcpy, splitcn, strncpyz, newsplit, dumplots, kill_bot */
+#include "net.h"      /* killsock, tell_netdebug */
+#include "userrec.h"  /* adduser, addhost_by_handle, u_pass_match, delhost_by_handle,
+                       * deluser, change_handle, correct_handle, write_userfile,
+                       * count_users */
+#include "users.h"    /* reload */
+
 
 extern struct chanset_t *chanset;
 extern struct dcc_t *dcc;
 extern struct userrec *userlist;
 extern tcl_timer_t *timer, *utimer;
-extern int dcc_total, remote_boots, backgrd, make_userfile, do_restart,
-           conmask, require_p, must_be_owner, strict_ident;
+extern log_t *logs;
+extern int dcc_total, remote_boots, backgrd, make_userfile, do_restart, term_z,
+           con_chan, conmask, require_p, must_be_owner, strict_ident, firewallport,
+           cache_hit, cache_miss, default_flags, max_logs, ignore_time;
 extern Tcl_Interp *interp;
-extern char botnetnick[], origbotname[], ver[], network[], owner[], quit_msg[];
+extern char botnetnick[], origbotname[], ver[], network[], owner[], quit_msg[],
+            firewall[], motdfile[], userfile[], moddir[], notify_new[], admin[],
+            tempdir[], helpdir[], configfile[];
 extern time_t now, online_since;
 extern module_entry *module_list;
 
@@ -233,6 +252,145 @@ static void tell_who(struct userrec *u, int idx, int chan)
       dprintf(idx, "%s\n", s);
     }
   }
+}
+
+/* Dump status info out to dcc */
+void tell_verbose_status(int idx)
+{
+  char s[256], s1[121], s2[81];
+  char *vers_t, *uni_t;
+  int i;
+  time_t now2 = now - online_since, hr, min;
+#ifdef HAVE_GETRUSAGE
+  struct rusage ru;
+#else
+#  ifdef HAVE_CLOCK
+  clock_t cl;
+#  endif
+#endif
+#ifdef HAVE_UNAME
+  struct utsname un;
+
+  if (!uname(&un) < 0) {
+#endif
+    vers_t = " ";
+    uni_t  = "*unknown*";
+#ifdef HAVE_UNAME
+  } else {
+    vers_t = un.release;
+    uni_t  = un.sysname;
+  }
+#endif
+
+  i = count_users(userlist);
+  dprintf(idx, "I am %s, running %s: %d user%s (mem: %uk).\n",
+          botnetnick, ver, i, i == 1 ? "" : "s",
+          (int) (expected_memory() / 1024));
+
+  s[0] = 0;
+  if (now2 > 86400) {
+    /* days */
+    sprintf(s, "%d day", (int) (now2 / 86400));
+    if ((int) (now2 / 86400) >= 2)
+      strcat(s, "s");
+    strcat(s, ", ");
+    now2 -= (((int) (now2 / 86400)) * 86400);
+  }
+  hr = (time_t) ((int) now2 / 3600);
+  now2 -= (hr * 3600);
+  min = (time_t) ((int) now2 / 60);
+  sprintf(&s[strlen(s)], "%02d:%02d", (int) hr, (int) min);
+  s1[0] = 0;
+  if (backgrd)
+    strcpy(s1, MISC_BACKGROUND);
+  else {
+    if (term_z)
+      strcpy(s1, MISC_TERMMODE);
+    else if (con_chan)
+      strcpy(s1, MISC_STATMODE);
+    else
+      strcpy(s1, MISC_LOGMODE);
+  }
+#ifdef HAVE_GETRUSAGE
+  getrusage(RUSAGE_SELF, &ru);
+  hr = (int) ((ru.ru_utime.tv_sec + ru.ru_stime.tv_sec) / 60);
+  min = (int) ((ru.ru_utime.tv_sec + ru.ru_stime.tv_sec) - (hr * 60));
+  sprintf(s2, "CPU: %02d:%02d", (int) hr, (int) min);    /* Actally min/sec */
+#else
+#  ifdef HAVE_CLOCK
+  cl = (clock() / CLOCKS_PER_SEC);
+  hr = (int) (cl / 60);
+  min = (int) (cl - (hr * 60));
+  sprintf(s2, "CPU: %02d:%02d", (int) hr, (int) min);    /* Actually min/sec */
+#  else
+  sprintf(s2, "CPU: unknown");
+#  endif
+#endif
+  dprintf(idx, "%s %s (%s) - %s - %s: %4.1f%%\n", MISC_ONLINEFOR,
+          s, s1, s2, MISC_CACHEHIT,
+          100.0 * ((float) cache_hit) / ((float) (cache_hit + cache_miss)));
+
+  if (admin[0])
+    dprintf(idx, "Admin: %s\n", admin);
+
+  dprintf(idx, "Config file: %s\n", configfile);
+  dprintf(idx, "OS: %s %s\n", uni_t, vers_t);
+
+  /* info library */
+  dprintf(idx, "%s %s\n", MISC_TCLLIBRARY,
+          ((interp) && (Tcl_Eval(interp, "info library") == TCL_OK)) ?
+          interp->result : "*unknown*");
+
+  /* info tclversion/patchlevel */
+  dprintf(idx, "%s %s (%s %s)\n", MISC_TCLVERSION,
+          ((interp) && (Tcl_Eval(interp, "info patchlevel") == TCL_OK)) ?
+          interp->result : (Tcl_Eval(interp, "info tclversion") == TCL_OK) ?
+          interp->result : "*unknown*", MISC_TCLHVERSION,
+          TCL_PATCH_LEVEL ? TCL_PATCH_LEVEL : "*unknown*");
+
+#ifdef HAVE_TCL_THREADS
+  dprintf(idx, "Tcl is threaded.\n");
+#endif
+
+}
+
+/* Show config setting values */
+void tell_settings(int idx)
+{
+  char s[1024];
+  int i;
+  struct flag_record fr = { FR_GLOBAL, 0, 0, 0, 0, 0 };
+
+  dprintf(idx, "Botnet nickname: %s\n", botnetnick);
+  if (firewall[0])
+    dprintf(idx, "Firewall: %s:%d\n", firewall, firewallport);
+  dprintf(idx, "Userfile: %s\n", userfile);
+  dprintf(idx, "Motd: %s\n",  motdfile);
+  dprintf(idx, "Directories:\n");
+#ifndef STATIC
+  dprintf(idx, "  Help   : %s\n", helpdir);
+  dprintf(idx, "  Temp   : %s\n", tempdir);
+  dprintf(idx, "  Modules: %s\n", moddir);
+#else
+  dprintf(idx, "  Help: %s\n", helpdir);
+  dprintf(idx, "  Temp: %s\n", tempdir);
+#endif
+  fr.global = default_flags;
+
+  build_flags(s, &fr, NULL);
+  dprintf(idx, "%s [%s], %s: %s\n", MISC_NEWUSERFLAGS, s,
+          MISC_NOTIFY, notify_new);
+  if (owner[0])
+    dprintf(idx, "%s: %s\n", MISC_PERMOWNER, owner);
+  for (i = 0; i < max_logs; i++) {
+    if (logs[i].filename != NULL) {
+      dprintf(idx, "Logfile #%d: %s on %s (%s: %s)\n", i + 1,
+              logs[i].filename, logs[i].chname,
+              masktype(logs[i].mask), maskname(logs[i].mask));
+    }
+  }
+  dprintf(idx, "Ignores last %d minute%s.\n", ignore_time,
+          (ignore_time != 1) ? "s" : "");
 }
 
 static void cmd_botinfo(struct userrec *u, int idx, char *par)
@@ -510,8 +668,37 @@ static void cmd_match(struct userrec *u, int idx, char *par)
 
 static void cmd_uptime(struct userrec *u, int idx, char *par)
 {
+  char s[256], s1[121];
+  time_t now2, hr, min;
+
   putlog(LOG_CMDS, "*", "#%s# uptime", dcc[idx].nick);
-  tell_verbose_uptime(idx);
+
+  now2 = now - online_since;
+  s[0] = 0;
+  if (now2 > 86400) {
+    /* days */
+    sprintf(s, "%d day", (int) (now2 / 86400));
+    if ((int) (now2 / 86400) >= 2)
+      strcat(s, "s");
+    strcat(s, ", ");
+    now2 -= (((int) (now2 / 86400)) * 86400);
+  }
+  hr = (time_t) ((int) now2 / 3600);
+  now2 -= (hr * 3600);
+  min = (time_t) ((int) now2 / 60);
+  sprintf(&s[strlen(s)], "%02d:%02d", (int) hr, (int) min);
+  s1[0] = 0;
+  if (backgrd)
+    strcpy(s1, MISC_BACKGROUND);
+  else {
+    if (term_z)
+      strcpy(s1, MISC_TERMMODE);
+    else if (con_chan)
+      strcpy(s1, MISC_STATMODE);
+    else
+      strcpy(s1, MISC_LOGMODE);
+  }
+  dprintf(idx, "%s %s  (%s)\n", MISC_ONLINEFOR, s, s1);
 }
 
 static void cmd_status(struct userrec *u, int idx, char *par)

@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.h,v 1.3 2004/08/27 10:01:17 wcc Exp $
+ * $Id: cmds.h,v 1.4 2004/10/06 00:04:32 wcc Exp $
  */
 
 #ifndef _EGG_CMDS_H
@@ -28,6 +28,8 @@
 
 
 #ifndef MAKING_MODS
+void tell_verbose_status(int);
+void tell_settings(int);
 int check_dcc_attrs(struct userrec *, int);
 int check_dcc_chanattrs(struct userrec *, char *, int, int);
 int stripmodes(char *);

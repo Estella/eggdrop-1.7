@@ -1,5 +1,5 @@
 # Makefile for src/
-# $Id: Makefile.in,v 1.9 2004/09/10 01:10:50 wcc Exp $
+# $Id: Makefile.in,v 1.10 2004/10/06 00:04:32 wcc Exp $
 
 SHELL = @SHELL@
 top_srcdir = @top_srcdir@
@@ -83,192 +83,197 @@ eggdrop.h:
 	$(CC) $(CFLAGS) -c $<
 
 #safety hash
-bg.o: bg.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
+bg.o: bg.c main.h ../config.h ../lush.h eggdrop.h types.h ../config.h \
+  debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
+  tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
   ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
   compat/strcasecmp.h compat/strftime.h bg.h
-botcmd.o: botcmd.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
-  ../src/types.h botcmd.h botnet.h botmsg.h dcc.h dccutil.h help.h misc.h \
-  net.h userrec.h
-botmsg.o: botmsg.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h botmsg.h botnet.h dcc.h dccutil.h \
-  misc.h net.h
-botnet.o: botnet.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h botnet.h botmsg.h dcc.h dccutil.h \
-  dns.h net.h userrec.h
+botcmd.o: botcmd.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h modules.h \
+  mod/modvals.h ../src/types.h botcmd.h botnet.h botmsg.h dcc.h dccutil.h \
+  help.h misc.h net.h userrec.h
+botmsg.o: botmsg.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h botmsg.h botnet.h \
+  dcc.h dccutil.h misc.h net.h
+botnet.o: botnet.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h botnet.h botmsg.h \
+  dcc.h dccutil.h dns.h net.h userrec.h
 chanprog.o: chanprog.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h chanprog.h misc.h \
+  rfc1459.h userrec.h
+cmds.o: cmds.c main.h ../config.h ../lush.h eggdrop.h types.h ../config.h \
   debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
   tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
   ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
   compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
-  ../src/types.h dccutil.h dcc.h misc.h rfc1459.h userrec.h
-cmds.o: cmds.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
-  ../src/types.h cmds.h botmsg.h botnet.h dcc.h dccutil.h help.h misc.h \
-  net.h userrec.h
-dcc.o: dcc.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
+  ../src/types.h cmds.h chanprog.h botmsg.h botnet.h dcc.h dccutil.h \
+  help.h misc.h net.h userrec.h
+dcc.o: dcc.c main.h ../config.h ../lush.h eggdrop.h types.h ../config.h \
+  debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
+  tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
   ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
   compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
   ../src/types.h dcc.h md5/md5.h botcmd.h botmsg.h botnet.h cmds.h \
   dccutil.h dns.h help.h match.h misc.h net.h userrec.h
 dccutil.o: dccutil.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h modules.h \
+  mod/modvals.h ../src/types.h dccutil.h dcc.h botmsg.h help.h misc.h \
+  net.h
+debug.o: debug.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h bg.h stat.h dcc.h \
+  dccutil.h misc.h net.h
+dns.o: dns.c main.h ../config.h ../lush.h eggdrop.h types.h ../config.h \
   debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
   tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
   ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
-  ../src/types.h dccutil.h dcc.h botmsg.h help.h misc.h net.h
-debug.o: debug.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h bg.h stat.h dcc.h dccutil.h \
-  misc.h net.h
-dns.o: dns.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
   compat/strcasecmp.h compat/strftime.h dns.h dcc.h dccutil.h misc.h \
   net.h
-flags.o: flags.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h dcc.h dccutil.h misc.h rfc1459.h \
-  userent.h
-help.o: help.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
+flags.o: flags.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h chanprog.h dcc.h \
+  dccutil.h misc.h rfc1459.h userent.h
+help.o: help.c main.h ../config.h ../lush.h eggdrop.h types.h ../config.h \
+  debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
+  tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
   ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
   compat/strcasecmp.h compat/strftime.h help.h botmsg.h dccutil.h dcc.h \
   match.h misc.h
 language.o: language.c main.h ../config.h ../lush.h eggdrop.h types.h \
-  debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
-  tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h dcc.h dccutil.h help.h misc.h
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h dcc.h dccutil.h \
+  help.h misc.h
 logfile.o: logfile.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h stat.h dcc.h \
+  dccutil.h misc.h rfc1459.h
+main.o: main.c main.h ../config.h ../lush.h eggdrop.h types.h ../config.h \
   debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
   tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h stat.h dcc.h dccutil.h misc.h \
-  rfc1459.h
-main.o: main.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
   ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
   compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
-  ../src/types.h bg.h botmsg.h botnet.h dcc.h dccutil.h help.h misc.h \
-  net.h traffic.h userrec.h patch.h
-match.o: match.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h match.h rfc1459.h
-mem.o: mem.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
+  ../src/types.h bg.h botmsg.h botnet.h cmds.h chanprog.h dcc.h dccutil.h \
+  help.h misc.h net.h traffic.h userrec.h patch.h
+match.o: match.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h match.h rfc1459.h
+mem.o: mem.c main.h ../config.h ../lush.h eggdrop.h types.h ../config.h \
+  debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
+  tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
   ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
   compat/strcasecmp.h compat/strftime.h mod/modvals.h ../src/types.h \
   dccutil.h dcc.h help.h
-misc.o: misc.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
+misc.o: misc.c main.h ../config.h ../lush.h eggdrop.h types.h ../config.h \
+  debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
+  tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
   ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
   compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
   ../src/types.h stat.h misc.h botmsg.h dcc.h dccutil.h help.h match.h \
   rfc1459.h userrec.h
 misc_file.o: misc_file.c main.h ../config.h ../lush.h eggdrop.h types.h \
-  debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
-  tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h stat.h
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h stat.h
 modules.o: modules.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h modules.h \
+  mod/modvals.h ../src/types.h md5/md5.h botcmd.h botmsg.h botnet.h \
+  chanprog.h cmds.h dcc.h dccutil.h dns.h help.h match.h misc.h net.h \
+  rfc1459.h userent.h userrec.h
+net.o: net.c main.h ../config.h ../lush.h eggdrop.h types.h ../config.h \
   debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
   tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
-  ../src/types.h md5/md5.h botcmd.h botmsg.h botnet.h cmds.h dcc.h \
-  dccutil.h dns.h help.h match.h misc.h net.h rfc1459.h userent.h \
-  userrec.h
-net.o: net.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
   ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
   compat/strcasecmp.h compat/strftime.h net.h dcc.h dccutil.h misc.h \
   traffic.h
 rfc1459.o: rfc1459.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h rfc1459.h
+tcl.o: tcl.c main.h ../config.h ../lush.h eggdrop.h types.h ../config.h \
   debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
   tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h rfc1459.h
-tcl.o: tcl.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
   ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
   compat/strcasecmp.h compat/strftime.h dcc.h misc.h
-tcldcc.o: tcldcc.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
-  ../src/types.h tcldcc.h botmsg.h botnet.h cmds.h dcc.h dccutil.h misc.h \
-  net.h userrec.h
+tcldcc.o: tcldcc.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h modules.h \
+  mod/modvals.h ../src/types.h tcldcc.h botmsg.h botnet.h chanprog.h \
+  cmds.h dcc.h dccutil.h misc.h net.h userrec.h
 tclhash.o: tclhash.c main.h ../config.h ../lush.h eggdrop.h types.h \
-  debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
-  tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h botmsg.h dcc.h dccutil.h match.h \
-  misc.h userrec.h
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h botmsg.h dcc.h \
+  dccutil.h match.h misc.h userrec.h
 tclmisc.o: tclmisc.c main.h ../config.h ../lush.h eggdrop.h types.h \
-  debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
-  tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
-  ../src/types.h md5/md5.h botmsg.h dcc.h help.h match.h misc.h net.h
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h modules.h \
+  mod/modvals.h ../src/types.h md5/md5.h botmsg.h dcc.h dccutil.h help.h \
+  match.h misc.h net.h
 tcluser.o: tcluser.c main.h ../config.h ../lush.h eggdrop.h types.h \
-  debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
-  tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
-  ../src/types.h botmsg.h botnet.h dcc.h misc.h userrec.h
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h modules.h \
+  mod/modvals.h ../src/types.h botmsg.h botnet.h chanprog.h dcc.h misc.h \
+  userrec.h
 traffic.o: traffic.c main.h ../config.h ../lush.h eggdrop.h types.h \
-  debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
-  tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h traffic.h dcc.h dccutil.h
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h traffic.h dcc.h \
+  dccutil.h
 userent.o: userent.c main.h ../config.h ../lush.h eggdrop.h types.h \
-  debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
-  tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h userent.h botmsg.h dcc.h \
-  dccutil.h match.h misc.h rfc1459.h userrec.h
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h userent.h \
+  botmsg.h dcc.h dccutil.h match.h misc.h rfc1459.h userrec.h
 userrec.o: userrec.c main.h ../config.h ../lush.h eggdrop.h types.h \
-  debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
-  tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
-  ../src/types.h userrec.h botmsg.h dcc.h dccutil.h match.h misc.h \
-  rfc1459.h userent.h
-users.o: users.c main.h ../config.h ../lush.h eggdrop.h types.h debug.h \
-  logfile.h lang.h flags.h proto.h misc_file.h language.h tclegg.h \
-  tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
-  ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h modules.h mod/modvals.h \
-  ../src/types.h botmsg.h botnet.h dcc.h dccutil.h match.h misc.h net.h \
-  rfc1459.h userrec.h
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h modules.h \
+  mod/modvals.h ../src/types.h userrec.h botmsg.h dcc.h dccutil.h \
+  chanprog.h match.h misc.h rfc1459.h userent.h
+users.o: users.c main.h ../config.h ../lush.h eggdrop.h types.h \
+  ../config.h debug.h logfile.h lang.h flags.h proto.h misc_file.h \
+  language.h tclegg.h tclhash.h chan.h users.h compat/compat.h \
+  compat/inet_aton.h ../src/main.h compat/snprintf.h compat/memset.h \
+  compat/memcpy.h compat/strcasecmp.h compat/strftime.h modules.h \
+  mod/modvals.h ../src/types.h botmsg.h botnet.h dcc.h dccutil.h \
+  chanprog.h match.h misc.h net.h rfc1459.h userrec.h

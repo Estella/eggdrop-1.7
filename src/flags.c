@@ -1,12 +1,7 @@
-/*
- * flags.c -- handles:
- *   all the flag matching/conversion functions in one neat package :)
+/* flags.c
  *
- * $Id: flags.c,v 1.5 2004/09/10 01:10:50 wcc Exp $
- */
-/*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999-2004 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,15 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: flags.c,v 1.6 2004/10/06 00:04:32 wcc Exp $
  */
 
 #include "main.h"
 
-#include "dcc.h"     /* struct dcc_t */
-#include "dccutil.h" /* shareout */
-#include "misc.h"    /* strncpyz */
-#include "rfc1459.h" /* rfc_casecmp */
-#include "userent.h" /* list_type_kill */
+#include "chanprog.h" /* findchan_by_dname */
+#include "dcc.h"      /* struct dcc_t */
+#include "dccutil.h"  /* shareout */
+#include "misc.h"     /* strncpyz */
+#include "rfc1459.h"  /* rfc_casecmp */
+#include "userent.h"  /* list_type_kill */
 
 extern int raw_log, require_p, noshare, allow_dk_cmds;
 extern struct dcc_t *dcc;

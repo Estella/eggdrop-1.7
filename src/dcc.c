@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.c,v 1.9 2004/09/10 01:10:50 wcc Exp $
+ * $Id: dcc.c,v 1.10 2004/10/06 00:04:32 wcc Exp $
  */
 
 #include "main.h"
@@ -26,25 +26,26 @@
 #include "modules.h"
 
 #include "dcc.h"
-#include "md5/md5.h" /* MD5 challenge/response stuff */
-#include "botcmd.h"  /* bot_share, botcmd_t */
-#include "botmsg.h"  /* add_note, simple_sprintf, botnet_send_*, *_in_subtree,
-                      * NEAT_BOTNET */
-#include "botnet.h"  /* nextbot, in_chain, dump_links, addbot, rembot, findbot,
-                      * unvia */
-#include "cmds.h"    /* check_dcc_attrs */
-#include "dccutil.h" /* get_data_ptr, dprintf, chatout, chanout_but, dcc_chatter,
-                      * lostdcc, makepass, not_away, do_boot, detect_dcc_flood,
-                      * flush_lines, new_dcc, add_cr, changeover_dcc, show_banner */
-#include "dns.h"     /* RES_*, dcc_dnshostbyip */
-#include "help.h"    /* help_subst */
-#include "logfile.h" /* putlog, LOG_* */
-#include "match.h"   /* wild_match */
-#include "misc.h"    /* splitc, strncpyz, newsplit */
-#include "net.h"     /* SOCK_*, EGG_OPTION_*, neterror, getsock, killsock, answer,
-                      * open_telnet, tputs, open_telnet_raw, iptostr, sockoptions */
-#include "userrec.h" /* adduser, u_pass_match, deluser, correct_handle,
-                      * write_userfile, touch_laston */
+#include "md5/md5.h"  /* MD5 challenge/response stuff */
+#include "botcmd.h"   /* bot_share, botcmd_t */
+#include "botmsg.h"   /* add_note, simple_sprintf, botnet_send_*, *_in_subtree,
+                       * NEAT_BOTNET */
+#include "botnet.h"   /* nextbot, in_chain, dump_links, addbot, rembot, findbot,
+                       * unvia */
+#include "chanprog.h" /* reaffirm_owners */
+#include "cmds.h"     /* check_dcc_attrs */
+#include "dccutil.h"  /* get_data_ptr, dprintf, chatout, chanout_but, dcc_chatter,
+                       * lostdcc, makepass, not_away, do_boot, detect_dcc_flood,
+                       * flush_lines, new_dcc, add_cr, changeover_dcc, show_banner */
+#include "dns.h"      /* RES_*, dcc_dnshostbyip */
+#include "help.h"     /* help_subst */
+#include "logfile.h"  /* putlog, LOG_* */
+#include "match.h"    /* wild_match */
+#include "misc.h"     /* splitc, strncpyz, newsplit, rmspace */
+#include "net.h"      /* SOCK_*, EGG_OPTION_*, neterror, getsock, killsock, answer,
+                       * open_telnet, tputs, open_telnet_raw, iptostr, sockoptions */
+#include "userrec.h"  /* adduser, u_pass_match, deluser, correct_handle,
+                       * write_userfile, touch_laston */
 
 
 extern struct userrec *userlist;
@@ -58,7 +59,6 @@ extern int egg_numver, connect_timeout, conmask, backgrd, max_dcc, raw_log,
 
 struct dcc_t *dcc = NULL;   /* DCC list                                      */
 int dcc_total = 0;          /* Total dcc's                                   */
-char tempdir[121] = "";     /* Temp directory (default: CWD)                 */
 int require_p = 0;          /* Require +p flag to access party line?         */
 int allow_new_telnets = 0;  /* Allow new users to add themselves via telnet? */
 int stealth_telnets = 0;    /* Just display 'Nickname' prompt for telnets.   */

@@ -3,7 +3,7 @@
  *   stuff common to chan.c and mode.c
  *   users.h needs to be loaded too
  *
- * $Id: chan.h,v 1.1 2004/08/25 01:02:02 wcc Exp $
+ * $Id: chan.h,v 1.2 2004/10/06 00:04:32 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -245,11 +245,6 @@ struct chanset_t {
 #define CHAN_NOUSEREXEMPTS  0x0008
 #define CHAN_DYNAMICINVITES 0x0010
 #define CHAN_NOUSERINVITES  0x0020
-
-/* prototypes */
-memberlist *ismember(struct chanset_t *, char *);
-struct chanset_t *findchan(const char *name);
-struct chanset_t *findchan_by_dname(const char *name);
 
 #define channel_hidden(chan) (chan->channel.mode & (CHANPRIV | CHANSEC)) /* +s or +p ? */
 #define channel_optopic(chan) (chan->channel.mode & CHANTOPIC) /* +t? */

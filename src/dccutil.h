@@ -1,4 +1,4 @@
-/* dccutil.h: prototypes for functions in dccutil.c
+/* dccutil.h
  *
  * Copyright (C) 2004 Eggheads Development Team
  *
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dccutil.h,v 1.5 2004/09/10 01:10:50 wcc Exp $
+ * $Id: dccutil.h,v 1.6 2004/10/06 00:04:32 wcc Exp $
  */
 
 #ifndef _EGG_DCCUTIL_H
@@ -48,6 +48,8 @@
 #endif
 
 #ifndef MAKING_MODS
+int findidx(int);
+int findanyidx(int);
 char *add_cr(char *);
 void remove_crlf(char **);
 void show_banner(int);

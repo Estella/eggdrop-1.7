@@ -2,7 +2,7 @@
  * tclegg.h
  *   stuff used by tcl.c and tclhash.c
  *
- * $Id: tclegg.h,v 1.1 2004/08/25 01:02:05 wcc Exp $
+ * $Id: tclegg.h,v 1.2 2004/10/06 00:04:33 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -83,12 +83,6 @@ typedef struct timer_str {
         }                                                               \
 } while (0)
 
-unsigned long add_timer(tcl_timer_t **, int, char *, unsigned long);
-int remove_timer(tcl_timer_t **, unsigned long);
-void list_timers(Tcl_Interp *, tcl_timer_t *);
-void wipe_timers(Tcl_Interp *, tcl_timer_t **);
-void do_check_timers(tcl_timer_t **);
-
 typedef struct _tcl_strings {
   char *name;
   char *buf;
@@ -118,6 +112,12 @@ typedef struct _cd_tcl_cmd {
   Function callback;
   void *cdata;
 } cd_tcl_cmd;
+
+unsigned long add_timer(tcl_timer_t **, int, char *, unsigned long);
+int remove_timer(tcl_timer_t **, unsigned long);
+void check_timers(tcl_timer_t **);
+void wipe_timers(Tcl_Interp *, tcl_timer_t **);
+void list_timers(Tcl_Interp *, tcl_timer_t *);
 
 void add_tcl_commands(tcl_cmds *);
 void add_cd_tcl_cmds(cd_tcl_cmd *);

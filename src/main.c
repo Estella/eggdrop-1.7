@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.12 2004/09/10 01:10:50 wcc Exp $
+ * $Id: main.c,v 1.13 2004/10/06 00:04:32 wcc Exp $
  */
 
 #include "main.h"
@@ -40,18 +40,20 @@
 #include "modules.h"
 #include "bg.h"
 
-#include "botmsg.h"  /* botnet_send_* */
-#include "botnet.h"  /* check_botnet_pings */
-#include "dcc.h"     /* DCC_*, STRIP_*, STAT_*, struct chat_info, struct dcc_t */
-#include "dccutil.h" /* dprintf, dcc_chatter, lostdcc, tell_dcc, new_dcc,
-                      * dcc_remove_lost */
-#include "help.h"    /* add_help_reference, help_expmem */
-#include "logfile.h" /* log_t, LOG_*, putlog, logfile_init, logfile_expmem, flushlogs,
-                      * check_logsize */
-#include "misc.h"    /* strncpyz, newsplit */
-#include "net.h"     /* SOCK_*, getmyip, setsock, killsock, dequeue_sockets, sockgets */
-#include "traffic.h" /* traffic_update_out, traffic_reset, init_traffic */
-#include "userrec.h" /* adduser, count_users, write_userfile */
+#include "botmsg.h"   /* botnet_send_* */
+#include "botnet.h"   /* check_botnet_pings */
+#include "cmds.h"     /* tell_verbose_status */
+#include "chanprog.h" /* reaffirm_owners */
+#include "dcc.h"      /* DCC_*, STRIP_*, STAT_*, struct chat_info, struct dcc_t */
+#include "dccutil.h"  /* dprintf, dcc_chatter, lostdcc, tell_dcc, new_dcc,
+                       * dcc_remove_lost */
+#include "help.h"     /* add_help_reference, help_expmem */
+#include "logfile.h"  /* log_t, LOG_*, LF_EXPIRING, putlog, logfile_init, logfile_expmem,
+                       * flushlogs, check_logsize */
+#include "misc.h"     /* strncpyz, newsplit, make_rand_str */
+#include "net.h"      /* SOCK_*, getmyip, setsock, killsock, dequeue_sockets, sockgets */
+#include "traffic.h"  /* traffic_update_out, traffic_reset, init_traffic */
+#include "userrec.h"  /* adduser, count_users, write_userfile */
 
 #ifndef ENABLE_STRIP
 #  include <sys/resource.h>
@@ -67,8 +69,9 @@
 #endif
 
 
-extern char origbotname[], userfile[], botnetnick[];
-extern int dcc_total, conmask, cache_hit, cache_miss, max_logs, quick_logs;
+extern char userfile[], botnetnick[];
+extern int dcc_total, conmask, cache_hit, cache_miss, max_logs, quick_logs,
+           protect_readonly, noshare;
 extern struct dcc_t *dcc;
 extern struct userrec *userlist;
 extern struct chanset_t *chanset;
@@ -109,6 +112,8 @@ int default_uflags = 0;    /* Default user-definied flags.            */
 char pid_file[120];                    /* Name of the pid file.     */
 char helpdir[121] = "help/";           /* Directory of help files.  */
 char textdir[121] = "text/";           /* Directory for text files. */
+char tempdir[121] = "";                /* Directory for temp files. */
+char admin[121] = "";                  /* Admin info.               */
 
 int keep_all_logs = 0;                 /* Never erase logfiles?     */
 char logfile_suffix[21] = ".%d%b%Y";   /* Format of logfile suffix. */
@@ -122,13 +127,20 @@ int die_on_sighup = 0;    /* Die if bot receives SIGHUP                      */
 int die_on_sigterm = 1;   /* Die if bot receives SIGTERM                     */
 int resolve_timeout = 15; /* Hostname/address lookup timeout                 */
 
+char origbotname[NICKLEN + 1]; /* Bot's nick.      */
+char botname[NICKLEN + 1];     /* Primary botname. */
+
 int do_restart = 0;  /* .restart has been called; restart ASAP. */
+
 time_t now;
+static time_t then;
+static int lastmin = 99;
+static struct tm nowtm;
 time_t online_since; /* Time that the bot was started.          */
-char quit_msg[1024]; /* Quit message.                           */
+
+char quit_msg[1024]; /* Quit message. */
 
 
-int expmem_chanprog();
 int expmem_users();
 int expmem_dccutil();
 int expmem_botnet();
@@ -170,7 +182,7 @@ int expected_memory(void)
 {
   int tot;
 
-  tot = expmem_chanprog() + expmem_users() + expmem_dccutil() +
+  tot = expmem_users() + expmem_dccutil() +
         expmem_botnet() + expmem_tcl() + expmem_tclhash() + expmem_net() +
         expmem_modules(0) + expmem_language() + expmem_tcldcc() +
         logfile_expmem() + help_expmem();
@@ -237,15 +249,15 @@ static void got_term(int z)
   check_tcl_event("sigterm");
   if (die_on_sigterm) {
     botnet_send_chat(-1, botnetnick, "ACK, I've been terminated!");
-    fatal("TERMINATE SIGNAL -- SIGNING OFF", 0);
+    fatal("RECEIVED TERMINATE SIGNAL -- SIGNING OFF!", 0);
   } else
-    putlog(LOG_MISC, "*", "RECEIVED TERMINATE SIGNAL (IGNORING)");
+    putlog(LOG_MISC, "*", "Received TERM signal (ignoring).");
 }
 
 static void got_quit(int z)
 {
   check_tcl_event("sigquit");
-  putlog(LOG_MISC, "*", "RECEIVED QUIT SIGNAL (IGNORING)");
+  putlog(LOG_MISC, "*", "Received QUIT signal (ignoring).");
   return;
 }
 
@@ -261,17 +273,14 @@ static void got_hup(int z)
   return;
 }
 
-/* A call to resolver (gethostbyname, etc) timed out
- */
+/* A call to resolver (gethostbyname, etc) timed out. */
 static void got_alarm(int z)
 {
   longjmp(alarmret, 1);
-
-  /* -Never reached- */
+  /* Never reached. */
 }
 
-/* Got ILL signal -- log context and continue
- */
+/* Got ILL signal -- log context and continue. */
 static void got_ill(int z)
 {
   check_tcl_event("sigill");
@@ -280,12 +289,13 @@ static void got_ill(int z)
          cx_line[cx_ptr], (cx_note[cx_ptr][0]) ? cx_note[cx_ptr] : "");
 #endif
 }
+
 static void do_arg(char *s)
 {
   char x[1024], *z = x;
   int i;
 
-  if (s[0] == '-')
+  if (s[0] == '-') {
     for (i = 1; i < strlen(s); i++) {
       switch (s[i]) {
       case 'n':
@@ -311,17 +321,19 @@ static void do_arg(char *s)
           printf("  (patches: %s)\n", z);
         bg_send_quit(BG_ABORT);
         exit(0);
-        break;                  /* this should never be reached */
+        break; /* This should never be reached. */
       case 'h':
         printf("\n%s\n\n", version);
         printf(EGG_USAGE);
         printf("\n");
         bg_send_quit(BG_ABORT);
         exit(0);
-        break;                  /* this should never be reached */
+        break; /* This should never be reached. */
       }
-    } else
+    }
+  } else {
     strncpyz(configfile, s, sizeof configfile);
+  }
 }
 
 void backup_userfile(void)
@@ -333,10 +345,108 @@ void backup_userfile(void)
   copyfile(userfile, s);
 }
 
-/* Timer info */
-static int lastmin = 99;
-static time_t then;
-static struct tm nowtm;
+static void readconfig()
+{
+  int i;
+  FILE *f;
+  char s[161], rands[8];
+
+  admin[0] = helpdir[0] = tempdir[0] = 0;
+
+  for (i = 0; i < max_logs; i++)
+    logs[i].flags |= LF_EXPIRING;
+
+  /* Turn off read-only variables (make them write-able) for rehash. */
+  protect_readonly = 0;
+
+  /* Now read it */
+  if (!readtclprog(configfile))
+    fatal(MISC_NOCONFIGFILE, 0);
+
+  for (i = 0; i < max_logs; i++) {
+    if (!(logs[i].flags & LF_EXPIRING))
+      continue;
+    if (logs[i].filename != NULL) {
+      nfree(logs[i].filename);
+      logs[i].filename = NULL;
+    }
+    if (logs[i].chname != NULL) {
+      nfree(logs[i].chname);
+      logs[i].chname = NULL;
+    }
+    if (logs[i].f != NULL) {
+      fclose(logs[i].f);
+      logs[i].f = NULL;
+    }
+    logs[i].mask = 0;
+    logs[i].flags = 0;
+  }
+
+  /* We should be safe now. */
+  call_hook(HOOK_REHASH);
+  protect_readonly = 1;
+
+  if (!botnetnick[0])
+    strncpyz(botnetnick, origbotname, HANDLEN + 1);
+
+  if (!botnetnick[0])
+    fatal("I don't have a botnet nick!\n", 0);
+
+  if (!userfile[0])
+    fatal(MISC_NOUSERFILE2, 0);
+
+  if (!readuserfile(userfile, &userlist)) {
+    if (!make_userfile) {
+      char tmp[178];
+
+      egg_snprintf(tmp, sizeof tmp, MISC_NOUSERFILE, configfile);
+      fatal(tmp, 0);
+    }
+    printf("\n\n%s\n", MISC_NOUSERFILE2);
+    if (module_find("server", 0, 0))
+      printf(MISC_USERFCREATE1, origbotname);
+    printf("%s\n\n", MISC_USERFCREATE2);
+  } else if (make_userfile) {
+    make_userfile = 0;
+    printf("%s\n", MISC_USERFEXISTS);
+  }
+
+  if (helpdir[0])
+    if (helpdir[strlen(helpdir) - 1] != '/')
+      strcat(helpdir, "/");
+
+  if (tempdir[0])
+    if (tempdir[strlen(tempdir) - 1] != '/')
+      strcat(tempdir, "/");
+
+  /* Test tempdir: it's vital.
+   *
+   * Possible file race condition solved by using a random string
+   * and the process id in the filename.
+   * FIXME: This race is only partitially fixed. We could still be
+   *        overwriting an existing file / following a malicious
+   *        link.
+   */
+  make_rand_str(rands, 7); /* create random string */
+  sprintf(s, "%s.test-%u-%s", tempdir, getpid(), rands);
+  f = fopen(s, "w");
+  if (f == NULL)
+    fatal(MISC_CANTWRITETEMP, 0);
+  fclose(f);
+  unlink(s);
+  reaffirm_owners();
+  check_tcl_event("userfile-loaded");
+}
+
+static void rehash()
+{
+  call_hook(HOOK_PRE_REHASH);
+  noshare = 1;
+  clear_userlist(userlist);
+  noshare = 0;
+  userlist = NULL;
+  readconfig();
+}
 
 /* Called once a second.
  *
@@ -347,9 +457,9 @@ static void core_secondly()
   static int cnt = 0;
   int miltime;
 
-  do_check_timers(&utimer);     /* Secondly timers */
+  check_timers(&utimer); /* Secondly timers */
   cnt++;
-  if (cnt >= 10) {              /* Every 10 seconds */
+  if (cnt >= 10) { /* Every 10 seconds */
     cnt = 0;
     check_expired_dcc();
     if (con_chan && !backgrd) {
@@ -368,7 +478,7 @@ static void core_secondly()
     lastmin = (lastmin + 1) % 60;
     call_hook(HOOK_MINUTELY);
     check_expired_ignores();
-    autolink_cycle(NULL);       /* Attempt autolinks */
+    autolink_cycle(NULL); /* Attempt autolinks. */
     /* In case for some reason more than 1 min has passed: */
     while (nowtm.tm_min != lastmin) {
       /* Timer drift, dammit */
@@ -433,7 +543,7 @@ static void core_secondly()
 static void core_minutely()
 {
   check_tcl_time(&nowtm);
-  do_check_timers(&timer);
+  check_timers(&timer);
   if (quick_logs != 0) {
     flushlogs();
     check_logsize();
@@ -504,22 +614,25 @@ static inline void garbage_collect(void)
 int main(int argc, char **argv)
 {
   int xx, i;
+#ifdef STOP_UAC
+  int nvpair[2];
+#endif
   char buf[520], s[25];
   FILE *f;
   struct sigaction sv;
   struct chanset_t *chan;
+#ifndef ENABLE_STRIP
+  struct rlimit cdlim;
+#endif
+
+  /* Don't allow Eggdrop to run as root. */
+  if (((int) getuid() == 0) || ((int) geteuid() == 0))
+    fatal("ERROR: Eggdrop will not run as root!", 0);
 
 #ifndef ENABLE_STRIP
-  /* Make sure it can write core, if you make debug. Else it's pretty
-   * useless (dw)
-   */
-  {
-    struct rlimit cdlim;
-
-    cdlim.rlim_cur = RLIM_INFINITY;
-    cdlim.rlim_max = RLIM_INFINITY;
-    setrlimit(RLIMIT_CORE, &cdlim);
-  }
+  cdlim.rlim_cur = RLIM_INFINITY;
+  cdlim.rlim_max = RLIM_INFINITY;
+  setrlimit(RLIMIT_CORE, &cdlim);
 #endif
 
   /* Initialise context list */
@@ -537,13 +650,9 @@ int main(int argc, char **argv)
   strcat(egg_version, egg_xtra);
 
 #ifdef STOP_UAC
-  {
-    int nvpair[2];
-
-    nvpair[0] = SSIN_UACPROC;
-    nvpair[1] = UAC_NOPRINT;
-    setsysinfo(SSI_NVPAIRS, (char *) nvpair, 1, NULL, 0);
-  }
+  nvpair[0] = SSIN_UACPROC;
+  nvpair[1] = UAC_NOPRINT;
+  setsysinfo(SSI_NVPAIRS, (char *) nvpair, 1, NULL, 0);
 #endif
 
   /* Set up error traps: */
@@ -588,10 +697,6 @@ int main(int argc, char **argv)
       do_arg(argv[i]);
   printf("\n%s\n", version);
 
-  /* Don't allow eggdrop to run as root */
-  if (((int) getuid() == 0) || ((int) geteuid() == 0))
-    fatal("ERROR: Eggdrop will not run as root!", 0);
-
   init_dcc_max();
   init_userent();
   logfile_init(0);
@@ -614,7 +719,7 @@ int main(int argc, char **argv)
   strncpyz(s, ctime(&now), sizeof s);
   strcpy(&s[11], &s[20]);
   putlog(LOG_ALL, "*", "--- Loading %s (%s)", ver, s);
-  chanprog();
+  readconfig();
   if (!encrypt_pass) {
     printf(MOD_NOCRYPT);
     bg_send_quit(BG_ABORT);

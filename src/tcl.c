@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcl.c,v 1.8 2004/09/10 01:10:50 wcc Exp $
+ * $Id: tcl.c,v 1.9 2004/10/06 00:04:33 wcc Exp $
  */
 
 #include <stdlib.h>             /* getenv()                             */
@@ -60,12 +60,12 @@ extern int flood_telnet_thr, flood_telnet_time, shtime, require_p, conmask,
            dupwait_timeout, egg_numver, share_unlinks, protect_telnet,
            sort_users, resolve_timeout, default_uflags, userfile_perm, tands;
 extern struct dcc_t *dcc;
-extern tcl_timer_t *timer, *utimer;
+
 Tcl_Interp *interp;
-
-
-int protect_readonly = 0; /* Enable read-only protection? */
-
+tcl_timer_t *timer = NULL;        /* Minutely timer               */
+tcl_timer_t *utimer = NULL;       /* Secondly timer               */
+unsigned long timer_id = 1;       /* Next timer will have this ID */
+int protect_readonly = 0;         /* Enable read-only protection? */
 char whois_fields[1025] = "";
 int dcc_flood_thr = 3;
 int use_invites = 0;
@@ -85,26 +85,121 @@ int handlen = HANDLEN;
 int utftot = 0;
 int clientdata_stuff = 0;
 
-/* Compatability for removed settings.*/
-int strict_servernames = 0, enable_simul = 1, use_console_r = 0, debug_output = 0;
-
 
 /* Prototypes for Tcl */
 Tcl_Interp *Tcl_CreateInterp();
 
 int expmem_tcl()
 {
-  return strtot + utftot + clientdata_stuff;
+  tcl_timer_t *t;
+  int tot = 0;
+
+  for (t = timer; t; t = t->next)
+    tot += sizeof(tcl_timer_t) + strlen(t->cmd) + 1;
+  for (t = utimer; t; t = t->next)
+    tot += sizeof(tcl_timer_t) + strlen(t->cmd) + 1;
+  tot += strtot + utftot + clientdata_stuff;
+  return tot;
 }
 
-int findidx(int z)
+/* Add a timer. */
+unsigned long add_timer(tcl_timer_t **stack, int elapse, char *cmd,
+                        unsigned long prev_id)
 {
-  int j;
+  tcl_timer_t *old = (*stack);
 
-  for (j = 0; j < dcc_total; j++)
-    if ((dcc[j].sock == z) && (dcc[j].type->flags & DCT_VALIDIDX))
-      return j;
-  return -1;
+  *stack = nmalloc(sizeof **stack);
+  (*stack)->next = old;
+  (*stack)->mins = elapse;
+  (*stack)->cmd = nmalloc(strlen(cmd) + 1);
+  strcpy((*stack)->cmd, cmd);
+  /* If it's just being added back and already had an id,
+   * don't create a new one.
+   */
+  if (prev_id > 0)
+    (*stack)->id = prev_id;
+  else
+    (*stack)->id = timer_id++;
+  return (*stack)->id;
+}
+
+/* Remove a timer, by id. */
+int remove_timer(tcl_timer_t **stack, unsigned long id)
+{
+  tcl_timer_t *old;
+  int ok = 0;
+
+  while (*stack) {
+    if ((*stack)->id == id) {
+      ok++;
+      old = *stack;
+      *stack = ((*stack)->next);
+      nfree(old->cmd);
+      nfree(old);
+    } else
+      stack = &((*stack)->next);
+  }
+  return ok;
+}
+
+/* Check timers, execute the ones that have expired. */
+void check_timers(tcl_timer_t **stack)
+{
+  tcl_timer_t *mark = *stack, *old = NULL;
+  char x[16];
+
+  /* New timers could be added by a Tcl script inside a current timer so just
+   * clear out the timer list completely, and add any unexpired timers back on.
+   */
+  *stack = NULL;
+  while (mark) {
+    if (mark->mins > 0)
+      mark->mins--;
+    old = mark;
+    mark = mark->next;
+    if (!old->mins) {
+      egg_snprintf(x, sizeof x, "timer%lu", old->id);
+      do_tcl(x, old->cmd);
+      nfree(old->cmd);
+      nfree(old);
+    } else {
+      old->next = *stack;
+      *stack = old;
+    }
+  }
+}
+
+/* Wipe all timers. */
+void wipe_timers(Tcl_Interp *irp, tcl_timer_t **stack)
+{
+  tcl_timer_t *mark = *stack, *old;
+
+  while (mark) {
+    old = mark;
+    mark = mark->next;
+    nfree(old->cmd);
+    nfree(old);
+  }
+  *stack = NULL;
+}
+
+/* Return list of timers. */
+void list_timers(Tcl_Interp *irp, tcl_timer_t *stack)
+{
+  char mins[10], id[16], *x;
+  EGG_CONST char *argv[3];
+  tcl_timer_t *mark;
+
+  for (mark = stack; mark; mark = mark->next) {
+    egg_snprintf(mins, sizeof mins, "%u", mark->mins);
+    egg_snprintf(id, sizeof id, "timer%lu", mark->id);
+    argv[0] = mins;
+    argv[1] = mark->cmd;
+    argv[2] = id;
+    x = Tcl_Merge(3, argv);
+    Tcl_AppendElement(irp, x);
+    Tcl_Free((char *) x);
+  }
 }
 
 static void botnet_change(char *new)
@@ -517,10 +612,6 @@ static tcl_ints def_tcl_ints[] = {
   {"userfile-perm",         &userfile_perm,        0},
   {"copy-to-tmp",           &copy_to_tmp,          0},
   {"quiet-reject",          &quiet_reject,         0},
-  {"strict-servernames",    &strict_servernames,   0}, /* compat */
-  {"enable-simul",          &enable_simul,         0}, /* compat */
-  {"debug-output",          &debug_output,         0}, /* compat */
-  {"use-console-r",         &use_console_r,        0}, /* compat */
   {NULL,                    NULL,                  0}
 };
 

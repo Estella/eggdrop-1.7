@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: misc.c,v 1.12 2004/09/10 01:10:50 wcc Exp $
+ * $Id: misc.c,v 1.13 2004/10/06 00:04:33 wcc Exp $
  */
 
 #include "main.h"
@@ -40,11 +40,8 @@
 #include "userrec.h" /* write_userfile */
 
 
-extern struct dcc_t *dcc;
-extern struct chanset_t *chanset;
 extern char botnetnick[];
-extern int con_chan, strict_ident;
-extern time_t now;
+extern int strict_ident;
 
 
 int my_strcpy(register char *a, register char *b)
@@ -147,6 +144,25 @@ char *newsplit(char **rest)
   *rest = o;
 
   return r;
+}
+
+/* Remove leading and trailing whitespace. */
+void rmspace(char *s)
+{
+  register char *p = NULL, *q = NULL;
+
+  if (!s || !*s)
+    return;
+
+  /* Remove trailing whitespace. */
+  for (q = s + strlen(s) - 1; q >= s && egg_isspace(*q); q--);
+  *(q + 1) = 0;
+
+  /* Remove leading whitespace. */
+  for (p = s; egg_isspace(*p); p++);
+
+  if (p != s)
+    memmove(s, p, q - p + 2);
 }
 
 /* Creates a mask from a nick!user@host.

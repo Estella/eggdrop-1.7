@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dccutil.c,v 1.7 2004/09/10 01:10:50 wcc Exp $
+ * $Id: dccutil.c,v 1.8 2004/10/06 00:04:32 wcc Exp $
  */
 
 #include <sys/stat.h>
@@ -82,6 +82,32 @@ int expmem_dccutil()
       tot += dcc[i].type->expmem(dcc[i].u.other);
   }
   return tot;
+}
+
+/* Returns the DCC table index for an IDX, but only if the DCT_VALIDIDX
+ * flag is set; -1 if not valid or non-existant.
+ */
+int findidx(int z)
+{
+  int j;
+
+  for (j = 0; j < dcc_total; j++) {
+    if (dcc[j].sock == z && (dcc[j].type->flags & DCT_VALIDIDX))
+      return j;
+  }
+  return -1;
+}
+
+/* Returns the DCC table index for an IDX; -1 if non-existant. */
+int findanyidx(int z)
+{
+  int j;
+
+  for (j = 0; j < dcc_total; j++) {
+    if (dcc[j].sock == z)
+      return j;
+  }
+  return -1;
 }
 
 

@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botmsg.c,v 1.7 2004/09/10 01:10:50 wcc Exp $
+ * $Id: botmsg.c,v 1.8 2004/10/06 00:04:32 wcc Exp $
  */
 
 #include "main.h"
@@ -28,7 +28,7 @@
 #include "botnet.h"  /* lastbot, nextbot, getparty */
 #include "dcc.h"     /* DCC_*, DCT_*, struct dcc_t */
 #include "dccutil.h" /* dprintf */
-#include "misc.h"    /* splitc, newsplit */
+#include "misc.h"    /* splitc, newsplit, rmspace */
 #include "net.h"     /* tputs */
 
 

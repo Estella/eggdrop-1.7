@@ -7,7 +7,7 @@
  *   (non-Tcl) procedure lookups for msg/dcc/file commands
  *   (Tcl) binding internal procedures to msg/dcc/file commands
  *
- * $Id: tclhash.c,v 1.11 2004/09/10 01:10:50 wcc Exp $
+ * $Id: tclhash.c,v 1.12 2004/10/06 00:04:33 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -35,7 +35,7 @@
 #include "tclhash.h"
 #include "botmsg.h"  /* int_to_base10 */
 #include "dcc.h"     /* struct dcc_t */
-#include "dccutil.h" /* dprintf */
+#include "dccutil.h" /* dprintf, findidx, findanyidx */
 #include "logfile.h" /* putlog, LOG_* */
 #include "match.h"   /* wild_match_per */
 #include "misc.h"    /* newsplit */
@@ -608,16 +608,6 @@ static int builtin_idxchar STDVAR
   Tcl_ResetResult(irp);
   Tcl_AppendResult(irp, r, NULL);
   return TCL_OK;
-}
-
-int findanyidx(register int z)
-{
-  register int j;
-
-  for (j = 0; j < dcc_total; j++)
-    if (dcc[j].sock == z)
-      return j;
-  return -1;
 }
 
 static int builtin_charidx STDVAR

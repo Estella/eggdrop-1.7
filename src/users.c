@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: users.c,v 1.9 2004/09/10 01:10:50 wcc Exp $
+ * $Id: users.c,v 1.10 2004/10/06 00:04:33 wcc Exp $
  */
 
 #include "main.h"
@@ -28,17 +28,18 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#include "botmsg.h"  /* botnet_send_* */
-#include "botnet.h"  /* nextbot, in_chain, botlink, rembot */
-#include "dcc.h"     /* DCC_*, struct dcc_t */
-#include "dccutil.h" /* dprintf, chatout, shareout, lostdcc */
-#include "logfile.h" /* putlog, LOG_* */
-#include "match.h"   /* wild_match */
-#include "misc.h"    /* DAY_*, splitc, newsplit, strncpyz, days, str_escape,
-                      * strchr_unescape */
-#include "net.h"     /* killsock */
-#include "rfc1459.h" /* rfc_casecmp */
-#include "userrec.h" /* adduser, clear_masks */
+#include "botmsg.h"   /* botnet_send_* */
+#include "botnet.h"   /* nextbot, in_chain, botlink, rembot */
+#include "dcc.h"      /* DCC_*, struct dcc_t */
+#include "dccutil.h"  /* dprintf, chatout, shareout, lostdcc */
+#include "chanprog.h" /* findchan_by_dname */
+#include "logfile.h"  /* putlog, LOG_* */
+#include "match.h"    /* wild_match */
+#include "misc.h"     /* DAY_*, splitc, newsplit, strncpyz, days, str_escape,
+                       * strchr_unescape, rmspace */
+#include "net.h"      /* killsock */
+#include "rfc1459.h"  /* rfc_casecmp */
+#include "userrec.h"  /* adduser, clear_masks, clear_chanlist */
 
 #include "users.h"
 
@@ -638,6 +639,27 @@ void tell_users_match(int idx, char *mtch, int start, int limit,
   }
 
   dprintf(idx, MISC_FOUNDMATCH, cnt, cnt == 1 ? "" : MISC_MATCH_PLURAL);
+}
+
+/* Reload the user file from disk. */
+void reload()
+{
+  if (!file_readable(userfile)) {
+    putlog(LOG_MISC, "*", MISC_CANTRELOADUSER);
+    return;
+  }
+
+  noshare = 1;
+  clear_userlist(userlist);
+  noshare = 0;
+
+  userlist = NULL;
+  if (!readuserfile(userfile, &userlist))
+    fatal(MISC_MISSINGUSERF, 0);
+
+  reaffirm_owners();
+  check_tcl_event("userfile-loaded");
+  call_hook(HOOK_READ_USERFILE);
 }
 
 /*

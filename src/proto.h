@@ -7,7 +7,7 @@
  * because they use structures in those
  * (saves including those .h files EVERY time) - Beldin
  *
- * $Id: proto.h,v 1.11 2004/09/10 01:10:50 wcc Exp $
+ * $Id: proto.h,v 1.12 2004/10/06 00:04:33 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -48,23 +48,6 @@ extern char *(*decrypt_string) (char *, char *);
 extern int (*match_noterej) (struct userrec *, char *);
 #endif
 
-/* chanprog.c */
-void tell_verbose_uptime(int);
-void tell_verbose_status(int);
-void tell_settings(int);
-int isowner(char *);
-void reaffirm_owners();
-void rehash();
-void reload();
-void chanprog();
-void check_timers();
-void check_utimers();
-void rmspace(char *s);
-void check_timers();
-void set_chanlist(const char *host, struct userrec *rec);
-void clear_chanlist(void);
-void clear_chanlist_member(const char *nick);
-
 /* mem.c */
 void *n_malloc(int, const char *, int);
 void *n_realloc(void *, int, const char *, int);
@@ -78,8 +61,6 @@ void protect_tcl();
 void unprotect_tcl();
 void do_tcl(char *, char *);
 int readtclprog(char *fname);
-int findidx(int);
-int findanyidx(int);
 
 /* users.c */
 void addignore(char *, char *, char *, time_t);

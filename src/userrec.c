@@ -4,7 +4,7 @@
  *   a bunch of functions to find and change user records
  *   change and check user (and channel-specific) flags
  *
- * $Id: userrec.c,v 1.11 2004/09/10 01:10:50 wcc Exp $
+ * $Id: userrec.c,v 1.12 2004/10/06 00:04:33 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -32,14 +32,15 @@
 #include "modules.h"
 
 #include "userrec.h"
-#include "botmsg.h"  /* simple_sprintf, botnet_send_* */
-#include "dcc.h"     /* DCC_*, struct dcc_t */
-#include "dccutil.h" /* shareout, chanout_but */
-#include "logfile.h" /* putlog, LOG_* */
-#include "match.h"   /* wild_match */
-#include "misc.h"    /* strncpyz, str_escape */
-#include "rfc1459.h" /* rfc_casecmp */
-#include "userent.h" /* list_type_expmem */
+#include "botmsg.h"   /* simple_sprintf, botnet_send_* */
+#include "dcc.h"      /* DCC_*, struct dcc_t */
+#include "dccutil.h"  /* shareout, chanout_but */
+#include "chanprog.h" /* findchan_by_dname */
+#include "logfile.h"  /* putlog, LOG_* */
+#include "match.h"    /* wild_match */
+#include "misc.h"     /* strncpyz, str_escape, rmspace */
+#include "rfc1459.h"  /* rfc_casecmp */
+#include "userent.h"  /* list_type_expmem */
 
 extern struct dcc_t *dcc;
 extern struct chanset_t *chanset;
@@ -55,8 +56,102 @@ maskrec *global_bans = NULL, *global_exempts = NULL, *global_invites = NULL;
 struct igrec *global_ign = NULL;
 int cache_hit = 0, cache_miss = 0; /* temporary cache accounting    */
 int strict_ident = 1;
-int userfile_perm = 0600;         /* Userfile permissions
-                                   * (default rw-------) */
+int userfile_perm = 0600;          /* Userfile permissions (default rw-------) */
+
+
+void set_chanlist(const char *host, struct userrec *rec)
+{
+  char *nick, *uhost, buf[UHOSTLEN];
+  register memberlist *m;
+  register struct chanset_t *chan;
+
+  strncpyz(buf, host, sizeof buf);
+  uhost = buf;
+  nick = splitnick(&uhost);
+  for (chan = chanset; chan; chan = chan->next) {
+    for (m = chan->channel.member; m && m->nick[0]; m = m->next) {
+      if (!rfc_casecmp(nick, m->nick) && !egg_strcasecmp(uhost, m->userhost))
+        m->user = rec;
+    }
+  }
+}
+
+/* Clear the user pointers in the chanlists.
+ *
+ * Necessary when a hostmask is added/removed, a user is added or a new
+ * userfile is loaded.
+ */
+void clear_chanlist(void)
+{
+  register memberlist *m;
+  register struct chanset_t *chan;
+
+  for (chan = chanset; chan; chan = chan->next) {
+    for (m = chan->channel.member; m && m->nick[0]; m = m->next) {
+      m->user = NULL;
+      m->tried_getuser = 0;
+    }
+  }
+}
+
+/* Shortcut for get_user_by_host -- might have user record in one of the
+ * channel caches.
+ */
+struct userrec *check_chanlist(const char *host)
+{
+  char *nick, *uhost, buf[UHOSTLEN];
+  register memberlist *m;
+  register struct chanset_t *chan;
+
+  strncpyz(buf, host, sizeof buf);
+  uhost = buf;
+  nick = splitnick(&uhost);
+  for (chan = chanset; chan; chan = chan->next) {
+    for (m = chan->channel.member; m && m->nick[0]; m = m->next) {
+      if (!rfc_casecmp(nick, m->nick) && !egg_strcasecmp(uhost, m->userhost))
+        return m->user;
+    }
+  }
+  return NULL;
+}
+
+/* Shortcut for get_user_by_handle --  might have user record in one of the
+ * channel caches.
+ */
+struct userrec *check_chanlist_hand(const char *hand)
+{
+  register struct chanset_t *chan;
+  register memberlist *m;
+
+  for (chan = chanset; chan; chan = chan->next) {
+    for (m = chan->channel.member; m && m->nick[0]; m = m->next) {
+      if (m->user && !egg_strcasecmp(m->user->handle, hand))
+        return m->user;
+    }
+  }
+  return NULL;
+}
+
+/* Clear the user pointer of a specific nick in the chanlists.
+ *
+ * Necessary when a hostmask is added/removed, a nick changes, etc.
+ * Does not completely invalidate the channel cache like clear_chanlist().
+ */
+void clear_chanlist_member(const char *nick)
+{
+  register memberlist *m;
+  register struct chanset_t *chan;
+
+  for (chan = chanset; chan; chan = chan->next) {
+    for (m = chan->channel.member; m && m->nick[0]; m = m->next) {
+      if (!rfc_casecmp(m->nick, nick)) {
+        m->user = NULL;
+        m->tried_getuser = 0;
+        break;
+      }
+    }
+  }
+}
 
 void *_user_malloc(int size, const char *file, int line)
 {

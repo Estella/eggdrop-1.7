@@ -3,7 +3,7 @@
  *   memory allocation and deallocation
  *   keeping track of what memory is being used by whom
  *
- * $Id: mem.c,v 1.7 2004/08/31 22:56:12 wcc Exp $
+ * $Id: mem.c,v 1.8 2004/10/06 00:04:32 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -126,18 +126,17 @@ void debug_mem_to_dcc(int idx)
   module_entry *me;
 
   exp[0] = expmem_language();
-  exp[1] = expmem_chanprog();
-  exp[2] = expmem_users();
-  exp[3] = expmem_net();
-  exp[4] = expmem_dccutil();
-  exp[5] = expmem_botnet();
-  exp[6] = expmem_tcl();
-  exp[7] = expmem_tclhash();
-  exp[8] = expmem_modules(1);
-  exp[9] = expmem_tcldcc();
-  exp[10] = expmem_dns();
-  exp[11] = help_expmem();
-  exp[12] = logfile_expmem();
+  exp[1] = expmem_users();
+  exp[2] = expmem_net();
+  exp[3] = expmem_dccutil();
+  exp[4] = expmem_botnet();
+  exp[5] = expmem_tcl();
+  exp[6] = expmem_tclhash();
+  exp[7] = expmem_modules(1);
+  exp[8] = expmem_tcldcc();
+  exp[9] = expmem_dns();
+  exp[10] = help_expmem();
+  exp[11] = logfile_expmem();
 
   for (me = module_list; me; me = me->next)
     me->mem_work = 0;
@@ -153,30 +152,28 @@ void debug_mem_to_dcc(int idx)
     l = memtbl[i].size;
     if (!strcmp(fn, "language.c"))
       use[0] += l;
-    else if (!strcmp(fn, "chanprog.c"))
-      use[1] += l;
     else if (!strcmp(fn, "userrec.c"))
-      use[2] += l;
+      use[1] += l;
     else if (!strcmp(fn, "net.c"))
-      use[3] += l;
-    else if (!strcmp(fn, "dccutil.c"))
-      use[4] += l;
-    else if (!strcmp(fn, "botnet.c"))
-      use[5] += l;
-    else if (!strcmp(fn, "tcl.c"))
-      use[6] += l;
-    else if (!strcmp(fn, "tclhash.c"))
-      use[7] += l;
-    else if (!strcmp(fn, "modules.c"))
-      use[8] += l;
-    else if (!strcmp(fn, "tcldcc.c"))
       use[0] += l;
+    else if (!strcmp(fn, "dccutil.c"))
+      use[3] += l;
+    else if (!strcmp(fn, "botnet.c"))
+      use[4] += l;
+    else if (!strcmp(fn, "tcl.c"))
+      use[5] += l;
+    else if (!strcmp(fn, "tclhash.c"))
+      use[6] += l;
+    else if (!strcmp(fn, "modules.c"))
+      use[7] += l;
+    else if (!strcmp(fn, "tcldcc.c"))
+      use[8] += l;
     else if (!strcmp(fn, "dns.c"))
-      use[10] += l;
+      use[9] += l;
     else if (!strcmp(fn, "help.c"))
-      use[11] += l;
+      use[10] += l;
     else if (!strcmp(fn, "logfile.c"))
-      use[12] += l;
+      use[11] += l;
     else if (p) {
       for (me = module_list; me; me = me->next)
         if (!strcmp(fn, me->name))
@@ -191,39 +188,36 @@ void debug_mem_to_dcc(int idx)
         strcpy(fn, "language.c");
         break;
       case 1:
-        strcpy(fn, "chanprog.c");
-        break;
-      case 2:
         strcpy(fn, "userrec.c");
         break;
-      case 3:
+      case 2:
         strcpy(fn, "net.c");
         break;
-      case 4:
+      case 3:
         strcpy(fn, "dccutil.c");
         break;
-      case 5:
+      case 4:
         strcpy(fn, "botnet.c");
         break;
-      case 6:
+      case 5:
         strcpy(fn, "tcl.c");
         break;
-      case 7:
+      case 6:
         strcpy(fn, "tclhash.c");
         break;
-      case 8:
+      case 7:
         strcpy(fn, "modules.c");
         break;
-      case 9:
+      case 8:
         strcpy(fn, "tcldcc.c");
         break;
-      case 10:
+      case 9:
         strcpy(fn, "dns.c");
         break;
-      case 11:
+      case 10:
         strcpy(fn, "help.c");
         break;
-      case 12:
+      case 11:
         strcpy(fn, "logfile.c");
         break;
     }

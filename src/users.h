@@ -2,7 +2,7 @@
  * users.h
  *   structures and definitions used by users.c and userrec.c
  *
- * $Id: users.h,v 1.1 2004/08/25 01:02:04 wcc Exp $
+ * $Id: users.h,v 1.2 2004/10/06 00:04:33 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -196,5 +196,9 @@ int def_tcl_set(Tcl_Interp *irp, struct userrec *u,
 int def_expmem(struct user_entry *e);
 void def_display(int idx, struct user_entry *e);
 int def_dupuser(struct userrec *new, struct userrec *old, struct user_entry *e);
+
+#ifndef MAKING_MODS
+void reload();
+#endif
 
 #endif /* _EGG_USERS_H */
