@@ -1,7 +1,7 @@
 /* tclhash.h
  *
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999-2004 Eggheads Development Team
+ * Copyright (C) 1999 - 2005 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tclhash.h,v 1.2 2004/08/26 03:21:14 wcc Exp $
+ * $Id: tclhash.h,v 1.3 2005/01/21 01:43:40 wcc Exp $
  */
 
 #ifndef _EGG_TCLHASH_H

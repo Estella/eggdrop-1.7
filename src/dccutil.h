@@ -1,6 +1,6 @@
 /* dccutil.h
  *
- * Copyright (C) 2004 Eggheads Development Team
+ * Copyright (C) 2004 - 2005 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dccutil.h,v 1.6 2004/10/06 00:04:32 wcc Exp $
+ * $Id: dccutil.h,v 1.7 2005/01/21 01:43:40 wcc Exp $
  */
 
 #ifndef _EGG_DCCUTIL_H

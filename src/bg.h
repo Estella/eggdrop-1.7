@@ -1,6 +1,6 @@
 /* bg.h
  *
- * Copyright (C) 2000-2004 Eggheads Development Team
+ * Copyright (C) 2000 - 2005 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: bg.h,v 1.3 2004/11/25 02:01:39 wcc Exp $
+ * $Id: bg.h,v 1.4 2005/01/21 01:43:39 wcc Exp $
  */
 
 #ifndef _EGG_BG_H

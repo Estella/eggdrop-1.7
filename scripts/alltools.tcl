@@ -5,7 +5,7 @@
 # moretools was originally authored by David Sesno <walker@shell.pcrealm.net>
 # modified for 1.3.0 bots by TG
 #
-# Copyright (C) 1999, 2003, 2004 Eggheads Development Team
+# Copyright (C) 1999 - 2005 Eggheads Development Team
 #
 # Tothwolf  02May1999: rewritten and updated
 # guppy     02May1999: updated even more
@@ -24,7 +24,7 @@
 # Tothwolf  27Dec2003: added matchbotattrany, optimized ordnumber,
 #                      more minor changes
 #
-# $Id: alltools.tcl,v 1.1 2004/08/25 01:02:21 wcc Exp $
+# $Id: alltools.tcl,v 1.2 2005/01/21 01:43:39 wcc Exp $
 #
 ########################################
 #

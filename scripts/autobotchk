@@ -31,7 +31,7 @@ exec tclsh$lastver "$0" "$@"
 #
 # AutoBotchk - An eggdrop utility to autogenerate botchk/crontab entries
 #
-# Copyright (C) 1999, 2000, 2001, 2002 Jeff Fisher (guppy@eggheads.org)
+# Copyright (C) 1999, 2000, 2001, 2002, 2003 Jeff Fisher (guppy@eggheads.org)
 #
 # How to use
 # ----------
@@ -60,7 +60,7 @@ exec tclsh$lastver "$0" "$@"
 #   15Apr2003: cleaned up a few things, fixed a few bugs, and made a little
 #              love! j/k
 #
-# $Id: autobotchk,v 1.1 2004/08/25 01:02:21 wcc Exp $
+# $Id: autobotchk,v 1.2 2005/01/21 01:43:39 wcc Exp $
 #
 
 if {$argc == 0} {

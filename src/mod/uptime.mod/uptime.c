@@ -1,5 +1,5 @@
 /*
- * $Id: uptime.c,v 1.2 2004/08/25 01:51:05 wcc Exp $
+ * $Id: uptime.c,v 1.3 2005/01/21 01:43:42 wcc Exp $
  *
  * This module reports uptime information about your bot to http://uptime.eggheads.org. The
  * purpose for this is to see how your bot rates against many others (including EnergyMechs
@@ -13,7 +13,7 @@
  */
 /*
  * Copyright (C) 2001 proton
- * Copyright (C) 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 2001 - 2005 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

@@ -1,11 +1,11 @@
 /*
  * rfc1459.c
  *
- * $Id: rfc1459.c,v 1.3 2004/08/28 03:07:49 takeda Exp $
+ * $Id: rfc1459.c,v 1.4 2005/01/21 01:43:40 wcc Exp $
  */
 /*
  * Copyright (C) 1990 Jarkko Oikarinen
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999 - 2005 Eggheads Development Team
  *
  * This code was more or less cloned from the ircd-hybrid 5.3 source.
  * The original code was written by Otto Harkoonen and even though it

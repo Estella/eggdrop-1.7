@@ -1,7 +1,7 @@
 /* main.c
  *
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999-2004 Eggheads Development Team
+ * Copyright (C) 1999 - 2005 Eggheads Development Team
  *
  * http://www.eggheads.org
  *
@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.16 2004/11/26 05:35:27 wcc Exp $
+ * $Id: main.c,v 1.17 2005/01/21 01:43:40 wcc Exp $
  */
 
 #include "main.h"
@@ -603,7 +603,7 @@ int main(int argc, char **argv)
   /* Version info! */
   egg_snprintf(ver, sizeof ver, "eggdrop v%s", egg_version);
   egg_snprintf(version, sizeof version,
-               "Eggdrop v%s (C) 1997 Robey Pointer (C) 2004 Eggheads",
+               "Eggdrop v%s (C) 1997 Robey Pointer (C) 2005 Eggheads",
                egg_version);
   /* Now add on the patchlevel (for Tcl) */
   sprintf(&egg_version[strlen(egg_version)], " %u", egg_numver);

@@ -10,11 +10,11 @@
  * statement, leave the rest of the file alone, this allows better
  * overlapping patches.
  *
- * $Id: patch.h,v 1.23 2004/12/02 23:28:17 wcc Exp $
+ * $Id: patch.h,v 1.24 2005/01/21 01:43:40 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999 - 2005 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,12 +41,12 @@ patch("CVS");                   /* CVS version */
  *
  *
  */
-patch("1102029746");            /* current unixtime */
+patch("1106271745");            /* current unixtime */
 /*
  *
  *
  */
-patch("notesfix");
+patch("sync1.6");
 /*
  *
  *

@@ -1,11 +1,11 @@
 /*
  * notes.h -- part of notes.mod
  *
- * $Id: notes.h,v 1.1 2004/08/25 01:02:10 wcc Exp $
+ * $Id: notes.h,v 1.2 2005/01/21 01:43:42 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+ * Copyright (C) 1999 - 2005 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

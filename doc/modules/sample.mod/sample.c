@@ -3,7 +3,7 @@
  * Originally written by ButchBub         15 July     1997
  * Comments by Fabian Knittel             29 December 1999
  *
- * Copyright (C) 1999-2004 Eggheads Development Team
+ * Copyright (C) 1999 - 2005 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: sample.c,v 1.1 2004/12/02 22:15:52 wcc Exp $
+ * $Id: sample.c,v 1.2 2005/01/21 01:43:38 wcc Exp $
  */
 
 #define MODULE_NAME "sample"

@@ -2,7 +2,7 @@
  *
  * Originally by Fabian Knittel <fknittel@gmx.de>
  *
- * Copyright (C) 1999-2004 Eggheads Development Team
+ * Copyright (C) 1999 - 2005 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dns.c,v 1.7 2004/11/26 05:35:27 wcc Exp $
+ * $Id: dns.c,v 1.8 2005/01/21 01:43:40 wcc Exp $
  */
 
 #include "main.h"

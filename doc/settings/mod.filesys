@@ -1,4 +1,4 @@
-$Id: mod.filesys,v 1.1 2004/08/25 01:02:00 wcc Exp $
+$Id: mod.filesys,v 1.2 2005/01/21 01:43:38 wcc Exp $
 
 Filesys Module
 Last revised: May 26, 2004
@@ -54,4 +54,4 @@ Last revised: May 26, 2004
 
     _____________________________________________________________________
 
-  Copyright (C) 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
+  Copyright (C) 2000 - 2005 Eggheads Development Team
