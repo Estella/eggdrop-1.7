@@ -4,7 +4,7 @@
  *
  * Written by Fabian Knittel <fknittel@gmx.de>
  *
- * $Id: dns.c,v 1.1 2004/08/25 01:02:08 wcc Exp $
+ * $Id: dns.c,v 1.2 2004/08/25 01:51:04 wcc Exp $
  */
 /*
  * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
@@ -202,9 +202,9 @@ char *dns_start(Function *global_funcs)
   global = global_funcs;
 
   module_register(MODULE_NAME, dns_table, 1, 0);
-  if (!module_depend(MODULE_NAME, "eggdrop", 106, 0)) {
+  if (!module_depend(MODULE_NAME, "eggdrop", 107, 0)) {
     module_undepend(MODULE_NAME);
-    return "This module requires Eggdrop 1.6.0 or later.";
+    return "This module requires Eggdrop 1.7.0 or later.";
   }
 
   idx = new_dcc(&DCC_DNS, 0);

@@ -1,7 +1,7 @@
-$Id: tcl-commands.doc,v 1.1 2004/08/25 01:01:56 wcc Exp $
+$Id: tcl-commands.doc,v 1.2 2004/08/25 01:51:04 wcc Exp $
 
 Eggdrop Tcl Commands
-Last revised: August 02, 2004
+Last revised: August 24, 2004
     _____________________________________________________________________
 
                            Eggdrop Tcl Commands
@@ -12,12 +12,13 @@ of the normal Tcl built-in commands are still there, of course, but you
 can also use these to manipulate features of the bot. They are listed
 according to category.
 
-This list is accurate for Eggdrop v1.6.18. Scripts written for v1.3/v1.4
+This list is accurate for Eggdrop v1.7.0. Scripts written for v1.3/v1.4
 series of Eggdrop should probably work with a few minor modifications
-depending on the script. Scripts which were written for  v0.9, v1.0, v1.1
-or v1.2 will probably not work without modification. Commands which have
-been changed in this version of Eggdrop (or are just new commands) are
-marked with vertical bars (|) on the left.
+depending on the script. 1.6 scripts should work without modification.
+Scripts which were written for  v0.9, v1.0, v1.1 or v1.2 will probably
+not work without modification. Commands which have been changed in this
+version of Eggdrop (or are just new commands) are marked with vertical
+bars (|) on the left.
 
 
 *** OUTPUT COMMANDS ***
@@ -2005,13 +2006,13 @@ marked with vertical bars (|) on the left.
     (34) BCST (stackable)
          bind bcst <flags> <mask> <proc>
          proc-name <botname> <channel#> <text>
- 
+
          Description: when a bot broadcasts something on the botnet (see
            'dccbroadcast' above), it invokes this binding. flags are ignored;
            the mask is matched against the message text and can contain
            wildcards. 'channel' argument will always be '-1' since broadcasts
            are not directed to any partyline channel.
- 
+
            It is also invoked when a BOT (not a person, as with the CHAT bind)
            'says' something on a channel. In this case, the 'channel' argument
            will be a valid channel, and not '-1'.

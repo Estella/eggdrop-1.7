@@ -1,7 +1,7 @@
-$Id: CONTENTS,v 1.1 2004/08/25 01:01:54 wcc Exp $
+$Id: CONTENTS,v 1.2 2004/08/25 01:51:04 wcc Exp $
 
 Directory Contents - doc/
-Last revised: August 04, 2004
+Last revised: August 24, 2004
     _____________________________________________________________________
 
                           Directory Contents - doc/
@@ -61,8 +61,8 @@ Last revised: August 04, 2004
     Some advanced tips on making Eggdrop do what you want it to do can be found
     here. It also contains tweaking tips for your config file.
 
-  UPDATES1.6
-    This is a complete list of changes made to Eggdrop 1.6.
+  UPDATES1.7
+    This is a complete list of changes made to Eggdrop 1.7.
     _____________________________________________________________________
 
   Copyright (C) 2003, 2004 Eggheads Development Team

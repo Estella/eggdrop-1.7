@@ -2,7 +2,7 @@
  * filesys.c -- part of filesys.mod
  *   main file of the filesys eggdrop module
  *
- * $Id: filesys.c,v 1.1 2004/08/25 01:02:09 wcc Exp $
+ * $Id: filesys.c,v 1.2 2004/08/25 01:51:04 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -980,9 +980,9 @@ char *filesys_start(Function *global_funcs)
   global = global_funcs;
 
   module_register(MODULE_NAME, filesys_table, 2, 0);
-  if (!module_depend(MODULE_NAME, "eggdrop", 106, 0)) {
+  if (!module_depend(MODULE_NAME, "eggdrop", 107, 0)) {
     module_undepend(MODULE_NAME);
-    return "This module requires Eggdrop 1.6.0 or later.";
+    return "This module requires Eggdrop 1.7.0 or later.";
   }
   if (!(transfer_funcs = module_depend(MODULE_NAME, "transfer", 2, 0))) {
     module_undepend(MODULE_NAME);

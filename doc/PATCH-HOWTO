@@ -1,4 +1,4 @@
-$Id: PATCH-HOWTO,v 1.1 2004/08/25 01:01:56 wcc Exp $
+$Id: PATCH-HOWTO,v 1.2 2004/08/25 01:51:04 wcc Exp $
 
 Patch Howto
 Last revised: July 23, 2004
@@ -32,7 +32,7 @@ Last revised: July 23, 2004
     To apply a patch to an Eggdrop, you have to first obtain the Eggdrop
     source code. You should always keep a tar.gz archive with the source of
     your current Eggdrop on your shell. In the next step, you have to change
-    to your source directory (i.e.: /home/user/eggdrop1.6.18/) and type
+    to your source directory (i.e.: /home/user/eggdrop1.7.0/) and type
     the following command:
 
       patch -p1 < ../path.to.the/patch
@@ -50,7 +50,7 @@ Last revised: July 23, 2004
 
       |Index: Makefile.in
       |===================================================================
-      |RCS file: /usr/local/cvsroot/eggdrop1.6/Makefile.in,v
+      |RCS file: /usr/local/cvsroot/eggdrop1.7/Makefile.in,v
       |retrieving revision 1.38
       |diff -u -r1.38 Makefile.in
       |--- Makefile.in	17 Jun 2004 05:43:28 -0000	1.38
@@ -79,7 +79,7 @@ Last revised: July 23, 2004
 
       2. Run the following:
 
-           diff -urN eggdrop1.6.original eggdrop1.6.modified > patchname.patch
+           diff -urN eggdrop1.7.original eggdrop1.7.modified > patchname.patch
 
          DO NOT add any other diff options.
 
@@ -89,20 +89,20 @@ Last revised: July 23, 2004
          which your patch was created.
 
          It helps if you include the major release number that the patch is
-         for in the subject line. For the 1.6.x series, the subject line should
+         for in the subject line. For the 1.7.x series, the subject line should
          look like this:
 
-           PATCH1.6: my-patch-filename.patch
+           PATCH1.7: my-patch-filename.patch
 
          You should also include the nick/handle/name you would like to be used
-         in the UPDATES1.6 file (if applicable).
+         in the UPDATES1.7 file (if applicable).
 
       Never modify src/patch.h or one of the UPDATES files. We will do it. If
       your patch includes changes related to autotools (./configure, etc), do
       NOT run autoconf, autoheader, etc; we will do this as well.
 
       Also, please don't add credit lines all over the source when patching.
-      Patch contributors will receive credit in UPDATES1.6 and ChangeLog.
+      Patch contributors will receive credit in UPDATES1.7 and ChangeLog.
 
       CVS diff's are also perfectly fine (and actually, prefered, as the patch
       will be against the most current version of Eggdrop). To create a CVS
@@ -114,9 +114,9 @@ Last revised: July 23, 2004
 
   4. Downloading a patch
 
-    Many patches for Eggdrop 1.6.x can be found at the following location:
+    Many patches for Eggdrop 1.7.x can be found at the following location:
 
-      ftp://ftp.eggheads.org/pub/eggdrop/patches/1.6
+      ftp://ftp.eggheads.org/pub/eggdrop/patches/1.7
     _____________________________________________________________________
 
   Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team

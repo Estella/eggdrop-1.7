@@ -5,7 +5,7 @@
  * Originally written by ButchBub         15 July     1997
  * Comments by Fabian Knittel             29 December 1999
  *
- * $Id: woobie.c,v 1.1 2004/08/25 01:02:11 wcc Exp $
+ * $Id: woobie.c,v 1.2 2004/08/25 01:51:05 wcc Exp $
  */
 /*
  * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
@@ -136,9 +136,9 @@ char *woobie_start(Function *global_funcs)
    *              ^--------------------------------- module name
    */
 
-  if (!module_depend(MODULE_NAME, "eggdrop", 106, 0)) {
+  if (!module_depend(MODULE_NAME, "eggdrop", 107, 0)) {
     module_undepend(MODULE_NAME);
-    return "This module requires Eggdrop 1.6.0 or later.";
+    return "This module requires Eggdrop 1.7.0 or later.";
   }
 
   /* Add command table to bind list H_dcc, responsible for dcc commands.

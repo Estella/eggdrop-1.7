@@ -1,7 +1,7 @@
 /*
  * share.c -- part of share.mod
  *
- * $Id: share.c,v 1.1 2004/08/25 01:02:12 wcc Exp $
+ * $Id: share.c,v 1.2 2004/08/25 01:51:05 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -2191,9 +2191,9 @@ char *share_start(Function *global_funcs)
   global = global_funcs;
 
   module_register(MODULE_NAME, share_table, 2, 3);
-  if (!module_depend(MODULE_NAME, "eggdrop", 106, 0)) {
+  if (!module_depend(MODULE_NAME, "eggdrop", 107, 0)) {
     module_undepend(MODULE_NAME);
-    return "This module requires Eggdrop 1.6.0 or later.";
+    return "This module requires Eggdrop 1.7.0 or later.";
   }
   if (!(transfer_funcs = module_depend(MODULE_NAME, "transfer", 2, 0))) {
     module_undepend(MODULE_NAME);

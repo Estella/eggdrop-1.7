@@ -15,7 +15,7 @@
  * 1.4       1997-11-25      1.2.2.0         Added language addition  Kirk
  * 1.5       1998-07-12      1.3.0.0         Fixed ;me and updated    BB
  *
- * $Id: wire.c,v 1.1 2004/08/25 01:02:13 wcc Exp $
+ * $Id: wire.c,v 1.2 2004/08/25 01:51:05 wcc Exp $
  */
 /*
  * Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004 Eggheads Development Team
@@ -600,9 +600,9 @@ char *wire_start(Function *global_funcs)
   global = global_funcs;
 
   module_register(MODULE_NAME, wire_table, 2, 0);
-  if (!module_depend(MODULE_NAME, "eggdrop", 106, 0)) {
+  if (!module_depend(MODULE_NAME, "eggdrop", 107, 0)) {
     module_undepend(MODULE_NAME);
-    return "This module requires Eggdrop 1.6.0 or later.";
+    return "This module requires Eggdrop 1.7.0 or later.";
   }
 
   if (!(encryption_funcs = module_depend(MODULE_NAME, "encryption", 2, 1))) {

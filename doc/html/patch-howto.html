@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<!-- $Id: patch-howto.html,v 1.1 2004/08/25 01:01:57 wcc Exp $ -->
+<!-- $Id: patch-howto.html,v 1.2 2004/08/25 01:51:04 wcc Exp $ -->
 
 <html>
   <head>
@@ -52,7 +52,7 @@
     <p>To apply a patch to an Eggdrop, you have to first obtain the Eggdrop
     source code. You should always keep a tar.gz archive with the source of
     your current Eggdrop on your shell. In the next step, you have to change
-    to your source directory (i.e.: /home/user/eggdrop1.6.18/) and type
+    to your source directory (i.e.: /home/user/eggdrop1.7.0/) and type
     the following command:</p>
 
     <blockquote>
@@ -76,7 +76,7 @@
 <pre>
 |Index: Makefile.in
 |===================================================================
-|RCS file: /usr/local/cvsroot/eggdrop1.6/Makefile.in,v
+|RCS file: /usr/local/cvsroot/eggdrop1.7/Makefile.in,v
 |retrieving revision 1.38
 |diff -u -r1.38 Makefile.in
 |--- Makefile.in	17 Jun 2004 05:43:28 -0000	1.38
@@ -112,7 +112,7 @@ File to patch:
 
           <blockquote>
 <pre>
-diff -urN eggdrop1.6.original eggdrop1.6.modified &gt; patchname.patch
+diff -urN eggdrop1.7.original eggdrop1.7.modified &gt; patchname.patch
 </pre>
           </blockquote>
 
@@ -127,13 +127,13 @@ diff -urN eggdrop1.6.original eggdrop1.6.modified &gt; patchname.patch
           your patch was created.</p>
 
           <p>It helps if you include the major release number that the patch
-          is for in the subject line. For the 1.6.x series, the subject line
+          is for in the subject line. For the 1.7.x series, the subject line
           should look like this:</p>
 
-          <blockquote>PATCH1.6: my-patch-filename.patch</blockquote>
+          <blockquote>PATCH1.7: my-patch-filename.patch</blockquote>
 
           <p>You should also include the nick/handle/name you would like to be
-          used in the UPDATES1.6 file (if applicable).</p>
+          used in the UPDATES1.7 file (if applicable).</p>
         </li>
       </ol>
 
@@ -143,7 +143,7 @@ diff -urN eggdrop1.6.original eggdrop1.6.modified &gt; patchname.patch
       as well.</p>
 
       <p>Also, please don&#39;t add credit lines all over the source when
-      patching. Patch contributors will receive credit in UPDATES1.6 and
+      patching. Patch contributors will receive credit in UPDATES1.7 and
       ChangeLog.</p>
 
       <p>CVS diff&#39;s are also perfectly fine (and actually, prefered, as the
@@ -161,12 +161,12 @@ cvs diff -R -uN > patchname.patch
     <p><a name="sect4"></a><strong>Downloading a patch</strong></p>
 
 
-    <p>Many patches for eggdrop1.6.x can be found at the following
+    <p>Many patches for eggdrop1.7.x can be found at the following
     location:</p>
 
     <blockquote>
-      <p><a href="ftp://ftp.eggheads.org/pub/eggdrop/patches/1.6/">
-      ftp://ftp.eggheads.org/pub/eggdrop/patches/1.6/</a></p>
+      <p><a href="ftp://ftp.eggheads.org/pub/eggdrop/patches/1.7/">
+      ftp://ftp.eggheads.org/pub/eggdrop/patches/1.7/</a></p>
     </blockquote>
 
     <hr>
