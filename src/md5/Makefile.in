@@ -1,5 +1,5 @@
 # Makefile for src/md5/
-# $Id: Makefile.in,v 1.3 2004/08/27 05:34:18 wcc Exp $
+# $Id: Makefile.in,v 1.4 2004/08/27 09:34:11 wcc Exp $
 
 SHELL = @SHELL@
 top_srcdir = @top_srcdir@
@@ -16,7 +16,6 @@ CC = @CC@
 LD = @CC@
 STRIP = @STRIP@
 CFLAGS = @CFLAGS@ -I. -I../.. -I$(top_srcdir) -I$(top_srcdir)/src @DEFS@ $(CFLGS)
-CPPFLAGS = @CPPFLAGS@
 
 OBJS = md5c.o
 
@@ -27,7 +26,7 @@ doofus:
 	@cd ../.. && $(MAKE)
 
 depend:
-	$(CC) $(CFLAGS) $(CPPFLAGS) -MM $(srcdir)/*.c > .depend
+	$(CC) $(CFLAGS) -DMAKING_DEPEND -MM *.c > .depend
 
 clean:
 	@rm -f .depend *.o *~

@@ -3,7 +3,7 @@
  * This is hereby released into the public domain.
  * Robey Pointer, robey@netcom.com
  *
- * $Id: net.c,v 1.4 2004/08/26 10:36:51 wcc Exp $
+ * $Id: net.c,v 1.5 2004/08/27 09:34:10 wcc Exp $
  */
 
 #include <fcntl.h>
@@ -27,6 +27,7 @@
 #include "net.h"
 #include "dcc.h"     /* struct dcc_t */
 #include "dccutil.h" /* dprintf */
+#include "traffic.h" /* traffic_update_out */
 
 
 extern struct dcc_t *dcc;
@@ -897,21 +898,8 @@ void tputs(register int z, char *s, unsigned int len)
   for (i = 0; i < MAXSOCKS; i++) {
     if (!(socklist[i].flags & SOCK_UNUSED) && (socklist[i].sock == z)) {
       for (idx = 0; idx < dcc_total; idx++) {
-        if ((dcc[idx].sock == z) && dcc[idx].type && dcc[idx].type->name) {
-          if (!strncmp(dcc[idx].type->name, "BOT", 3))
-            otraffic_bn_today += len;
-          else if (!strcmp(dcc[idx].type->name, "SERVER"))
-            otraffic_irc_today += len;
-          else if (!strncmp(dcc[idx].type->name, "CHAT", 4))
-            otraffic_dcc_today += len;
-          else if (!strncmp(dcc[idx].type->name, "FILES", 5))
-            otraffic_filesys_today += len;
-          else if (!strcmp(dcc[idx].type->name, "SEND"))
-            otraffic_trans_today += len;
-          else if (!strncmp(dcc[idx].type->name, "GET", 3))
-            otraffic_trans_today += len;
-          else
-            otraffic_unknown_today += len;
+        if ((dcc[idx].sock == z) && dcc[idx].type) {
+          traffic_update_out(dcc[idx].type, len); /* Traffic stats. */
           break;
         }
       }

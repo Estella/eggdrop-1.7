@@ -1,5 +1,5 @@
 # Makefile for src/mod/console.mod/
-# $Id: Makefile,v 1.2 2004/08/26 03:21:14 wcc Exp $
+# $Id: Makefile,v 1.3 2004/08/27 09:34:11 wcc Exp $
 
 srcdir = .
 
@@ -24,7 +24,7 @@ modules: ../../../console.$(MOD_EXT)
 	$(STRIP) ../../../console.$(MOD_EXT)
 
 depend:
-	$(CC) $(CFLAGS) $(CPPFLAGS) -MM $(srcdir)/console.c > .depend
+	$(CC) $(CFLAGS) -DMAKING_DEPEND -MM console.c > .depend
 
 clean:
 	@rm -f .depend *.o *.$(MOD_EXT) *~

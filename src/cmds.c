@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.c,v 1.7 2004/08/27 05:34:18 wcc Exp $
+ * $Id: cmds.c,v 1.8 2004/08/27 09:34:10 wcc Exp $
  */
 
 #include "main.h"
@@ -42,20 +42,10 @@ extern struct userrec *userlist;
 extern tcl_timer_t *timer, *utimer;
 extern int dcc_total, remote_boots, backgrd, make_userfile, do_restart,
            conmask, require_p, must_be_owner, strict_host;
-extern unsigned long otraffic_irc, otraffic_irc_today, itraffic_irc,
-                     itraffic_irc_today, otraffic_bn, otraffic_bn_today,
-                     itraffic_bn, itraffic_bn_today, otraffic_dcc,
-                     otraffic_dcc_today, itraffic_dcc, itraffic_dcc_today,
-                     otraffic_trans, otraffic_trans_today, itraffic_trans,
-                     itraffic_trans_today, otraffic_unknown,
-                     otraffic_unknown_today, itraffic_unknown,
-                     itraffic_unknown_today;
 extern Tcl_Interp *interp;
 extern char botnetnick[], origbotname[], ver[], network[], owner[], quit_msg[];
 extern time_t now, online_since;
 extern module_entry *module_list;
-
-static char *btos(unsigned long);
 
 
 /* Add hostmask to a bot's record if possible.
@@ -2691,102 +2681,6 @@ static void cmd_modules(struct userrec *u, int idx, char *par)
   }
 }
 
-static void cmd_traffic(struct userrec *u, int idx, char *par)
-{
-  unsigned long itmp, itmp2;
-
-  dprintf(idx, "Traffic since last restart\n");
-  dprintf(idx, "==========================\n");
-  if (otraffic_irc > 0 || itraffic_irc > 0 || otraffic_irc_today > 0 ||
-      itraffic_irc_today > 0) {
-    dprintf(idx, "IRC:\n");
-    dprintf(idx, "  out: %s", btos(otraffic_irc + otraffic_irc_today));
-    dprintf(idx, " (%s today)\n", btos(otraffic_irc_today));
-    dprintf(idx, "   in: %s", btos(itraffic_irc + itraffic_irc_today));
-    dprintf(idx, " (%s today)\n", btos(itraffic_irc_today));
-  }
-  if (otraffic_bn > 0 || itraffic_bn > 0 || otraffic_bn_today > 0 ||
-      itraffic_bn_today > 0) {
-    dprintf(idx, "Botnet:\n");
-    dprintf(idx, "  out: %s", btos(otraffic_bn + otraffic_bn_today));
-    dprintf(idx, " (%s today)\n", btos(otraffic_bn_today));
-    dprintf(idx, "   in: %s", btos(itraffic_bn + itraffic_bn_today));
-    dprintf(idx, " (%s today)\n", btos(itraffic_bn_today));
-  }
-  if (otraffic_dcc > 0 || itraffic_dcc > 0 || otraffic_dcc_today > 0 ||
-      itraffic_dcc_today > 0) {
-    dprintf(idx, "Partyline:\n");
-    itmp = otraffic_dcc + otraffic_dcc_today;
-    itmp2 = otraffic_dcc_today;
-    dprintf(idx, "  out: %s", btos(itmp));
-    dprintf(idx, " (%s today)\n", btos(itmp2));
-    dprintf(idx, "   in: %s", btos(itraffic_dcc + itraffic_dcc_today));
-    dprintf(idx, " (%s today)\n", btos(itraffic_dcc_today));
-  }
-  if (otraffic_trans > 0 || itraffic_trans > 0 || otraffic_trans_today > 0 ||
-      itraffic_trans_today > 0) {
-    dprintf(idx, "Transfer.mod:\n");
-    dprintf(idx, "  out: %s", btos(otraffic_trans + otraffic_trans_today));
-    dprintf(idx, " (%s today)\n", btos(otraffic_trans_today));
-    dprintf(idx, "   in: %s", btos(itraffic_trans + itraffic_trans_today));
-    dprintf(idx, " (%s today)\n", btos(itraffic_trans_today));
-  }
-  if (otraffic_unknown > 0 || otraffic_unknown_today > 0) {
-    dprintf(idx, "Misc:\n");
-    dprintf(idx, "  out: %s", btos(otraffic_unknown + otraffic_unknown_today));
-    dprintf(idx, " (%s today)\n", btos(otraffic_unknown_today));
-    dprintf(idx, "   in: %s", btos(itraffic_unknown + itraffic_unknown_today));
-    dprintf(idx, " (%s today)\n", btos(itraffic_unknown_today));
-  }
-  dprintf(idx, "---\n");
-  dprintf(idx, "Total:\n");
-  itmp = otraffic_irc + otraffic_bn + otraffic_dcc + otraffic_trans +
-         otraffic_unknown + otraffic_irc_today + otraffic_bn_today +
-         otraffic_dcc_today + otraffic_trans_today + otraffic_unknown_today;
-  itmp2 = otraffic_irc_today + otraffic_bn_today + otraffic_dcc_today +
-          otraffic_trans_today + otraffic_unknown_today;
-  dprintf(idx, "  out: %s", btos(itmp));
-  dprintf(idx, " (%s today)\n", btos(itmp2));
-  dprintf(idx, "   in: %s", btos(itraffic_irc + itraffic_bn + itraffic_dcc +
-          itraffic_trans + itraffic_unknown + itraffic_irc_today +
-          itraffic_bn_today + itraffic_dcc_today + itraffic_trans_today +
-          itraffic_unknown_today));
-  dprintf(idx, " (%s today)\n", btos(itraffic_irc_today + itraffic_bn_today +
-          itraffic_dcc_today + itraffic_trans_today + itraffic_unknown_today));
-  putlog(LOG_CMDS, "*", "#%s# traffic", dcc[idx].nick);
-}
-
-static char traffictxt[20];
-static char *btos(unsigned long bytes)
-{
-  char unit[10];
-  float xbytes;
-
-  sprintf(unit, "Bytes");
-  xbytes = bytes;
-  if (xbytes > 1024.0) {
-    sprintf(unit, "KBytes");
-    xbytes = xbytes / 1024.0;
-  }
-  if (xbytes > 1024.0) {
-    sprintf(unit, "MBytes");
-    xbytes = xbytes / 1024.0;
-  }
-  if (xbytes > 1024.0) {
-    sprintf(unit, "GBytes");
-    xbytes = xbytes / 1024.0;
-  }
-  if (xbytes > 1024.0) {
-    sprintf(unit, "TBytes");
-    xbytes = xbytes / 1024.0;
-  }
-  if (bytes > 1024)
-    sprintf(traffictxt, "%.2f %s", xbytes, unit);
-  else
-    sprintf(traffictxt, "%lu Bytes", bytes);
-  return traffictxt;
-}
-
 static void cmd_whoami(struct userrec *u, int idx, char *par)
 {
   dprintf(idx, "You are %s@%s.\n", dcc[idx].nick, botnetnick);
@@ -2866,7 +2760,6 @@ cmd_t C_dcc[] = {
   {"who",       "",     (Function) cmd_who,        NULL},
   {"whois",     "",     (Function) cmd_whois,      NULL},
   {"whom",      "",     (Function) cmd_whom,       NULL},
-  {"traffic",   "m|m",  (Function) cmd_traffic,    NULL},
   {"whoami",    "",     (Function) cmd_whoami,     NULL},
   {NULL,        NULL,   NULL,                      NULL}
 };

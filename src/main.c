@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.8 2004/08/27 05:34:18 wcc Exp $
+ * $Id: main.c,v 1.9 2004/08/27 09:34:10 wcc Exp $
  */
 
 #include "main.h"
@@ -46,6 +46,7 @@
 #include "dccutil.h" /* dprintf, dcc_chatter, lostdcc, tell_dcc, new_dcc,
                       * dcc_remove_lost */
 #include "net.h"     /* SOCK_*, getmyip, setsock, killsock, dequeue_sockets, sockgets */
+#include "traffic.h" /* traffic_update_out, traffic_reset, init_traffic */
 #include "userrec.h" /* adduser, count_users, write_userfile */
 
 #ifndef ENABLE_STRIP
@@ -121,31 +122,6 @@ int do_restart = 0;  /* .restart has been called; restart ASAP. */
 time_t now;
 time_t online_since; /* Time that the bot was started.          */
 char quit_msg[1024]; /* Quit message.                           */
-
-
-/* Traffic stats. FIXME: move this to a structure. */
-unsigned long otraffic_irc = 0;
-unsigned long otraffic_irc_today = 0;
-unsigned long otraffic_bn = 0;
-unsigned long otraffic_bn_today = 0;
-unsigned long otraffic_dcc = 0;
-unsigned long otraffic_dcc_today = 0;
-unsigned long otraffic_filesys = 0;
-unsigned long otraffic_filesys_today = 0;
-unsigned long otraffic_trans = 0;
-unsigned long otraffic_trans_today = 0;
-unsigned long otraffic_unknown = 0;
-unsigned long otraffic_unknown_today = 0;
-unsigned long itraffic_irc = 0;
-unsigned long itraffic_irc_today = 0;
-unsigned long itraffic_bn = 0;
-unsigned long itraffic_bn_today = 0;
-unsigned long itraffic_dcc = 0;
-unsigned long itraffic_dcc_today = 0;
-unsigned long itraffic_trans = 0;
-unsigned long itraffic_trans_today = 0;
-unsigned long itraffic_unknown = 0;
-unsigned long itraffic_unknown_today = 0;
 
 
 void fatal(const char *s, int recoverable)
@@ -476,25 +452,6 @@ static void event_logfile()
   check_tcl_event("logfile");
 }
 
-static void event_resettraffic()
-{
-  otraffic_irc += otraffic_irc_today;
-  itraffic_irc += itraffic_irc_today;
-  otraffic_bn += otraffic_bn_today;
-  itraffic_bn += itraffic_bn_today;
-  otraffic_dcc += otraffic_dcc_today;
-  itraffic_dcc += itraffic_dcc_today;
-  otraffic_unknown += otraffic_unknown_today;
-  itraffic_unknown += itraffic_unknown_today;
-  otraffic_trans += otraffic_trans_today;
-  itraffic_trans += itraffic_trans_today;
-  otraffic_irc_today = otraffic_bn_today = 0;
-  otraffic_dcc_today = otraffic_unknown_today = 0;
-  itraffic_irc_today = itraffic_bn_today = 0;
-  itraffic_dcc_today = itraffic_unknown_today = 0;
-  itraffic_trans_today = otraffic_trans_today = 0;
-}
-
 static void event_loaded()
 {
   check_tcl_event("loaded");
@@ -640,6 +597,7 @@ int main(int argc, char **argv)
     bg_prepare_split();
   init_tcl(argc, argv);
   init_language(0);
+  init_traffic();
 #ifdef STATIC
   link_statics();
 #endif
@@ -760,7 +718,7 @@ int main(int argc, char **argv)
   add_hook(HOOK_USERFILE, (Function) event_save);
   add_hook(HOOK_BACKUP, (Function) backup_userfile);
   add_hook(HOOK_DAILY, (Function) event_logfile);
-  add_hook(HOOK_DAILY, (Function) event_resettraffic);
+  add_hook(HOOK_DAILY, (Function) traffic_reset);
   add_hook(HOOK_LOADED, (Function) event_loaded);
 
   call_hook(HOOK_LOADED);
@@ -806,23 +764,7 @@ int main(int argc, char **argv)
       for (idx = 0; idx < dcc_total; idx++)
         if (dcc[idx].sock == xx) {
           if (dcc[idx].type && dcc[idx].type->activity) {
-            /* Traffic stats */
-            if (dcc[idx].type->name) {
-              if (!strncmp(dcc[idx].type->name, "BOT", 3))
-                itraffic_bn_today += strlen(buf) + 1;
-              else if (!strcmp(dcc[idx].type->name, "SERVER"))
-                itraffic_irc_today += strlen(buf) + 1;
-              else if (!strncmp(dcc[idx].type->name, "CHAT", 4))
-                itraffic_dcc_today += strlen(buf) + 1;
-              else if (!strncmp(dcc[idx].type->name, "FILES", 5))
-                itraffic_dcc_today += strlen(buf) + 1;
-              else if (!strcmp(dcc[idx].type->name, "SEND"))
-                itraffic_trans_today += strlen(buf) + 1;
-              else if (!strncmp(dcc[idx].type->name, "GET", 3))
-                itraffic_trans_today += strlen(buf) + 1;
-              else
-                itraffic_unknown_today += strlen(buf) + 1;
-            }
+            traffic_update_in(dcc[idx].type, (strlen(buf) + 1)); /* Traffic stats. */
             dcc[idx].type->activity(idx, buf, i);
           } else
             putlog(LOG_MISC, "*",
@@ -920,6 +862,7 @@ int main(int argc, char **argv)
         kill_tcl();
         init_tcl(argc, argv);
         init_language(0);
+        init_traffic();
 
         /* this resets our modules which we didn't unload (encryption and uptime) */
         for (p = module_list; p; p = p->next) {

@@ -7,7 +7,7 @@
  *   (non-Tcl) procedure lookups for msg/dcc/file commands
  *   (Tcl) binding internal procedures to msg/dcc/file commands
  *
- * $Id: tclhash.c,v 1.5 2004/08/27 05:34:18 wcc Exp $
+ * $Id: tclhash.c,v 1.6 2004/08/27 09:34:11 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -44,6 +44,7 @@ extern struct dcc_t *dcc;
 extern struct userrec *userlist;
 extern int dcc_total;
 extern time_t now;
+extern cmd_t C_dcc[], traffic_dcc[];
 
 p_tcl_bind_list bind_table_list;
 p_tcl_bind_list H_chat, H_act, H_bcst, H_chon, H_chof, H_load, H_unld, H_link,
@@ -208,7 +209,6 @@ int expmem_tclhash(void)
 }
 
 
-extern cmd_t C_dcc[];
 static int tcl_bind();
 
 static cd_tcl_cmd cd_cmd_table[] = {
@@ -242,6 +242,7 @@ void init_bind(void)
   H_act = add_bind_table("act", HT_STACKABLE, builtin_chat);
   H_event = add_bind_table("evnt", HT_STACKABLE, builtin_char);
   add_builtins(H_dcc, C_dcc);
+  add_builtins(H_dcc, traffic_dcc);
   Context;
 }
 
@@ -250,6 +251,7 @@ void kill_bind(void)
   tcl_bind_list_t *tl, *tl_next;
 
   rem_builtins(H_dcc, C_dcc);
+  rem_builtins(H_dcc, traffic_dcc);
   for (tl = bind_table_list; tl; tl = tl_next) {
     tl_next = tl->next;
 

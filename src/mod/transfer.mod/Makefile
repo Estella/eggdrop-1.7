@@ -1,5 +1,5 @@
 # Makefile for src/mod/transfer.mod/
-# $Id: Makefile,v 1.2 2004/08/26 03:21:15 wcc Exp $
+# $Id: Makefile,v 1.3 2004/08/27 09:34:11 wcc Exp $
 
 srcdir = .
 
@@ -24,7 +24,7 @@ modules: ../../../transfer.$(MOD_EXT)
 	$(STRIP) ../../../transfer.$(MOD_EXT)
 
 depend:
-	$(CC) $(CFLAGS) $(CPPFLAGS) -MM $(srcdir)/transfer.c > .depend
+	$(CC) $(CFLAGS) -DMAKING_DEPEND -MM transfer.c > .depend
 
 clean:
 	@rm -f .depend *.o *.$(MOD_EXT) *~

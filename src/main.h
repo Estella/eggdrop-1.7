@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.h,v 1.6 2004/08/27 05:34:18 wcc Exp $
+ * $Id: main.h,v 1.7 2004/08/27 09:34:10 wcc Exp $
  */
 
 #ifndef _EGG_MAIN_H
@@ -148,7 +148,7 @@
 #endif
 
 /* UGH! Why couldn't Tcl pick a standard? */
-#if defined(USE_TCL_VARARGS) && (defined(__STDC__) || defined(HAS_STDARG))
+#if (defined(USE_TCL_VARARGS) && (defined(__STDC__) || defined(HAS_STDARG)) || MAKING_DEPEND)
 #  ifdef HAVE_STDARG_H
 #    include <stdarg.h>
 #  else
