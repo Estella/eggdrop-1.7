@@ -3,7 +3,7 @@
  * This is hereby released into the public domain.
  * Robey Pointer, robey@netcom.com
  *
- * $Id: net.c,v 1.12 2004/11/26 05:35:27 wcc Exp $
+ * $Id: net.c,v 1.13 2005/05/30 22:11:47 wcc Exp $
  */
 
 #include <fcntl.h>
@@ -394,8 +394,10 @@ int open_telnet_raw(int sock, char *server, int sport)
 
   name.sin_family = AF_INET;
   name.sin_addr.s_addr = (myip[0] ? getmyip() : INADDR_ANY);
-  if (bind(sock, (struct sockaddr *) &name, sizeof(name)) < 0)
+  if (bind(sock, (struct sockaddr *) &name, sizeof(name)) < 0) {
+    killsock(sock);
     return -1;
+  }
   egg_bzero((char *) &name, sizeof(struct sockaddr_in));
 
   name.sin_family = AF_INET;
