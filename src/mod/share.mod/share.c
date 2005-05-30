@@ -1,7 +1,7 @@
 /*
  * share.c -- part of share.mod
  *
- * $Id: share.c,v 1.6 2005/01/21 01:43:42 wcc Exp $
+ * $Id: share.c,v 1.7 2005/05/30 22:44:30 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -617,8 +617,10 @@ static void share_change(int idx, char *par)
           makepass(pass);
           userlist = adduser(userlist, hand, "none", pass, USER_BOT);
           u = get_user_by_handle(userlist, hand);
-        } else if (!u)
+        } else if (!u) {
+          noshare = 0;
           return;
+        }
         if (uet->got_share) {
           if (!(e = find_user_entry(uet, u))) {
             e = user_malloc(sizeof(struct user_entry));
