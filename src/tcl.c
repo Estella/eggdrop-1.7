@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcl.c,v 1.12 2005/01/21 01:43:40 wcc Exp $
+ * $Id: tcl.c,v 1.13 2005/07/23 21:57:36 wcc Exp $
  */
 
 #include <stdlib.h>             /* getenv()                             */
@@ -331,7 +331,7 @@ static char *tcl_eggint(ClientData cdata, Tcl_Interp *irp,
           if (l < max_logs)
             return "you can't DECREASE max-logs";
           max_logs = l;
-          logfile_init();
+          logfile_init(0);
         } else
           *(ii->var) = (int) l;
       }

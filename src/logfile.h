@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: logfile.h,v 1.3 2005/01/21 01:43:40 wcc Exp $
+ * $Id: logfile.h,v 1.4 2005/07/23 21:57:36 wcc Exp $
  */
 
 #ifndef _EGG_LOGFILE_H
@@ -66,7 +66,7 @@ typedef struct {
 } log_t;
 
 #ifndef MAKING_MODS
-void logfile_init();
+void logfile_init(int);
 int logfile_expmem();
 int logmodes(char *);
 char *masktype(int);
