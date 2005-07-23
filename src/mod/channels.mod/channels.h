@@ -1,7 +1,7 @@
 /*
  * channels.h -- part of channels.mod
  *
- * $Id: channels.h,v 1.3 2005/01/21 01:43:41 wcc Exp $
+ * $Id: channels.h,v 1.4 2005/07/23 22:20:43 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -142,13 +142,13 @@ inline static int chanset_unlink(struct chanset_t *chan);
 #define u_addexempt ((int (*)(struct chanset_t *, char *, char *, char *, time_t, int))channels_funcs[23])
 /* 24 - 27 */
 #define u_delinvite ((int (*)(struct chanset_t *, char *, int))channels_funcs[24])
-#define u_addinvite ((int (*)(struct chanset_t *, char *, char *, char *, time_t, int))channels_funcs[5])
+#define u_addinvite ((int (*)(struct chanset_t *, char *, char *, char *, time_t, int))channels_funcs[25])
 #define tcl_channel_add ((int (*)(Tcl_Interp *, char *, char *))channels_funcs[26])
 #define tcl_channel_modify ((int (*)(Tcl_Interp *, struct chanset_t *, int, char **))channels_funcs[27])
 /* 28 - 31 */
 #define write_exempts ((int (*)(FILE *, int))channels_funcs[28])
 #define write_invites ((int (*)(FILE *, int))channels_funcs[29])
-#define ismodeline ((int(*)(masklist *, char *))channels_funcs[32])
+#define ismodeline ((int(*)(masklist *, char *))channels_funcs[30])
 #define initudef ((void(*)(int, char *,int))channels_funcs[31])
 /* 32 - 35 */
 #define ngetudef ((int(*)(char *, char *))channels_funcs[32])
