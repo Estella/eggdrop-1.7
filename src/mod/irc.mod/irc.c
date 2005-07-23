@@ -2,7 +2,7 @@
  * irc.c -- part of irc.mod
  *   support for channels within the bot
  *
- * $Id: irc.c,v 1.6 2005/01/21 01:43:42 wcc Exp $
+ * $Id: irc.c,v 1.7 2005/07/23 22:14:21 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -436,6 +436,7 @@ static void reset_chan_info(struct chanset_t *chan)
     else
       dprintf(DP_MODE, "WHO %s\n", chan->name);
     /* clear_channel nuked the data...so */
+    dprintf(DP_MODE, "TOPIC %s\r\n", chan->name);
   }
 }
 
