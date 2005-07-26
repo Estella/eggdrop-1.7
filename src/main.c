@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.17 2005/01/21 01:43:40 wcc Exp $
+ * $Id: main.c,v 1.18 2005/07/26 03:31:29 wcc Exp $
  */
 
 #include "main.h"
@@ -48,8 +48,9 @@
 #include "dccutil.h"  /* dprintf, dcc_chatter, lostdcc, tell_dcc, new_dcc,
                        * dcc_remove_lost */
 #include "help.h"     /* add_help_reference */
-#include "logfile.h"  /* log_t, LOG_*, LF_EXPIRING, putlog, logfile_init flushlogs,
-                       * check_logsize */
+#include "logfile.h"  /* LOG_*, putlog, logfile_init, flushlogs, check_expiring_logs,
+                       * expire_all_logs, flush_and_check_logs, close_logs_at_midnight,
+                       * switch_logs, LOGS_FIVEMINUTELY, LOGS_MINUTELY */
 #include "mem.h"      /* nfree, tell_mem_status */
 #include "misc.h"     /* strncpyz, newsplit, make_rand_str */
 #include "net.h"      /* SOCK_*, getmyip, setsock, killsock, dequeue_sockets, sockgets */
@@ -77,13 +78,12 @@ void check_static(char *, char *(*)());
 
 
 extern char userfile[], botnetnick[];
-extern int dcc_total, conmask, cache_hit, cache_miss, max_logs, quick_logs,
-           protect_readonly, noshare;
+extern int dcc_total, conmask, cache_hit, cache_miss, protect_readonly, noshare,
+           switch_logfiles_at;
 extern struct dcc_t *dcc;
 extern struct userrec *userlist;
 extern struct chanset_t *chanset;
 extern module_entry *module_list;
-extern log_t *logs;
 extern Tcl_Interp *interp;
 extern tcl_timer_t *timer, *utimer;
 extern jmp_buf alarmret;
@@ -119,9 +119,6 @@ char helpdir[121] = "help/"; /* Directory of help files.  */
 char textdir[121] = "text/"; /* Directory for text files. */
 char tempdir[121] = "";      /* Directory for temp files. */
 char admin[121] = "";        /* Admin info.               */
-int keep_all_logs = 0;               /* Never erase logfiles?     */
-char logfile_suffix[21] = ".%d%b%Y"; /* Format of logfile suffix. */
-int switch_logfiles_at = 300;        /* When to switch logfiles.  */
 int make_userfile = 0;    /* Using bot in userfile-creation mode?            */
 char owner[121] = "";     /* Permanent owner(s) of the bot                   */
 int save_users_at = 0;    /* Minutes past the hour to save the userfile?     */
@@ -158,11 +155,14 @@ void fatal(const char *s, int recoverable)
 
   putlog(LOG_MISC, "*", "* %s", s);
   flushlogs();
+
   for (i = 0; i < dcc_total; i++) {
     if (dcc[i].sock >= 0)
       killsock(dcc[i].sock);
   }
+
   unlink(pid_file);
+
   if (!recoverable) {
     bg_send_quit(BG_ABORT);
     exit(1);
@@ -320,40 +320,24 @@ static void do_arg(char *s)
 
 static void readconfig()
 {
-  int i;
-  FILE *f;
   char s[161], rands[8];
+  FILE *f;
 
-  admin[0] = helpdir[0] = tempdir[0] = 0;
+  admin[0] = 0;
+  helpdir[0] = 0;
+  tempdir[0] = 0;
 
-  for (i = 0; i < max_logs; i++)
-    logs[i].flags |= LF_EXPIRING;
+  expire_all_logs();
 
   /* Turn off read-only variables (make them write-able) for rehash. */
   protect_readonly = 0;
 
-  /* Now read it */
+  /* Read the config file. */
   if (!readtclprog(configfile))
     fatal(MISC_NOCONFIGFILE, 0);
 
-  for (i = 0; i < max_logs; i++) {
-    if (!(logs[i].flags & LF_EXPIRING))
-      continue;
-    if (logs[i].filename != NULL) {
-      nfree(logs[i].filename);
-      logs[i].filename = NULL;
-    }
-    if (logs[i].chname != NULL) {
-      nfree(logs[i].chname);
-      logs[i].chname = NULL;
-    }
-    if (logs[i].f != NULL) {
-      fclose(logs[i].f);
-      logs[i].f = NULL;
-    }
-    logs[i].mask = 0;
-    logs[i].flags = 0;
-  }
+  /* Check logfiles which are expiring. */
+  check_expiring_logs();
 
   /* We should be safe now. */
   call_hook(HOOK_REHASH);
@@ -448,6 +432,7 @@ static void core_secondly()
     call_hook(HOOK_MINUTELY);
     check_expired_ignores();
     autolink_cycle(NULL); /* Attempt autolinks. */
+
     /* In case for some reason more than 1 min has passed: */
     while (nowtm.tm_min != lastmin) {
       /* Timer drift, dammit */
@@ -458,72 +443,49 @@ static void core_secondly()
     }
     if (i > 1)
       putlog(LOG_MISC, "*", "(!) timer drift -- spun %d minutes", i);
+
     miltime = (nowtm.tm_hour * 100) + nowtm.tm_min;
     if (((int) (nowtm.tm_min / 5) * 5) == nowtm.tm_min) {
       /* 5-minutely. */
       call_hook(HOOK_5MINUTELY);
       check_botnet_pings();
-      if (!quick_logs) {
-        flushlogs();
-        check_logsize();
-      }
-      if (!miltime) {
-        char s[25];
-        int j;
+      flush_and_check_logs(LOGS_FIVEMINUTELY);
 
-        /* Midnight. */
+      /* Is it midnight? */
+      if (miltime == MILTIME_MIDNIGHT) {
+        char s[25];
+
         strncpyz(s, ctime(&now), sizeof s);
         putlog(LOG_ALL, "*", "--- %.11s%s", s, s + 20);
         call_hook(HOOK_BACKUP);
-        for (j = 0; j < max_logs; j++) {
-          if (!logs[j].filename || !logs[j].f)
-            continue;
-          fclose(logs[j].f);
-          logs[j].f = NULL;
-        }
+        close_logs_at_midnight();
       }
     }
+
     if (nowtm.tm_min == notify_users_at)
       call_hook(HOOK_HOURLY);
-    /* These no longer need checking since they are all check vs minutely
-     * settings and we only get this far on the minute.
-     */
+
     if (miltime == switch_logfiles_at) {
       call_hook(HOOK_DAILY);
-      if (!keep_all_logs) {
-        putlog(LOG_MISC, "*", MISC_LOGSWITCH);
-        for (i = 0; i < max_logs; i++) {
-          if (logs[i].filename) {
-            char s[1024];
-
-            if (logs[i].f) {
-              fclose(logs[i].f);
-              logs[i].f = NULL;
-            }
-            egg_snprintf(s, sizeof s, "%s.yesterday", logs[i].filename);
-            unlink(s);
-            movefile(logs[i].filename, s);
-          }
-        }
-      }
+      switch_logs();
     }
   }
 }
 
+/* Called once a minute. */
 static void core_minutely()
 {
   check_tcl_time(&nowtm);
   check_timers(&timer);
-  if (quick_logs != 0) {
-    flushlogs();
-    check_logsize();
-  }
+  flush_and_check_logs(LOGS_MINUTELY);
 }
 
+/* Called once an hour. */
 static void core_hourly()
 {
   writeuserfile(-1);
 }
+
 
 static void event_rehash()
 {
@@ -549,6 +511,7 @@ static void event_loaded()
 {
   check_tcl_event("loaded");
 }
+
 
 void patch(const char *str)
 {
@@ -652,10 +615,12 @@ int main(int argc, char **argv)
   srandom((unsigned int) (now % (getpid() + getppid())));
   init_mem();
   init_language(1);
+
   if (argc > 1) {
     for (i = 1; i < argc; i++)
       do_arg(argv[i]);
   }
+
   printf("\n%s\n", version);
 
   init_dcc_max();
@@ -686,9 +651,11 @@ int main(int argc, char **argv)
     bg_send_quit(BG_ABORT);
     exit(1);
   }
+
   i = 0;
   for (chan = chanset; chan; chan = chan->next)
     i++;
+
   putlog(LOG_MISC, "*", "=== %s: %d channels, %d users.",
          botnetnick, i, count_users(userlist));
   cache_miss = 0;
@@ -749,10 +716,12 @@ int main(int argc, char **argv)
 #if defined(HAVE_SETPGID) && !defined(CYGWIN_HACKS)
     setpgid(0, 0);
 #endif
+
     /* Tcl wants the stdin, stdout and stderr file handles kept open. */
     freopen("/dev/null", "r", stdin);
     freopen("/dev/null", "w", stdout);
     freopen("/dev/null", "w", stderr);
+
 #ifdef CYGWIN_HACKS
     FreeConsole();
 #endif

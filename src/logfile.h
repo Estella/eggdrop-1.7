@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: logfile.h,v 1.4 2005/07/23 21:57:36 wcc Exp $
+ * $Id: logfile.h,v 1.5 2005/07/26 03:31:29 wcc Exp $
  */
 
 #ifndef _EGG_LOGFILE_H
@@ -55,6 +55,10 @@
 /* Max length of log lines. */
 #define LOGLINELEN  LOGLINEMAX + 1
 
+/* Log event time flags. */
+#define LOGS_FIVEMINUTELY 0x000001 /* Once every five minutes. */
+#define LOGS_MINUTELY     0x000002 /* Once every minute.       */
+
 typedef struct {
   char *filename;
   unsigned int mask;        /* What to send to this log.                          */
@@ -68,6 +72,11 @@ typedef struct {
 #ifndef MAKING_MODS
 void logfile_init(int);
 int logfile_expmem();
+void check_expiring_logs();
+void expire_all_logs();
+void flush_and_check_logs(int timeflag);
+void close_logs_at_midnight();
+void switch_logs();
 int logmodes(char *);
 char *masktype(int);
 char *maskname(int);

@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: logfile.c,v 1.8 2005/01/21 01:43:40 wcc Exp $
+ * $Id: logfile.c,v 1.9 2005/07/26 03:31:29 wcc Exp $
  */
 
 #include "main.h"
@@ -34,15 +34,17 @@
 
 extern struct dcc_t *dcc;
 extern char logfile_suffix[];
-extern int backgrd, con_chan, term_z, use_stderr, keep_all_logs, quick_logs,
-           dcc_total;
+extern int backgrd, con_chan, term_z, use_stderr, quick_logs, dcc_total;
 extern time_t now;
 extern Tcl_Interp *interp;
 
-log_t *logs = 0;      /* Logfiles. */
-int max_logs = 5;     /* Current maximum log files. */
-int max_logsize = 0;  /* Maximum logfile size; 0 for no limit. */
-int raw_log = 0;      /* Allow logging of raw traffic? */
+log_t *logs = 0;              /* Logfiles. */
+int max_logs = 5;             /* Current maximum log files. */
+int max_logsize = 0;          /* Maximum logfile size; 0 for no limit. */
+int raw_log = 0;              /* Allow logging of raw traffic? */
+int keep_all_logs = 0;        /* Never erase logfiles? */
+int switch_logfiles_at = 300; /* When to switch logfiles. */
+char logfile_suffix[21] = ".%d%b%Y"; /* Format of logfile suffix. */
 
 int conmask = LOG_TCLERROR | LOG_MODES | LOG_CMDS | LOG_MISC; /* Console mask. */
 
@@ -60,6 +62,91 @@ int logfile_expmem()
   tot += (max_logs * sizeof(log_t));
 
   return tot;
+}
+
+void check_expiring_logs()
+{
+  int i;
+
+  for (i = 0; i < max_logs; i++) {
+    if (!(logs[i].flags & LF_EXPIRING))
+      continue;
+
+    if (logs[i].filename != NULL) {
+      nfree(logs[i].filename);
+      logs[i].filename = NULL;
+    }
+
+    if (logs[i].chname != NULL) {
+      nfree(logs[i].chname);
+      logs[i].chname = NULL;
+    }
+
+    if (logs[i].f != NULL) {
+      fclose(logs[i].f);
+      logs[i].f = NULL;
+    }
+
+    logs[i].mask = 0;
+    logs[i].flags = 0;
+  }
+}
+
+void expire_all_logs()
+{
+  int i;
+
+  for (i = 0; i < max_logs; i++) {
+    logs[i].flags |= LF_EXPIRING;
+  }
+}
+
+void flush_and_check_logs(int timeflag)
+{
+  if ((timeflag == LOGS_FIVEMINUTELY && !quick_logs) ||
+      (timeflag == LOGS_MINUTELY && quick_logs)) {
+    flushlogs();
+    check_logsize();
+  }
+}
+
+void close_logs_at_midnight()
+{
+  int i;
+
+  for (i = 0; i < max_logs; i++) {
+    if (!logs[i].filename || !logs[i].f)
+      continue;
+
+    fclose(logs[i].f);
+    logs[i].f = NULL;
+  }
+}
+
+void switch_logs()
+{
+  int i;
+
+  if (keep_all_logs)
+    return;
+
+  putlog(LOG_MISC, "*", MISC_LOGSWITCH);
+
+  for (i = 0; i < max_logs; i++) {
+    if (logs[i].filename) {
+      char s[1024];
+
+      if (logs[i].f) {
+        fclose(logs[i].f);
+        logs[i].f = NULL;
+      }
+
+      egg_snprintf(s, sizeof s, "%s.yesterday", logs[i].filename);
+
+      unlink(s);
+      movefile(logs[i].filename, s);
+    }
+  }
 }
 
 int logmodes(char *s)

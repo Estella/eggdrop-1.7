@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: eggdrop.h,v 1.8 2005/01/21 01:43:40 wcc Exp $
+ * $Id: eggdrop.h,v 1.9 2005/07/26 03:31:29 wcc Exp $
  */
 
 #ifndef _EGG_EGGDROP_H
@@ -113,6 +113,9 @@
 #define STDOUT 1
 #define STDERR 2
 
+/* Midnight constant; this makes comparing military time to midnight more clear
+ * than just comparing it to 0. */
+#define MILTIME_MIDNIGHT 0
 
 /* Number of global partyline channels. */
 #define GLOBAL_CHANS 100000
