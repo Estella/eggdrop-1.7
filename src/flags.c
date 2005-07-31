@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: flags.c,v 1.9 2005/01/21 01:43:40 wcc Exp $
+ * $Id: flags.c,v 1.10 2005/07/31 02:57:54 wcc Exp $
  */
 
 #include "main.h"
@@ -327,6 +327,9 @@ int build_flags(char *string, struct flag_record *plus,
 
 int flagrec_ok(struct flag_record *req, struct flag_record *have)
 {
+  /* FIXME: flag masks with '&' in them won't be subject to
+   *        further tests below. Example: 'o&j'
+   */
   if (req->match & FR_AND)
     return flagrec_eq(req, have);
   else if (req->match & FR_OR) {
@@ -344,8 +347,8 @@ int flagrec_ok(struct flag_record *req, struct flag_record *have)
       }
       return 1;
     }
-    /* The +n/+m checks arent needed anymore since +n/+m
-     * automatically add lower flags
+    /* The +n/+m checks aren't needed anymore because +n/+m
+     * automatically adds lower flags
      */
     if (hav & req->global)
       return 1;
@@ -364,7 +367,7 @@ int flagrec_eq(struct flag_record *req, struct flag_record *have)
 {
   if (req->match & FR_AND) {
     if (req->match & FR_GLOBAL) {
-      if ((req->global &have->global) !=req->global)
+      if ((req->global & have->global) !=req->global)
         return 0;
       if ((req->udef_global & have->udef_global) != req->udef_global)
         return 0;
@@ -380,11 +383,11 @@ int flagrec_eq(struct flag_record *req, struct flag_record *have)
     }
     return 1;
   } else if (req->match & FR_OR) {
-    if (!req->chan && !req->global &&!req->udef_chan &&
+    if (!req->chan && !req->global && !req->udef_chan &&
         !req->udef_global && !req->bot)
       return 1;
     if (req->match & FR_GLOBAL) {
-      if (have->global &req->global)
+      if (have->global & req->global)
         return 1;
       if (have->udef_global & req->udef_global)
         return 1;

@@ -2,7 +2,7 @@
  * tclegg.h
  *   stuff used by tcl.c and tclhash.c
  *
- * $Id: tclegg.h,v 1.3 2005/01/21 01:43:40 wcc Exp $
+ * $Id: tclegg.h,v 1.4 2005/07/31 02:57:54 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -32,23 +32,20 @@
 #  include "proto.h" /* This file needs this */
 #endif
 
-/* Match types for check_tcl_bind
- */
+/* Match types for check_tcl_bind: */
 #define MATCH_PARTIAL       0
 #define MATCH_EXACT         1
 #define MATCH_MASK          2
 #define MATCH_CASE          3
 
-/* Bitwise 'or' these:
- */
-#define BIND_USE_ATTR       0x04
-#define BIND_STACKABLE      0x08
-#define BIND_HAS_BUILTINS   0x10
-#define BIND_WANTRET        0x20
-#define BIND_ALTER_ARGS     0x40
+/* Bitwise 'or' these: */
+#define BIND_USE_ATTR       0x04 /* Check flags. */
+#define BIND_STACKABLE      0x08 /* Stackable. */
+#define BIND_HAS_BUILTINS   0x10 /* ??? Used for dcc, fil, msg, pub. */
+#define BIND_WANTRET        0x20 /* Return tcl proc result. */
+#define BIND_ALTER_ARGS     0x40 /* Use return value from tcl proc as args for command. */
 
-/* Return values
- */
+/* Return values: */
 #define BIND_NOMATCH    0
 #define BIND_AMBIGUOUS  1
 #define BIND_MATCHED    2       /* But the proc couldn't be found */

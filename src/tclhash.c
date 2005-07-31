@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tclhash.c,v 1.14 2005/01/21 01:43:40 wcc Exp $
+ * $Id: tclhash.c,v 1.15 2005/07/31 02:57:54 wcc Exp $
  */
 
 #include "main.h"
@@ -685,6 +685,7 @@ static int trigger_bind(const char *proc, const char *param)
   x = Tcl_VarEval(interp, proc, param, NULL);
   Context;
   if (x == TCL_ERROR) {
+    /* FIXME: we really should be able to log longer errors */
     if (strlen(interp->result) > 400)
       interp->result[400] = 0;
     putlog(LOG_TCLERROR, "*", "Tcl error [%s]: %s", proc, interp->result);
@@ -943,8 +944,11 @@ int check_tcl_note(const char *from, const char *to, const char *text)
   Tcl_SetVar(interp, "_note1", (char *) from, 0);
   Tcl_SetVar(interp, "_note2", (char *) to, 0);
   Tcl_SetVar(interp, "_note3", (char *) text, 0);
-  x = check_tcl_bind(H_note, to, 0, " $_note1 $_note2 $_note3", MATCH_EXACT);
-  return (x == BIND_MATCHED || x == BIND_EXECUTED || x == BIND_EXEC_LOG);
+
+  x = check_tcl_bind(H_note, to, 0, " $_note1 $_note2 $_note3",
+                     MATCH_MASK | BIND_STACKABLE | BIND_WANTRET);
+
+  return (x == BIND_EXEC_LOG);
 }
 
 void check_tcl_listen(const char *cmd, int idx)
