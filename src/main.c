@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.18 2005/07/26 03:31:29 wcc Exp $
+ * $Id: main.c,v 1.19 2005/07/31 02:32:43 wcc Exp $
  */
 
 #include "main.h"
@@ -397,11 +397,15 @@ static void readconfig()
 static void rehash()
 {
   call_hook(HOOK_PRE_REHASH);
+
   noshare = 1;
   clear_userlist(userlist);
   noshare = 0;
+
   userlist = NULL;
+
   readconfig();
+  /* FIXME: We should really call post rehash here as well, instead of in readconfig(). */
 }
 
 /* Called once a second. */
@@ -411,6 +415,7 @@ static void core_secondly()
   int miltime;
 
   check_timers(&utimer); /* Secondly timers */
+
   cnt++;
   if (cnt >= 10) { /* Every 10 seconds */
     cnt = 0;
@@ -423,6 +428,7 @@ static void core_secondly()
       tell_mem_status(DP_STDOUT);
     }
   }
+
   egg_memcpy(&nowtm, localtime(&now), sizeof(struct tm));
   if (nowtm.tm_min != lastmin) {
     int i = 0;
@@ -534,6 +540,67 @@ static inline void garbage_collect()
     run_cnt++;
 }
 
+void setup_signal_traps()
+{
+  struct sigaction sv;
+
+  sv.sa_handler = got_bus;
+  sigemptyset(&sv.sa_mask);
+#ifdef SA_RESETHAND
+  sv.sa_flags = SA_RESETHAND;
+#else
+  sv.sa_flags = 0;
+#endif
+  sigaction(SIGBUS, &sv, NULL);
+
+  sv.sa_handler = got_segv;
+  sigaction(SIGSEGV, &sv, NULL);
+#ifdef SA_RESETHAND
+  sv.sa_flags = 0;
+#endif
+
+  sv.sa_handler = got_fpe;
+  sigaction(SIGFPE, &sv, NULL);
+
+  sv.sa_handler = got_term;
+  sigaction(SIGTERM, &sv, NULL);
+
+  sv.sa_handler = got_hup;
+  sigaction(SIGHUP, &sv, NULL);
+
+  sv.sa_handler = got_quit;
+  sigaction(SIGQUIT, &sv, NULL);
+
+  sv.sa_handler = SIG_IGN;
+  sigaction(SIGPIPE, &sv, NULL);
+
+  sv.sa_handler = got_ill;
+  sigaction(SIGILL, &sv, NULL);
+
+  sv.sa_handler = got_alarm;
+  sigaction(SIGALRM, &sv, NULL);
+}
+
+/* FIXME: Move me somewhere out of main.c. */
+int count_channels()
+{
+  int i = 0;
+
+  for (chan = chanset; chan; chan = chan->next) {
+    i++;
+  }
+
+  return i;
+}
+
+void process_args(int argc, char **argv)
+{
+  if (argc > 1) {
+    for (i = 1; i < argc; i++)
+      do_arg(argv[i]);
+  }
+}
+
 int main(int argc, char **argv)
 {
   int xx, i;
@@ -542,7 +609,6 @@ int main(int argc, char **argv)
 #endif
   char buf[520], s[25];
   FILE *f;
-  struct sigaction sv;
   struct chanset_t *chan;
 #ifndef ENABLE_STRIP
   struct rlimit cdlim;
@@ -578,48 +644,26 @@ int main(int argc, char **argv)
   setsysinfo(SSI_NVPAIRS, (char *) nvpair, 1, NULL, 0);
 #endif
 
-  /* Set up error traps: */
-  sv.sa_handler = got_bus;
-  sigemptyset(&sv.sa_mask);
-#ifdef SA_RESETHAND
-  sv.sa_flags = SA_RESETHAND;
-#else
-  sv.sa_flags = 0;
-#endif
-  sigaction(SIGBUS, &sv, NULL);
-  sv.sa_handler = got_segv;
-  sigaction(SIGSEGV, &sv, NULL);
-#ifdef SA_RESETHAND
-  sv.sa_flags = 0;
-#endif
-  sv.sa_handler = got_fpe;
-  sigaction(SIGFPE, &sv, NULL);
-  sv.sa_handler = got_term;
-  sigaction(SIGTERM, &sv, NULL);
-  sv.sa_handler = got_hup;
-  sigaction(SIGHUP, &sv, NULL);
-  sv.sa_handler = got_quit;
-  sigaction(SIGQUIT, &sv, NULL);
-  sv.sa_handler = SIG_IGN;
-  sigaction(SIGPIPE, &sv, NULL);
-  sv.sa_handler = got_ill;
-  sigaction(SIGILL, &sv, NULL);
-  sv.sa_handler = got_alarm;
-  sigaction(SIGALRM, &sv, NULL);
+  /* Set up error / signal traps. */
+  setup_signal_traps();
 
-  /* Initialize variables and stuff */
-  now = time(NULL);
-  chanset = NULL;
+  /* Initialize a few variables before main loop. */
+  cache_miss = 0;
+  cache_hit  = 0;
+  chanset    = NULL;
+  now        = time(NULL);
+
   egg_memcpy(&nowtm, localtime(&now), sizeof(struct tm));
   lastmin = nowtm.tm_min;
+
+  /* Initialize random number generator. */
   srandom((unsigned int) (now % (getpid() + getppid())));
+
   init_mem();
   init_language(1);
 
-  if (argc > 1) {
-    for (i = 1; i < argc; i++)
-      do_arg(argv[i]);
-  }
+  /* Process command line arguments. */
+  process_args(argc, argv);
 
   printf("\n%s\n", version);
 
@@ -642,24 +686,24 @@ int main(int argc, char **argv)
 #ifdef STATIC
   link_statics();
 #endif
+
   strncpyz(s, ctime(&now), sizeof s);
   strcpy(&s[11], &s[20]);
   putlog(LOG_ALL, "*", "--- Loading %s (%s)", ver, s);
+
+  /* Read configuration data. */
   readconfig();
+
+  /* Check for encryption module. */
   if (!encrypt_pass) {
     printf(MOD_NOCRYPT);
     bg_send_quit(BG_ABORT);
     exit(1);
   }
 
-  i = 0;
-  for (chan = chanset; chan; chan = chan->next)
-    i++;
+  putlog(LOG_MISC, "*", "=== %s: %d channels, %d users.", botnetnick,
+         count_channels(), count_users(userlist));
 
-  putlog(LOG_MISC, "*", "=== %s: %d channels, %d users.",
-         botnetnick, i, count_users(userlist));
-  cache_miss = 0;
-  cache_hit = 0;
   if (!pid_file[0])
     egg_snprintf(pid_file, sizeof pid_file, "pid.%s", botnetnick);
 
