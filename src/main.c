@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.20 2005/07/31 03:49:35 wcc Exp $
+ * $Id: main.c,v 1.21 2005/07/31 05:51:06 wcc Exp $
  */
 
 #include "main.h"
@@ -86,7 +86,7 @@ extern struct chanset_t *chanset;
 extern module_entry *module_list;
 extern Tcl_Interp *interp;
 extern tcl_timer_t *timer, *utimer;
-extern jmp_buf alarmret;
+extern sigjmp_buf alarmret;
 
 #ifdef DEBUG_CONTEXT
 extern char cx_file[16][30], cx_note[16][256];
@@ -258,7 +258,7 @@ static void got_hup(int z)
 /* A call to resolver (gethostbyname, etc) timed out. */
 static void got_alarm(int z)
 {
-  longjmp(alarmret, 1);
+  siglongjmp(alarmret, 1);
   /* Never reached. */
 }
 

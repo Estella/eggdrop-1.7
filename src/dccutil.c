@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dccutil.c,v 1.10 2005/01/21 01:43:40 wcc Exp $
+ * $Id: dccutil.c,v 1.11 2005/07/31 05:51:06 wcc Exp $
  */
 
 #include <sys/stat.h>
@@ -536,7 +536,6 @@ void set_away(int idx, char *s)
 void *_get_data_ptr(int size, char *file, int line)
 {
   char *p;
-
 #ifdef DEBUG_MEM
   char x[1024];
 

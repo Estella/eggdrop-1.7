@@ -18,7 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dns.c,v 1.8 2005/01/21 01:43:40 wcc Exp $
+ * $Id: dns.c,v 1.9 2005/07/31 05:51:06 wcc Exp $
  */
 
 #include "main.h"
@@ -40,7 +40,7 @@ extern struct dcc_t *dcc;
 extern int dcc_total;
 extern int resolve_timeout;
 extern time_t now;
-extern jmp_buf alarmret;
+extern sigjmp_buf alarmret;
 extern Tcl_Interp *interp;
 
 devent_t *dns_events = NULL;
@@ -450,7 +450,7 @@ void block_dns_hostbyip(IP ip)
   unsigned long addr = htonl(ip);
   static char s[UHOSTLEN];
 
-  if (!setjmp(alarmret)) {
+  if (!sigsetjmp(alarmret, 1)) {
     alarm(resolve_timeout);
     hp = gethostbyaddr((char *) &addr, sizeof(addr), AF_INET);
     alarm(0);
@@ -476,7 +476,7 @@ void block_dns_ipbyhost(char *host)
     call_ipbyhost(host, ntohl(inaddr.s_addr), 1);
     return;
   }
-  if (!setjmp(alarmret)) {
+  if (!sigsetjmp(alarmret, 1)) {
     struct hostent *hp;
     struct in_addr *in;
     IP ip = 0;

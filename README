@@ -1,4 +1,4 @@
-$Id: README,v 1.4 2005/01/21 01:43:37 wcc Exp $
+$Id: README,v 1.5 2005/07/31 05:51:06 wcc Exp $
 
 Readme
 Last revised: August 24, 2004
@@ -489,10 +489,10 @@ Last revised: August 24, 2004
     The files "match.c", "net.c", and "blowfish.c" are exempt from the above
     restrictions. "match.c" is original code by Chris Fuller (email:
     crf@cfox.bchs.uh.edu) and has been placed by him into the public domain.
-    "net.c" is by me, and I [who?] also choose to place it in the public
-    domain. "blowfish.c" is by various sources and is in the public domain
-    as well. All 3 files contain useful functions that could easily be
-    ported to other applications.
+    "net.c" is by me, and I [Robey Pointer] also choose to place it in the
+    public domain. "blowfish.c" is by various sources and is in the public
+    domain as well. All 3 files contain useful functions that could easily
+    be ported to other applications.
 
     Tcl is by John Ousterhout and is in no way affiliated with Eggdrop. It
     likely has its own set of copyrights and whatnots.

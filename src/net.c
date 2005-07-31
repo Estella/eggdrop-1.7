@@ -3,7 +3,23 @@
  * This is hereby released into the public domain.
  * Robey Pointer, robey@netcom.com
  *
- * $Id: net.c,v 1.13 2005/05/30 22:11:47 wcc Exp $
+ * Changes after Feb 23, 1999 Copyright Eggheads Development Team
+ *
+ * Copyright (C) 1999 - 2005 Eggheads Development Team
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
 #include <fcntl.h>
@@ -46,7 +62,7 @@ int dcc_sanitycheck = 0;      /* Do some sanity checking on dcc connections.  */
 
 sock_list *socklist = NULL;
 int MAXSOCKS = 0;
-jmp_buf alarmret;             /* Env buffer for alarm() returns.              */
+sigjmp_buf alarmret;             /* Env buffer for alarm() returns.              */
 
 /* Types of proxies */
 #define PROXY_NONE    0
@@ -327,7 +343,7 @@ static int proxy_connect(int sock, char *host, int port, int proxy)
       egg_memcpy(x, &ip, 4);
     } else {
       /* no, must be host.domain */
-      if (!setjmp(alarmret)) {
+      if (!sigsetjmp(alarmret, 1)) {
         alarm(resolve_timeout);
         hp = gethostbyname(host);
         alarm(0);
@@ -408,7 +424,7 @@ int open_telnet_raw(int sock, char *server, int sport)
   else {
     /* No, must be host.domain */
     debug0("WARNING: open_telnet_raw() is about to block in gethostbyname()!");
-    if (!setjmp(alarmret)) {
+    if (!sigsetjmp(alarmret, 1)) {
       alarm(resolve_timeout);
       hp = gethostbyname(host);
       alarm(0);

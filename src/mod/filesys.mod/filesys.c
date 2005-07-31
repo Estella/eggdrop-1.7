@@ -2,7 +2,7 @@
  * filesys.c -- part of filesys.mod
  *   main file of the filesys eggdrop module
  *
- * $Id: filesys.c,v 1.7 2005/07/31 03:49:35 wcc Exp $
+ * $Id: filesys.c,v 1.8 2005/07/31 05:51:07 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -164,8 +164,11 @@ static int check_tcl_fil(char *cmd, int idx, char *args)
     dprintf(idx, "What?  You need 'help'\n");
     return 0;
   }
-  if (x == BIND_QUIT)
+
+  /* We return 1 to leave the filesys. */
+  if (x == BIND_QUIT) /* CMD_LEAVE, 'quit' */
     return 1;
+
   if (x == BIND_EXEC_LOG)
     putlog(LOG_FILES, "*", "#%s# files: %s %s", dcc[idx].nick, cmd, args);
   return 0;
@@ -507,16 +510,22 @@ static int builtin_fil STDVAR
 
   BADARGS(4, 4, " hand idx param");
 
+  CHECKVALIDITY(builtin_fil);
   idx = findanyidx(atoi(argv[2]));
   if (idx < 0 && dcc[idx].type != &DCC_FILES) {
     Tcl_AppendResult(irp, "invalid idx", NULL);
     return TCL_ERROR;
   }
+
+  /* FIXME: This is an ugly hack. It is not documented as a
+   *        'feature' because it will eventually go away.
+   */
   if (F == CMD_LEAVE) {
     Tcl_AppendResult(irp, "break", NULL);
     return TCL_OK;
   }
-  (F) (idx, argv[3]);
+
+  F(idx, argv[3]);
   Tcl_ResetResult(irp);
   return TCL_OK;
 }

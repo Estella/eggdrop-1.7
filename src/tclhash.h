@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tclhash.h,v 1.3 2005/01/21 01:43:40 wcc Exp $
+ * $Id: tclhash.h,v 1.4 2005/07/31 05:51:07 wcc Exp $
  */
 
 #ifndef _EGG_TCLHASH_H
@@ -32,6 +32,7 @@ typedef struct tcl_cmd_b {
 
   struct flag_record flags;
   char *func_name;              /* Proc name. */
+  /* FIXME: 'hits' could overflow if a bind is triggered enough. */
   int hits;                     /* Number of times this proc was triggered. */
   u_8bit_t attributes;          /* Flags for this entry. TC_* */
 } tcl_cmd_t;
@@ -44,7 +45,7 @@ typedef struct tcl_bind_mask_b {
 
   tcl_cmd_t *first;             /* List of commands registered for this bind. */
   char *mask;
-  u_8bit_t flags;               /* Flags for this entry. TBM_*  */
+  u_8bit_t flags;               /* Flags for this entry. TBM_* */
 } tcl_bind_mask_t;
 
 
@@ -54,9 +55,8 @@ typedef struct tcl_bind_mask_b {
 typedef struct tcl_bind_list_b {
   struct tcl_bind_list_b *next;
 
-  tcl_bind_mask_t *first;       /* Pointer to registered binds
-                                 * for this list.               */
-  char name[5];                 /* Name of the bind.            */
+  tcl_bind_mask_t *first;       /* Pointer to registered binds for this list. */
+  char name[5];                 /* Name of the bind. */
   u_8bit_t flags;               /* Flags for this element. HT_* */
   Function func;                /* Function used as the Tcl calling interface
                                  * for procs actually representing C functions. */

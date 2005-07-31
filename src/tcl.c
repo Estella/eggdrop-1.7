@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcl.c,v 1.13 2005/07/23 21:57:36 wcc Exp $
+ * $Id: tcl.c,v 1.14 2005/07/31 05:51:07 wcc Exp $
  */
 
 #include <stdlib.h>             /* getenv()                             */
@@ -233,6 +233,10 @@ typedef struct {
   int *right; /* right side */
 } coupletinfo;
 
+/* FIXME: tcl_eggcouplet() should be redesigned so we can use
+ * TCL_TRACE_WRITES | TCL_TRACE_READS as the bit mask instead
+ * of 2 calls as is done in add_tcl_coups().
+ */
 /* Read/write integer couplets (int1:int2) */
 static char *tcl_eggcouplet(ClientData cdata, Tcl_Interp *irp,
                             EGG_CONST char *name1,
@@ -422,7 +426,6 @@ static char *tcl_eggstr(ClientData cdata, Tcl_Interp *irp,
  */
 
 #ifdef USE_TCL_BYTE_ARRAYS
-
 static int utf_converter(ClientData cdata, Tcl_Interp *myinterp, int objc,
                          Tcl_Obj *CONST objv[])
 {
@@ -462,7 +465,9 @@ void cmd_delete_callback(ClientData cdata)
   nfree(cdata);
   clientdata_stuff -= sizeof(void *) * 2;
 }
+#endif /* USE_TCL_BYTE_ARRAYS */
 
+#ifdef USE_TCL_BYTE_ARRAYS
 void add_tcl_commands(tcl_cmds *table)
 {
   void **cdata;
@@ -478,6 +483,18 @@ void add_tcl_commands(tcl_cmds *table)
   }
 }
 
+#else /* USE_TCL_BYTE_ARRAYS */
+
+void add_tcl_commands(tcl_cmds *table)
+{
+  int i;
+
+  for (i = 0; table[i].name; i++)
+    Tcl_CreateCommand(interp, table[i].name, table[i].func, NULL, NULL);
+}
+#endif /* USE_TCL_BYTE_ARRAYS */
+
+#ifdef USE_TCL_BYTE_ARRAYS
 void add_cd_tcl_cmds(cd_tcl_cmd *table)
 {
   void **cdata;
@@ -495,14 +512,6 @@ void add_cd_tcl_cmds(cd_tcl_cmd *table)
 
 #else /* USE_TCL_BYTE_ARRAYS */
 
-void add_tcl_commands(tcl_cmds *table)
-{
-  int i;
-
-  for (i = 0; table[i].name; i++)
-    Tcl_CreateCommand(interp, table[i].name, table[i].func, NULL, NULL);
-}
-
 void add_cd_tcl_cmds(cd_tcl_cmd *table)
 {
   while (table->name) {
@@ -511,7 +520,6 @@ void add_cd_tcl_cmds(cd_tcl_cmd *table)
     table++;
   }
 }
-
 #endif /* USE_TCL_BYTE_ARRAYS */
 
 void rem_tcl_commands(tcl_cmds *table)
@@ -530,16 +538,16 @@ void rem_cd_tcl_cmds(cd_tcl_cmd *table)
   }
 }
 
+#ifdef USE_TCL_OBJ
 void add_tcl_objcommands(tcl_cmds *table)
 {
-#ifdef USE_TCL_OBJ
   int i;
 
   for (i = 0; table[i].name; i++)
     Tcl_CreateObjCommand(interp, table[i].name, table[i].func, (ClientData) 0,
                          NULL);
-#endif /* USE_TCL_OBJ */
 }
+#endif /* USE_TCL_OBJ */
 
 static tcl_strings def_tcl_strings[] = {
   {"botnet-nick",     botnetnick,     HANDLEN,                 0},
@@ -774,7 +782,9 @@ resetPath:
   add_tcl_commands(tcluser_cmds);
   add_tcl_commands(tcldcc_cmds);
   add_tcl_commands(tclmisc_cmds);
+#ifdef USE_TCL_OBJ
   add_tcl_objcommands(tclmisc_objcmds);
+#endif /* USE_TCL_OBJ */
   add_tcl_commands(tcldns_cmds);
 }
 
@@ -782,7 +792,6 @@ void do_tcl(char *whatzit, char *script)
 {
   int code;
   char *result;
-
 #ifdef USE_TCL_ENCODING
   Tcl_DString dstr;
 #endif

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: cmds.c,v 1.18 2005/01/21 01:43:39 wcc Exp $
+ * $Id: cmds.c,v 1.19 2005/07/31 05:51:06 wcc Exp $
  */
 
 #include "main.h"
@@ -2875,7 +2875,7 @@ cmd_t C_dcc[] = {
   {"handle",    "",     (Function) cmd_handle,     NULL},
   {"nick",      "",     (Function) cmd_handle,     NULL},
   {"page",      "",     (Function) cmd_page,       NULL},
-  {"quit",      "",     (Function) NULL,           NULL},
+  {"quit",      "",     (Function) CMD_LEAVE,      NULL},
   {"rehash",    "m",    (Function) cmd_rehash,     NULL},
   {"relay",     "o",    (Function) cmd_relay,      NULL},
   {"reload",    "m|m",  (Function) cmd_reload,     NULL},
