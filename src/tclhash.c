@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tclhash.c,v 1.15 2005/07/31 02:57:54 wcc Exp $
+ * $Id: tclhash.c,v 1.16 2005/07/31 03:49:35 wcc Exp $
  */
 
 #include "main.h"
@@ -692,26 +692,28 @@ static int trigger_bind(const char *proc, const char *param)
     return BIND_EXECUTED;
   } else {
     if (!strcmp(interp->result, "break"))
-      return BIND_EXEC_BRK;
+      return BIND_QUIT;
     return (atoi(interp->result) > 0) ? BIND_EXEC_LOG : BIND_EXECUTED;
   }
 }
 
+/* FIXME: this function is very ugly and really should be redesigned */
 int check_tcl_bind(tcl_bind_list_t *tl, const char *match,
                    struct flag_record *atr, const char *param, int match_type)
 {
   tcl_bind_mask_t *tm, *tm_last = NULL, *tm_p = NULL;
-  int cnt = 0;
+  int cnt = 0, result = 0, finish = 0, atrok, x, ok;
   char *proc = NULL, *fullmatch = NULL;
   tcl_cmd_t *tc, *htc = NULL;
-  int finish = 0, atrok, x, ok;
 
   for (tm = tl->first; tm && !finish; tm_last = tm, tm = tm->next) {
     if (tm->flags & TBM_DELETED)
       continue;
+
     /* Find out whether this bind matches the mask or provides
      * the the requested atcributes, depending on the specified
-     * requirements. */
+     * requirements.
+     */
     switch (match_type & 0x03) {
     case MATCH_PARTIAL:
       ok = !egg_strncasecmp(match, tm->mask, strlen(match));
@@ -732,11 +734,14 @@ int check_tcl_bind(tcl_bind_list_t *tl, const char *match,
       continue;                 /* This bind does not match. */
 
     if (match_type & BIND_STACKABLE) {
+
       /* Could be multiple commands/triggers. */
       for (tc = tm->first; tc; tc = tc->next) {
         if (match_type & BIND_USE_ATTR) {
+
           /* Check whether the provided flags suffice for
-           * this command/trigger. */
+           * this command/trigger.
+           */
           if (match_type & BIND_HAS_BUILTINS)
             atrok = flagrec_ok(&tc->flags, atr);
           else
@@ -753,20 +758,26 @@ int check_tcl_bind(tcl_bind_list_t *tl, const char *match,
           if (match_type & BIND_ALTER_ARGS) {
             if (interp->result == NULL || !interp->result[0])
               return x;
+          } else if ((match_type & BIND_STACKRET) && x == BIND_EXEC_LOG) {
+
+            /* If we have multiple commands/triggers,
+             * and if any of the commands return 1, we accept it.
+             */
+            if (!result)
+              result = x;
+            continue;
           } else if ((match_type & BIND_WANTRET) && x == BIND_EXEC_LOG)
             return x;
         }
       }
-
-      /* If it's stackable search for more binds. */
-      if (!(match_type & BIND_STACKABLE))
-        finish = 1;
     } else {
+
       /* Search for valid entry. */
       for (tc = tm->first; tc; tc = tc->next)
         if (!(tc->attributes & TC_DELETED))
           break;
       if (tc) {
+
         /* Check if the provided flags suffice for this command/trigger. */
         if (match_type & BIND_USE_ATTR) {
           if (match_type & BIND_HAS_BUILTINS)
@@ -778,15 +789,18 @@ int check_tcl_bind(tcl_bind_list_t *tl, const char *match,
 
         if (atrok) {
           cnt++;
+
           /* Remember information about this bind and its only
-           * command/trigger. */
+           * command/trigger.
+           */
           proc = tc->func_name;
           fullmatch = tm->mask;
           htc = tc;
           tm_p = tm_last;
 
           /* Either this is a non-partial match, which means we
-           * only want to execute _one_ bind ... */
+           * only want to execute _one_ bind ...
+           */
           if ((match_type & 3) != MATCH_PARTIAL ||
               /* ... or this is happens to be an exact match. */
               !egg_strcasecmp(match, tm->mask))
@@ -798,23 +812,33 @@ int check_tcl_bind(tcl_bind_list_t *tl, const char *match,
 
   if (!cnt)
     return BIND_NOMATCH;
+
+  /* Do this before updating the preferred entries information,
+   * since we don't want to change the order of stacked binds
+   */
+  if (result)           /* BIND_STACKRET */
+    return result;
+
   if ((match_type & 0x03) == MATCH_MASK || (match_type & 0x03) == MATCH_CASE)
     return BIND_EXECUTED;
 
-  /* Now that we have found at least one bind, we can update the
-   * preferred entries information. */
+  /* Hit counter */
   if (htc)
     htc->hits++;
+
+  /* Now that we have found at least one bind, we can update the
+   * preferred entries information.
+   */
   if (tm_p) {
-    /* Move mask to front of bind's mask list. */
-    tm = tm_p->next;
-    tm_p->next = tm->next;      /* Unlink mask from list.       */
+    tm = tm_p->next;            /* Move mask to front of bind's mask list. */
+    tm_p->next = tm->next;      /* Unlink mask from list. */
     tm->next = tl->first;       /* Readd mask to front of list. */
     tl->first = tm;
   }
 
   if (cnt > 1)
     return BIND_AMBIGUOUS;
+
   Tcl_SetVar(interp, "lastbind", (char *) fullmatch, TCL_GLOBAL_ONLY);
   return trigger_bind(proc, param);
 }
@@ -843,7 +867,7 @@ int check_tcl_dcc(const char *cmd, int idx, const char *args)
     dprintf(idx, MISC_NOSUCHCMD);
     return 0;
   }
-  if (x == BIND_EXEC_BRK)
+  if (x == BIND_QUIT)
     return 1;                   /* quit */
   if (x == BIND_EXEC_LOG)
     putlog(LOG_CMDS, "*", "#%s# %s %s", dcc[idx].nick, cmd, args);

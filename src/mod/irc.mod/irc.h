@@ -1,7 +1,7 @@
 /*
  * irc.h -- part of irc.mod
  *
- * $Id: irc.h,v 1.4 2005/01/21 01:43:42 wcc Exp $
+ * $Id: irc.h,v 1.5 2005/07/31 03:49:35 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -49,7 +49,7 @@ static void check_tcl_joinspltrejn(char *, char *, struct userrec *, char *,
 static void check_tcl_part(char *, char *, struct userrec *, char *, char *);
 static void check_tcl_signtopcnick(char *, char *, struct userrec *u, char *,
                                    char *, p_tcl_bind_list);
-static void check_tcl_pubm(char *, char *, char *, char *);
+static int check_tcl_pubm(char *, char *, char *, char *);
 static int check_tcl_pub(char *, char *, char *, char *);
 static int me_op(struct chanset_t *);
 static int me_halfop(struct chanset_t *);

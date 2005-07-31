@@ -1,7 +1,7 @@
 /*
  * server.h -- part of server.mod
  *
- * $Id: server.h,v 1.3 2005/01/21 01:43:42 wcc Exp $
+ * $Id: server.h,v 1.4 2005/07/31 03:49:35 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -70,8 +70,9 @@
 #define ctcp_reply ((char *)(server_funcs[33]))
 #define get_altbotnick ((char *(*)(void))(server_funcs[34]))
 #define nick_len (*(int *)(server_funcs[35]))
-/* 36 */
+/* 36 - 37 */
 #define check_tcl_notc ((int (*)(char *,char *,struct userrec *,char *,char *))server_funcs[36])
+#define exclusive_binds (*(int *)(server_funcs[37]))
 
 #else /* MAKING_SERVER */
 

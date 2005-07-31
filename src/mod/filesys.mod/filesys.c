@@ -2,7 +2,7 @@
  * filesys.c -- part of filesys.mod
  *   main file of the filesys eggdrop module
  *
- * $Id: filesys.c,v 1.6 2005/01/21 01:43:42 wcc Exp $
+ * $Id: filesys.c,v 1.7 2005/07/31 03:49:35 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -164,7 +164,7 @@ static int check_tcl_fil(char *cmd, int idx, char *args)
     dprintf(idx, "What?  You need 'help'\n");
     return 0;
   }
-  if (x == BIND_EXEC_BRK)
+  if (x == BIND_QUIT)
     return 1;
   if (x == BIND_EXEC_LOG)
     putlog(LOG_FILES, "*", "#%s# files: %s %s", dcc[idx].nick, cmd, args);

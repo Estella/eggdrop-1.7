@@ -2,7 +2,7 @@
  * irc.c -- part of irc.mod
  *   support for channels within the bot
  *
- * $Id: irc.c,v 1.7 2005/07/23 22:14:21 wcc Exp $
+ * $Id: irc.c,v 1.8 2005/07/31 03:49:35 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -833,9 +833,10 @@ static int check_tcl_pub(char *nick, char *from, char *chname, char *msg)
   return 1;
 }
 
-static void check_tcl_pubm(char *nick, char *from, char *chname, char *msg)
+static int check_tcl_pubm(char *nick, char *from, char *chname, char *msg)
 {
   struct flag_record fr = { FR_GLOBAL | FR_CHAN, 0, 0, 0, 0, 0 };
+  int x;
   char buf[1024], host[161];
   struct userrec *u;
 
@@ -848,8 +849,20 @@ static void check_tcl_pubm(char *nick, char *from, char *chname, char *msg)
   Tcl_SetVar(interp, "_pubm3", u ? u->handle : "*", 0);
   Tcl_SetVar(interp, "_pubm4", chname, 0);
   Tcl_SetVar(interp, "_pubm5", msg, 0);
-  check_tcl_bind(H_pubm, buf, &fr, " $_pubm1 $_pubm2 $_pubm3 $_pubm4 $_pubm5",
-                 MATCH_MASK | BIND_USE_ATTR | BIND_STACKABLE);
+  x = check_tcl_bind(H_pubm, buf, &fr, " $_pubm1 $_pubm2 $_pubm3 $_pubm4 $_pubm5",
+                     MATCH_MASK | BIND_USE_ATTR | BIND_STACKABLE | BIND_STACKRET);
+
+  /*
+   * 0 - no match
+   * 1 - match, log
+   * 2 - match, don't log
+   */
+  if (x == BIND_NOMATCH)
+    return 0;
+  if (x == BIND_EXEC_LOG)
+    return 2;
+
+  return 1;
 }
 
 static void check_tcl_need(char *chname, char *type)

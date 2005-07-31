@@ -2,7 +2,7 @@
  * server.c -- part of server.mod
  *   basic irc server support
  *
- * $Id: server.c,v 1.6 2005/01/21 01:43:42 wcc Exp $
+ * $Id: server.c,v 1.7 2005/07/31 03:49:35 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -72,6 +72,8 @@ static int cycle_time;          /* cycle time till next server connect */
 static int default_port;        /* default IRC port */
 static char oldnick[NICKLEN];   /* previous nickname *before* rehash */
 static int trigger_on_ignore;   /* trigger bindings if user is ignored ? */
+static int exclusive_binds;     /* configures PUBM and MSGM binds to be
+                                 * exclusive of PUB and MSG binds. */
 static int answer_ctcp;         /* answer how many stacked ctcp's ? */
 static int lowercase_ctcp;      /* answer lowercase CTCP's (non-standard) */
 static int check_mode_r;        /* check for IRCnet +r modes */
@@ -1362,6 +1364,7 @@ static tcl_ints my_tcl_ints[] = {
   {"optimize-kicks",    &optimize_kicks,            0},
   {"isjuped",           &nick_juped,                0},
   {"stack-limit",       &stack_limit,               0},
+  {"exclusive-binds",   &exclusive_binds,           0},
   {NULL,                NULL,                       0}
 };
 
@@ -1825,8 +1828,9 @@ static Function server_table[] = {
   (Function) ctcp_reply,
   (Function) get_altbotnick,      /* char *                              */
   (Function) & nick_len,          /* int                                 */
-  /* 36 */
-  (Function) check_tcl_notc
+  /* 36 - 37 */
+  (Function) check_tcl_notc,
+  (Function) & exclusive_binds  /* int                                  */
 };
 
 char *server_start(Function *global_funcs)
@@ -1868,6 +1872,7 @@ char *server_start(Function *global_funcs)
   default_port = 6667;
   oldnick[0] = 0;
   trigger_on_ignore = 0;
+  exclusive_binds = 0;
   answer_ctcp = 1;
   lowercase_ctcp = 0;
   check_mode_r = 0;

@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.19 2005/07/31 02:32:43 wcc Exp $
+ * $Id: main.c,v 1.20 2005/07/31 03:49:35 wcc Exp $
  */
 
 #include "main.h"
@@ -585,6 +585,7 @@ void setup_signal_traps()
 int count_channels()
 {
   int i = 0;
+  struct chanset_t *chan;
 
   for (chan = chanset; chan; chan = chan->next) {
     i++;
@@ -595,6 +596,8 @@ int count_channels()
 
 void process_args(int argc, char **argv)
 {
+  int i;
+
   if (argc > 1) {
     for (i = 1; i < argc; i++)
       do_arg(argv[i]);
@@ -609,7 +612,6 @@ int main(int argc, char **argv)
 #endif
   char buf[520], s[25];
   FILE *f;
-  struct chanset_t *chan;
 #ifndef ENABLE_STRIP
   struct rlimit cdlim;
 #endif
