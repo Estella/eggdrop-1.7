@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tclhash.c,v 1.17 2005/07/31 05:51:07 wcc Exp $
+ * $Id: tclhash.c,v 1.18 2005/07/31 06:00:25 wcc Exp $
  */
 
 #include "main.h"
@@ -27,6 +27,7 @@
 #include "tclhash.h"
 #include "botmsg.h"  /* int_to_base10 */
 #include "dcc.h"     /* struct dcc_t */
+#include "cmds.h"    /* CMD_LEAVE */
 #include "dccutil.h" /* dprintf, findidx, findanyidx */
 #include "logfile.h" /* putlog, LOG_* */
 #include "match.h"   /* wild_match_per */
