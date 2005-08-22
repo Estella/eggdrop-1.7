@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.21 2005/07/31 05:51:06 wcc Exp $
+ * $Id: main.c,v 1.22 2005/08/22 03:32:33 wcc Exp $
  */
 
 #include "main.h"
@@ -87,12 +87,6 @@ extern module_entry *module_list;
 extern Tcl_Interp *interp;
 extern tcl_timer_t *timer, *utimer;
 extern sigjmp_buf alarmret;
-
-#ifdef DEBUG_CONTEXT
-extern char cx_file[16][30], cx_note[16][256];
-extern int cx_line[], cx_ptr;
-#endif
-
 
 /* Please use patch.h instead of directly altering the version string. Also
  * please read the README file regarding your rights to distribute modified
@@ -189,9 +183,7 @@ static void check_expired_dcc()
 
 static void got_bus(int z)
 {
-#ifdef DEBUG_CONTEXT
   write_debug();
-#endif
   fatal("BUS ERROR -- CRASHING!", 1);
 #ifdef SA_RESETHAND
   kill(getpid(), SIGBUS);
@@ -203,9 +195,7 @@ static void got_bus(int z)
 
 static void got_segv(int z)
 {
-#ifdef DEBUG_CONTEXT
   write_debug();
-#endif
   fatal("SEGMENT VIOLATION -- CRASHING!", 1);
 #ifdef SA_RESETHAND
   kill(getpid(), SIGSEGV);
@@ -217,9 +207,7 @@ static void got_segv(int z)
 
 static void got_fpe(int z)
 {
-#ifdef DEBUG_CONTEXT
   write_debug();
-#endif
   fatal("FLOATING POINT ERROR -- CRASHING!", 0);
 }
 
@@ -262,14 +250,10 @@ static void got_alarm(int z)
   /* Never reached. */
 }
 
-/* Got ILL signal -- log context and continue. */
+/* Got ILL signal. */
 static void got_ill(int z)
 {
   check_tcl_event("sigill");
-#ifdef DEBUG_CONTEXT
-  putlog(LOG_MISC, "*", "* Context: %s/%d [%s]", cx_file[cx_ptr],
-         cx_line[cx_ptr], (cx_note[cx_ptr][0]) ? cx_note[cx_ptr] : "");
-#endif
 }
 
 static void do_arg(char *s)
@@ -625,10 +609,6 @@ int main(int argc, char **argv)
   cdlim.rlim_max = RLIM_INFINITY;
   setrlimit(RLIMIT_CORE, &cdlim);
 #endif
-
-  /* Initialise context list */
-  for (i = 0; i < 16; i++)
-    Context;
 
 #include "patch.h"
   /* Version info! */

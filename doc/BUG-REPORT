@@ -93,25 +93,23 @@ DO NOT SEND HTML E-MAIL TO THE LISTS.
 =====================================================================
 4) BUG DETAILS
 
-4.1) The logged last context (example: Last context: userent.c/973 []):
-
-4.2) If the bot wrote to the file DEBUG, copy the text -contents- of
+4.1) If the bot wrote to the file DEBUG, copy the text -contents- of
      that file here (NOTE: It should be about 20 lines of info, but it
      could be a few lines more):
 
-4.3) Your comments and a description of the bug:
+4.2) Your comments and a description of the bug:
 
-4.4) Can you cause the bug condition to repeat? If so, please outline
+4.3) Can you cause the bug condition to repeat? If so, please outline
      step by step what causes the error:
 
-4.5) Do you have ideas on what is wrong that causes this error?
+4.4) Do you have ideas on what is wrong that causes this error?
      Please list them:
 
-4.6) Do you have ideas on how to correct it?  Please list them:
+4.5) Do you have ideas on how to correct it?  Please list them:
 
-4.7) Other comments?
+4.6) Other comments?
 
-4.8) If the bot dumped a 'core' file when it crashed, it would be *very*
+4.7) If the bot dumped a 'core' file when it crashed, it would be *very*
      useful if you could paste gdb's output during the following steps:
      First call gdb
          $ gdb eggdrop -c core

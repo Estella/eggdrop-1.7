@@ -904,8 +904,6 @@ int sockgets(char *s, int *len)
 }
 
 /* Dump something to a socket
- *
- * NOTE: Do NOT put Contexts in here if you want DEBUG to be meaningful!!
  */
 void tputs(register int z, char *s, unsigned int len)
 {

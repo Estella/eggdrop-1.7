@@ -16,14 +16,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: debug.h,v 1.3 2005/01/21 01:43:40 wcc Exp $
+ * $Id: debug.h,v 1.4 2005/08/22 03:32:33 wcc Exp $
  */
 
 #ifndef _EGG_DEBUG_H
 #define _EGG_DEBUG_H
-
-/* Undefine this to completely disable context debugging. */
-#define DEBUG_CONTEXT
 
 /* Debug log macros. */
 #define debug0(_x)                 putlog(LOG_DEBUG, "*", (_x))
@@ -31,16 +28,6 @@
 #define debug2(_x,_a1,_a2)         putlog(LOG_DEBUG, "*", (_x), (_a1), (_a2))
 #define debug3(_x,_a1,_a2,_a3)     putlog(LOG_DEBUG, "*", (_x), (_a1), (_a2), (_a3))
 #define debug4(_x,_a1,_a2,_a3,_a4) putlog(LOG_DEBUG, "*", (_x), (_a1), (_a2), (_a3), (_a4))
-
-#ifndef MAKING_MODS
-#  ifdef DEBUG_CONTEXT
-#    define Context            eggContext(__FILE__, __LINE__, NULL)
-#    define ContextNote(_note) eggContextNote(__FILE__, __LINE__, NULL, (_note))
-#  else
-#    define Context            {}
-#    define ContextNote(_note) {}
-#  endif
-#endif
 
 #ifdef DEBUG_ASSERT
 #  define Assert(_expr) do {                      \
@@ -54,10 +41,6 @@
 
 #ifndef MAKING_MODS
 void write_debug();
-#  ifdef DEBUG_CONTEXT
-void eggContext(const char *, int, const char *);
-void eggContextNote(const char *, int, const char *, const char *);
-#  endif
 #  ifdef DEBUG_ASSERT
 void eggAssert(const char *, int, const char *);
 #  endif

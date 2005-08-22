@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: modules.c,v 1.15 2005/01/21 01:43:40 wcc Exp $
+ * $Id: modules.c,v 1.16 2005/08/22 03:32:33 wcc Exp $
  */
 
 #include <ctype.h>
@@ -211,11 +211,7 @@ Function global_table[] = {
   /* 0 - 3 */
   (Function) mod_malloc,
   (Function) mod_free,
-#ifdef DEBUG_CONTEXT
-  (Function) eggContext,
-#else
   (Function) 0,
-#endif
   (Function) module_rename,
   /* 4 - 7 */
   (Function) module_register,
@@ -503,11 +499,7 @@ Function global_table[] = {
   (Function) mod_realloc,
   (Function) xtra_set,
   /* 232 - 235 */
-#ifdef DEBUG_CONTEXT
-  (Function) eggContextNote,
-#else
   (Function) 0,
-#endif
 #ifdef DEBUG_ASSERT
   (Function) eggAssert,
 #else

@@ -1,4 +1,4 @@
-$Id: MODULES,v 1.2 2005/01/21 01:43:38 wcc Exp $
+$Id: MODULES,v 1.3 2005/08/22 03:32:33 wcc Exp $
 
 Eggdrop Module Information
 Last revised: November 29, 2004
@@ -255,12 +255,6 @@ Last revised: November 29, 2004
       void nfree(void *a);
 
         This frees an nmalloc'd block of memory.
-
-      Context;
-
-        Actually a macro -- records the current position in execution (for
-        debugging). Using Context is no longer recommended, because it uses
-        too many resources and a core file provides much more information.
 
       void dprintf(int idx, char *format, ...)
 

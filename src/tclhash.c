@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tclhash.c,v 1.18 2005/07/31 06:00:25 wcc Exp $
+ * $Id: tclhash.c,v 1.19 2005/08/22 03:32:33 wcc Exp $
  */
 
 #include "main.h"
@@ -216,7 +216,6 @@ static cd_tcl_cmd cd_cmd_table[] = {
 void init_bind(void)
 {
   bind_table_list = NULL;
-  Context;
   add_cd_tcl_cmds(cd_cmd_table);
   H_unld = add_bind_table("unld", HT_STACKABLE, builtin_char);
   H_time = add_bind_table("time", HT_STACKABLE, builtin_5int);
@@ -241,7 +240,6 @@ void init_bind(void)
   add_builtins(H_dcc, traffic_dcc);
   add_builtins(H_dcc, help_dcc);
   add_builtins(H_dcc, logfile_dcc);
-  Context;
 }
 
 void kill_bind(void)
@@ -676,25 +674,9 @@ static inline int trigger_bind(const char *proc, const char *param,
                                char *mask)
 {
   int x;
-  #ifdef DEBUG_CONTEXT
-  const char *msg = "Tcl proc: %s, param: %s";
-  char *buf;
 
-  /* We now try to debug the Tcl_VarEval() call below by remembering both
-   * the called proc name and it's parameters. This should render us a bit
-   * less helpless when we see context dumps.
-   */
-  Context;
-  buf = nmalloc(strlen(msg) + (proc ? strlen(proc) : 6)
-                + (param ? strlen(param) : 6) + 1);
-  sprintf(buf, msg, proc ? proc : "<null>", param ? param : "<null>");
-  ContextNote(buf);
-  nfree(buf);
-#endif /* DEBUG_CONTEXT */
   Tcl_SetVar(interp, "lastbind", (char *) mask, TCL_GLOBAL_ONLY);
   x = Tcl_VarEval(interp, proc, param, NULL);
-  Context;
-
 
   if (x == TCL_ERROR) {
     /* FIXME: we really should be able to log longer errors */

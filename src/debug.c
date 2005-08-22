@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: debug.c,v 1.6 2005/01/21 01:43:40 wcc Exp $
+ * $Id: debug.c,v 1.7 2005/08/22 03:32:33 wcc Exp $
  */
 
 #include "main.h"
@@ -38,14 +38,8 @@
 #include "net.h"     /* setsock, killsock */
 
 
-#ifdef DEBUG_CONTEXT
 /* Did the bot crash IN write_debug()? */
 static int nested_debug = 0;
-
-/* Context storage for fatal crashes */
-char cx_file[16][30], cx_note[16][256];
-int cx_line[16], cx_ptr = 0;
-
 
 extern char ver[], egg_xtra[];
 extern time_t now;
@@ -54,16 +48,11 @@ extern Tcl_Interp *interp;
 
 void write_debug()
 {
-  int x, y;
+  int x;
   char s[25];
 
   if (nested_debug) {
-    /* Yoicks, if we have this there's serious trouble!
-     * All of these are pretty reliable, so we'll try these.
-     *
-     * NOTE: dont try and display context-notes in here, it's
-     *       _not_ safe <cybah>
-     */
+    /* We had a crash inside write_debug()... ouch. */
     x = creat("DEBUG.DEBUG", 0644);
     setsock(x, SOCK_NONSOCK);
     if (x >= 0) {
@@ -72,11 +61,6 @@ void write_debug()
       dprintf(-x, "Please report problem to bugs@eggheads.org\n");
       dprintf(-x, "after a visit to http://www.eggheads.org/bugzilla/\n");
       dprintf(-x, "Full Patch List: %s\n", egg_xtra);
-      dprintf(-x, "Context: ");
-      cx_ptr = cx_ptr & 15;
-      for (y = ((cx_ptr + 1) & 15); y != cx_ptr; y = ((y + 1) & 15))
-        dprintf(-x, "%s/%d,\n         ", cx_file[y], cx_line[y]);
-      dprintf(-x, "%s/%d\n\n", cx_file[y], cx_line[y]);
       killsock(x);
       close(x);
     }
@@ -86,10 +70,9 @@ void write_debug()
     nested_debug = 1;
   }
 
-  putlog(LOG_MISC, "*", "* Last context: %s/%d [%s]", cx_file[cx_ptr],
-         cx_line[cx_ptr], cx_note[cx_ptr][0] ? cx_note[cx_ptr] : "");
   putlog(LOG_MISC, "*", "* Please REPORT this BUG!");
   putlog(LOG_MISC, "*", "* See doc/BUG-REPORT for how to do so.");
+
   x = creat("DEBUG", 0644);
   setsock(x, SOCK_NONSOCK);
   if (x < 0) {
@@ -122,13 +105,6 @@ void write_debug()
 #ifdef STRIPFLAGS
     dprintf(-x, "Strip flags: %s\n", STRIPFLAGS);
 #endif
-    dprintf(-x, "Context: ");
-    cx_ptr = cx_ptr & 15;
-    for (y = ((cx_ptr + 1) & 15); y != cx_ptr; y = ((y + 1) & 15))
-      dprintf(-x, "%s/%d, [%s]\n         ", cx_file[y], cx_line[y],
-              (cx_note[y][0]) ? cx_note[y] : "");
-    dprintf(-x, "%s/%d [%s]\n\n", cx_file[cx_ptr], cx_line[cx_ptr],
-            (cx_note[cx_ptr][0]) ? cx_note[cx_ptr] : "");
     tell_dcc(-x);
     dprintf(-x, "\n");
     debug_mem_to_dcc(-x);
@@ -138,52 +114,19 @@ void write_debug()
   }
 }
 
-/* Called from the Context macro. */
-void eggContext(const char *file, int line, const char *module)
-{
-  char x[31], *p;
-
-  p = strrchr(file, '/');
-  if (!module)
-    strncpyz(x, p ? p + 1 : file, sizeof x);
-  else
-    egg_snprintf(x, 31, "%s:%s", module, p ? p + 1 : file);
-  cx_ptr = ((cx_ptr + 1) & 15);
-  strcpy(cx_file[cx_ptr], x);
-  cx_line[cx_ptr] = line;
-  cx_note[cx_ptr][0] = 0;
-}
-
-/* Called from the ContextNote macro. */
-void eggContextNote(const char *file, int line, const char *module,
-                    const char *note)
-{
-  char x[31], *p;
-
-  p = strrchr(file, '/');
-  if (!module)
-    strncpyz(x, p ? p + 1 : file, sizeof x);
-  else
-    egg_snprintf(x, 31, "%s:%s", module, p ? p + 1 : file);
-  cx_ptr = ((cx_ptr + 1) & 15);
-  strcpy(cx_file[cx_ptr], x);
-  cx_line[cx_ptr] = line;
-  strncpyz(cx_note[cx_ptr], note, sizeof cx_note[cx_ptr]);
-}
-#endif /* DEBUG_CONTEXT */
-
-
 #ifdef DEBUG_ASSERT
 /* Called from the Assert macro. */
 void eggAssert(const char *file, int line, const char *module)
 {
-#  ifdef DEBUG_CONTEXT
   write_debug();
-#  endif
-  if (!module)
+
+  if (!module) {
     putlog(LOG_MISC, "*", "* In file %s, line %u", file, line);
-  else
+  }
+  else {
     putlog(LOG_MISC, "*", "* In file %s:%s, line %u", module, file, line);
+  }
+
   fatal("ASSERT FAILED -- CRASHING!", 1);
 }
 #endif /* DEBUG_ASSERT */

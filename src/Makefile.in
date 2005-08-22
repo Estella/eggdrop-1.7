@@ -1,5 +1,5 @@
 # Makefile for src/
-# $Id: Makefile.in,v 1.12 2004/12/02 22:15:52 wcc Exp $
+# $Id: Makefile.in,v 1.13 2005/08/22 03:32:33 wcc Exp $
 
 SHELL = @SHELL@
 top_srcdir = @top_srcdir@
@@ -235,8 +235,8 @@ tclhash.o: tclhash.c main.h ../config.h ../lush.h eggdrop.h types.h \
   debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
   tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \
   ../src/main.h compat/snprintf.h compat/memset.h compat/memcpy.h \
-  compat/strcasecmp.h compat/strftime.h botmsg.h dcc.h dccutil.h match.h \
-  mem.h misc.h userrec.h
+  compat/strcasecmp.h compat/strftime.h botmsg.h dcc.h cmds.h dccutil.h \
+  match.h mem.h misc.h userrec.h
 tclmisc.o: tclmisc.c main.h ../config.h ../lush.h eggdrop.h types.h \
   debug.h logfile.h lang.h flags.h proto.h misc_file.h language.h \
   tclegg.h tclhash.h chan.h users.h compat/compat.h compat/inet_aton.h \

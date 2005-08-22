@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: module.h,v 1.10 2005/01/21 01:43:41 wcc Exp $
+ * $Id: module.h,v 1.11 2005/08/22 03:32:33 wcc Exp $
  */
 
 #ifndef _EGG_MOD_MODULE_H
@@ -58,8 +58,6 @@
 #undef wild_match
 #undef wild_match_per
 #undef user_realloc
-#undef Context
-#undef ContextNote
 #undef Assert
 
 /* Compability functions. */
@@ -93,11 +91,7 @@
 /* 0 - 3 */
 #define nmalloc(x) (((void *(*)())global[0])((x),MODULE_NAME,__FILE__,__LINE__))
 #define nfree(x) (global[1]((x),MODULE_NAME,__FILE__,__LINE__))
-#ifdef DEBUG_CONTEXT
-#  define Context (global[2](__FILE__, __LINE__, MODULE_NAME))
-#else
-#  define Context {}
-#endif
+/* Hole: Context stuff. */
 #define module_rename ((int (*)(char *, char *))global[3])
 /* 4 - 7 */
 #define module_register ((int (*)(char *, Function *, int, int))global[4])
@@ -385,11 +379,7 @@
 #define nrealloc(x,y) (((void *(*)())global[230])((x),(y),MODULE_NAME,__FILE__,__LINE__))
 #define xtra_set ((int(*)(struct userrec *,struct user_entry *, void *))global[231])
 /* 232 - 235 */
-#ifdef DEBUG_CONTEXT
-#  define ContextNote(note) (global[232](__FILE__, __LINE__, MODULE_NAME, note))
-#else
-#  define ContextNote(note)     do {    } while (0)
-#endif
+/* Hole: Context stuff. */
 #ifdef DEBUG_ASSERT
 #  define Assert(expr)          do {                                    \
         if (!(expr))                                                    \
