@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<!-- $Id: mod-channels.html,v 1.2 2005/01/21 01:43:38 wcc Exp $ -->
+<!-- $Id: mod-channels.html,v 1.3 2005/08/23 03:19:45 guppy Exp $ -->
 
 <html>
   <head>
@@ -509,13 +509,6 @@
                 without affecting sharing.</p>
               </dd>
 
-              <dt><strong>seen</strong></dt>
-
-              <dd>
-                <p>Respond to seen requests in the channel?  The seen module
-                must be loaded for this to work.</p>
-              </dd>
-
               <dt><strong>nodesynch</strong></dt>
 
               <dd>
@@ -559,11 +552,10 @@
         -inactive       -nodesynch
         -protectfriends +protectops
         -revenge        -revengebot
-        -secret         -seen
+	-secret         +autohalfop
         +shared         +statuslog
         +userbans       +userexempts
         +userinvites    +protecthalfops
-        +autohalfop
 </pre>
       <p><strong>}</strong></p>
     </blockquote>

@@ -1,4 +1,4 @@
-$Id: mod.channels,v 1.2 2005/01/21 01:43:38 wcc Exp $
+$Id: mod.channels,v 1.3 2005/08/23 03:19:45 guppy Exp $
 
 Channels Module
 Last revised: February 12, 2003
@@ -266,10 +266,6 @@ Last revised: February 12, 2003
           a channel without losing its settings, channel-specific user flags,
           channel bans, and without affecting sharing.
 
-        seen
-          Respond to seen requests in the channel?  The seen module must be
-          loaded for this to work.
-
         nodesynch
           Allow non-ops to perform channel modes? This can stop the bot from
           fighting with services such as ChanServ, or from kicking IRCops when
@@ -302,11 +298,10 @@ Last revised: February 12, 2003
           -inactive       -nodesynch
           -protectfriends +protectops
           -revenge        -revengebot
-          -secret         -seen
+          -secret         +autohalfop
           +shared         +statuslog
           +userbans       +userexempts
           +userinvites    +protecthalfops
-          +autohalfop
     }
 
     _____________________________________________________________________

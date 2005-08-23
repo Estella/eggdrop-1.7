@@ -135,8 +135,6 @@
                        can be useful to make the bot leave a channel without
                        losing its settings, channel-specific user flags,
                        channel bans, and without affecting sharing.
-        %bseen%b           Respond to seen requests in the channel?  The seen
-                       module must be loaded for this to work.
         %bnodesynch%b      Allow non-ops to perform channel modes? This can stop
                        the bot from fighting with services such as ChanServ, or
                        from kicking IRCops when setting channel modes without

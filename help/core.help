@@ -42,8 +42,8 @@ You can get help on individual commands: %b'.help <command>'%b.
 Extra help relating to loaded modules may be obtained by typing
 %b'.help <module> module'%b. Possible modules include:
    %bassoc      channels     compress      console      ctcp%b
-   %bfilesys    irc          notes         seen         server%b
-   %bshare      transfer     uptime        wire%b
+   %bfilesys    irc          notes         server       uptime%b
+   %bshare      transfer%b
 %{-}
 
 You may receive a list of commands provided by all loaded modules by

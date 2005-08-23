@@ -1,5 +1,0 @@
-# $Id: modinfo,v 1.1 2004/08/25 01:02:13 wcc Exp $
-DESC:This module provides all the standard .wire partyline commands. It's an
-DESC:encrypted partyline communication tool, compatible with `wire.tcl'.
-DESC:
-DESC:Most users won't need this module. If unsure ENABLE it.

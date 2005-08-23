@@ -2,7 +2,7 @@
  * cmdschan.c -- part of channels.mod
  *   commands from a user via dcc that cause server interaction
  *
- * $Id: cmdschan.c,v 1.2 2005/01/21 01:43:41 wcc Exp $
+ * $Id: cmdschan.c,v 1.3 2005/08/23 03:19:45 guppy Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -1316,9 +1316,8 @@ static void cmd_chaninfo(struct userrec *u, int idx, char *par)
             (chan->status & CHAN_SECRET) ? '+' : '-',
             (chan->status & CHAN_SHARED) ? '+' : '-');
     dprintf(idx,
-            "     %cgreet          %cseen           %ccycle          "
+            "     %cgreet           %ccycle          "
             "%cdontkickops\n", (chan->status & CHAN_GREET) ? '+' : '-',
-            (chan->status & CHAN_SEEN) ? '+' : '-',
             (chan->status & CHAN_CYCLE) ? '+' : '-',
             (chan->status & CHAN_DONTKICKOPS) ? '+' : '-');
     dprintf(idx,

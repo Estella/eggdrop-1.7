@@ -2,7 +2,7 @@
  * channels.c -- part of channels.mod
  *   support for channels within the bot
  *
- * $Id: channels.c,v 1.5 2005/01/25 17:36:19 wcc Exp $
+ * $Id: channels.c,v 1.6 2005/08/23 03:19:45 guppy Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -414,7 +414,7 @@ flood-deop %d:%d flood-nick %d:%d aop-delay %d:%d ban-time %d exempt-time %d \
 invite-time %d %cenforcebans %cdynamicbans %cuserbans %cautoop %cautohalfop \
 %cbitch %cgreet %cprotectops %cprotecthalfops %cprotectfriends %cdontkickops \
 %cstatuslog %crevenge %crevengebot %cautovoice %csecret %cshared %ccycle \
-%cseen %cinactive %cdynamicexempts %cuserexempts %cdynamicinvites \
+%cinactive %cdynamicexempts %cuserexempts %cdynamicinvites \
 %cuserinvites %cnodesynch ",
             channel_static(chan) ? "set" : "add", name, channel_static(chan) ?
             " " : " { ", w2, chan->idle_kick, chan->stopnethack_mode,
@@ -445,7 +445,6 @@ invite-time %d %cenforcebans %cdynamicbans %cuserbans %cautoop %cautohalfop \
             PLSMNS(channel_secret(chan)),
             PLSMNS(channel_shared(chan)),
             PLSMNS(channel_cycle(chan)),
-            PLSMNS(channel_seen(chan)),
             PLSMNS(channel_inactive(chan)),
             PLSMNS(channel_dynamicexempts(chan)),
             PLSMNS(!channel_nouserexempts(chan)),
@@ -647,8 +646,6 @@ static void channels_report(int idx, int details)
           i += my_strcpy(s + i, "autohalfop ");
         if (channel_cycle(chan))
           i += my_strcpy(s + i, "cycle ");
-        if (channel_seen(chan))
-          i += my_strcpy(s + i, "seen ");
         if (channel_dynamicexempts(chan))
           i += my_strcpy(s + i, "dynamicexempts ");
         if (!channel_nouserexempts(chan))
@@ -938,7 +935,6 @@ char *channels_start(Function *global_funcs)
          "-inactive "
          "-protectfriends "
          "+shared "
-         "-seen "
          "+userexempts "
          "+dynamicexempts "
          "+userinvites "

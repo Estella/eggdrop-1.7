@@ -1,7 +1,7 @@
 /*
  * tclchan.c -- part of channels.mod
  *
- * $Id: tclchan.c,v 1.3 2005/07/31 06:19:57 wcc Exp $
+ * $Id: tclchan.c,v 1.4 2005/08/23 03:19:45 guppy Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -868,10 +868,6 @@ static int tcl_channel_info(Tcl_Interp *irp, struct chanset_t *chan)
     Tcl_AppendElement(irp, "+cycle");
   else
     Tcl_AppendElement(irp, "-cycle");
-  if (chan->status & CHAN_SEEN)
-    Tcl_AppendElement(irp, "+seen");
-  else
-    Tcl_AppendElement(irp, "-seen");
   if (chan->ircnet_status & CHAN_DYNAMICEXEMPTS)
     Tcl_AppendElement(irp, "+dynamicexempts");
   else
@@ -998,7 +994,6 @@ static int tcl_channel_get(Tcl_Interp *irp, struct chanset_t *chan,
   else if CHKFLAG_POS(CHAN_SHARED, "shared", chan->status)
   else if CHKFLAG_POS(CHAN_AUTOVOICE, "autovoice", chan->status)
   else if CHKFLAG_POS(CHAN_CYCLE, "cycle", chan->status)
-  else if CHKFLAG_POS(CHAN_SEEN, "seen", chan->status)
   else if CHKFLAG_POS(CHAN_NODESYNCH, "nodesynch", chan->status)
   else if CHKFLAG_POS(CHAN_DYNAMICEXEMPTS, "dynamicexempts",
                       chan->ircnet_status)
@@ -1303,10 +1298,6 @@ static int tcl_channel_modify(Tcl_Interp *irp, struct chanset_t *chan,
       chan->status |= CHAN_CYCLE;
     else if (!strcmp(item[i], "-cycle"))
       chan->status &= ~CHAN_CYCLE;
-    else if (!strcmp(item[i], "+seen"))
-      chan->status |= CHAN_SEEN;
-    else if (!strcmp(item[i], "-seen"))
-      chan->status &= ~CHAN_SEEN;
     else if (!strcmp(item[i], "+dynamicexempts"))
       chan->ircnet_status |= CHAN_DYNAMICEXEMPTS;
     else if (!strcmp(item[i], "-dynamicexempts"))

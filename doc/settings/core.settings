@@ -1,4 +1,4 @@
-$Id: core.settings,v 1.6 2005/07/31 19:42:49 wcc Exp $
+$Id: core.settings,v 1.7 2005/08/23 03:19:45 guppy Exp $
 
 Eggdrop Core Settings
 Last revised: April 17, 2003
@@ -514,7 +514,7 @@ Last revised: April 17, 2003
       all functions for everyday use.
 
     Secure Filesys Bot:
-      This bot needs all normal IRC operating modules, but not the notes, seen,
+      This bot needs all normal IRC operating modules, but not the notes,
       ctcp or share modules.
 
     Limbo Bot:

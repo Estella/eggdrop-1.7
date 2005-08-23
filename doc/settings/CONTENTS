@@ -1,4 +1,4 @@
-$Id: CONTENTS,v 1.3 2005/01/21 01:43:38 wcc Exp $
+$Id: CONTENTS,v 1.4 2005/08/23 03:19:45 guppy Exp $
 
 Directory Contents - doc/settings/
 Last revised: November 29, 2004
@@ -40,9 +40,6 @@ Last revised: November 29, 2004
   mod.notes
     Documentation for the notes module is provided in this file.
 
-  mod.seen
-    Documentation for the seen module is provided in this file.
-
   mod.server
     Documentation for the server module is provided in this file.
 
@@ -55,8 +52,6 @@ Last revised: November 29, 2004
   mod.uptime
     Documentation for the uptime module is provided in this file.
 
-  mod.wire
-    Documentation for the wire module is provided in this file.
     ________________________________________________________________________
 
   Copyright (C) 2003 - 2005 Eggheads Development Team
