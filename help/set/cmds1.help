@@ -63,9 +63,7 @@
 ###  %bset whois-fields%b <field-list>
    Enter all user-defined fields that should be displayed in a
    '.whois'. This will only be shown if the user has one of these
-   extra fields. You might prefer to comment this out and use the
-   userinfo1.0.tcl script which provides commands for changing all
-   of these.
+   extra fields.
 %{help=set username}%{+n}
 ###  %bset username%b <username>
    This setting defines the username the bot uses on IRC. This setting

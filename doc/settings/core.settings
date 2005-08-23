@@ -1,4 +1,4 @@
-$Id: core.settings,v 1.7 2005/08/23 03:19:45 guppy Exp $
+$Id: core.settings,v 1.8 2005/08/23 03:32:27 guppy Exp $
 
 Eggdrop Core Settings
 Last revised: April 17, 2003
@@ -442,8 +442,6 @@ Last revised: April 17, 2003
     set whois-fields "url birthday"
       Enter all user-defined fields that should be displayed in a '.whois'.
       This will only be shown if the user has one of these extra fields.
-      You might prefer to comment this out and use the userinfo1.0.tcl script
-      which provides commands for changing all of these.
 
 
     set die-on-sighup 0
