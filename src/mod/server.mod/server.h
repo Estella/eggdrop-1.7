@@ -1,7 +1,7 @@
 /*
  * server.h -- part of server.mod
  *
- * $Id: server.h,v 1.4 2005/07/31 03:49:35 wcc Exp $
+ * $Id: server.h,v 1.5 2005/08/23 02:38:44 guppy Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -46,7 +46,7 @@
 #define trigger_on_ignore (*(int *)(server_funcs[14]))
 #define check_tcl_ctcpr ((int(*)(char*,char*,struct userrec*,char*,char*,char*,p_tcl_bind_list))server_funcs[15])
 /* 16 - 19 */
-#define detect_avalanche ((int(*)(char *))server_funcs[16])
+/* was detect_avalanche - 16 */
 #define nuke_server ((void(*)(char *))server_funcs[17])
 #define newserver ((char *)(server_funcs[18]))
 #define newserverport (*(int *)(server_funcs[19]))

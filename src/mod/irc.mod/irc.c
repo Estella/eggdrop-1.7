@@ -2,7 +2,7 @@
  * irc.c -- part of irc.mod
  *   support for channels within the bot
  *
- * $Id: irc.c,v 1.8 2005/07/31 03:49:35 wcc Exp $
+ * $Id: irc.c,v 1.9 2005/08/23 02:38:44 guppy Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -62,8 +62,6 @@ static int use_354 = 0;         /* Use ircu's short 354 /who responses. */
 static int kick_method = 1;     /* How many kicks does the IRC network support
                                  * at once? Use 0 for as many as possible.
                                  * (Ernst 18/3/1998) */
-static int kick_fun = 0;
-static int ban_fun = 0;
 static int keepnick = 1;        /* Keep nick */
 static int prevent_mixing = 1;  /* Prevent mixing old/new modes */
 static int rfc_compliant = 1;   /* Value depends on net-type. */
@@ -893,8 +891,6 @@ static tcl_ints myints[] = {
   {"mode-buf-length", &mode_buf_len,    0},
   {"use-354",         &use_354,         0},
   {"kick-method",     &kick_method,     0},
-  {"kick-fun",        &kick_fun,        0},
-  {"ban-fun",         &ban_fun,         0},
   {"invite-key",      &invite_key,      0},
   {"no-chanrec-info", &no_chanrec_info, 0},
   {"max-bans",        &max_bans,        0},
