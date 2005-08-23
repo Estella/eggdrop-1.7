@@ -1,4 +1,4 @@
-$Id: mod.server,v 1.5 2005/07/31 03:49:35 wcc Exp $
+$Id: mod.server,v 1.6 2005/08/23 14:52:57 guppy Exp $
 
 Server Module
 Last revised: February 12, 2003
@@ -110,13 +110,6 @@ Last revised: February 12, 2003
     set server-timeout 60
       Set here how long Eggdrop should wait for a response when connecting to
       a server before giving up and moving on to next server.
-
-
-    set servlimit 0
-      If the number of servers on the net gets below this number, the bot
-      will jump to a new server (it will assume it's on the losing end of
-      a netsplit). Set this to 0 to turn off. If your bot is running on
-      any major IRC network, this should probably be turned off.
 
 
     set check-stoned 1

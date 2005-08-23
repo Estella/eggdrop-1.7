@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcl.c,v 1.14 2005/07/31 05:51:07 wcc Exp $
+ * $Id: tcl.c,v 1.15 2005/08/23 14:52:57 guppy Exp $
  */
 
 #include <stdlib.h>             /* getenv()                             */
@@ -602,7 +602,7 @@ static tcl_ints def_tcl_ints[] = {
   {"quick-logs",            &quick_logs,           0},
   {"raw-log",               &raw_log,              1},
   {"protect-telnet",        &protect_telnet,       0},
-  {"dcc-sanitycheck",       &dcc_sanitycheck,      0},
+  {"dcc-sanitycheck",       &dcc_sanitycheck,      1},
   {"sort-users",            &sort_users,           0},
   {"ident-timeout",         &identtimeout,         0},
   {"share-unlinks",         &share_unlinks,        0},

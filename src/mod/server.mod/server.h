@@ -1,7 +1,7 @@
 /*
  * server.h -- part of server.mod
  *
- * $Id: server.h,v 1.5 2005/08/23 02:38:44 guppy Exp $
+ * $Id: server.h,v 1.6 2005/08/23 14:52:57 guppy Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -56,7 +56,7 @@
 #define default_port (*(int *)(server_funcs[22]))
 #define server_online (*(int *)(server_funcs[23]))
 /* 24 - 27 */
-#define min_servs (*(int *)(server_funcs[24]))
+/* was min_servs - 24 */
 #define H_raw (*(p_tcl_bind_list *)(server_funcs[25]))
 #define H_wall (*(p_tcl_bind_list *)(server_funcs[26]))
 #define H_msg (*(p_tcl_bind_list *)(server_funcs[27]))
