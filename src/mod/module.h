@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: module.h,v 1.13 2005/08/25 00:25:29 wcc Exp $
+ * $Id: module.h,v 1.14 2005/08/25 04:42:27 wcc Exp $
  */
 
 #ifndef _EGG_MOD_MODULE_H
@@ -269,9 +269,9 @@
 #define flush_lines ((void(*)(int,struct chat_info*))global[162])
 #define expected_memory ((int(*)(void))global[163])
 #define do_restart (*(int *)(global[164]))
-#define add_hook(a,b) (((void (*) (int, Function))global[166])(a,b))
-#define del_hook(a,b) (((void (*) (int, Function))global[167])(a,b))
-#define H_event (*(p_tcl_bind_list *)(global[213]))
+#define add_hook(a,b) (((void (*) (int, Function))global[165])(a,b))
+#define del_hook(a,b) (((void (*) (int, Function))global[166])(a,b))
+#define H_event (*(p_tcl_bind_list *)(global[167]))
 #define H_dcc (*(p_tcl_bind_list *)(global[168]))
 #define H_filt (*(p_tcl_bind_list *)(global[169]))
 /* 170 - 179 */
