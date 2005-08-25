@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: modules.c,v 1.17 2005/08/24 01:24:21 wcc Exp $
+ * $Id: modules.c,v 1.18 2005/08/25 00:25:29 wcc Exp $
  */
 
 #include <ctype.h>
@@ -389,9 +389,9 @@ Function global_table[] = {
   (Function) flush_lines,
   (Function) expected_memory,
   (Function) & do_restart,
-  (Function) check_tcl_filt,
   (Function) add_hook,
   (Function) del_hook,
+  (Function) & H_event,
   (Function) & H_dcc,
   (Function) & H_filt,
   /* 170 - 179 */
@@ -413,11 +413,11 @@ Function global_table[] = {
   (Function) & USERENTRY_HOSTS,
   (Function) & USERENTRY_PASS,
   (Function) & USERENTRY_XTRA,
-  (Function) user_del_chan,
   (Function) & USERENTRY_INFO,
   (Function) & USERENTRY_COMMENT,
-  /* 190 - 199 */
   (Function) & USERENTRY_LASTON,
+  /* 190 - 199 */
+  (Function) user_del_chan,
   (Function) putlog,
   (Function) botnet_send_chan,
   (Function) list_type_kill,
@@ -442,7 +442,7 @@ Function global_table[] = {
   (Function) & rfc_ncasecmp,
   (Function) & global_exempts,
   (Function) & global_invites,
-  (Function) & H_event,
+  (Function) check_tcl_filt,
   (Function) & use_exempts,
   (Function) & use_invites,
   (Function) & force_expire,

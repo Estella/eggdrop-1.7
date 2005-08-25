@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: module.h,v 1.12 2005/08/24 01:24:21 wcc Exp $
+ * $Id: module.h,v 1.13 2005/08/25 00:25:29 wcc Exp $
  */
 
 #ifndef _EGG_MOD_MODULE_H
@@ -269,9 +269,9 @@
 #define flush_lines ((void(*)(int,struct chat_info*))global[162])
 #define expected_memory ((int(*)(void))global[163])
 #define do_restart (*(int *)(global[164]))
-#define check_tcl_filt ((const char *(*)(int, const char *))global[165])
 #define add_hook(a,b) (((void (*) (int, Function))global[166])(a,b))
 #define del_hook(a,b) (((void (*) (int, Function))global[167])(a,b))
+#define H_event (*(p_tcl_bind_list *)(global[213]))
 #define H_dcc (*(p_tcl_bind_list *)(global[168]))
 #define H_filt (*(p_tcl_bind_list *)(global[169]))
 /* 170 - 179 */
@@ -293,11 +293,11 @@
 #define USERENTRY_HOSTS (*(struct user_entry_type *)(global[184]))
 #define USERENTRY_PASS (*(struct user_entry_type *)(global[185]))
 #define USERENTRY_XTRA (*(struct user_entry_type *)(global[186]))
-#define user_del_chan ((void(*)(char *))(global[187]))
-#define USERENTRY_INFO (*(struct user_entry_type *)(global[188]))
-#define USERENTRY_COMMENT (*(struct user_entry_type *)(global[189]))
+#define USERENTRY_INFO (*(struct user_entry_type *)(global[187]))
+#define USERENTRY_COMMENT (*(struct user_entry_type *)(global[188]))
+#define USERENTRY_LASTON (*(struct user_entry_type *)(global[189]))
 /* 190 - 199 */
-#define USERENTRY_LASTON (*(struct user_entry_type *)(global[190]))
+#define user_del_chan ((void(*)(char *))(global[190]))
 #define putlog (global[191])
 #define botnet_send_chan ((void(*)(int,char*,char*,int,char*))global[192])
 #define list_type_kill ((void(*)(struct list_type *))global[193])
@@ -322,7 +322,7 @@
 #define rfc_ncasecmp ((int(*)(char *, char *, int *))(*(Function**)(global[210])))
 #define global_exempts (*(maskrec **)(global[211]))
 #define global_invites (*(maskrec **)(global[212]))
-#define H_event (*(p_tcl_bind_list *)(global[213]))
+#define check_tcl_filt ((const char *(*)(int, const char *))global[213])
 #define use_exempts (*(int *)(global[214]))
 #define use_invites (*(int *)(global[215]))
 #define force_expire (*(int *)(global[216]))
