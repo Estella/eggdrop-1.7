@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botnet.c,v 1.12 2005/01/21 01:43:39 wcc Exp $
+ * $Id: botnet.c,v 1.13 2005/08/29 03:25:15 lordares Exp $
  */
 
 #include "main.h"
@@ -295,10 +295,17 @@ void partyaway(char *bot, int sock, char *msg)
 }
 
 /* Remove a tandem bot from the chain list. */
-void rembot(char *who)
+void rembot(char *whoin)
 {
   tand_t **ptr = &tandbot, *ptr2;
   struct userrec *u;
+  char *who = NULL;
+  size_t len = 0;
+
+  /* Need to save the nick for later as it MAY be a pointer to ptr->bot, and we free(ptr) in here. */
+  len = strlen(whoin);
+  who = nmalloc(len + 1);
+  strncpyz(who, whoin, len + 1);
 
   while (*ptr) {
     if (!egg_strcasecmp((*ptr)->bot, who))
@@ -321,6 +328,7 @@ void rembot(char *who)
   tands--;
 
   dupwait_notify(who);
+  nfree(who);
 }
 
 void remparty(char *bot, int sock)
