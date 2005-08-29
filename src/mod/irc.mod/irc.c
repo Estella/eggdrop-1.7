@@ -2,7 +2,7 @@
  * irc.c -- part of irc.mod
  *   support for channels within the bot
  *
- * $Id: irc.c,v 1.9 2005/08/23 02:38:44 guppy Exp $
+ * $Id: irc.c,v 1.10 2005/08/29 02:53:25 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -629,8 +629,8 @@ static void check_expired_chanstuff()
             }
 
         if (use_invites && channel_dynamicinvites(chan) &&
-            chan->invite_time && !(chan->channel.mode & CHANINV))
-          for (b = chan->channel.invite; b->mask[0]; b = b->next)
+            chan->invite_time && !(chan->channel.mode & CHANINV)) {
+          for (b = chan->channel.invite; b->mask[0]; b = b->next) {
             if (now - b->timer > 60 * chan->invite_time &&
                 !u_sticky_mask(chan->invites, b->mask) &&
                 !u_sticky_mask(global_invites, b->mask) &&
@@ -641,22 +641,8 @@ static void check_expired_chanstuff()
               add_mode(chan, '-', 'I', b->mask);
               b->timer = now;
             }
-
-        if (chan->idle_kick)
-          for (m = chan->channel.member; m && m->nick[0]; m = m->next)
-            if (now - m->last >= chan->idle_kick * 60 &&
-                !match_my_nick(m->nick) && !chan_issplit(m)) {
-              sprintf(s, "%s!%s", m->nick, m->userhost);
-              get_user_flagrec(m->user ? m->user : get_user_by_host(s),
-                               &fr, chan->dname);
-              if ((!(glob_bot(fr) || glob_friend(fr) || (glob_op(fr) &&
-                  !chan_deop(fr)) || chan_friend(fr) || chan_op(fr))) &&
-                  (me_op(chan) || (me_halfop(chan) && !chan_hasop(m)))) {
-                dprintf(DP_SERVER, "KICK %s %s :idle %d min\n", chan->name,
-                        m->nick, chan->idle_kick);
-                m->flags |= SENTKICK;
-              }
-            }
+          }
+        }
       }
       for (m = chan->channel.member; m && m->nick[0]; m = n) {
         n = m->next;

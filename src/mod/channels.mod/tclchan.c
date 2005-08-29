@@ -1,7 +1,7 @@
 /*
  * tclchan.c -- part of channels.mod
  *
- * $Id: tclchan.c,v 1.4 2005/08/23 03:19:45 guppy Exp $
+ * $Id: tclchan.c,v 1.5 2005/08/29 02:53:25 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -761,8 +761,6 @@ static int tcl_channel_info(Tcl_Interp *irp, struct chanset_t *chan)
 
   get_mode_protect(chan, s);
   Tcl_AppendElement(irp, s);
-  simple_sprintf(s, "%d", chan->idle_kick);
-  Tcl_AppendElement(irp, s);
   simple_sprintf(s, "%d", chan->stopnethack_mode);
   Tcl_AppendElement(irp, s);
   simple_sprintf(s, "%d", chan->revenge_mode);
@@ -906,11 +904,11 @@ static int tcl_channel_info(Tcl_Interp *irp, struct chanset_t *chan)
       args[1] = b;
       x = Tcl_Merge(2, args);
       egg_snprintf(s, sizeof s, "%s", x);
-      Tcl_Free((char *) x); 
+      Tcl_Free((char *) x);
       Tcl_AppendElement(irp, s);
     } else if (ul->type == UDEF_STR) {
       char *p = (char *) getudef(ul->values, chan->dname), *buf;
-      
+
       if (!p)
         p = "{}";
 
@@ -949,9 +947,7 @@ static int tcl_channel_get(Tcl_Interp *irp, struct chanset_t *chan,
   } else if (!strcmp(setting, "need-limit")) {
     strncpy(s, chan->need_limit, 120);
     s[120] = 0;
-  } else if (!strcmp(setting, "idle-kick"))
-    simple_sprintf(s, "%d", chan->idle_kick);
-  else if (!strcmp(setting, "stopnethack-mode"))
+  } else if (!strcmp(setting, "stopnethack-mode"))
     simple_sprintf(s, "%d", chan->stopnethack_mode);
   else if (!strcmp(setting, "revenge-mode"))
     simple_sprintf(s, "%d", chan->revenge_mode);
@@ -1167,17 +1163,7 @@ static int tcl_channel_modify(Tcl_Interp *irp, struct chanset_t *chan,
       strncpy(s, item[i], 120);
       s[120] = 0;
       set_mode_protect(chan, s);
-    } else if (!strcmp(item[i], "idle-kick")) {
-      i++;
-      if (i >= items) {
-        if (irp)
-          Tcl_AppendResult(irp, "channel idle-kick needs argument", NULL);
-        return TCL_ERROR;
-      }
-      chan->idle_kick = atoi(item[i]);
-    } else if (!strcmp(item[i], "dont-idle-kick"))
-      chan->idle_kick = 0;
-    else if (!strcmp(item[i], "stopnethack-mode")) {
+    } else if (!strcmp(item[i], "stopnethack-mode")) {
       i++;
       if (i >= items) {
         if (irp)
@@ -1878,7 +1864,6 @@ static int tcl_channel_add(Tcl_Interp *irp, char *newname, char *options)
     chan->ban_time = global_ban_time;
     chan->exempt_time = global_exempt_time;
     chan->invite_time = global_invite_time;
-    chan->idle_kick = global_idle_kick;
     chan->aop_min = global_aop_min;
     chan->aop_max = global_aop_max;
 

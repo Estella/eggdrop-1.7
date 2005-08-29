@@ -2,7 +2,7 @@
  * cmdschan.c -- part of channels.mod
  *   commands from a user via dcc that cause server interaction
  *
- * $Id: cmdschan.c,v 1.3 2005/08/23 03:19:45 guppy Exp $
+ * $Id: cmdschan.c,v 1.4 2005/08/29 02:53:25 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -1269,10 +1269,6 @@ static void cmd_chaninfo(struct userrec *u, int idx, char *par)
             channel_static(chan) ? "static" : "dynamic", chan->dname);
     get_mode_protect(chan, work);
     dprintf(idx, "Protect modes (chanmode): %s\n", work[0] ? work : "None");
-    if (chan->idle_kick)
-      dprintf(idx, "Idle Kick after (idle-kick): %d\n", chan->idle_kick);
-    else
-      dprintf(idx, "Idle Kick after (idle-kick): DON'T!\n");
     if (chan->stopnethack_mode)
       dprintf(idx, "stopnethack-mode: %d\n", chan->stopnethack_mode);
     else
@@ -1484,8 +1480,7 @@ static void cmd_chanset(struct userrec *u, int idx, char *par)
       list[0] = newsplit(&par);
       answers[0] = 0;
       while (list[0][0]) {
-        if (list[0][0] == '+' || list[0][0] == '-' ||
-            (!strcmp(list[0], "dont-idle-kick"))) {
+        if (list[0][0] == '+' || list[0][0] == '-') {
           if (tcl_channel_modify(0, chan, 1, list) == TCL_OK) {
             strcat(answers, list[0]);
             strcat(answers, " ");

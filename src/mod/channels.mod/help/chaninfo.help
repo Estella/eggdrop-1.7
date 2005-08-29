@@ -4,8 +4,6 @@
      It shows any of the following:
         %bchanmode%b   These modes are enforced on the channel. Both + and -
                    modes can be enforced.
-        %bidle-kick%b  Kick idle users that are not +f or above on the channel
-                   after how many minutes (set this to 0 to disable).
 %{+n}
         %bATTENTION:%b Due to security concerns, only permanent owners can set
                    the need-* modes.

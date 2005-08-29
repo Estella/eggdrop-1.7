@@ -3,7 +3,7 @@
  *   stuff common to chan.c and mode.c
  *   users.h needs to be loaded too
  *
- * $Id: chan.h,v 1.4 2005/08/23 03:19:45 guppy Exp $
+ * $Id: chan.h,v 1.5 2005/08/29 02:53:25 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -177,7 +177,6 @@ struct chanset_t {
   int aop_max;
   int status;
   int ircnet_status;
-  int idle_kick;
   int stopnethack_mode;
   int revenge_mode;
   int ban_time;

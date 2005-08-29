@@ -2,7 +2,7 @@
  * channels.c -- part of channels.mod
  *   support for channels within the bot
  *
- * $Id: channels.c,v 1.6 2005/08/23 03:19:45 guppy Exp $
+ * $Id: channels.c,v 1.7 2005/08/29 02:53:25 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -37,9 +37,8 @@ static char *lastdeletedmask;
 static struct udef_struct *udef;
 
 static int setstatic, use_info, chan_hack, quiet_save, global_revenge_mode,
-           global_stopnethack_mode, global_idle_kick, global_aop_min,
-           global_aop_max, global_ban_time, global_exempt_time,
-           global_invite_time;
+           global_stopnethack_mode, global_aop_min, global_aop_max,
+           global_ban_time, global_exempt_time, global_invite_time;
 
 /* Global channel settings (drummer/dw) */
 static char glob_chanset[512];
@@ -407,7 +406,7 @@ static void write_channels()
     convert_element(chan->need_limit, need5);
     /* Do not indent me (adds extra spaces to chan file). */
     fprintf(f,
-"channel %s %s%schanmode %s idle-kick %d stopnethack-mode %d revenge-mode %d \
+"channel %s %s%schanmode %s stopnethack-mode %d revenge-mode %d \
 need-op %s need-invite %s need-key %s need-unban %s need-limit %s \
 flood-chan %d:%d flood-ctcp %d:%d flood-join %d:%d flood-kick %d:%d \
 flood-deop %d:%d flood-nick %d:%d aop-delay %d:%d ban-time %d exempt-time %d \
@@ -417,7 +416,7 @@ invite-time %d %cenforcebans %cdynamicbans %cuserbans %cautoop %cautohalfop \
 %cinactive %cdynamicexempts %cuserexempts %cdynamicinvites \
 %cuserinvites %cnodesynch ",
             channel_static(chan) ? "set" : "add", name, channel_static(chan) ?
-            " " : " { ", w2, chan->idle_kick, chan->stopnethack_mode,
+            " " : " { ", w2, chan->stopnethack_mode,
             chan->revenge_mode, need1, need2, need3, need4, need5,
             chan->flood_pub_thr, chan->flood_pub_time,
             chan->flood_ctcp_thr, chan->flood_ctcp_time,
@@ -671,9 +670,6 @@ static void channels_report(int idx, int details)
         if (chan->need_key[0])
           dprintf(idx, "      To get the channel key, I do: %s\n",
                   chan->need_key);
-        if (chan->idle_kick)
-          dprintf(idx, "      Kicking idle users after %d minute%s\n",
-                  chan->idle_kick, (chan->idle_kick != 1) ? "s" : "");
         if (chan->stopnethack_mode)
           dprintf(idx, "      stopnethack-mode: %d\n", chan->stopnethack_mode);
         if (chan->revenge_mode)
@@ -779,7 +775,6 @@ static tcl_ints my_tcl_ints[] = {
   {"quiet-save",              &quiet_save,              0},
   {"global-stopnethack-mode", &global_stopnethack_mode, 0},
   {"global-revenge-mode",     &global_revenge_mode,     0},
-  {"global-idle-kick",        &global_idle_kick,        0},
   {"global-ban-time",         &global_ban_time,         0},
   {"global-exempt-time",      &global_exempt_time,      0},
   {"global-invite-time",      &global_invite_time,      0},
@@ -902,7 +897,6 @@ char *channels_start(Function *global_funcs)
   gfld_join_time = 60;
   gfld_ctcp_thr = 5;
   gfld_ctcp_time = 60;
-  global_idle_kick = 0;
   global_aop_min = 5;
   global_aop_max = 30;
   setstatic = 0;
