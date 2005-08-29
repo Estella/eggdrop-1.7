@@ -214,13 +214,13 @@ See also: console, devoice
       %badduser      deluser      reset%b
 
    Config file variables for configuring the irc module:
-      %blearn-users     wait-info           mode-buf-length%b
+      %bwait-info       prevent-mixing      mode-buf-length%b
       %bbounce-bans     max-bans            wait-split%b
       %bbounce-modes    use-354             bounce-invites%b
       %bmax-exempts     max-modes           bounce-exempts%b
       %bmax-invites     kick-method         modes-per-line%b
       %bno-chanrec-info ctcp-mode           strict-ident%b
-      %bkeep-nick       include-lk          prevent-mixing%b
+      %bkeep-nick       include-lk%b
    (Use %b'.help set <variable>'%b for more info)
 %{help=all}%{+o|o}
 ###  %birc module%b commands

@@ -1,9 +1,3 @@
-%{help=set learn-users}%{+n}
-###  %bset learn-users%b <0/1>
-   specifies whether the bot will add users on the fly when they
-   send the "hello" msg.  if turned off, the only way to add users
-   is with the %b'.adduser'%b or %b'.+user'%b commands.  if turned on,
-   users can introduce themselves without your intervention.
 %{help=set wait-split}%{+n}
 ### %bset wait-split%b <#>
    allows you to set the number of seconds to wait before

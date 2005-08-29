@@ -2,7 +2,7 @@
  * irc.c -- part of irc.mod
  *   support for channels within the bot
  *
- * $Id: irc.c,v 1.10 2005/08/29 02:53:25 wcc Exp $
+ * $Id: irc.c,v 1.11 2005/08/29 03:12:28 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -52,7 +52,6 @@ static int bounce_bans = 1;
 static int bounce_exempts = 0;
 static int bounce_invites = 0;
 static int bounce_modes = 0;
-static int learn_users = 0;
 static int wait_info = 15;
 static int invite_key = 1;
 static int no_chanrec_info = 0;
@@ -866,7 +865,6 @@ static tcl_strings mystrings[] = {
 };
 
 static tcl_ints myints[] = {
-  {"learn-users",     &learn_users,     0}, /* arthur2 */
   {"wait-split",      &wait_split,      0},
   {"wait-info",       &wait_info,       0},
   {"bounce-bans",     &bounce_bans,     0},

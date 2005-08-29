@@ -2,7 +2,7 @@
  * msgcmds.c -- part of irc.mod
  *   all commands entered via /MSG
  *
- * $Id: msgcmds.c,v 1.5 2005/01/21 01:43:42 wcc Exp $
+ * $Id: msgcmds.c,v 1.6 2005/08/29 03:12:28 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -31,7 +31,7 @@ static int msg_hello(char *nick, char *h, struct userrec *u, char *p)
   int atr = 0;
   struct chanset_t *chan;
 
-  if (!learn_users && !make_userfile)
+  if (!make_userfile)
     return 0;
 
   if (match_my_nick(nick))
@@ -39,11 +39,14 @@ static int msg_hello(char *nick, char *h, struct userrec *u, char *p)
 
   if (u) {
     atr = u->flags;
+
     if (!(atr & USER_COMMON)) {
       dprintf(DP_HELP, "NOTICE %s :%s, %s.\n", nick, IRC_HI, u->handle);
+
       return 1;
     }
   }
+
   strncpyz(handle, nick, sizeof(handle));
   if (get_user_by_handle(userlist, handle)) {
     dprintf(DP_HELP, IRC_BADHOST1, nick);
@@ -540,13 +543,9 @@ static int msg_help(char *nick, char *host, struct userrec *u, char *par)
 
   if (!u) {
     if (!quiet_reject) {
-      if (!learn_users)
-        dprintf(DP_HELP, "NOTICE %s :No access\n", nick);
-      else {
-        dprintf(DP_HELP, "NOTICE %s :%s\n", nick, IRC_DONTKNOWYOU);
-        dprintf(DP_HELP, "NOTICE %s :/MSG %s hello\n", nick, botname);
-      }
+      dprintf(DP_HELP, "NOTICE %s :No access\n", nick);
     }
+
     return 0;
   }
 
