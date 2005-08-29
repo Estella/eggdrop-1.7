@@ -1,5 +1,5 @@
 /* sample.c
- * 
+ *
  * Originally written by ButchBub         15 July     1997
  * Comments by Fabian Knittel             29 December 1999
  *
@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: sample.c,v 1.2 2005/01/21 01:43:38 wcc Exp $
+ * $Id: sample.c,v 1.3 2005/08/29 04:04:27 wcc Exp $
  */
 
 #define MODULE_NAME "sample"

@@ -1,7 +1,7 @@
 /*
  * servmsg.c -- part of server.mod
  *
- * $Id: servmsg.c,v 1.7 2005/08/23 14:52:57 guppy Exp $
+ * $Id: servmsg.c,v 1.8 2005/08/29 04:04:27 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -622,7 +622,7 @@ static int gotnotice(char *from, char *msg)
       }
       return 0;
     }
-    
+
     /* Server notice? */
     if ((nick[0] == 0) || (uhost[0] == 0)) {
 

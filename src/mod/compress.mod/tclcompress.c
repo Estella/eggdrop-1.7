@@ -4,7 +4,7 @@
  *
  * Written by Fabian Knittel <fknittel@gmx.de>
  *
- * $Id: tclcompress.c,v 1.2 2005/01/21 01:43:41 wcc Exp $
+ * $Id: tclcompress.c,v 1.3 2005/08/29 04:04:27 wcc Exp $
  */
 /*
  * Copyright (C) 2000 - 2005 Eggheads Development Team
@@ -99,7 +99,7 @@ static int tcl_iscompressed STDVAR
   int result;
 
   BADARGS(2, 2, " compressed-file");
-  
+
   result = is_compressedfile(argv[1]);
   if (result == COMPF_UNCOMPRESSED)
     Tcl_AppendResult(irp, "0", NULL);  /* Uncompressed.        */

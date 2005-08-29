@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tclhash.c,v 1.19 2005/08/22 03:32:33 wcc Exp $
+ * $Id: tclhash.c,v 1.20 2005/08/29 04:04:27 wcc Exp $
  */
 
 #include "main.h"
@@ -647,7 +647,7 @@ static int builtin_dcc STDVAR
   }
   /* FIXME: This is an ugly hack. It is not documented as a
    *        'feature' because it will eventually go away.
-   */ 
+   */
   if (F == CMD_LEAVE) {
     Tcl_AppendResult(irp, "break", NULL);
     return TCL_OK;
