@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.h,v 1.7 2005/01/21 01:43:40 wcc Exp $
+ * $Id: dcc.h,v 1.8 2005/08/29 03:08:29 lordares Exp $
  */
 
 #ifndef _EGG_DCC_H
@@ -99,7 +99,7 @@ struct dcc_table {
   void (*eof) (int);
   void (*activity) (int, char *, int);
   int *timeout_val;
-  void (*timeout) ();
+  void (*timeout) (int);
   void (*display) (int, char *);
   int (*expmem) (void *);
   void (*kill) (int, void *);
