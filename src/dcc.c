@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.c,v 1.14 2005/01/21 01:43:39 wcc Exp $
+ * $Id: dcc.c,v 1.15 2005/08/29 03:03:20 lordares Exp $
  */
 
 #include "main.h"
@@ -1162,7 +1162,7 @@ static void dcc_telnet_hostresolved(int i)
   if (dcc[idx].host[0] == '@') {
     /* Restrict by hostname */
     if (!wild_match(dcc[idx].host + 1, dcc[i].host)) {
-      putlog(LOG_BOTS, "*", DCC_BADHOST, s);
+      putlog(LOG_BOTS, "*", DCC_BADHOST, dcc[i].host);
       killsock(dcc[i].sock);
       lostdcc(i);
       return;
