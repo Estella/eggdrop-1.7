@@ -2,7 +2,7 @@
  * chancmds.c -- part of irc.mod
  *   handles commands directly relating to channel interaction
  *
- * $Id: cmdsirc.c,v 1.4 2005/01/21 01:43:42 wcc Exp $
+ * $Id: cmdsirc.c,v 1.5 2005/08/29 03:10:14 lordares Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -617,7 +617,6 @@ static void cmd_devoice(struct userrec *u, int idx, char *par)
     dprintf(idx, "%s is not on %s.\n", nick, chan->dname);
     return;
   }
-  egg_snprintf(s, sizeof s, "%s!%s", m->nick, m->userhost);
   add_mode(chan, '-', 'v', nick);
   dprintf(idx, "Devoiced %s on %s\n", nick, chan->dname);
 }
