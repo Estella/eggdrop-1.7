@@ -131,11 +131,6 @@
    ".[2 digit day][3 letter month][4 digit year]". Note that your
    quota/hard-disk might be filled by this, so check your logfiles
    often and download them.
-%{help=set open-telnets}%{+n}
-###  %bset open-telnets%b <0/1>
-   If you want people allow to telnet in and type 'NEW' to become a
-   new user, set this to 1. This is similar to the 'hello' msg
-   command. The protect-telnet setting must be set to 0 to use this.
 %{help=set stealth-telnets}%{+n}
 ###  %bset stealth-telnets%b <0/1>
    If you don't want Eggdrop to identify itself as an eggdrop on a

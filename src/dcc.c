@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dcc.c,v 1.15 2005/08/29 03:03:20 lordares Exp $
+ * $Id: dcc.c,v 1.16 2005/08/29 03:21:10 wcc Exp $
  */
 
 #include "main.h"
@@ -60,7 +60,6 @@ extern int egg_numver, connect_timeout, conmask, backgrd, max_dcc, raw_log,
 
 struct dcc_t *dcc = NULL;   /* DCC list                                      */
 int dcc_total = 0;          /* Total dcc's                                   */
-int allow_new_telnets = 0;  /* Allow new users to add themselves via telnet? */
 int stealth_telnets = 0;    /* Just display 'Nickname' prompt for telnets.   */
 int use_telnet_banner = 0;  /* Display telnet banner?                        */
 int password_timeout = 180; /* Time to wait for a password from a user.      */
@@ -1357,8 +1356,7 @@ static void dcc_telnet_id(int idx, char *buf, int atr)
     return;
   }
   dcc[idx].status &= ~(STAT_BOTONLY | STAT_USRONLY);
-  if ((!egg_strcasecmp(buf, "NEW")) && ((allow_new_telnets) ||
-      (make_userfile))) {
+  if (!egg_strcasecmp(buf, "NEW") && make_userfile) {
     dcc[idx].type = &DCC_TELNET_NEW;
     dcc[idx].timeval = now;
     dprintf(idx, "\n");
@@ -2049,12 +2047,11 @@ static void dcc_telnet_got_ident(int i, char *host)
   /* This is so we dont tell someone doing a portscan anything
    * about ourselves. <cybah>
    */
-  if (stealth_telnets)
+  if (stealth_telnets) {
     sub_lang(i, MISC_BANNER_STEALTH);
+  }
   else {
     dprintf(i, "\n\n");
     sub_lang(i, MISC_BANNER);
   }
-  if (allow_new_telnets)
-    dprintf(i, "(If you are new, enter 'NEW' here.)\n");
 }

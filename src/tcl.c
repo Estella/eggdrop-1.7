@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcl.c,v 1.15 2005/08/23 14:52:57 guppy Exp $
+ * $Id: tcl.c,v 1.16 2005/08/29 03:21:10 wcc Exp $
  */
 
 #include <stdlib.h>             /* getenv()                             */
@@ -53,13 +53,13 @@ extern char origbotname[], botuser[], motdfile[], admin[], userfile[],
             egg_version[], natip[], configfile[], logfile_suffix[], textdir[],
             pid_file[];
 extern int flood_telnet_thr, flood_telnet_time, conmask, keep_all_logs, tands,
-           allow_new_telnets, stealth_telnets, default_flags, use_telnet_banner,
+           stealth_telnets, default_flags, use_telnet_banner, userfile_perm,
            switch_logfiles_at, connect_timeout, strict_ident, firewallport,
            notify_users_at, flood_thr, ignore_time, raw_log, reserved_port_min,
            reserved_port_max, die_on_sighup, die_on_sigterm, max_logs,
            dcc_total, max_logsize, identtimeout, dcc_sanitycheck, dupwait_timeout,
            egg_numver, share_unlinks, protect_telnet, sort_users, resolve_timeout,
-           default_uflags, userfile_perm;
+           default_uflags;
 extern struct dcc_t *dcc;
 
 Tcl_Interp *interp;
@@ -586,7 +586,6 @@ static tcl_ints def_tcl_ints[] = {
   {"connect-timeout",       &connect_timeout,      0},
   {"reserved-port",         &reserved_port_min,    0},
   {"keep-all-logs",         &keep_all_logs,        0},
-  {"open-telnets",          &allow_new_telnets,    0},
   {"stealth-telnets",       &stealth_telnets,      0},
   {"use-telnet-banner",     &use_telnet_banner,    0},
   {"uptime",                (int *) &online_since, 2},

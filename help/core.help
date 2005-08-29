@@ -168,7 +168,6 @@ connect-timeout
 resolve-timeout
 dupwait-timeout
 keep-all-logs
-open-telnets
 stealth-telnets
 handlen
 reserved-portrange

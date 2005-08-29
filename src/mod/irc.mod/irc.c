@@ -2,7 +2,7 @@
  * irc.c -- part of irc.mod
  *   support for channels within the bot
  *
- * $Id: irc.c,v 1.11 2005/08/29 03:12:28 wcc Exp $
+ * $Id: irc.c,v 1.12 2005/08/29 03:21:10 wcc Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -577,10 +577,10 @@ static void check_expired_chanstuff()
   memberlist *m, *n;
   char s[UHOSTLEN];
   struct chanset_t *chan;
-  struct flag_record fr = { FR_GLOBAL | FR_CHAN, 0, 0, 0, 0, 0 };
 
   if (!server_online)
     return;
+
   for (chan = chanset; chan; chan = chan->next) {
     if (channel_active(chan)) {
       if (me_op(chan) || me_halfop(chan)) {
