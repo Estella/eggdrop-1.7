@@ -2,7 +2,7 @@
  * channels.c -- part of channels.mod
  *   support for channels within the bot
  *
- * $Id: channels.c,v 1.7 2005/08/29 02:53:25 wcc Exp $
+ * $Id: channels.c,v 1.8 2005/08/29 03:06:47 lordares Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -307,7 +307,7 @@ static void remove_channel(struct chanset_t *chan)
   user_del_chan(chan->dname);
   noshare = 0;
   nfree(chan->channel.key);
-  for (i = 0; i < 6 && chan->cmode[i].op; i++)
+  for (i = 0; i < MODES_PER_LINE_MAX && chan->cmode[i].op; i++)
     nfree(chan->cmode[i].op);
   if (chan->key)
     nfree(chan->key);
@@ -716,7 +716,7 @@ static int channels_expmem()
     tot += expmem_masklist(chan->channel.exempt);
     tot += expmem_masklist(chan->channel.invite);
 
-    for (i = 0; i < 6 && chan->cmode[i].op; i++)
+    for (i = 0; i < MODES_PER_LINE_MAX && chan->cmode[i].op; i++)
       tot += strlen(chan->cmode[i].op) + 1;
     if (chan->key)
       tot += strlen(chan->key) + 1;
