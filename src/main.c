@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.22 2005/08/22 03:32:33 wcc Exp $
+ * $Id: main.c,v 1.23 2005/08/31 02:35:13 wcc Exp $
  */
 
 #include "main.h"
@@ -258,7 +258,7 @@ static void got_ill(int z)
 
 static void do_arg(char *s)
 {
-  char x[1024], *z = x;
+  char x[512], *z = x;
   int i;
 
   if (s[0] == '-') {
