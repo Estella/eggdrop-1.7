@@ -3,6 +3,9 @@
 #ifndef _EGG_CONFIG_H
 #define _EGG_CONFIG_H
 
+/* Define if running on Mac OS X with dns.mod. */
+#undef BIND_8_COMPAT
+
 /* Define to use Eggdrop's snprintf functions regardless of HAVE_SNPRINTF. */
 #undef BROKEN_SNPRINTF
 
