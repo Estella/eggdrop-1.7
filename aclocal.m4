@@ -16,7 +16,7 @@ dnl You should have received a copy of the GNU General Public License
 dnl along with this program; if not, write to the Free Software
 dnl Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 dnl
-dnl $Id: aclocal.m4,v 1.3 2005/01/21 01:43:37 wcc Exp $
+dnl $Id: aclocal.m4,v 1.4 2005/08/31 02:15:54 wcc Exp $
 dnl
 
 
@@ -723,6 +723,7 @@ AC_DEFUN([EGG_CHECK_OS],
       # Mac OS X
       SHLIB_CC="$CC -fPIC"
       SHLIB_LD="ld -bundle -undefined error"
+      AC_DEFINE(BIND_8_COMPAT, 1, [Define if running on Mac OS X with dns.mod.])
     ;;
     *)
       if test -r /mach; then
