@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botnet.c,v 1.13 2005/08/29 03:25:15 lordares Exp $
+ * $Id: botnet.c,v 1.14 2005/09/02 02:46:06 lordares Exp $
  */
 
 #include "main.h"
@@ -314,6 +314,7 @@ void rembot(char *whoin)
   }
   if (!*ptr) {
     /* May have just .unlink *'d. */
+    nfree(who);
     return;
   }
   check_tcl_disc(who);
