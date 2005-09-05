@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.23 2005/08/31 02:35:13 wcc Exp $
+ * $Id: main.c,v 1.24 2005/09/05 03:27:09 wcc Exp $
  */
 
 #include "main.h"
@@ -298,8 +298,9 @@ static void do_arg(char *s)
       }
     }
   }
-  else
+  else {
     strncpyz(configfile, s, sizeof configfile);
+  }
 }
 
 static void readconfig()
@@ -783,6 +784,8 @@ int main(int argc, char **argv)
   add_help_reference("cmds1.help");
   add_help_reference("cmds2.help");
   add_help_reference("core.help");
+
+  /* Create hooks. */
   add_hook(HOOK_SECONDLY, (Function) core_secondly);
   add_hook(HOOK_MINUTELY, (Function) core_minutely);
   add_hook(HOOK_HOURLY, (Function) core_hourly);
@@ -803,14 +806,13 @@ int main(int argc, char **argv)
 #ifdef USE_TCL_EVENTS
     /* Process a single Tcl event. */
     Tcl_DoOneEvent(TCL_ALL_EVENTS | TCL_DONT_WAIT);
-#endif /* USE_TCL_EVENTS */
+#endif
 
-    /* Lets move some of this here, reducing the numer of actual
-     * calls to periodic_timers
-     */
     now = time(NULL);
-    random();                   /* Woop, lets really jumble things */
-    if (now != then) {          /* Once a second */
+    random();
+
+    /* Every second... */
+    if (now != then) {
       call_hook(HOOK_SECONDLY);
       then = now;
     }
@@ -825,49 +827,57 @@ int main(int argc, char **argv)
       /* Check for server or dcc activity. */
       dequeue_sockets();
     }
-    else
+    else {
       socket_cleanup--;
+    }
 
     /* Free unused structures. */
     garbage_collect();
 
     xx = sockgets(buf, &i);
-    if (xx >= 0) {              /* Non-error */
+    if (xx >= 0) { /* Non-error */
       int idx;
 
       for (idx = 0; idx < dcc_total; idx++) {
-        if (dcc[idx].sock == xx) {
-          if (dcc[idx].type && dcc[idx].type->activity) {
-            traffic_update_in(dcc[idx].type, (strlen(buf) + 1)); /* Traffic stats. */
-            dcc[idx].type->activity(idx, buf, i);
-          }
-          else
-            putlog(LOG_MISC, "*",
-                   "!!! untrapped dcc activity: type %s, sock %d",
-                   dcc[idx].type->name, dcc[idx].sock);
-          break;
+        if (dcc[idx].sock != xx)
+          continue;
+
+        if (dcc[idx].type && dcc[idx].type->activity) {
+          traffic_update_in(dcc[idx].type, (strlen(buf) + 1)); /* Traffic stats. */
+          dcc[idx].type->activity(idx, buf, i);
         }
+        else {
+          putlog(LOG_MISC, "*", "!!! untrapped dcc activity: type %s, sock %d",
+                 dcc[idx].type->name, dcc[idx].sock);
+        }
+
+        break;
       }
     }
-    else if (xx == -1) {        /* EOF from someone */
+    else if (xx == -1) { /* EOF */
       int idx;
 
       if (i == STDOUT && !backgrd)
         fatal("END OF FILE ON TERMINAL", 0);
+
       for (idx = 0; idx < dcc_total; idx++) {
-        if (dcc[idx].sock == i) {
-          if (dcc[idx].type && dcc[idx].type->eof)
-            dcc[idx].type->eof(idx);
-          else {
-            putlog(LOG_MISC, "*",
-                   "*** ATTENTION: DEAD SOCKET (%d) OF TYPE %s UNTRAPPED",
-                   i, dcc[idx].type ? dcc[idx].type->name : "*UNKNOWN*");
-            killsock(i);
-            lostdcc(idx);
-          }
-          idx = dcc_total + 1;
+        if (dcc[idx].sock != i)
+          continue;
+
+        if (dcc[idx].type && dcc[idx].type->eof) {
+          dcc[idx].type->eof(idx);
         }
+        else {
+          putlog(LOG_MISC, "*",
+                 "*** ATTENTION: DEAD SOCKET (%d) OF TYPE %s UNTRAPPED",
+                 i, dcc[idx].type ? dcc[idx].type->name : "*UNKNOWN*");
+          killsock(i);
+          lostdcc(idx);
+        }
+
+        idx = dcc_total + 1;
       }
+
       if (idx == dcc_total) {
         putlog(LOG_MISC, "*",
                "(@) EOF socket %d, not a dcc socket, not anything.", i);
@@ -875,7 +885,7 @@ int main(int argc, char **argv)
         killsock(i);
       }
     }
-    else if (xx == -2 && errno != EINTR) {      /* select() error */
+    else if (xx == -2 && errno != EINTR) { /* select() error */
       putlog(LOG_MISC, "*", "* Socket error #%d; recovering.", errno);
       for (i = 0; i < dcc_total; i++) {
         if ((fcntl(dcc[i].sock, F_GETFD, 0) == -1) && (errno == EBADF)) {
@@ -894,20 +904,22 @@ int main(int argc, char **argv)
     }
 
     if (do_restart) {
-      if (do_restart == -2)
+      if (do_restart == -2) {
         rehash();
+      }
       else {
-        /* Unload as many modules as possible */
         int f = 1;
         module_entry *p;
-        Function x;
-        char xx[256];
+        Function startfunc;
+        char name[256];
 
-        /* oops, I guess we should call this event before tcl is restarted */
+
         check_tcl_event("prerestart");
 
+        /* Unload as many modules as possible */
         while (f) {
           f = 0;
+
           for (p = module_list; p != NULL; p = p->next) {
             dependancy *d = dependancy_list;
             int ok = 1;
@@ -915,11 +927,13 @@ int main(int argc, char **argv)
             while (ok && d) {
               if (d->needed == p)
                 ok = 0;
+
               d = d->next;
             }
             if (ok) {
-              strcpy(xx, p->name);
-              if (module_unload(xx, botnetnick) == NULL) {
+              strcpy(name, p->name);
+
+              if (module_unload(name, botnetnick) == NULL) {
                 f = 1;
                 break;
               }
@@ -927,30 +941,37 @@ int main(int argc, char **argv)
           }
         }
 
+        /* Make sure we don't have any modules left hanging around other than
+         * "eggdrop" and the two that are supposed to be.
+         */
         for (f = 0, p = module_list; p; p = p->next) {
-          if (!strcmp(p->name, "eggdrop") || !strcmp(p->name, "encryption") ||
-              !strcmp(p->name, "uptime"))
-            f = 0;
-          else
-            f = 1;
+          if (strcmp(p->name, "eggdrop") && strcmp(p->name, "encryption") &&
+              strcmp(p->name, "uptime")) {
+            f++;
+          }
         }
-        if (f)
-          /* Should be only 3 modules now - eggdrop, encryption, and uptime */
+        if (f != 0) {
           putlog(LOG_MISC, "*", MOD_STAGNANT);
+        }
 
+        /* Flush log files to disk. */
         flushlogs();
+
+        /* Clean up Tcl stuff. */
         kill_tcl();
+
+        /* Initialize stuff again. */
         init_tcl(argc, argv);
         init_language(0);
         help_init();
         traffic_init();
         logfile_init(1);
 
-        /* this resets our modules which we didn't unload (encryption and uptime) */
+        /* This resets our modules which we didn't unload (encryption and uptime). */
         for (p = module_list; p; p = p->next) {
           if (p->funcs) {
-            x = p->funcs[MODCALL_START];
-            x(NULL);
+            startfunc = p->funcs[MODCALL_START];
+            startfunc(NULL);
           }
         }
 
@@ -958,6 +979,7 @@ int main(int argc, char **argv)
         restart_chons();
         call_hook(HOOK_LOADED);
       }
+
       do_restart = 0;
     }
   }
