@@ -6,7 +6,7 @@
 # Modified by Michael for 1.3.25.
 # Modified by rtc for 1.4.0
 #
-# $Id: core.german.lang,v 1.1 2004/08/25 01:02:21 wcc Exp $
+# $Id: core.german.lang,v 1.2 2005/09/10 21:02:27 wcc Exp $
 
 # General stuff
 0x001,Gebrauch
@@ -50,7 +50,7 @@
 0x209,Fehler beim Laden des Moduls:
 0x20a,Fehler beim Entfernen des Moduls:
 0x20b,Kann keine Module laden
-0x20c,Stillstehendes Modul; es WERDEN Speicherlecks auftreten!
+0x20c,Stillstehendes Moduls; es WERDEN Speicherlecks auftreten!
 0x20d,Du hast die modulare Version installiert, jedoch kein \n\
 Verschluesselungsmodul ausgewaehlt. Fuer weitere Informationen siehe\n\
 die mitgelieferte Konfigurationsdatei.\n
