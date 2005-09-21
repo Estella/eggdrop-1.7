@@ -1,3 +1,5 @@
+# Generated with: cvs2cl --show-dead -T --no-wrap --utc -P -S -I ChangeLog -I src/build.h -U
+
 2005-09-10 21:02  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/Makefile.in, language/core.danish.lang,
