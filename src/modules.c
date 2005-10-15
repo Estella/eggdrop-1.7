@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: modules.c,v 1.18 2005/08/25 00:25:29 wcc Exp $
+ * $Id: modules.c,v 1.19 2005/10/15 23:40:02 wcc Exp $
  */
 
 #include <ctype.h>
@@ -328,8 +328,8 @@ Function global_table[] = {
   (Function) & default_flags,
   (Function) & dcc_total,
   (Function) tempdir,
-  /* 110 - 119 */
   (Function) natip,
+  /* 110 - 119 */
   (Function) hostname,
   (Function) origbotname,
   (Function) botuser,
@@ -339,8 +339,8 @@ Function global_table[] = {
   (Function) notify_new,
   (Function) helpdir,
   (Function) version,
-  /* 120 - 129 */
   (Function) botnetnick,
+  /* 120 - 129 */
   (Function) & DCC_CHAT_PASS,
   (Function) & DCC_BOT,
   (Function) & DCC_LOST,
@@ -350,8 +350,8 @@ Function global_table[] = {
   (Function) findanyidx,
   (Function) findchan,
   (Function) cmd_die,
-  /* 130 - 139 */
   (Function) days,
+  /* 130 - 139 */
   (Function) ismember,
   (Function) newsplit,
   (Function) splitnick,
@@ -361,8 +361,8 @@ Function global_table[] = {
   (Function) delignore,
   (Function) fatal,
   (Function) xtra_kill,
-  /* 140 - 149 */
   (Function) xtra_unpack,
+  /* 140 - 149 */
   (Function) movefile,
   (Function) copyfile,
   (Function) do_tcl,
@@ -372,8 +372,8 @@ Function global_table[] = {
   (Function) makepass,
   (Function) _wild_match,
   (Function) maskhost,
-  /* 150 - 159 */
   (Function) show_motd,
+  /* 150 - 159 */
   (Function) tellhelp,
   (Function) showhelp,
   (Function) add_help_reference,
@@ -383,8 +383,8 @@ Function global_table[] = {
   (Function) rmspace,
   (Function) in_chain,
   (Function) add_note,
-  /* 160 - 169 */
   (Function) del_lang_section,
+  /* 160 - 169 */
   (Function) detect_dcc_flood,
   (Function) flush_lines,
   (Function) expected_memory,
@@ -394,8 +394,8 @@ Function global_table[] = {
   (Function) & H_event,
   (Function) & H_dcc,
   (Function) & H_filt,
-  /* 170 - 179 */
   (Function) & H_chon,
+  /* 170 - 179 */
   (Function) & H_chof,
   (Function) & H_load,
   (Function) & H_unld,
@@ -405,8 +405,8 @@ Function global_table[] = {
   (Function) & H_bot,
   (Function) & H_link,
   (Function) & H_disc,
-  /* 180 - 189 */
   (Function) & H_away,
+  /* 180 - 189 */
   (Function) & H_nkch,
   (Function) & USERENTRY_BOTADDR,
   (Function) & USERENTRY_BOTFL,
@@ -416,8 +416,8 @@ Function global_table[] = {
   (Function) & USERENTRY_INFO,
   (Function) & USERENTRY_COMMENT,
   (Function) & USERENTRY_LASTON,
-  /* 190 - 199 */
   (Function) user_del_chan,
+  /* 190 - 199 */
   (Function) putlog,
   (Function) botnet_send_chan,
   (Function) list_type_kill,
@@ -427,8 +427,8 @@ Function global_table[] = {
   (Function) stripmasktype,
   (Function) sub_lang,
   (Function) & online_since,
-  /* 200 - 209 */
   (Function) cmd_loadlanguage,
+  /* 200 - 209 */
   (Function) check_dcc_attrs,
   (Function) check_dcc_chanattrs,
   (Function) add_tcl_coups,
@@ -438,8 +438,8 @@ Function global_table[] = {
   (Function) sanitycheck_dcc,
   (Function) isowner,
   (Function) & rfc_casecmp,
-  /* 210 - 219 */
   (Function) & rfc_ncasecmp,
+  /* 210 - 219 */
   (Function) & global_exempts,
   (Function) & global_invites,
   (Function) check_tcl_filt,
@@ -449,8 +449,8 @@ Function global_table[] = {
   (Function) add_lang_section,
   (Function) _user_realloc,
   (Function) mod_realloc,
-  /* 220 - 229 */
   (Function) xtra_set,
+  /* 220 - 229 */
 #ifdef DEBUG_ASSERT
   (Function) eggAssert,
 #else
@@ -464,8 +464,8 @@ Function global_table[] = {
   (Function) hostsanitycheck_dcc,
   (Function) dcc_dnsipbyhost,
   (Function) dcc_dnshostbyip,
-  /* 230 - 239 */
   (Function) changeover_dcc,
+  /* 230 - 239 */
   (Function) make_rand_str,
   (Function) & protect_readonly,
   (Function) findchan_by_dname,
@@ -475,8 +475,8 @@ Function global_table[] = {
   (Function) bots_in_subtree,
   (Function) users_in_subtree,
   (Function) egg_inet_aton,
-  /* 240 - 249 */
   (Function) egg_snprintf,
+  /* 240 - 249 */
   (Function) egg_vsnprintf,
   (Function) egg_memset,
   (Function) egg_strcasecmp,
@@ -486,8 +486,8 @@ Function global_table[] = {
   (Function) & tandbot,
   (Function) & party,
   (Function) open_address_listen,
-  /* 250 - 259 */
   (Function) str_escape,
+  /* 250 - 259 */
   (Function) strchr_unescape,
   (Function) str_unescape,
   (Function) clear_chanlist_member,
@@ -497,8 +497,8 @@ Function global_table[] = {
   (Function) kill_bot,
   (Function) quit_msg,
   (Function) module_load,
-  /* 260 - 269 */
   (Function) module_unload,
+  /* 260 - 269 */
   (Function) & parties,
   (Function) tell_bottree,
   (Function) MD5_Init,
@@ -508,8 +508,8 @@ Function global_table[] = {
   (Function) killtransfer,
   (Function) write_ignores,
   (Function) & copy_to_tmp,
-  /* 270 - */
   (Function) & quiet_reject,
+  /* 270 - */
   (Function) file_readable,
   (Function) strip_mirc_codes,
   (Function) check_ansi,
