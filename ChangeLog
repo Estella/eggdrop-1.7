@@ -1,5 +1,24 @@
 # Generated with: cvs2cl --show-dead -T --no-wrap --utc -P -S -I ChangeLog -I src/build.h -U
 
+2005-10-16 05:59  Will Buckner <wcc@techmonkeys.org>
+
+	* src/: patch.h, mod/server.mod/server.c:
+
+	* Use egg_memcpy(), not memcpy().
+
+2005-10-16 00:11  Will Buckner <wcc@techmonkeys.org>
+
+	* doc/html/egg-core.html, doc/html/mod-server.html, src/patch.h:
+
+	* No ' in HTML docs! :)
+
+2005-10-15 23:40  Will Buckner <wcc@techmonkeys.org>
+
+	* src/: modules.c, patch.h, mod/module.h:
+
+	* Fixed crash on startup reported by various users (global table order was
+	  off by one starting at index 100/101). Thanks guys.
+
 2005-09-10 21:02  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/Makefile.in, language/core.danish.lang,
