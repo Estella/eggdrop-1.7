@@ -1,5 +1,17 @@
 # Generated with: cvs2cl --show-dead -T --no-wrap --utc -P -S -I ChangeLog -I src/build.h -U
 
+2006-03-29 00:52  Will Buckner <wcc@techmonkeys.org>
+
+	* doc/AUTHORS:
+
+	* Added lordares to AUTHORS.
+
+2006-03-29 00:49  Will Buckner <wcc@techmonkeys.org>
+
+	* doc/AUTHORS:
+
+	* AUTHORS updates.
+
 2005-10-16 05:59  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/server.mod/server.c:
