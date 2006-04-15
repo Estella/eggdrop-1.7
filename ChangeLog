@@ -1,5 +1,11 @@
 # Generated with: cvs2cl --show-dead -T --no-wrap --utc -P -S -I ChangeLog -I src/build.h -U
 
+2006-04-14 22:18  Will Buckner <wcc@techmonkeys.org>
+
+	* doc/AUTHORS:
+
+	* AUTHORS updates.
+
 2006-03-29 00:52  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/AUTHORS:
