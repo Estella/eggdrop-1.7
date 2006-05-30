@@ -1,43 +1,43 @@
 # Generated with: cvs2cl --show-dead -T --no-wrap --utc -P -S -I ChangeLog -I src/build.h -U
 
-2006-04-14 22:18  Will Buckner <wcc@techmonkeys.org>
+2006-04-14 15:18  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/AUTHORS:
 
 	* AUTHORS updates.
 
-2006-03-29 00:52  Will Buckner <wcc@techmonkeys.org>
+2006-03-28 16:52  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/AUTHORS:
 
 	* Added lordares to AUTHORS.
 
-2006-03-29 00:49  Will Buckner <wcc@techmonkeys.org>
+2006-03-28 16:49  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/AUTHORS:
 
 	* AUTHORS updates.
 
-2005-10-16 05:59  Will Buckner <wcc@techmonkeys.org>
+2005-10-15 22:59  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/server.mod/server.c:
 
 	* Use egg_memcpy(), not memcpy().
 
-2005-10-16 00:11  Will Buckner <wcc@techmonkeys.org>
+2005-10-15 17:11  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/html/egg-core.html, doc/html/mod-server.html, src/patch.h:
 
 	* No ' in HTML docs! :)
 
-2005-10-15 23:40  Will Buckner <wcc@techmonkeys.org>
+2005-10-15 16:40  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: modules.c, patch.h, mod/module.h:
 
 	* Fixed crash on startup reported by various users (global table order was
 	  off by one starting at index 100/101). Thanks guys.
 
-2005-09-10 21:02  Will Buckner <wcc@techmonkeys.org>
+2005-09-10 14:02  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/Makefile.in, language/core.danish.lang,
 	  language/core.english.lang, language/core.french.lang,
@@ -45,7 +45,7 @@
 
 	* make install / language fixes.
 
-2005-09-05 03:27  Will Buckner <wcc@techmonkeys.org>
+2005-09-04 20:27  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: botnet.c, main.c, patch.h:
 
@@ -54,38 +54,38 @@
 	  not be printed.
 	* More mainloop cleanups.
 
-2005-09-02 02:46  Bryan Drewery <lordares@shatow.net>
+2005-09-01 19:46  Bryan Drewery <lordares@shatow.net>
 
 	* src/botnet.c:
 
 	* Missed a free() in one of my patches for rembot()
 
-2005-08-31 02:35  Will Buckner <wcc@techmonkeys.org>
+2005-08-30 19:35  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: main.c, patch.h, mod/uptime.mod/uptime.c:
 
 	* Use newsplit() instead of splitc(.., ' ') in uptime.mod for consistency.
 	  This also stops some valgrind bitching =P.
 
-2005-08-31 02:19  Will Buckner <wcc@techmonkeys.org>
+2005-08-30 19:19  Will Buckner <wcc@techmonkeys.org>
 
 	* config.h.in, configure:
 
 	* Ran autotools.
 
-2005-08-31 02:15  Will Buckner <wcc@techmonkeys.org>
+2005-08-30 19:15  Will Buckner <wcc@techmonkeys.org>
 
 	* aclocal.m4, src/patch.h:
 
 	* Dns.mod should work on Mac OS X now.
 
-2005-08-30 01:57  Will Buckner <wcc@techmonkeys.org>
+2005-08-29 18:57  Will Buckner <wcc@techmonkeys.org>
 
 	* src/mod/irc.mod/cmdsirc.c:
 
 	* Another useless host buffer filling.
 
-2005-08-29 04:38  Will Buckner <wcc@techmonkeys.org>
+2005-08-28 21:38  Will Buckner <wcc@techmonkeys.org>
 
 	* misc/killwhitespace, src/chanprog.h, src/patch.h,
 	  src/compat/strftime.h:
@@ -93,7 +93,7 @@
 	* UNIX-format chanprog.h (oops).
 	* Added and ran misc/killwhitespace.
 
-2005-08-29 04:04  Will Buckner <wcc@techmonkeys.org>
+2005-08-28 21:04  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/modules/sample.mod/sample.c, doc/settings/core.settings,
 	  src/tclhash.c, src/mod/channels.mod/cmdschan.c,
@@ -102,13 +102,13 @@
 
 	* Eww--trailing spaces :P
 
-2005-08-29 03:25  Bryan Drewery <lordares@shatow.net>
+2005-08-28 20:25  Bryan Drewery <lordares@shatow.net>
 
 	* src/botnet.c:
 
 	* rembot() has the possibility to reference a NULL pointer, this fixes.
 
-2005-08-29 03:21  Will Buckner <wcc@techmonkeys.org>
+2005-08-28 20:21  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/egg-core.html, doc/settings/core.settings,
 	  help/core.help, help/set/cmds1.help, src/dcc.c, src/patch.h,
@@ -116,7 +116,7 @@
 
 	* No more open-telnets.
 
-2005-08-29 03:12  Will Buckner <wcc@techmonkeys.org>
+2005-08-28 20:12  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/mod-irc.html, doc/settings/mod.irc,
 	  src/patch.h, src/mod/irc.mod/irc.c, src/mod/irc.mod/msgcmds.c,
@@ -124,44 +124,44 @@
 
 	* No more learn-users.
 
-2005-08-29 03:12  Bryan Drewery <lordares@shatow.net>
+2005-08-28 20:12  Bryan Drewery <lordares@shatow.net>
 
 	* src/mod/server.mod/server.c:
 
 	* Wrong nick pointer used
 	* Duplicate dcc[].addr initialization line removed.
 
-2005-08-29 03:10  Bryan Drewery <lordares@shatow.net>
+2005-08-28 20:10  Bryan Drewery <lordares@shatow.net>
 
 	* src/mod/irc.mod/cmdsirc.c:
 
 	* Pointless host buf filling
 
-2005-08-29 03:08  Bryan Drewery <lordares@shatow.net>
+2005-08-28 20:08  Bryan Drewery <lordares@shatow.net>
 
 	* src/dcc.h:
 
 	* dcc_table.timeout was missing a param cast
 
-2005-08-29 03:06  Bryan Drewery <lordares@shatow.net>
+2005-08-28 20:06  Bryan Drewery <lordares@shatow.net>
 
 	* src/mod/channels.mod/channels.c:
 
 	* Use MODES_PER_LINE_MAX instead of '6'
 
-2005-08-29 03:03  Bryan Drewery <lordares@shatow.net>
+2005-08-28 20:03  Bryan Drewery <lordares@shatow.net>
 
 	* src/dcc.c:
 
 	* Wrong putlog argument
 
-2005-08-29 02:57  Bryan Drewery <lordares@shatow.net>
+2005-08-28 19:57  Bryan Drewery <lordares@shatow.net>
 
 	* test:
 
 	test
 
-2005-08-29 02:53  Will Buckner <wcc@techmonkeys.org>
+2005-08-28 19:53  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/mod-channels.html,
 	  doc/settings/mod.channels, src/chan.h, src/patch.h,
@@ -171,14 +171,14 @@
 
 	* No more idle-kick.
 
-2005-08-25 04:42  Will Buckner <wcc@techmonkeys.org>
+2005-08-24 21:42  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/module.h:
 
 	* Fixed global table order... yes, it's okay to laugh at me :P What I get
 	  for coding on no sleep. Thanks TaKeDa :)
 
-2005-08-25 00:25  Will Buckner <wcc@techmonkeys.org>
+2005-08-24 17:25  Will Buckner <wcc@techmonkeys.org>
 
 	* CONTENTS[DEAD], doc/CONTENTS[DEAD], doc/settings/CONTENTS[DEAD],
 	  logs/CONTENTS[DEAD], scripts/CONTENTS[DEAD], src/modules.c,
@@ -187,13 +187,13 @@
 	* More global table cleaning-up.
 	* Removed CONTENTS files.
 
-2005-08-24 01:24  Will Buckner <wcc@techmonkeys.org>
+2005-08-23 18:24  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: modules.c, patch.h, mod/module.h:
 
 	* Cleaned up the global table a bit.
 
-2005-08-23 14:52  Jeff Fisher <guppy@techmonkeys.org>
+2005-08-23 07:52  Jeff Fisher <guppy@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/egg-core.html, doc/html/mod-server.html,
 	  doc/settings/core.settings, doc/settings/mod.server,
@@ -205,14 +205,14 @@
 
 	got rid of servlimit and changed the default for dcc-sanitycheck (plus the documentation .. no need to bad mouth mirc)
 
-2005-08-23 14:07  Jeff Fisher <guppy@techmonkeys.org>
+2005-08-23 07:07  Jeff Fisher <guppy@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/egg-core.html, doc/settings/core.settings,
 	  help/set/cmds1.help:
 
 	what a silly comment -- makes eggdrop sound like a tool used by kiddies
 
-2005-08-23 03:32  Jeff Fisher <guppy@techmonkeys.org>
+2005-08-22 20:32  Jeff Fisher <guppy@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/egg-core.html, doc/settings/core.settings,
 	  help/set/cmds1.help, scripts/CONTENTS, scripts/Makefile.in,
@@ -226,7 +226,7 @@
 
 	removed a bunch of the default scripts, people can easily get them on the FTP (once we put them there of course)
 
-2005-08-23 03:19  Jeff Fisher <guppy@techmonkeys.org>
+2005-08-22 20:19  Jeff Fisher <guppy@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/egg-core.html, doc/html/index.html,
 	  doc/html/mod-channels.html, doc/html/mod-seen.html[DEAD],
@@ -252,7 +252,7 @@
 
 	removed wire.mod and seen.mod
 
-2005-08-23 02:38  Jeff Fisher <guppy@techmonkeys.org>
+2005-08-22 19:38  Jeff Fisher <guppy@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/mod-irc.html, doc/settings/mod.irc,
 	  src/mod/irc.mod/chan.c, src/mod/irc.mod/irc.c,
@@ -261,7 +261,7 @@
 
 	removed kick-fun/ban-fun
 
-2005-08-22 03:32  Will Buckner <wcc@techmonkeys.org>
+2005-08-21 20:32  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/BUG-REPORT, doc/modules/MODULES, src/Makefile.in,
 	  src/debug.c, src/debug.h, src/main.c, src/modules.c, src/net.c,
@@ -269,7 +269,7 @@
 
 	* Removed context debugging completly.
 
-2005-07-31 19:42  Will Buckner <wcc@techmonkeys.org>
+2005-07-31 12:42  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/egg-core.html, doc/settings/core.settings,
 	  help/set/cmds1.help, src/patch.h:
@@ -277,31 +277,31 @@
 	- Corrected nat-ip setting documentation.
 	* Found by: BarkerJr - Patch by: Wcc
 
-2005-07-31 17:19  Will Buckner <wcc@techmonkeys.org>
+2005-07-31 10:19  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/server.mod/servmsg.c:
 
 	* Synch 1.6 realname changes.
 
-2005-07-31 06:19  Will Buckner <wcc@techmonkeys.org>
+2005-07-30 23:19  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/channels.mod/tclchan.c:
 
 	* Fixed bug 412, found by Chris Northwood.
 
-2005-07-31 06:02  Will Buckner <wcc@techmonkeys.org>
+2005-07-30 23:02  Will Buckner <wcc@techmonkeys.org>
 
 	* src/mod/irc.mod/mode.c:
 
 	* Synched thommey's mode patch.
 
-2005-07-31 06:00  Will Buckner <wcc@techmonkeys.org>
+2005-07-30 23:00  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, tclhash.c:
 
 	* Synching finished now.. grr.
 
-2005-07-31 05:51  Will Buckner <wcc@techmonkeys.org>
+2005-07-30 22:51  Will Buckner <wcc@techmonkeys.org>
 
 	* README, doc/html/readme.html, src/botmsg.c, src/cmds.c,
 	  src/dccutil.c, src/dns.c, src/main.c, src/net.c, src/patch.h,
@@ -310,7 +310,7 @@
 
 	* If this compiles, I am going to cry with joy.
 
-2005-07-31 03:49  Will Buckner <wcc@techmonkeys.org>
+2005-07-30 20:49  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/TCL-COMMANDS, doc/html/mod-server.html,
 	  doc/html/tcl-commands.html, doc/settings/mod.server, src/main.c,
@@ -329,20 +329,20 @@
 	process. There is alot of room for error here, as careful as I am trying
 	to be.
 
-2005-07-31 03:04  Will Buckner <wcc@techmonkeys.org>
+2005-07-30 20:04  Will Buckner <wcc@techmonkeys.org>
 
 	* config.h.in, configure, src/patch.h,
 	  src/mod/compress.mod/configure, src/mod/dns.mod/configure:
 
 	* Phase 3; ran misc/runautotools.
 
-2005-07-31 03:03  Will Buckner <wcc@techmonkeys.org>
+2005-07-30 20:03  Will Buckner <wcc@techmonkeys.org>
 
 	* configure.ac, src/patch.h:
 
 	* Phase 2; autoconf updates.
 
-2005-07-31 02:57  Will Buckner <wcc@techmonkeys.org>
+2005-07-30 19:57  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/TCL-COMMANDS, doc/html/tcl-commands.html,
 	  src/flags.c, src/help.c, src/patch.h, src/tclegg.h,
@@ -352,40 +352,40 @@
 	* Phase one of synching Tothwolf's recent 1.6 commits. I am breaking
 	this up into several commits because the changes are pretty large.
 
-2005-07-31 02:32  Will Buckner <wcc@techmonkeys.org>
+2005-07-30 19:32  Will Buckner <wcc@techmonkeys.org>
 
 	* src/main.c:
 
 	* More main.c cleanups.
 
-2005-07-26 03:31  Will Buckner <wcc@techmonkeys.org>
+2005-07-25 20:31  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: eggdrop.h, logfile.c, logfile.h, main.c, patch.h:
 
 	* Moved some logging stuff out of the core.
 
-2005-07-23 22:20  Will Buckner <wcc@techmonkeys.org>
+2005-07-23 15:20  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/channels.mod/channels.h:
 
 	- Fixed bug 435; typos... grr. Bans work again.
 	* Found by: De Kus - Patch by: Darko
 
-2005-07-23 22:14  Will Buckner <wcc@techmonkeys.org>
+2005-07-23 15:14  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/irc.mod/irc.c:
 
 	- Request topic on channel reset; fixes topic issue of bug 441.
 	* Found by: De Kus - Patch by: Darko
 
-2005-07-23 21:57  Will Buckner <wcc@techmonkeys.org>
+2005-07-23 14:57  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: logfile.h, patch.h, tcl.c:
 
 	- Fixed bug 443; logfile crash.
 	* Found by: De Kus Fixed by: Darko
 
-2005-05-30 22:44  Will Buckner <wcc@techmonkeys.org>
+2005-05-30 15:44  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/share.mod/share.c:
 
@@ -393,33 +393,33 @@
 	  restored.
 	* Fixed by: lordares
 
-2005-05-30 22:38  Will Buckner <wcc@techmonkeys.org>
+2005-05-30 15:38  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/Makefile.in:
 
 	* 'make install' fixes. Found by BarkerJr.
 
-2005-05-30 22:11  Will Buckner <wcc@techmonkeys.org>
+2005-05-30 15:11  Will Buckner <wcc@techmonkeys.org>
 
 	* src/net.c:
 
 	- Fixed a socklist leak in net.c.
 	* Fixed by: lordares
 
-2005-01-25 18:25  Will Buckner <wcc@techmonkeys.org>
+2005-01-25 10:25  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/irc.mod/chan.c:
 
 	- Use CHANMETA to define valid channel prefixes in gotmsg().
 	* Found by: zathras3 at hotmail.com - Patch by: Wcc
 
-2005-01-25 18:17  Will Buckner <wcc@techmonkeys.org>
+2005-01-25 10:17  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/MODULES[DEAD]:
 
 	* Forgot a cvs remove before.
 
-2005-01-25 17:36  Will Buckner <wcc@techmonkeys.org>
+2005-01-25 09:36  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/channels.mod/channels.c:
 
@@ -427,7 +427,7 @@
 	  names from the channel file.
 	* Patch by: Stream
 
-2005-01-21 01:43  Will Buckner <wcc@techmonkeys.org>
+2005-01-20 17:43  Will Buckner <wcc@techmonkeys.org>
 
 	* CONTENTS, FEATURES, INSTALL, NEWS, README, aclocal.m4, configure,
 	  configure.ac, doc/ABOUT, doc/AUTHORS, doc/BANS, doc/BOTNET,
@@ -526,19 +526,19 @@
 
 	* Sync 1.6 patches and 2005 Copyright updates.
 
-2004-12-11 04:21  Will Buckner <wcc@techmonkeys.org>
+2004-12-10 20:21  Will Buckner <wcc@techmonkeys.org>
 
 	* src/dcc.h:
 
 	* Fixed bug 418 (misleading comment).
 
-2004-12-02 23:28  Will Buckner <wcc@techmonkeys.org>
+2004-12-02 15:28  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/notes.mod/notes.c:
 
 	* This fixes bug 421.
 
-2004-12-02 22:15  Will Buckner <wcc@techmonkeys.org>
+2004-12-02 14:15  Will Buckner <wcc@techmonkeys.org>
 
 	* INSTALL, disabled_modules, eggdrop.conf, doc/html/index.html,
 	  doc/html/install.html, doc/html/mod-woobie.html[DEAD],
@@ -563,7 +563,7 @@
 	* Ran misc/makedepend.
 	* Updates to misc/modconfig to handle empty module directories since CVS sucks.
 
-2004-11-26 05:35  Will Buckner <wcc@techmonkeys.org>
+2004-11-25 21:35  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: botnet.c, cmds.c, dcc.c, dccutil.c, debug.c, dns.c,
 	  eggdrop.h, flags.c, help.c, language.c, logfile.c, main.c,
@@ -573,19 +573,19 @@
 
 	* More cleaning up.. mem.[ch] stuff.
 
-2004-11-25 02:10  Will Buckner <wcc@techmonkeys.org>
+2004-11-24 18:10  Will Buckner <wcc@techmonkeys.org>
 
 	* src/botnet.c:
 
 	* Oops, typo.
 
-2004-11-25 02:01  Will Buckner <wcc@techmonkeys.org>
+2004-11-24 18:01  Will Buckner <wcc@techmonkeys.org>
 
 	* NEWS, src/bg.c, src/bg.h, src/botnet.c, src/main.c:
 
 	* Some cleaning-up.
 
-2004-11-24 22:37  Will Buckner <wcc@techmonkeys.org>
+2004-11-24 14:37  Will Buckner <wcc@techmonkeys.org>
 
 	* NEWS, eggdrop.conf, doc/html/egg-core.html,
 	  doc/settings/core.settings, help/core.help, help/set/cmds1.help,
@@ -597,7 +597,7 @@
 	* Removed log-time. What good are logs without timestamps?
 	* Removed require-p (default to 1).
 
-2004-10-27 23:54  Will Buckner <wcc@techmonkeys.org>
+2004-10-27 16:54  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: Makefile.in, cmds.c, dcc.c, main.c, main.h, misc.c,
 	  modules.c, patch.h, proto.h, tcldcc.c, tcluser.c, userent.c,
@@ -606,7 +606,7 @@
 
 	* More header stuff.. also moved some of the userFILE stuff to userfile.[ch].
 
-2004-10-06 00:04  Will Buckner <wcc@techmonkeys.org>
+2004-10-05 17:04  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: Makefile.in, botmsg.c, chan.h, chanprog.c, chanprog.h,
 	  cmds.c, cmds.h, dcc.c, dccutil.c, dccutil.h, flags.c, main.c,
@@ -632,7 +632,7 @@
 	Sorry to leave this all in a bit of an unfinished state... I don't have a
 	lot of time right now.
 
-2004-09-10 01:10  Will Buckner <wcc@techmonkeys.org>
+2004-09-09 18:10  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/TCL-COMMANDS, doc/html/tcl-commands.html, src/Makefile.in,
 	  src/botcmd.c, src/botmsg.c, src/chanprog.c, src/cmds.c,
@@ -662,19 +662,19 @@
 	* Removed maskhost() and maskban() defines. These were for module compatability in 1.6.
 	* Added "?options?" argument to tcl_maskban, This allows you to interface with maskhost() for either a ban OR a hostmask.
 
-2004-09-02 20:57  Will Buckner <wcc@techmonkeys.org>
+2004-09-02 13:57  Will Buckner <wcc@techmonkeys.org>
 
 	* src/logfile.c:
 
 	* Oops, the conditions were reversed in logfile_init(), causing a crash.
 
-2004-09-02 20:44  Will Buckner <wcc@techmonkeys.org>
+2004-09-02 13:44  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/: TCL-COMMANDS, TCL-SCRIPTS[DEAD]:
 
 	* Oops.
 
-2004-09-02 20:27  Will Buckner <wcc@techmonkeys.org>
+2004-09-02 13:27  Will Buckner <wcc@techmonkeys.org>
 
 	* NEWS, README, eggdrop.conf, doc/CONTENTS, doc/FIRST-SCRIPT,
 	  doc/Makefile.in, doc/TCL-SCRIPTS, doc/tcl-commands.doc[DEAD],
@@ -686,7 +686,7 @@
 	* doc/tcl-commands.doc -> doc/TCL-COMMANDS to conform with the naming of the
 	  other docs.
 
-2004-08-31 22:56  Will Buckner <wcc@techmonkeys.org>
+2004-08-31 15:56  Will Buckner <wcc@techmonkeys.org>
 
 	* Makefile.in, src/Makefile.in, src/botcmd.c, src/cmds.c,
 	  src/help.c, src/help.h, src/logfile.c, src/main.c, src/mem.c,
@@ -701,7 +701,7 @@
 	* Finished moving logging functions to logfile.[ch].
 	* Moved more logfile code into logfile.[ch].
 
-2004-08-31 01:48  Will Buckner <wcc@techmonkeys.org>
+2004-08-30 18:48  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/tcl-commands.doc, doc/html/egg-core.html,
 	  doc/html/tcl-commands.html, doc/settings/core.settings,
@@ -713,7 +713,7 @@
 	* Added log mode 'e' for logging Tcl errors. Patch by Noyga.
 	* More logging cleanups.
 
-2004-08-30 23:58  Will Buckner <wcc@techmonkeys.org>
+2004-08-30 16:58  Will Buckner <wcc@techmonkeys.org>
 
 	* misc/makedepend, src/Makefile.in, src/botcmd.c, src/botnet.c,
 	  src/chanprog.c, src/cmds.c, src/dcc.c, src/dccutil.c,
@@ -738,7 +738,7 @@
 	* Simplified loops in check_logsize() and fluchlogs() a bit.
 	* Updated misc/makedepend.
 
-2004-08-28 03:24  Dariusz Kulinski <takeda@takeda.tk>
+2004-08-27 20:24  Dariusz Kulinski <takeda@takeda.tk>
 
 	* eggdrop.conf, doc/html/mod-server.html, doc/settings/mod.server,
 	  src/cmds.c, src/misc.c, src/patch.h, src/tcl.c, src/userrec.c,
@@ -757,7 +757,7 @@
 	  affected functions:
 	  - possibly all functions that use fixfrom()
 
-2004-08-28 03:07  Dariusz Kulinski <takeda@takeda.tk>
+2004-08-27 20:07  Dariusz Kulinski <takeda@takeda.tk>
 
 	* misc/addpatch, src/patch.h, src/rfc1459.c, src/tcl.c:
 
@@ -765,7 +765,7 @@
 	* '^' and '~' is no longer equivalent in hostmasks comparison (rfc_casecmp)
 	* fixed warning while compiling tcl.c
 
-2004-08-28 00:15  Will Buckner <wcc@techmonkeys.org>
+2004-08-27 17:15  Will Buckner <wcc@techmonkeys.org>
 
 	* Makefile.in, misc/makedepend, misc/releaseprep,
 	  misc/runautotools, src/Makefile.in, src/main.h, src/patch.h,
@@ -784,7 +784,7 @@
 	* Added misc/makedepend script to automatially run make depend and update
 	  all of the dependencies in Makefiles throughout the tree.
 
-2004-08-27 10:01  Will Buckner <wcc@techmonkeys.org>
+2004-08-27 03:01  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: botcmd.h, botmsg.h, botnet.h, cmds.h, dcc.h, dccutil.h,
 	  debug.c, debug.h, language.h, match.h, net.h, rfc1459.h,
@@ -794,7 +794,7 @@
 	  I fixed my "cvsadd" alias to echo a newline to the file to prevent this from
 	  happening in the future.
 
-2004-08-27 09:34  Will Buckner <wcc@techmonkeys.org>
+2004-08-27 02:34  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: Makefile.in, cmds.c, main.c, main.h, misc.h, net.c,
 	  patch.h, tcldcc.c, tclhash.c, traffic.c, traffic.h,
@@ -813,7 +813,7 @@
 	  to a struct (partial backport from earlier in 1.9 (Wingman)).
 	* Make depend works now.
 
-2004-08-27 05:34  Will Buckner <wcc@techmonkeys.org>
+2004-08-26 22:34  Will Buckner <wcc@techmonkeys.org>
 
 	* Makefile.in, src/Makefile.in, src/botnet.c, src/cmds.c,
 	  src/dcc.c, src/debug.c, src/debug.h, src/dns.h, src/eggdrop.h,
@@ -829,7 +829,7 @@
 	  make depend needs to be fixes for GCC 3.3+; it doesn't work
 	  anymore. #error's about varargs.h being depreciated.
 
-2004-08-27 00:49  Will Buckner <wcc@techmonkeys.org>
+2004-08-26 17:49  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: botcmd.c, botmsg.c, botmsg.h, botnet.c, botnet.h, cmds.c,
 	  dcc.c, dcc.h, dccutil.c, eggdrop.h, main.c, main.h, misc.c,
@@ -841,7 +841,7 @@
 
 	* More header cleanups. tandem.h is gone now.
 
-2004-08-26 10:36  Will Buckner <wcc@techmonkeys.org>
+2004-08-26 03:36  Will Buckner <wcc@techmonkeys.org>
 
 	* aclocal.m4, config.h.in, configure, src/botcmd.c, src/botmsg.c,
 	  src/botnet.c, src/chanprog.c, src/cmds.c, src/dcc.c, src/dcc.h,
@@ -861,7 +861,7 @@
 	* Bot STAT_* flags -> BSTAT_*.
 	* Renamed BORGCUBES (NeXT Step OS hack) define to NEXT_HACKS.
 
-2004-08-26 03:21  Will Buckner <wcc@techmonkeys.org>
+2004-08-25 20:21  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: Makefile.in, bg.h, botcmd.c, botcmd.h, botmsg.c, botmsg.h,
 	  botnet.c, botnet.h, chanprog.c, chanprog.h, cmds.c, cmds.h,
@@ -884,7 +884,7 @@
 
 	* More header stuff. Making progress..
 
-2004-08-25 07:41  Will Buckner <wcc@techmonkeys.org>
+2004-08-25 00:41  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: botcmd.c, botmsg.c, botnet.c, chanprog.c, cmds.c, cmds.h,
 	  dcc.c, dcc.h, dccutil.c, dccutil.h, dns.c, flags.c, language.c,
@@ -894,7 +894,7 @@
 
 	* More header cleanups.
 
-2004-08-25 06:39  Will Buckner <wcc@techmonkeys.org>
+2004-08-24 23:39  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: botcmd.c, botcmd.h, botmsg.c, botmsg.h, botnet.c, botnet.h,
 	  cmds.c, dcc.c, main.c, misc.c, modules.c, patch.h, proto.h,
@@ -907,7 +907,7 @@
 
 	* Moved base64_to_int() to botmsg.c where it belongs.
 
-2004-08-25 05:26  Will Buckner <wcc@techmonkeys.org>
+2004-08-24 22:26  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/channels.mod/channels.c,
 	  mod/channels.mod/channels.h, mod/irc.mod/irc.h,
@@ -916,14 +916,14 @@
 
 	* Cleaned up the holes in the modules' export tables.
 
-2004-08-25 01:51  Will Buckner <wcc@techmonkeys.org>
+2004-08-24 18:51  Will Buckner <wcc@techmonkeys.org>
 
 	* configure, src/mod/compress.mod/configure,
 	  src/mod/dns.mod/configure:
 
 	* Ran misc/runautotools.
 
-2004-08-25 01:51  Will Buckner <wcc@techmonkeys.org>
+2004-08-24 18:51  Will Buckner <wcc@techmonkeys.org>
 
 	* NEWS, README, configure.ac, doc/ABOUT, doc/BUG-REPORT,
 	  doc/COMPILE-GUIDE, doc/CONTENTS, doc/MODULES, doc/Makefile.in,
@@ -947,15 +947,15 @@
 
 	* 1.6.18 -> 1.7.0
 
-2004-08-25 01:17  Will Buckner <wcc@techmonkeys.org>
+2004-08-24 18:17  Will Buckner <wcc@techmonkeys.org>
 
 	* src/patch.h:
 
 	* Test commit. Start of Eggdrop 1.7.0.
 
-2004-08-25 01:01  tag eggdrop1_7
+2004-08-24 18:01  tag eggdrop1_7
 
-2004-08-25 01:01  Will Buckner <wcc@techmonkeys.org>
+2004-08-24 18:01  Will Buckner <wcc@techmonkeys.org>
 
 	* CONTENTS, NEWS, README, aclocal.m4, FEATURES, configure,
 	  eggdrop.conf, .cvsignore, COPYING, INSTALL, Makefile.in,
@@ -1140,7 +1140,7 @@
 
 	* Starting 1.7 tree based off of 1.6.18 CVS as of August 24, 2004.
 
-2004-08-25 01:01  Will Buckner <wcc@techmonkeys.org>
+2004-08-24 18:01  Will Buckner <wcc@techmonkeys.org>
 
 	* CONTENTS, NEWS, README, aclocal.m4, FEATURES, configure,
 	  eggdrop.conf, .cvsignore, COPYING, INSTALL, Makefile.in,
