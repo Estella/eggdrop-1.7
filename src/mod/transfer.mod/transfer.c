@@ -1,10 +1,10 @@
 /*
  * transfer.c -- part of transfer.mod
  *
- * $Id: transfer.c,v 1.7 2006/11/20 13:26:02 tothwolf Exp $
+ * $Id: transfer.c,v 1.8 2006/11/20 13:53:42 tothwolf Exp $
  *
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999 - 2005 Eggheads Development Team
+ * Copyright (C) 1999 - 2006 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

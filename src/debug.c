@@ -1,6 +1,6 @@
 /* debug.c
  *
- * Copyright (C) 2004 - 2005 Eggheads Development Team
+ * Copyright (C) 2004 - 2006 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: debug.c,v 1.7 2005/08/22 03:32:33 wcc Exp $
+ * $Id: debug.c,v 1.8 2006/11/20 13:53:33 tothwolf Exp $
  */
 
 #include "main.h"

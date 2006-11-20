@@ -1,4 +1,4 @@
-$Id: mod.server,v 1.6 2005/08/23 14:52:57 guppy Exp $
+$Id: mod.server,v 1.7 2006/11/20 13:53:31 tothwolf Exp $
 
 Server Module
 Last revised: February 12, 2003
@@ -226,5 +226,5 @@ Last revised: February 12, 2003
 
     _____________________________________________________________________
 
-  Copyright (C) 2000 - 2005 Eggheads Development Team
+  Copyright (C) 2000 - 2006 Eggheads Development Team
 

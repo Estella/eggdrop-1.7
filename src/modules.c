@@ -3,7 +3,7 @@
  * Originally by Darrin Smith (beldin@light.iinet.net.au)
  *
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999 - 2005 Eggheads Development Team
+ * Copyright (C) 1999 - 2006 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: modules.c,v 1.19 2005/10/15 23:40:02 wcc Exp $
+ * $Id: modules.c,v 1.20 2006/11/20 13:53:34 tothwolf Exp $
  */
 
 #include <ctype.h>

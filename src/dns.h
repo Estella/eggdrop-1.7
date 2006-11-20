@@ -1,6 +1,6 @@
 /* dns.h
  *
- * Copyright (C) 1999 - 2005 Eggheads Development Team
+ * Copyright (C) 1999 - 2006 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dns.h,v 1.4 2005/01/21 01:43:40 wcc Exp $
+ * $Id: dns.h,v 1.5 2006/11/20 13:53:33 tothwolf Exp $
  */
 
 #ifndef _EGG_DNS_H

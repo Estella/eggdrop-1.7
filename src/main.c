@@ -1,7 +1,7 @@
 /* main.c
  *
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999 - 2005 Eggheads Development Team
+ * Copyright (C) 1999 - 2006 Eggheads Development Team
  *
  * http://www.eggheads.org
  *
@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: main.c,v 1.24 2005/09/05 03:27:09 wcc Exp $
+ * $Id: main.c,v 1.25 2006/11/20 13:53:34 tothwolf Exp $
  */
 
 #include "main.h"

@@ -1,4 +1,4 @@
-$Id: MODULES,v 1.4 2005/08/23 03:19:45 guppy Exp $
+$Id: MODULES,v 1.5 2006/11/20 13:53:31 tothwolf Exp $
 
 Eggdrop Module Information
 Last revised: November 29, 2004
@@ -374,4 +374,4 @@ Last revised: November 29, 2004
      which version Eggdrop the module is written for.
     _____________________________________________________________________
 
-  Copyright (C) 1999 - 2005 Eggheads Development Team
+  Copyright (C) 1999 - 2006 Eggheads Development Team

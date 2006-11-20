@@ -1,4 +1,4 @@
-$Id: mod.irc,v 1.4 2005/08/29 03:12:28 wcc Exp $
+$Id: mod.irc,v 1.5 2006/11/20 13:53:31 tothwolf Exp $
 
 IRC Module
 Last revised: August 21, 2004
@@ -167,4 +167,4 @@ Last revised: August 21, 2004
       set this to 0.
     _____________________________________________________________________
 
-  Copyright (C) 2000 - 2005 Eggheads Development Team
+  Copyright (C) 2000 - 2006 Eggheads Development Team

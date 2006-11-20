@@ -1,7 +1,7 @@
 /* botnet.c
  *
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999 - 2005 Eggheads Development Team
+ * Copyright (C) 1999 - 2006 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: botnet.c,v 1.15 2005/09/05 03:27:09 wcc Exp $
+ * $Id: botnet.c,v 1.16 2006/11/20 13:53:33 tothwolf Exp $
  */
 
 #include "main.h"

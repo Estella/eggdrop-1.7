@@ -3,7 +3,7 @@
  * IF YOU ALTER THIS FILE, YOU NEED TO RECOMPILE THE BOT.
  *
  * Copyright (C) 1997 Robey Pointer
- * Copyright (C) 1999 - 2005 Eggheads Development Team
+ * Copyright (C) 1999 - 2006 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: eggdrop.h,v 1.9 2005/07/26 03:31:29 wcc Exp $
+ * $Id: eggdrop.h,v 1.10 2006/11/20 13:53:33 tothwolf Exp $
  */
 
 #ifndef _EGG_EGGDROP_H

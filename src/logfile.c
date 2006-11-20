@@ -1,6 +1,6 @@
 /* logfile.c
  *
- * Copyright (C) 2004 - 2005 Eggheads Development Team
+ * Copyright (C) 2004 - 2006 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: logfile.c,v 1.10 2006/11/20 13:26:01 tothwolf Exp $
+ * $Id: logfile.c,v 1.11 2006/11/20 13:53:34 tothwolf Exp $
  */
 
 #include "main.h"

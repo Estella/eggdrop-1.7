@@ -1,10 +1,10 @@
 /*
  * assoc.h -- part of assoc.mod
  *
- * $Id: assoc.h,v 1.2 2005/01/21 01:43:41 wcc Exp $
+ * $Id: assoc.h,v 1.3 2006/11/20 13:53:37 tothwolf Exp $
  */
 /*
- * Copyright (C) 2000 - 2005 Eggheads Development Team
+ * Copyright (C) 2000 - 2006 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

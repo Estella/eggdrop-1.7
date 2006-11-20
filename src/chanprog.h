@@ -1,6 +1,6 @@
 /* chanprog.h
  *
- * Copyright (C) 2004 - 2005 Eggheads Development Team
+ * Copyright (C) 2004 - 2006 Eggheads Development Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: chanprog.h,v 1.4 2005/08/29 04:38:10 wcc Exp $
+ * $Id: chanprog.h,v 1.5 2006/11/20 13:53:33 tothwolf Exp $
  */
 
 #ifndef _EGG_CHANPROG_H
