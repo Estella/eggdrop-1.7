@@ -2,7 +2,7 @@
  * blowfish.c -- part of blowfish.mod
  *   encryption and decryption of passwords
  *
- * $Id: blowfish.c,v 1.3 2005/01/21 01:43:41 wcc Exp $
+ * $Id: blowfish.c,v 1.4 2006/11/20 13:26:01 tothwolf Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -392,7 +392,8 @@ static char *decrypt_string(char *key, char *str)
   return dest;
 }
 
-static int tcl_encrypt STDVAR
+static int tcl_encrypt(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   char *p;
 
@@ -404,7 +405,8 @@ static int tcl_encrypt STDVAR
   return TCL_OK;
 }
 
-static int tcl_decrypt STDVAR
+static int tcl_decrypt(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   char *p;
 
@@ -416,7 +418,8 @@ static int tcl_decrypt STDVAR
   return TCL_OK;
 }
 
-static int tcl_encpass STDVAR
+static int tcl_encpass(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   BADARGS(2, 2, " string");
 

@@ -2,7 +2,7 @@
  * irc.c -- part of irc.mod
  *   support for channels within the bot
  *
- * $Id: irc.c,v 1.12 2005/08/29 03:21:10 wcc Exp $
+ * $Id: irc.c,v 1.13 2006/11/20 13:26:02 tothwolf Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -664,7 +664,8 @@ static void check_expired_chanstuff()
   }
 }
 
-static int channels_6char STDVAR
+static int channels_6char(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   Function F = (Function) cd;
   char x[20];
@@ -677,7 +678,8 @@ static int channels_6char STDVAR
   return TCL_OK;
 }
 
-static int channels_5char STDVAR
+static int channels_5char(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   Function F = (Function) cd;
 
@@ -688,7 +690,8 @@ static int channels_5char STDVAR
   return TCL_OK;
 }
 
-static int channels_4char STDVAR
+static int channels_4char(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   Function F = (Function) cd;
 
@@ -699,7 +702,8 @@ static int channels_4char STDVAR
   return TCL_OK;
 }
 
-static int channels_2char STDVAR
+static int channels_2char(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   Function F = (Function) cd;
 

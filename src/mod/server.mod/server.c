@@ -2,7 +2,7 @@
  * server.c -- part of server.mod
  *   basic irc server support
  *
- * $Id: server.c,v 1.11 2005/10/16 05:59:21 wcc Exp $
+ * $Id: server.c,v 1.12 2006/11/20 13:26:02 tothwolf Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -1072,7 +1072,8 @@ static void next_server(int *ptr, char *serv, unsigned int *port, char *pass)
     pass[0] = 0;
 }
 
-static int server_6char STDVAR
+static int server_6char(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   Function F = (Function) cd;
   char x[20];
@@ -1086,7 +1087,8 @@ static int server_6char STDVAR
   return TCL_OK;
 }
 
-static int server_5char STDVAR
+static int server_5char(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   Function F = (Function) cd;
 
@@ -1097,7 +1099,8 @@ static int server_5char STDVAR
   return TCL_OK;
 }
 
-static int server_2char STDVAR
+static int server_2char(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   Function F = (Function) cd;
 
@@ -1108,7 +1111,8 @@ static int server_2char STDVAR
   return TCL_OK;
 }
 
-static int server_msg STDVAR
+static int server_msg(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   Function F = (Function) cd;
 
@@ -1119,7 +1123,8 @@ static int server_msg STDVAR
   return TCL_OK;
 }
 
-static int server_raw STDVAR
+static int server_raw(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   Function F = (Function) cd;
 

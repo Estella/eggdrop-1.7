@@ -4,7 +4,7 @@
  *
  * Written by Fabian Knittel <fknittel@gmx.de>
  *
- * $Id: tclcompress.c,v 1.3 2005/08/29 04:04:27 wcc Exp $
+ * $Id: tclcompress.c,v 1.4 2006/11/20 13:26:01 tothwolf Exp $
  */
 /*
  * Copyright (C) 2000 - 2005 Eggheads Development Team
@@ -27,7 +27,8 @@
 
 #define NEXT_ARG { curr_arg++; argc--; }
 
-static int tcl_compress_file STDVAR
+static int tcl_compress_file(ClientData cd, Tcl_Interp *irp,
+                             int argc, char *argv[])
 {
   int mode_num = compress_level, result, curr_arg = 1;
   char *fn_src = NULL, *fn_target = NULL;
@@ -76,7 +77,8 @@ static int tcl_compress_file STDVAR
   return TCL_OK;
 }
 
-static int tcl_uncompress_file STDVAR
+static int tcl_uncompress_file(ClientData cd, Tcl_Interp *irp,
+                               int argc, char *argv[])
 {
   int result;
 
@@ -94,7 +96,8 @@ static int tcl_uncompress_file STDVAR
   return TCL_OK;
 }
 
-static int tcl_iscompressed STDVAR
+static int tcl_iscompressed(ClientData cd, Tcl_Interp *irp,
+                            int argc, char *argv[])
 {
   int result;
 

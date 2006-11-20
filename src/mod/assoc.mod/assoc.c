@@ -2,7 +2,7 @@
  * assoc.c -- part of assoc.mod
  *   the assoc code, moved here mainly from botnet.c for module work
  *
- * $Id: assoc.c,v 1.5 2005/01/21 01:43:41 wcc Exp $
+ * $Id: assoc.c,v 1.6 2006/11/20 13:26:01 tothwolf Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -252,7 +252,8 @@ static int cmd_assoc(struct userrec *u, int idx, char *par)
   return 0;
 }
 
-static int tcl_killassoc STDVAR
+static int tcl_killassoc(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   int chan;
 
@@ -273,7 +274,8 @@ static int tcl_killassoc STDVAR
   return TCL_OK;
 }
 
-static int tcl_assoc STDVAR
+static int tcl_assoc(ClientData cd, Tcl_Interp *irp,
+                     int argc, char *argv[])
 {
   int chan;
   char name[21], *p;

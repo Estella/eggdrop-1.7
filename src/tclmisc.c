@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tclmisc.c,v 1.13 2005/01/21 01:43:40 wcc Exp $
+ * $Id: tclmisc.c,v 1.14 2006/11/20 13:26:01 tothwolf Exp $
  */
 
 #include "main.h"
@@ -61,7 +61,8 @@ extern module_entry *module_list;
 extern Tcl_Interp *interp;
 
 
-static int tcl_binds STDVAR
+static int tcl_binds(ClientData cd, Tcl_Interp *irp,
+                     int argc, char *argv[])
 {
   int matching = 0;
   char *g, flg[100], hits[11];
@@ -109,7 +110,8 @@ static int tcl_binds STDVAR
   return TCL_OK;
 }
 
-static int tcl_timer STDVAR
+static int tcl_timer(ClientData cd, Tcl_Interp *irp,
+                     int argc, char *argv[])
 {
   unsigned long x;
   char s[16];
@@ -128,7 +130,8 @@ static int tcl_timer STDVAR
   return TCL_OK;
 }
 
-static int tcl_utimer STDVAR
+static int tcl_utimer(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   unsigned long x;
   char s[16];
@@ -147,7 +150,8 @@ static int tcl_utimer STDVAR
   return TCL_OK;
 }
 
-static int tcl_killtimer STDVAR
+static int tcl_killtimer(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   BADARGS(2, 2, " timerID");
 
@@ -161,7 +165,8 @@ static int tcl_killtimer STDVAR
   return TCL_ERROR;
 }
 
-static int tcl_killutimer STDVAR
+static int tcl_killutimer(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   BADARGS(2, 2, " timerID");
 
@@ -175,7 +180,8 @@ static int tcl_killutimer STDVAR
   return TCL_ERROR;
 }
 
-static int tcl_timers STDVAR
+static int tcl_timers(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   BADARGS(1, 1, "");
 
@@ -183,7 +189,8 @@ static int tcl_timers STDVAR
   return TCL_OK;
 }
 
-static int tcl_utimers STDVAR
+static int tcl_utimers(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   BADARGS(1, 1, "");
 
@@ -191,7 +198,8 @@ static int tcl_utimers STDVAR
   return TCL_OK;
 }
 
-static int tcl_duration STDVAR
+static int tcl_duration(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   char s[70];
   unsigned long sec, tmp;
@@ -240,7 +248,8 @@ static int tcl_duration STDVAR
   return TCL_OK;
 }
 
-static int tcl_unixtime STDVAR
+static int tcl_unixtime(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   char s[11];
   time_t now2 = time(NULL);
@@ -252,7 +261,8 @@ static int tcl_unixtime STDVAR
   return TCL_OK;
 }
 
-static int tcl_ctime STDVAR
+static int tcl_ctime(ClientData cd, Tcl_Interp *irp,
+                     int argc, char *argv[])
 {
   time_t tt;
   char s[25];
@@ -265,7 +275,8 @@ static int tcl_ctime STDVAR
   return TCL_OK;
 }
 
-static int tcl_strftime STDVAR
+static int tcl_strftime(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   char buf[512];
   struct tm *tm1;
@@ -286,7 +297,8 @@ static int tcl_strftime STDVAR
   return TCL_ERROR;
 }
 
-static int tcl_myip STDVAR
+static int tcl_myip(ClientData cd, Tcl_Interp *irp,
+                    int argc, char *argv[])
 {
   char s[16];
 
@@ -297,7 +309,8 @@ static int tcl_myip STDVAR
   return TCL_OK;
 }
 
-static int tcl_rand STDVAR
+static int tcl_rand(ClientData cd, Tcl_Interp *irp,
+                    int argc, char *argv[])
 {
   unsigned long x;
   char s[11];
@@ -316,7 +329,8 @@ static int tcl_rand STDVAR
   return TCL_OK;
 }
 
-static int tcl_sendnote STDVAR
+static int tcl_sendnote(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   char s[5], from[NOTENAMELEN + 1], to[NOTENAMELEN + 1], msg[451];
 
@@ -330,7 +344,8 @@ static int tcl_sendnote STDVAR
   return TCL_OK;
 }
 
-static int tcl_dumpfile STDVAR
+static int tcl_dumpfile(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   char nick[NICKLEN];
   struct flag_record fr = { FR_GLOBAL | FR_CHAN, 0, 0, 0, 0, 0 };
@@ -343,7 +358,8 @@ static int tcl_dumpfile STDVAR
   return TCL_OK;
 }
 
-static int tcl_dccdumpfile STDVAR
+static int tcl_dccdumpfile(ClientData cd, Tcl_Interp *irp,
+                           int argc, char *argv[])
 {
   int idx, i;
   struct flag_record fr = { FR_GLOBAL | FR_CHAN | FR_ANYWH, 0, 0, 0, 0, 0 };
@@ -362,7 +378,8 @@ static int tcl_dccdumpfile STDVAR
   return TCL_OK;
 }
 
-static int tcl_backup STDVAR
+static int tcl_backup(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   BADARGS(1, 1, "");
 
@@ -370,7 +387,8 @@ static int tcl_backup STDVAR
   return TCL_OK;
 }
 
-static int tcl_die STDVAR
+static int tcl_die(ClientData cd, Tcl_Interp *irp,
+                   int argc, char *argv[])
 {
   char s[1024];
 
@@ -387,7 +405,8 @@ static int tcl_die STDVAR
   return TCL_OK;
 }
 
-static int tcl_loadmodule STDVAR
+static int tcl_loadmodule(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   const char *p;
 
@@ -400,7 +419,8 @@ static int tcl_loadmodule STDVAR
   return TCL_OK;
 }
 
-static int tcl_unloadmodule STDVAR
+static int tcl_unloadmodule(ClientData cd, Tcl_Interp *irp,
+                            int argc, char *argv[])
 {
   BADARGS(2, 2, " module-name");
 
@@ -408,7 +428,8 @@ static int tcl_unloadmodule STDVAR
   return TCL_OK;
 }
 
-static int tcl_unames STDVAR
+static int tcl_unames(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   char *unix_n, *vers_n;
 #ifdef HAVE_UNAME
@@ -428,7 +449,8 @@ static int tcl_unames STDVAR
   return TCL_OK;
 }
 
-static int tcl_modules STDVAR
+static int tcl_modules(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   int i;
   char *p, s[24], s2[24];
@@ -463,7 +485,8 @@ static int tcl_modules STDVAR
   return TCL_OK;
 }
 
-static int tcl_callevent STDVAR
+static int tcl_callevent(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   BADARGS(2, 2, " event");
 
@@ -471,7 +494,8 @@ static int tcl_callevent STDVAR
   return TCL_OK;
 }
 
-static int tcl_stripcodes STDVAR
+static int tcl_stripcodes(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   int flags = 0;
   char *p;
@@ -516,7 +540,8 @@ int objc;
 Tcl_Obj *CONST objv[];
 {
 #else
-static int tcl_md5 STDVAR
+static int tcl_md5(ClientData cd, Tcl_Interp *irp,
+                   int argc, char *argv[])
 {
 #endif /* USE_TCL_OBJ */
   MD5_CTX md5context;

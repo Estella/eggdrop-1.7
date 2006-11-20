@@ -1,7 +1,7 @@
 /*
  * tclirc.c -- part of irc.mod
  *
- * $Id: tclirc.c,v 1.5 2005/01/21 01:43:42 wcc Exp $
+ * $Id: tclirc.c,v 1.6 2006/11/20 13:26:02 tothwolf Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -24,7 +24,8 @@
 
 /* Streamlined by answer.
  */
-static int tcl_chanlist STDVAR
+static int tcl_chanlist(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   char nuh[1024];
   int f;
@@ -71,7 +72,8 @@ static int tcl_chanlist STDVAR
   return TCL_OK;
 }
 
-static int tcl_botisop STDVAR
+static int tcl_botisop(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   struct chanset_t *chan, *thechan = NULL;
 
@@ -98,7 +100,8 @@ static int tcl_botisop STDVAR
   return TCL_OK;
 }
 
-static int tcl_botishalfop STDVAR
+static int tcl_botishalfop(ClientData cd, Tcl_Interp *irp,
+                           int argc, char *argv[])
 {
   struct chanset_t *chan, *thechan = NULL;
 
@@ -125,7 +128,8 @@ static int tcl_botishalfop STDVAR
   return TCL_OK;
 }
 
-static int tcl_ischanjuped STDVAR
+static int tcl_ischanjuped(ClientData cd, Tcl_Interp *irp,
+                           int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -143,7 +147,8 @@ static int tcl_ischanjuped STDVAR
   return TCL_OK;
 }
 
-static int tcl_botisvoice STDVAR
+static int tcl_botisvoice(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   struct chanset_t *chan, *thechan = NULL;
   memberlist *mx;
@@ -171,7 +176,8 @@ static int tcl_botisvoice STDVAR
   return TCL_OK;
 }
 
-static int tcl_botonchan STDVAR
+static int tcl_botonchan(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   struct chanset_t *chan, *thechan = NULL;
 
@@ -198,7 +204,8 @@ static int tcl_botonchan STDVAR
   return TCL_OK;
 }
 
-static int tcl_isop STDVAR
+static int tcl_isop(ClientData cd, Tcl_Interp *irp,
+                    int argc, char *argv[])
 {
   struct chanset_t *chan, *thechan = NULL;
   memberlist *mx;
@@ -226,7 +233,8 @@ static int tcl_isop STDVAR
   return TCL_OK;
 }
 
-static int tcl_ishalfop STDVAR
+static int tcl_ishalfop(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   struct chanset_t *chan, *thechan = NULL;
   memberlist *mx;
@@ -254,7 +262,8 @@ static int tcl_ishalfop STDVAR
   return TCL_OK;
 }
 
-static int tcl_isvoice STDVAR
+static int tcl_isvoice(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   struct chanset_t *chan, *thechan = NULL;
   memberlist *mx;
@@ -282,7 +291,8 @@ static int tcl_isvoice STDVAR
   return TCL_OK;
 }
 
-static int tcl_wasop STDVAR
+static int tcl_wasop(ClientData cd, Tcl_Interp *irp,
+                     int argc, char *argv[])
 {
   struct chanset_t *chan;
   memberlist *mx;
@@ -301,7 +311,8 @@ static int tcl_wasop STDVAR
   return TCL_OK;
 }
 
-static int tcl_washalfop STDVAR
+static int tcl_washalfop(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   struct chanset_t *chan;
   memberlist *mx;
@@ -320,7 +331,8 @@ static int tcl_washalfop STDVAR
   return TCL_OK;
 }
 
-static int tcl_onchan STDVAR
+static int tcl_onchan(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   struct chanset_t *chan, *thechan = NULL;
 
@@ -347,7 +359,8 @@ static int tcl_onchan STDVAR
   return TCL_OK;
 }
 
-static int tcl_handonchan STDVAR
+static int tcl_handonchan(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   char nuh[1024];
   struct chanset_t *chan, *thechan = NULL;
@@ -382,7 +395,8 @@ static int tcl_handonchan STDVAR
   return TCL_OK;
 }
 
-static int tcl_ischanban STDVAR
+static int tcl_ischanban(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -400,7 +414,8 @@ static int tcl_ischanban STDVAR
   return TCL_OK;
 }
 
-static int tcl_ischanexempt STDVAR
+static int tcl_ischanexempt(ClientData cd, Tcl_Interp *irp,
+                            int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -418,7 +433,8 @@ static int tcl_ischanexempt STDVAR
   return TCL_OK;
 }
 
-static int tcl_ischaninvite STDVAR
+static int tcl_ischaninvite(ClientData cd, Tcl_Interp *irp,
+                            int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -436,7 +452,8 @@ static int tcl_ischaninvite STDVAR
   return TCL_OK;
 }
 
-static int tcl_getchanhost STDVAR
+static int tcl_getchanhost(ClientData cd, Tcl_Interp *irp,
+                           int argc, char *argv[])
 {
   struct chanset_t *chan, *thechan = NULL;
   memberlist *m;
@@ -464,7 +481,8 @@ static int tcl_getchanhost STDVAR
   return TCL_OK;
 }
 
-static int tcl_onchansplit STDVAR
+static int tcl_onchansplit(ClientData cd, Tcl_Interp *irp,
+                           int argc, char *argv[])
 {
   struct chanset_t *chan, *thechan = NULL;
   memberlist *m;
@@ -493,7 +511,8 @@ static int tcl_onchansplit STDVAR
   return TCL_OK;
 }
 
-static int tcl_maskhost STDVAR
+static int tcl_maskhost(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   char new[121];
 
@@ -515,7 +534,8 @@ static int tcl_maskhost STDVAR
   return TCL_OK;
 }
 
-static int tcl_getchanidle STDVAR
+static int tcl_getchanidle(ClientData cd, Tcl_Interp *irp,
+                           int argc, char *argv[])
 {
   memberlist *m;
   struct chanset_t *chan;
@@ -557,7 +577,8 @@ static inline int tcl_chanmasks(masklist *m, Tcl_Interp *irp)
   return TCL_OK;
 }
 
-static int tcl_chanbans STDVAR
+static int tcl_chanbans(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -571,7 +592,8 @@ static int tcl_chanbans STDVAR
   return tcl_chanmasks(chan->channel.ban, irp);
 }
 
-static int tcl_chanexempts STDVAR
+static int tcl_chanexempts(ClientData cd, Tcl_Interp *irp,
+                           int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -585,7 +607,8 @@ static int tcl_chanexempts STDVAR
   return tcl_chanmasks(chan->channel.exempt, irp);
 }
 
-static int tcl_chaninvites STDVAR
+static int tcl_chaninvites(ClientData cd, Tcl_Interp *irp,
+                           int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -599,7 +622,8 @@ static int tcl_chaninvites STDVAR
   return tcl_chanmasks(chan->channel.invite, irp);
 }
 
-static int tcl_getchanmode STDVAR
+static int tcl_getchanmode(ClientData cd, Tcl_Interp *irp,
+                           int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -614,7 +638,8 @@ static int tcl_getchanmode STDVAR
   return TCL_OK;
 }
 
-static int tcl_getchanjoin STDVAR
+static int tcl_getchanjoin(ClientData cd, Tcl_Interp *irp,
+                           int argc, char *argv[])
 {
   struct chanset_t *chan;
   char s[21];
@@ -638,7 +663,8 @@ static int tcl_getchanjoin STDVAR
   return TCL_OK;
 }
 
-static int tcl_channame2dname STDVAR
+static int tcl_channame2dname(ClientData cd, Tcl_Interp *irp,
+                              int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -654,7 +680,8 @@ static int tcl_channame2dname STDVAR
   }
 }
 
-static int tcl_chandname2name STDVAR
+static int tcl_chandname2name(ClientData cd, Tcl_Interp *irp,
+                              int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -670,7 +697,8 @@ static int tcl_chandname2name STDVAR
   }
 }
 
-static int tcl_flushmode STDVAR
+static int tcl_flushmode(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -685,7 +713,8 @@ static int tcl_flushmode STDVAR
   return TCL_OK;
 }
 
-static int tcl_pushmode STDVAR
+static int tcl_pushmode(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   struct chanset_t *chan;
   char plus, mode;
@@ -711,7 +740,8 @@ static int tcl_pushmode STDVAR
   return TCL_OK;
 }
 
-static int tcl_resetbans STDVAR
+static int tcl_resetbans(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -726,7 +756,8 @@ static int tcl_resetbans STDVAR
   return TCL_OK;
 }
 
-static int tcl_resetexempts STDVAR
+static int tcl_resetexempts(ClientData cd, Tcl_Interp *irp,
+                            int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -741,7 +772,8 @@ static int tcl_resetexempts STDVAR
   return TCL_OK;
 }
 
-static int tcl_resetinvites STDVAR
+static int tcl_resetinvites(ClientData cd, Tcl_Interp *irp,
+                            int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -756,7 +788,8 @@ static int tcl_resetinvites STDVAR
   return TCL_OK;
 }
 
-static int tcl_resetchan STDVAR
+static int tcl_resetchan(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -771,7 +804,8 @@ static int tcl_resetchan STDVAR
   return TCL_OK;
 }
 
-static int tcl_topic STDVAR
+static int tcl_topic(ClientData cd, Tcl_Interp *irp,
+                     int argc, char *argv[])
 {
   struct chanset_t *chan;
 
@@ -786,7 +820,8 @@ static int tcl_topic STDVAR
   return TCL_OK;
 }
 
-static int tcl_hand2nick STDVAR
+static int tcl_hand2nick(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   char nuh[1024];
   memberlist *m;
@@ -821,7 +856,8 @@ static int tcl_hand2nick STDVAR
   return TCL_OK;
 }
 
-static int tcl_nick2hand STDVAR
+static int tcl_nick2hand(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   char nuh[1024];
   memberlist *m;
@@ -854,7 +890,8 @@ static int tcl_nick2hand STDVAR
   return TCL_OK;
 }
 
-static int tcl_putkick STDVAR
+static int tcl_putkick(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   struct chanset_t *chan;
   int k = 0, l;

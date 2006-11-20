@@ -1,7 +1,7 @@
 /*
  * tcltransfer.c -- part of transfer.mod
  *
- * $Id: tcltransfer.c,v 1.3 2005/08/29 04:04:27 wcc Exp $
+ * $Id: tcltransfer.c,v 1.4 2006/11/20 13:26:02 tothwolf Exp $
  *
  * Copyright (C) 2003 - 2005 Eggheads Development Team
  *
@@ -20,7 +20,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-static int tcl_dccsend STDVAR
+static int tcl_dccsend(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   char s[10], *sys, *nfn;
   int i;
@@ -73,7 +74,8 @@ static int tcl_dccsend STDVAR
   return TCL_OK;
 }
 
-static int tcl_getfileq STDVAR
+static int tcl_getfileq(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   char *s = NULL;
   fileq_t *q;
@@ -95,7 +97,8 @@ static int tcl_getfileq STDVAR
   return TCL_OK;
 }
 
-static int tcl_getfilesendtime STDVAR
+static int tcl_getfilesendtime(ClientData cd, Tcl_Interp *irp,
+                               int argc, char *argv[])
 {
   int sock, i;
   char s[15];

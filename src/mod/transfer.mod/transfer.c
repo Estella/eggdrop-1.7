@@ -1,7 +1,7 @@
 /*
  * transfer.c -- part of transfer.mod
  *
- * $Id: transfer.c,v 1.6 2005/01/21 01:43:42 wcc Exp $
+ * $Id: transfer.c,v 1.7 2006/11/20 13:26:02 tothwolf Exp $
  *
  * Copyright (C) 1997 Robey Pointer
  * Copyright (C) 1999 - 2005 Eggheads Development Team
@@ -162,7 +162,8 @@ static char *replace_spaces(char *fn)
 }
 
 
-static int builtin_sentrcvd STDVAR
+static int builtin_sentrcvd(ClientData cd, Tcl_Interp *irp,
+                            int argc, char *argv[])
 {
   Function F = (Function) cd;
 
@@ -173,7 +174,8 @@ static int builtin_sentrcvd STDVAR
   return TCL_OK;
 }
 
-static int builtin_toutlost STDVAR
+static int builtin_toutlost(ClientData cd, Tcl_Interp *irp,
+                            int argc, char *argv[])
 {
   Function F = (Function) cd;
 

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcldcc.c,v 1.14 2005/01/21 01:43:40 wcc Exp $
+ * $Id: tcldcc.c,v 1.15 2006/11/20 13:26:01 tothwolf Exp $
  */
 
 #include "main.h"
@@ -63,7 +63,8 @@ int expmem_tcldcc(void)
   return tot;
 }
 
-static int tcl_putdcc STDVAR
+static int tcl_putdcc(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   int i, j;
 
@@ -89,7 +90,8 @@ static int tcl_putdcc STDVAR
  *
  * Added by <drummer@sophia.jpte.hu>.
  */
-static int tcl_putdccraw STDVAR
+static int tcl_putdccraw(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   int i, j = 0, z;
 
@@ -113,7 +115,8 @@ static int tcl_putdccraw STDVAR
   return TCL_OK;
 }
 
-static int tcl_dccsimul STDVAR
+static int tcl_dccsimul(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   int idx;
 
@@ -138,7 +141,8 @@ static int tcl_dccsimul STDVAR
 }
 
 
-static int tcl_dccbroadcast STDVAR
+static int tcl_dccbroadcast(ClientData cd, Tcl_Interp *irp,
+                            int argc, char *argv[])
 {
   char msg[401];
 
@@ -151,7 +155,8 @@ static int tcl_dccbroadcast STDVAR
   return TCL_OK;
 }
 
-static int tcl_hand2idx STDVAR
+static int tcl_hand2idx(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   int i;
   char s[11];
@@ -169,7 +174,8 @@ static int tcl_hand2idx STDVAR
   return TCL_OK;
 }
 
-static int tcl_getchan STDVAR
+static int tcl_getchan(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   char s[7];
   int idx;
@@ -192,7 +198,8 @@ static int tcl_getchan STDVAR
   return TCL_OK;
 }
 
-static int tcl_setchan STDVAR
+static int tcl_setchan(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   int idx, chan;
   module_entry *me;
@@ -250,7 +257,8 @@ static int tcl_setchan STDVAR
   return TCL_OK;
 }
 
-static int tcl_dccputchan STDVAR
+static int tcl_dccputchan(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   int chan;
   char msg[401];
@@ -270,7 +278,8 @@ static int tcl_dccputchan STDVAR
   return TCL_OK;
 }
 
-static int tcl_console STDVAR
+static int tcl_console(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   int i, j, pls, arg;
   module_entry *me;
@@ -329,7 +338,8 @@ static int tcl_console STDVAR
   return TCL_OK;
 }
 
-static int tcl_strip STDVAR
+static int tcl_strip(ClientData cd, Tcl_Interp *irp,
+                     int argc, char *argv[])
 {
   int i, j, pls, arg;
   module_entry *me;
@@ -373,7 +383,8 @@ static int tcl_strip STDVAR
   return TCL_OK;
 }
 
-static int tcl_echo STDVAR
+static int tcl_echo(ClientData cd, Tcl_Interp *irp,
+                    int argc, char *argv[])
 {
   int i;
   module_entry *me;
@@ -404,7 +415,8 @@ static int tcl_echo STDVAR
   return TCL_OK;
 }
 
-static int tcl_page STDVAR
+static int tcl_page(ClientData cd, Tcl_Interp *irp,
+                    int argc, char *argv[])
 {
   int i;
   char x[20];
@@ -441,7 +453,8 @@ static int tcl_page STDVAR
   return TCL_OK;
 }
 
-static int tcl_control STDVAR
+static int tcl_control(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   int idx;
   void *hold;
@@ -475,7 +488,8 @@ static int tcl_control STDVAR
   return TCL_OK;
 }
 
-static int tcl_valididx STDVAR
+static int tcl_valididx(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   int idx;
 
@@ -489,7 +503,8 @@ static int tcl_valididx STDVAR
    return TCL_OK;
 }
 
-static int tcl_killdcc STDVAR
+static int tcl_killdcc(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   int idx;
 
@@ -522,7 +537,8 @@ static int tcl_killdcc STDVAR
   return TCL_OK;
 }
 
-static int tcl_putbot STDVAR
+static int tcl_putbot(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   int i;
   char msg[401];
@@ -540,7 +556,8 @@ static int tcl_putbot STDVAR
   return TCL_OK;
 }
 
-static int tcl_putallbots STDVAR
+static int tcl_putallbots(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   char msg[401];
 
@@ -551,7 +568,8 @@ static int tcl_putallbots STDVAR
   return TCL_OK;
 }
 
-static int tcl_idx2hand STDVAR
+static int tcl_idx2hand(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   int idx;
 
@@ -567,7 +585,8 @@ static int tcl_idx2hand STDVAR
   return TCL_OK;
 }
 
-static int tcl_islinked STDVAR
+static int tcl_islinked(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   int i;
 
@@ -581,7 +600,8 @@ static int tcl_islinked STDVAR
   return TCL_OK;
 }
 
-static int tcl_bots STDVAR
+static int tcl_bots(ClientData cd, Tcl_Interp *irp,
+                    int argc, char *argv[])
 {
   tand_t *bot;
 
@@ -592,7 +612,8 @@ static int tcl_bots STDVAR
   return TCL_OK;
 }
 
-static int tcl_botlist STDVAR
+static int tcl_botlist(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   char *p, sh[2], string[20];
   EGG_CONST char *list[4];
@@ -615,7 +636,8 @@ static int tcl_botlist STDVAR
   return TCL_OK;
 }
 
-static int tcl_dcclist STDVAR
+static int tcl_dcclist(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   int i;
   char *p, idxstr[10], timestamp[11], other[160];
@@ -649,7 +671,8 @@ static int tcl_dcclist STDVAR
   return TCL_OK;
 }
 
-static int tcl_whom STDVAR
+static int tcl_whom(ClientData cd, Tcl_Interp *irp,
+                    int argc, char *argv[])
 {
   int chan, i;
   char c[2], idle[11], work[20], *p;
@@ -723,7 +746,8 @@ static int tcl_whom STDVAR
   return TCL_OK;
 }
 
-static int tcl_dccused STDVAR
+static int tcl_dccused(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   char s[20];
 
@@ -734,7 +758,8 @@ static int tcl_dccused STDVAR
   return TCL_OK;
 }
 
-static int tcl_getdccidle STDVAR
+static int tcl_getdccidle(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   int x, idx;
   char s[21];
@@ -753,7 +778,8 @@ static int tcl_getdccidle STDVAR
   return TCL_OK;
 }
 
-static int tcl_getdccaway STDVAR
+static int tcl_getdccaway(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   int idx;
 
@@ -771,7 +797,8 @@ static int tcl_getdccaway STDVAR
   return TCL_OK;
 }
 
-static int tcl_setdccaway STDVAR
+static int tcl_setdccaway(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   int idx;
 
@@ -791,7 +818,8 @@ static int tcl_setdccaway STDVAR
   return TCL_OK;
 }
 
-static int tcl_link STDVAR
+static int tcl_link(ClientData cd, Tcl_Interp *irp,
+                    int argc, char *argv[])
 {
   int x, i;
   char bot[HANDLEN + 1], bot2[HANDLEN + 1];
@@ -815,7 +843,8 @@ static int tcl_link STDVAR
   return TCL_OK;
 }
 
-static int tcl_unlink STDVAR
+static int tcl_unlink(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   int i, x;
   char bot[HANDLEN + 1];
@@ -839,7 +868,8 @@ static int tcl_unlink STDVAR
   return TCL_OK;
 }
 
-static int tcl_connect STDVAR
+static int tcl_connect(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   int i, z, sock;
   char s[81];
@@ -882,7 +912,8 @@ static int tcl_connect STDVAR
  * listen <port> script <proc> [flag]
  * listen <port> off
  */
-static int tcl_listen STDVAR
+static int tcl_listen(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   int i, j, idx = -1, port, realport;
   char s[11], msg[256];
@@ -1004,7 +1035,8 @@ static int tcl_listen STDVAR
   return TCL_OK;
 }
 
-static int tcl_boot STDVAR
+static int tcl_boot(ClientData cd, Tcl_Interp *irp,
+                    int argc, char *argv[])
 {
   char who[NOTENAMELEN + 1];
   int i, ok = 0;
@@ -1038,7 +1070,8 @@ static int tcl_boot STDVAR
   return TCL_OK;
 }
 
-static int tcl_rehash STDVAR
+static int tcl_rehash(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   BADARGS(1, 1, " ");
 
@@ -1053,7 +1086,8 @@ static int tcl_rehash STDVAR
   return TCL_OK;
 }
 
-static int tcl_restart STDVAR
+static int tcl_restart(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   BADARGS(1, 1, " ");
 

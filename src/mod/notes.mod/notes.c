@@ -5,7 +5,7 @@
  *   note cmds
  *   note ignores
  *
- * $Id: notes.c,v 1.5 2005/01/21 01:43:42 wcc Exp $
+ * $Id: notes.c,v 1.6 2006/11/20 13:26:02 tothwolf Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -206,7 +206,8 @@ static void expire_notes()
 
 /* Add note to notefile.
  */
-static int tcl_storenote STDVAR
+static int tcl_storenote(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   FILE *f;
   int idx;
@@ -370,7 +371,8 @@ static int notes_in(int dl[], int in)
   return 0;
 }
 
-static int tcl_erasenotes STDVAR
+static int tcl_erasenotes(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   FILE *f, *g;
   char s[601], *to, *s1;
@@ -432,7 +434,8 @@ static int tcl_erasenotes STDVAR
   return TCL_OK;
 }
 
-static int tcl_listnotes STDVAR
+static int tcl_listnotes(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   int i, numnotes;
   int ln[128]; /* Is it enough? */
@@ -658,7 +661,8 @@ static void notes_del(char *hand, char *nick, char *sdl, int idx)
   }
 }
 
-static int tcl_notes STDVAR
+static int tcl_notes(ClientData cd, Tcl_Interp *irp,
+                     int argc, char *argv[])
 {
   int count, read, nl[128]; /* Is it enough? */
   char s[601], *to, *from, *dt, *s1, *p;

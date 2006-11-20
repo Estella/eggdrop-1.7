@@ -2,7 +2,7 @@
  * tclegg.h
  *   stuff used by tcl.c and tclhash.c
  *
- * $Id: tclegg.h,v 1.5 2005/07/31 03:49:35 wcc Exp $
+ * $Id: tclegg.h,v 1.6 2006/11/20 13:26:01 tothwolf Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -100,13 +100,7 @@ typedef struct timer_str {
 } tcl_timer_t;
 
 
-/* Used for Tcl stub functions */
-#define STDVAR (cd, irp, argc, argv)                                    \
-        ClientData cd;                                                  \
-        Tcl_Interp *irp;                                                \
-        int argc;                                                       \
-        char *argv[];
-
+/* Argument check for eggdrop-added Tcl commands */
 #define BADARGS(nl, nh, example) do {                                   \
         if ((argc < (nl)) || (argc > (nh))) {                           \
                 Tcl_AppendResult(irp, "wrong # args: should be \"",     \

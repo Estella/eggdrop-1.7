@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tclhash.c,v 1.20 2005/08/29 04:04:27 wcc Exp $
+ * $Id: tclhash.c,v 1.21 2006/11/20 13:26:01 tothwolf Exp $
  */
 
 #include "main.h"
@@ -459,7 +459,8 @@ static int tcl_getbinds(tcl_bind_list_t *tl_kind, const char *name)
   return TCL_OK;
 }
 
-static int tcl_bind STDVAR
+static int tcl_bind(ClientData cd, Tcl_Interp *irp,
+                    int argc, char *argv[])
 {
   tcl_bind_list_t *tl;
 
@@ -514,7 +515,8 @@ int check_validity(char *nme, Function func)
   return 1;
 }
 
-static int builtin_3char STDVAR
+static int builtin_3char(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   Function F = (Function) cd;
 
@@ -525,7 +527,8 @@ static int builtin_3char STDVAR
   return TCL_OK;
 }
 
-static int builtin_2char STDVAR
+static int builtin_2char(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   Function F = (Function) cd;
 
@@ -536,7 +539,8 @@ static int builtin_2char STDVAR
   return TCL_OK;
 }
 
-static int builtin_5int STDVAR
+static int builtin_5int(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   Function F = (Function) cd;
 
@@ -547,7 +551,8 @@ static int builtin_5int STDVAR
   return TCL_OK;
 }
 
-static int builtin_char STDVAR
+static int builtin_char(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   Function F = (Function) cd;
 
@@ -558,7 +563,8 @@ static int builtin_char STDVAR
   return TCL_OK;
 }
 
-static int builtin_chpt STDVAR
+static int builtin_chpt(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   Function F = (Function) cd;
 
@@ -569,7 +575,8 @@ static int builtin_chpt STDVAR
   return TCL_OK;
 }
 
-static int builtin_chjn STDVAR
+static int builtin_chjn(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   Function F = (Function) cd;
 
@@ -581,7 +588,8 @@ static int builtin_chjn STDVAR
   return TCL_OK;
 }
 
-static int builtin_idxchar STDVAR
+static int builtin_idxchar(ClientData cd, Tcl_Interp *irp,
+                           int argc, char *argv[])
 {
   Function F = (Function) cd;
   int idx;
@@ -602,7 +610,8 @@ static int builtin_idxchar STDVAR
   return TCL_OK;
 }
 
-static int builtin_charidx STDVAR
+static int builtin_charidx(ClientData cd, Tcl_Interp *irp,
+                           int argc, char *argv[])
 {
   Function F = (Function) cd;
   int idx;
@@ -620,7 +629,8 @@ static int builtin_charidx STDVAR
   return TCL_OK;
 }
 
-static int builtin_chat STDVAR
+static int builtin_chat(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   Function F = (Function) cd;
   int ch;
@@ -633,7 +643,8 @@ static int builtin_chat STDVAR
   return TCL_OK;
 }
 
-static int builtin_dcc STDVAR
+static int builtin_dcc(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   int idx;
   Function F = (Function) cd;

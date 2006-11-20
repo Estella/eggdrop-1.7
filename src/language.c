@@ -58,7 +58,7 @@
  *              o  Add add_lang_section("<newsection>"); to your module's
  *                 startup function.
  *
- * $Id: language.c,v 1.7 2005/01/21 01:43:40 wcc Exp $
+ * $Id: language.c,v 1.8 2006/11/20 13:26:01 tothwolf Exp $
  */
 
 #include "main.h"
@@ -669,7 +669,8 @@ static int cmd_languagestatus(struct userrec *u, int idx, char *par)
 
 /* Compability function to allow scripts to use the old command.
  */
-static int tcl_language STDVAR
+static int tcl_language(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   char *lang, *section, *buf;
 
@@ -693,7 +694,8 @@ static int tcl_language STDVAR
   return TCL_OK;
 }
 
-static int tcl_plslang STDVAR
+static int tcl_plslang(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   BADARGS(2, 2, " language");
 
@@ -703,7 +705,8 @@ static int tcl_plslang STDVAR
   return TCL_OK;
 }
 
-static int tcl_mnslang STDVAR
+static int tcl_mnslang(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   BADARGS(2, 2, " language");
 
@@ -716,7 +719,8 @@ static int tcl_mnslang STDVAR
   return TCL_OK;
 }
 
-static int tcl_addlangsection STDVAR
+static int tcl_addlangsection(ClientData cd, Tcl_Interp *irp,
+                              int argc, char *argv[])
 {
   BADARGS(2, 2, " section");
 
@@ -724,7 +728,8 @@ static int tcl_addlangsection STDVAR
   return TCL_OK;
 }
 
-static int tcl_dellangsection STDVAR
+static int tcl_dellangsection(ClientData cd, Tcl_Interp *irp,
+                              int argc, char *argv[])
 {
   BADARGS(2, 2, " section");
 
@@ -735,7 +740,8 @@ static int tcl_dellangsection STDVAR
   return TCL_OK;
 }
 
-static int tcl_relang STDVAR
+static int tcl_relang(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   recheck_lang_sections();
   return TCL_OK;

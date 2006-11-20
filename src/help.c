@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: help.c,v 1.5 2005/07/31 02:57:54 wcc Exp $
+ * $Id: help.c,v 1.6 2006/11/20 13:26:01 tothwolf Exp $
  */
 
 #include "main.h"
@@ -689,7 +689,8 @@ static void cmd_rehelp(struct userrec *u, int idx, char *par)
   reload_help_data();
 }
 
-static int tcl_loadhelp STDVAR
+static int tcl_loadhelp(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   BADARGS(2, 2, " helpfile");
 
@@ -697,7 +698,8 @@ static int tcl_loadhelp STDVAR
   return TCL_OK;
 }
 
-static int tcl_unloadhelp STDVAR
+static int tcl_unloadhelp(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   BADARGS(2, 2, " helpfile");
 
@@ -705,7 +707,8 @@ static int tcl_unloadhelp STDVAR
   return TCL_OK;
 }
 
-static int tcl_reloadhelp STDVAR
+static int tcl_reloadhelp(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   BADARGS(1, 1, "");
 

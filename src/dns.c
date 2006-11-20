@@ -18,7 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: dns.c,v 1.9 2005/07/31 05:51:06 wcc Exp $
+ * $Id: dns.c,v 1.10 2006/11/20 13:26:01 tothwolf Exp $
  */
 
 #include "main.h"
@@ -512,7 +512,8 @@ int expmem_dns(void)
  */
 
 /* dnslookup <ip-address> <proc> */
-static int tcl_dnslookup STDVAR
+static int tcl_dnslookup(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   struct in_addr inaddr;
   Tcl_DString paras;

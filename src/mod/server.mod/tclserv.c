@@ -1,7 +1,7 @@
 /*
  * tclserv.c -- part of server.mod
  *
- * $Id: tclserv.c,v 1.2 2005/01/21 01:43:42 wcc Exp $
+ * $Id: tclserv.c,v 1.3 2006/11/20 13:26:02 tothwolf Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -22,7 +22,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-static int tcl_isbotnick STDVAR
+static int tcl_isbotnick(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   BADARGS(2, 2, " nick");
 
@@ -33,7 +34,8 @@ static int tcl_isbotnick STDVAR
   return TCL_OK;
 }
 
-static int tcl_putquick STDVAR
+static int tcl_putquick(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   char s[511], *p;
 
@@ -61,7 +63,8 @@ static int tcl_putquick STDVAR
   return TCL_OK;
 }
 
-static int tcl_putserv STDVAR
+static int tcl_putserv(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   char s[511], *p;
 
@@ -89,7 +92,8 @@ static int tcl_putserv STDVAR
   return TCL_OK;
 }
 
-static int tcl_puthelp STDVAR
+static int tcl_puthelp(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   char s[511], *p;
 
@@ -117,7 +121,8 @@ static int tcl_puthelp STDVAR
   return TCL_OK;
 }
 
-static int tcl_jump STDVAR
+static int tcl_jump(ClientData cd, Tcl_Interp *irp,
+                    int argc, char *argv[])
 {
   BADARGS(1, 4, " ?server? ?port? ?pass?");
 
@@ -136,7 +141,8 @@ static int tcl_jump STDVAR
   return TCL_OK;
 }
 
-static int tcl_clearqueue STDVAR
+static int tcl_clearqueue(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   struct msgq *q, *qq;
   int msgs = 0;
@@ -219,7 +225,8 @@ static int tcl_clearqueue STDVAR
   return TCL_ERROR;
 }
 
-static int tcl_queuesize STDVAR
+static int tcl_queuesize(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   char s[20];
   int x;

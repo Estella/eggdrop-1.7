@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: traffic.c,v 1.5 2005/01/21 01:43:40 wcc Exp $
+ * $Id: traffic.c,v 1.6 2006/11/20 13:26:01 tothwolf Exp $
  */
 
 #include "main.h"
@@ -206,7 +206,8 @@ static void cmd_traffic(struct userrec *u, int idx, char *par)
   putlog(LOG_CMDS, "*", "#%s# traffic", dcc[idx].nick);
 }
 
-static int tcl_traffic STDVAR
+static int tcl_traffic(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   unsigned long in_today, in_total, out_today, out_total;
   char buf[1024];

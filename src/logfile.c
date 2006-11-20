@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: logfile.c,v 1.9 2005/07/26 03:31:29 wcc Exp $
+ * $Id: logfile.c,v 1.10 2006/11/20 13:26:01 tothwolf Exp $
  */
 
 #include "main.h"
@@ -573,7 +573,8 @@ static void cmd_addlog(struct userrec *u, int idx, char *par)
   putlog(LOG_MISC, "*", "%s: %s", dcc[idx].nick, par);
 }
 
-static int tcl_logfile STDVAR
+static int tcl_logfile(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   int i;
   char s[151];
@@ -648,7 +649,8 @@ static int tcl_logfile STDVAR
   return TCL_ERROR;
 }
 
-static int tcl_putlog STDVAR
+static int tcl_putlog(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   char logtext[501];
 
@@ -660,7 +662,8 @@ static int tcl_putlog STDVAR
   return TCL_OK;
 }
 
-static int tcl_putcmdlog STDVAR
+static int tcl_putcmdlog(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   char logtext[501];
 
@@ -672,7 +675,8 @@ static int tcl_putcmdlog STDVAR
   return TCL_OK;
 }
 
-static int tcl_putxferlog STDVAR
+static int tcl_putxferlog(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   char logtext[501];
 
@@ -684,7 +688,8 @@ static int tcl_putxferlog STDVAR
   return TCL_OK;
 }
 
-static int tcl_putloglev STDVAR
+static int tcl_putloglev(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   int lev = 0;
   char logtext[501];

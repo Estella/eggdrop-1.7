@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcluser.c,v 1.10 2005/01/21 01:43:40 wcc Exp $
+ * $Id: tcluser.c,v 1.11 2006/11/20 13:26:01 tothwolf Exp $
  */
 
 #include "main.h"
@@ -45,7 +45,8 @@ extern char botnetnick[];
 extern time_t now;
 
 
-static int tcl_countusers STDVAR
+static int tcl_countusers(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   BADARGS(1, 1, "");
 
@@ -53,7 +54,8 @@ static int tcl_countusers STDVAR
   return TCL_OK;
 }
 
-static int tcl_validuser STDVAR
+static int tcl_validuser(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   BADARGS(2, 2, " handle");
 
@@ -62,7 +64,8 @@ static int tcl_validuser STDVAR
   return TCL_OK;
 }
 
-static int tcl_finduser STDVAR
+static int tcl_finduser(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   struct userrec *u;
 
@@ -73,7 +76,8 @@ static int tcl_finduser STDVAR
   return TCL_OK;
 }
 
-static int tcl_passwdOk STDVAR
+static int tcl_passwdOk(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   struct userrec *u;
 
@@ -84,7 +88,8 @@ static int tcl_passwdOk STDVAR
   return TCL_OK;
 }
 
-static int tcl_chattr STDVAR
+static int tcl_chattr(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   char *chan, *chg, work[100];
   struct flag_record pls, mns, user;
@@ -159,7 +164,8 @@ static int tcl_chattr STDVAR
   return TCL_OK;
 }
 
-static int tcl_botattr STDVAR
+static int tcl_botattr(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   char *chan, *chg, work[100];
   struct flag_record pls, mns, user;
@@ -234,7 +240,8 @@ static int tcl_botattr STDVAR
   return TCL_OK;
 }
 
-static int tcl_matchattr STDVAR
+static int tcl_matchattr(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   struct userrec *u;
   struct flag_record plus, minus, user;
@@ -263,7 +270,8 @@ static int tcl_matchattr STDVAR
   return TCL_OK;
 }
 
-static int tcl_adduser STDVAR
+static int tcl_adduser(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   BADARGS(2, 3, " handle ?hostmask?");
 
@@ -278,7 +286,8 @@ static int tcl_adduser STDVAR
   return TCL_OK;
 }
 
-static int tcl_addbot STDVAR
+static int tcl_addbot(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   struct bot_addr *bi;
   char *p, *q;
@@ -318,7 +327,8 @@ static int tcl_addbot STDVAR
   return TCL_OK;
 }
 
-static int tcl_deluser STDVAR
+static int tcl_deluser(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   BADARGS(2, 2, " handle");
 
@@ -327,7 +337,8 @@ static int tcl_deluser STDVAR
   return TCL_OK;
 }
 
-static int tcl_delhost STDVAR
+static int tcl_delhost(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   BADARGS(3, 3, " handle hostmask");
 
@@ -339,7 +350,8 @@ static int tcl_delhost STDVAR
   return TCL_OK;
 }
 
-static int tcl_userlist STDVAR
+static int tcl_userlist(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   struct userrec *u;
   struct flag_record user, plus, minus;
@@ -376,19 +388,22 @@ static int tcl_userlist STDVAR
   return TCL_OK;
 }
 
-static int tcl_save STDVAR
+static int tcl_save(ClientData cd, Tcl_Interp *irp,
+                    int argc, char *argv[])
 {
   writeuserfile(-1);
   return TCL_OK;
 }
 
-static int tcl_reload STDVAR
+static int tcl_reload(ClientData cd, Tcl_Interp *irp,
+                      int argc, char *argv[])
 {
   reloaduserfile();
   return TCL_OK;
 }
 
-static int tcl_chhandle STDVAR
+static int tcl_chhandle(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   struct userrec *u;
   char newhand[HANDLEN + 1];
@@ -423,7 +438,8 @@ static int tcl_chhandle STDVAR
   return TCL_OK;
 }
 
-static int tcl_getting_users STDVAR
+static int tcl_getting_users(ClientData cd, Tcl_Interp *irp,
+                             int argc, char *argv[])
 {
   int i;
 
@@ -439,7 +455,8 @@ static int tcl_getting_users STDVAR
   return TCL_OK;
 }
 
-static int tcl_isignore STDVAR
+static int tcl_isignore(ClientData cd, Tcl_Interp *irp,
+                        int argc, char *argv[])
 {
   BADARGS(2, 2, " nick!user@host");
 
@@ -447,7 +464,8 @@ static int tcl_isignore STDVAR
   return TCL_OK;
 }
 
-static int tcl_newignore STDVAR
+static int tcl_newignore(ClientData cd, Tcl_Interp *irp,
+                         int argc, char *argv[])
 {
   time_t expire_time;
   char ign[UHOSTLEN], cmt[66], from[HANDLEN + 1];
@@ -470,7 +488,8 @@ static int tcl_newignore STDVAR
   return TCL_OK;
 }
 
-static int tcl_killignore STDVAR
+static int tcl_killignore(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   BADARGS(2, 2, " hostmask");
 
@@ -478,7 +497,8 @@ static int tcl_killignore STDVAR
   return TCL_OK;
 }
 
-static int tcl_ignorelist STDVAR
+static int tcl_ignorelist(ClientData cd, Tcl_Interp *irp,
+                          int argc, char *argv[])
 {
   char expire[11], added[11], *p;
   EGG_CONST char *list[5];
@@ -501,7 +521,8 @@ static int tcl_ignorelist STDVAR
   return TCL_OK;
 }
 
-static int tcl_getuser STDVAR
+static int tcl_getuser(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   struct user_entry_type *et;
   struct userrec *u;
@@ -530,7 +551,8 @@ static int tcl_getuser STDVAR
   return TCL_OK;
 }
 
-static int tcl_setuser STDVAR
+static int tcl_setuser(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   struct user_entry_type *et;
   struct userrec *u;

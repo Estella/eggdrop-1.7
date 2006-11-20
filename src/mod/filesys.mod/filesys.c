@@ -2,7 +2,7 @@
  * filesys.c -- part of filesys.mod
  *   main file of the filesys eggdrop module
  *
- * $Id: filesys.c,v 1.8 2005/07/31 05:51:07 wcc Exp $
+ * $Id: filesys.c,v 1.9 2006/11/20 13:26:02 tothwolf Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -503,7 +503,8 @@ static int do_dcc_send(int idx, char *dir, char *fn, char *nick, int resend)
   return x;
 }
 
-static int builtin_fil STDVAR
+static int builtin_fil(ClientData cd, Tcl_Interp *irp,
+                       int argc, char *argv[])
 {
   int idx;
   Function F = (Function) cd;
