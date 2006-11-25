@@ -2,7 +2,7 @@
  * filesys.c -- part of filesys.mod
  *   main file of the filesys eggdrop module
  *
- * $Id: filesys.c,v 1.10 2006/11/20 13:53:41 tothwolf Exp $
+ * $Id: filesys.c,v 1.11 2006/11/25 13:14:32 tothwolf Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -552,7 +552,10 @@ static void disp_dcc_files(int idx, char *buf)
 
 static void disp_dcc_files_pass(int idx, char *buf)
 {
-  sprintf(buf, "fpas  waited %lis", now - dcc[idx].timeval);
+  long tv;
+  tv = now - dcc[idx].timeval;
+
+  sprintf(buf, "fpas  waited %lis", tv);
 }
 
 static void kill_dcc_files(int idx, void *x)

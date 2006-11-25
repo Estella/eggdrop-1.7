@@ -1,7 +1,7 @@
 /*
  * tclchan.c -- part of channels.mod
  *
- * $Id: tclchan.c,v 1.7 2006/11/20 13:53:38 tothwolf Exp $
+ * $Id: tclchan.c,v 1.8 2006/11/25 13:14:32 tothwolf Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -1494,17 +1494,25 @@ static int tcl_channel_modify(Tcl_Interp *irp, struct chanset_t *chan,
 static int tcl_do_masklist(maskrec *m, Tcl_Interp *irp)
 {
   char ts[21], ts1[21], ts2[21], *p;
+  long tv;
   EGG_CONST char *list[6];
 
   for (; m; m = m->next) {
     list[0] = m->mask;
     list[1] = m->desc;
-    sprintf(ts, "%lu", m->expire);
+
+    tv = m->expire;
+    sprintf(ts, "%lu", tv);
     list[2] = ts;
-    sprintf(ts1, "%lu", m->added);
+
+    tv = m->added;
+    sprintf(ts1, "%lu", tv);
     list[3] = ts1;
-    sprintf(ts2, "%lu", m->lastactive);
+
+    tv = m->lastactive;
+    sprintf(ts2, "%lu", tv);
     list[4] = ts2;
+
     list[5] = m->user;
     p = Tcl_Merge(6, list);
     Tcl_AppendElement(irp, p);

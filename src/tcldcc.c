@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcldcc.c,v 1.16 2006/11/20 13:53:35 tothwolf Exp $
+ * $Id: tcldcc.c,v 1.17 2006/11/25 13:14:31 tothwolf Exp $
  */
 
 #include "main.h"
@@ -641,6 +641,7 @@ static int tcl_dcclist(ClientData cd, Tcl_Interp *irp,
 {
   int i;
   char *p, idxstr[10], timestamp[11], other[160];
+  long tv;
   EGG_CONST char *list[6];
 
   BADARGS(1, 2, " ?type?");
@@ -649,7 +650,8 @@ static int tcl_dcclist(ClientData cd, Tcl_Interp *irp,
     if (argc == 1 || ((argc == 2) && (dcc[i].type &&
         !egg_strcasecmp(dcc[i].type->name, argv[1])))) {
       egg_snprintf(idxstr, sizeof idxstr, "%ld", dcc[i].sock);
-      egg_snprintf(timestamp, sizeof timestamp, "%ld", dcc[i].timeval);
+      tv = dcc[i].timeval;
+      egg_snprintf(timestamp, sizeof timestamp, "%ld", tv);
       if (dcc[i].type && dcc[i].type->display)
         dcc[i].type->display(i, other);
       else {
@@ -676,6 +678,7 @@ static int tcl_whom(ClientData cd, Tcl_Interp *irp,
 {
   int chan, i;
   char c[2], idle[11], work[20], *p;
+  long tv = 0;
   EGG_CONST char *list[7];
 
   BADARGS(2, 2, " chan");
@@ -704,7 +707,8 @@ static int tcl_whom(ClientData cd, Tcl_Interp *irp,
       if (dcc[i].u.chat->channel == chan || chan == -1) {
         c[0] = geticon(i);
         c[1] = 0;
-        egg_snprintf(idle, sizeof idle, "%li", (now - dcc[i].timeval) / 60);
+        tv = (now - dcc[i].timeval) / 60;
+        egg_snprintf(idle, sizeof idle, "%li", tv);
         list[0] = dcc[i].nick;
         list[1] = botnetnick;
         list[2] = dcc[i].host;
@@ -726,8 +730,10 @@ static int tcl_whom(ClientData cd, Tcl_Interp *irp,
       c[1] = 0;
       if (party[i].timer == 0L)
         strcpy(idle, "0");
-      else
-        egg_snprintf(idle, sizeof idle, "%li", (now - party[i].timer) / 60);
+      else {
+        tv = (now - party[i].timer) / 60;
+        egg_snprintf(idle, sizeof idle, "%li", tv);
+      }
       list[0] = party[i].nick;
       list[1] = party[i].bot;
       list[2] = party[i].from ? party[i].from : "";

@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: userrec.c,v 1.16 2006/11/20 13:53:36 tothwolf Exp $
+ * $Id: userrec.c,v 1.17 2006/11/25 13:14:32 tothwolf Exp $
  */
 
 #include "main.h"
@@ -523,6 +523,7 @@ struct userrec *adduser(struct userrec *bu, char *handle, char *host,
   struct userrec *u, *x;
   struct xtra_key *xk;
   int oldshare = noshare;
+  long tv;
 
   noshare = 1;
   u = nmalloc(sizeof *u);
@@ -546,9 +547,10 @@ struct userrec *adduser(struct userrec *bu, char *handle, char *host,
     xk->key = nmalloc(8);
     strcpy(xk->key, "created");
     now2 = nmalloc(15);
-    sprintf(now2, "%li", now);
+    tv = now;
+    sprintf(now2, "%li", tv);
     xk->data = nmalloc(strlen(now2) + 1);
-    sprintf(xk->data, "%li", now);
+    sprintf(xk->data, "%li", tv);
     set_user(&USERENTRY_XTRA, u, xk);
     nfree(now2);
   }

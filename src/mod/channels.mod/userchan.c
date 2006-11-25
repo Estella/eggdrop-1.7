@@ -1,7 +1,7 @@
 /*
  * userchan.c -- part of channels.mod
  *
- * $Id: userchan.c,v 1.4 2006/11/20 13:53:38 tothwolf Exp $
+ * $Id: userchan.c,v 1.5 2006/11/25 13:14:32 tothwolf Exp $
  */
 /*
  * Copyright (C) 1997 Robey Pointer
@@ -1082,16 +1082,19 @@ static int write_bans(FILE *f, int idx)
   struct chanset_t *chan;
   maskrec *b;
   char *mask;
+  long expire, added;
 
   if (global_bans)
     if (fprintf(f, BAN_NAME " - -\n") == EOF)   /* Daemus */
       return 0;
   for (b = global_bans; b; b = b->next) {
     mask = str_escape(b->mask, ':', '\\');
+    expire = b->expire;
+    added = b->added;
     if (!mask ||
         fprintf(f, "- %s:%s%lu%s:+%lu:%lu:%s:%s\n", mask,
-                (b->flags & MASKREC_PERM) ? "+" : "", b->expire,
-                (b->flags & MASKREC_STICKY) ? "*" : "", b->added,
+                (b->flags & MASKREC_PERM) ? "+" : "", expire,
+                (b->flags & MASKREC_STICKY) ? "*" : "", added,
                 b->lastactive, b->user ? b->user : botnetnick,
                 b->desc ? b->desc : "requested") == EOF) {
       if (mask)
@@ -1113,10 +1116,12 @@ static int write_bans(FILE *f, int idx)
           return 0;
         for (b = chan->bans; b; b = b->next) {
           mask = str_escape(b->mask, ':', '\\');
+          expire = b->expire;
+          added = b->added;
           if (!mask ||
               fprintf(f, "- %s:%s%lu%s:+%lu:%lu:%s:%s\n", mask,
-                      (b->flags & MASKREC_PERM) ? "+" : "", b->expire,
-                      (b->flags & MASKREC_STICKY) ? "*" : "", b->added,
+                      (b->flags & MASKREC_PERM) ? "+" : "", expire,
+                      (b->flags & MASKREC_STICKY) ? "*" : "", added,
                       b->lastactive, b->user ? b->user : botnetnick,
                       b->desc ? b->desc : "requested") == EOF) {
             if (mask)
@@ -1137,16 +1142,19 @@ static int write_exempts(FILE *f, int idx)
   struct chanset_t *chan;
   maskrec *e;
   char *mask;
+  long expire, added;
 
   if (global_exempts)
     if (fprintf(f, EXEMPT_NAME " - -\n") == EOF)        /* Daemus */
       return 0;
   for (e = global_exempts; e; e = e->next) {
     mask = str_escape(e->mask, ':', '\\');
+    expire = e->expire;
+    added = e->added;
     if (!mask ||
         fprintf(f, "%s %s:%s%lu%s:+%lu:%lu:%s:%s\n", "%", mask,
-                (e->flags & MASKREC_PERM) ? "+" : "", e->expire,
-                (e->flags & MASKREC_STICKY) ? "*" : "", e->added,
+                (e->flags & MASKREC_PERM) ? "+" : "", expire,
+                (e->flags & MASKREC_STICKY) ? "*" : "", added,
                 e->lastactive, e->user ? e->user : botnetnick,
                 e->desc ? e->desc : "requested") == EOF) {
       if (mask)
@@ -1168,10 +1176,12 @@ static int write_exempts(FILE *f, int idx)
           return 0;
         for (e = chan->exempts; e; e = e->next) {
           mask = str_escape(e->mask, ':', '\\');
+          expire = e->expire;
+          added = e->added;
           if (!mask ||
               fprintf(f, "%s %s:%s%lu%s:+%lu:%lu:%s:%s\n", "%", mask,
-                      (e->flags & MASKREC_PERM) ? "+" : "", e->expire,
-                      (e->flags & MASKREC_STICKY) ? "*" : "", e->added,
+                      (e->flags & MASKREC_PERM) ? "+" : "", expire,
+                      (e->flags & MASKREC_STICKY) ? "*" : "", added,
                       e->lastactive, e->user ? e->user : botnetnick,
                       e->desc ? e->desc : "requested") == EOF) {
             if (mask)
@@ -1192,16 +1202,19 @@ static int write_invites(FILE *f, int idx)
   struct chanset_t *chan;
   maskrec *ir;
   char *mask;
+  long expire, added;
 
   if (global_invites)
     if (fprintf(f, INVITE_NAME " - -\n") == EOF)        /* Daemus */
       return 0;
   for (ir = global_invites; ir; ir = ir->next) {
     mask = str_escape(ir->mask, ':', '\\');
+    expire = ir->expire;
+    added = ir->added;
     if (!mask ||
         fprintf(f, "@ %s:%s%lu%s:+%lu:%lu:%s:%s\n", mask,
-                (ir->flags & MASKREC_PERM) ? "+" : "", ir->expire,
-                (ir->flags & MASKREC_STICKY) ? "*" : "", ir->added,
+                (ir->flags & MASKREC_PERM) ? "+" : "", expire,
+                (ir->flags & MASKREC_STICKY) ? "*" : "", added,
                 ir->lastactive, ir->user ? ir->user : botnetnick,
                 ir->desc ? ir->desc : "requested") == EOF) {
       if (mask)
@@ -1223,10 +1236,12 @@ static int write_invites(FILE *f, int idx)
           return 0;
         for (ir = chan->invites; ir; ir = ir->next) {
           mask = str_escape(ir->mask, ':', '\\');
+          expire = ir->expire;
+          added = ir->added;
           if (!mask ||
               fprintf(f, "@ %s:%s%lu%s:+%lu:%lu:%s:%s\n", mask,
-                      (ir->flags & MASKREC_PERM) ? "+" : "", ir->expire,
-                      (ir->flags & MASKREC_STICKY) ? "*" : "", ir->added,
+                      (ir->flags & MASKREC_PERM) ? "+" : "", expire,
+                      (ir->flags & MASKREC_STICKY) ? "*" : "", added,
                       ir->lastactive, ir->user ? ir->user : botnetnick,
                       ir->desc ? ir->desc : "requested") == EOF) {
             if (mask)

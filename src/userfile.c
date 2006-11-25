@@ -18,7 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: userfile.c,v 1.4 2006/11/20 13:53:36 tothwolf Exp $
+ * $Id: userfile.c,v 1.5 2006/11/25 13:14:32 tothwolf Exp $
  */
 
 
@@ -493,6 +493,7 @@ int write_user(struct userrec *u, FILE *f, int idx)
   struct user_entry *ue;
   struct flag_record fr = { FR_GLOBAL, 0, 0, 0, 0, 0 };
   char s[181];
+  long tv;
 
   fr.global = u->flags;
   fr.udef_global = u->flags_udef;
@@ -513,7 +514,8 @@ int write_user(struct userrec *u, FILE *f, int idx)
         fr.chan = ch->flags;
         fr.udef_chan = ch->flags_udef;
         build_flags(s, &fr, NULL);
-        if (fprintf(f, "! %-20s %lu %-10s %s\n", ch->channel, ch->laston, s,
+        tv = ch->laston;
+        if (fprintf(f, "! %-20s %lu %-10s %s\n", ch->channel, tv, s,
             ((idx < 0 || share_greet) && ch->info) ? ch->info : "") == EOF)
           return 0;
       }
@@ -538,15 +540,18 @@ int write_ignores(FILE *f, int idx)
 {
   struct igrec *i;
   char *mask;
+  long expire, added;
 
   if (global_ign && fprintf(f, IGNORE_NAME " - -\n") == EOF)
     return 0;
 
   for (i = global_ign; i; i = i->next) {
     mask = str_escape(i->igmask, ':', '\\');
+    expire = i->expire;
+    added = i->added;
     if (!mask || fprintf(f, "- %s:%s%lu:%s:%lu:%s\n", mask,
-        (i->flags & IGREC_PERM) ? "+" : "", i->expire,
-        i->user ? i->user : botnetnick, i->added,
+        (i->flags & IGREC_PERM) ? "+" : "", expire,
+        i->user ? i->user : botnetnick, added,
         i->msg ? i->msg : "") == EOF) {
       if (mask)
         nfree(mask);

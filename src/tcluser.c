@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: tcluser.c,v 1.12 2006/11/20 13:53:36 tothwolf Exp $
+ * $Id: tcluser.c,v 1.13 2006/11/25 13:14:31 tothwolf Exp $
  */
 
 #include "main.h"
@@ -501,6 +501,7 @@ static int tcl_ignorelist(ClientData cd, Tcl_Interp *irp,
                           int argc, char *argv[])
 {
   char expire[11], added[11], *p;
+  long tv;
   EGG_CONST char *list[5];
   struct igrec *i;
 
@@ -509,10 +510,15 @@ static int tcl_ignorelist(ClientData cd, Tcl_Interp *irp,
   for (i = global_ign; i; i = i->next) {
     list[0] = i->igmask;
     list[1] = i->msg;
-    egg_snprintf(expire, sizeof expire, "%lu", i->expire);
+
+    tv = i->expire;
+    egg_snprintf(expire, sizeof expire, "%lu", tv);
     list[2] = expire;
-    egg_snprintf(added, sizeof added, "%lu", i->added);
+
+    tv = i->added;
+    egg_snprintf(added, sizeof added, "%lu", tv);
     list[3] = added;
+
     list[4] = i->user;
     p = Tcl_Merge(5, list);
     Tcl_AppendElement(irp, p);
