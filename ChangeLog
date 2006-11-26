@@ -1,5 +1,13 @@
 # Generated with: cvs2cl --show-dead -T --no-wrap --utc -P -S -I ChangeLog -I src/build.h -U
 
+2006-11-25 05:14  Tothwolf <tothwolf@techmonkeys.org>
+
+	* src/: dcc.c, tcldcc.c, tcluser.c, userent.c, userfile.c,
+	  userrec.c, mod/channels.mod/tclchan.c,
+	  mod/channels.mod/userchan.c, mod/filesys.mod/filesys.c:
+
+	* Fixed compatibility problems with certain time_t implementations.
+
 2006-11-20 05:53  Tothwolf <tothwolf@techmonkeys.org>
 
 	* FEATURES, INSTALL, NEWS, README, aclocal.m4, configure,
