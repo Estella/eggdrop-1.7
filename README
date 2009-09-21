@@ -1,4 +1,4 @@
-$Id: README,v 1.6 2006/11/20 13:53:23 tothwolf Exp $
+$Id: README,v 1.7 2009/09/21 22:40:05 simple Exp $
 
 Readme
 Last revised: August 24, 2004
@@ -558,7 +558,7 @@ Last revised: August 24, 2004
 
     You can obtain help with Eggdrop in the following IRC channels:
 
-      Undernet - #eggdrop, #eggies
+      Undernet - #eggdrop
       EFnet - #egghelp, #eggfaq
       IRCnet - #eggdrop
       DALnet - #eggdrop, #botcentral
