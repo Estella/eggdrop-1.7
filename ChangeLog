@@ -1,1447 +1,1380 @@
-# Generated with: cvs2cl --show-dead -T --no-wrap --utc -P -S -I ChangeLog -I src/build.h -U
+2009-09-21 22:40  simple
 
-2006-11-25 07:14  Tothwolf <tothwolf@techmonkeys.org>
+	* README:
+
+	Removed #eggies from the Undernet list of help channels 
+
+2006-11-25 13:14  Tothwolf <tothwolf@techmonkeys.org>
 
 	* src/: dcc.c, tcldcc.c, tcluser.c, userent.c, userfile.c,
-	  userrec.c, mod/channels.mod/tclchan.c,
-	  mod/channels.mod/userchan.c, mod/filesys.mod/filesys.c:
+	userrec.c, mod/channels.mod/tclchan.c, mod/channels.mod/userchan.c,
+	mod/filesys.mod/filesys.c:
 
-	* Fixed compatibility problems with certain time_t implementations.
+	* Fixed compatibility problems with certain time_t implementations.  
 
-2006-11-20 07:53  Tothwolf <tothwolf@techmonkeys.org>
+2006-11-20 13:53  Tothwolf <tothwolf@techmonkeys.org>
 
 	* FEATURES, INSTALL, NEWS, README, aclocal.m4, configure,
-	  configure.ac, doc/ABOUT, doc/BANS, doc/BOTNET, doc/COMPILE-GUIDE,
-	  doc/FIRST-SCRIPT, doc/KNOWN-PROBLEMS, doc/PARTYLINE,
-	  doc/PATCH-HOWTO, doc/TCL-COMMANDS, doc/TEXT-SUBSTITUTIONS,
-	  doc/TRICKS, doc/USERS, doc/WEIRD-MESSAGES, doc/html/about.html,
-	  doc/html/app-problems.html, doc/html/app-textsub.html,
-	  doc/html/app-tricks.html, doc/html/app-weird.html,
-	  doc/html/authors.html, doc/html/bans.html, doc/html/botnet.html,
-	  doc/html/compiling.html, doc/html/egg-core.html,
-	  doc/html/faqs.html, doc/html/features.html, doc/html/index.html,
-	  doc/html/install.html, doc/html/mod-assoc.html,
-	  doc/html/mod-blowfish.html, doc/html/mod-channels.html,
-	  doc/html/mod-compress.html, doc/html/mod-console.html,
-	  doc/html/mod-ctcp.html, doc/html/mod-dns.html,
-	  doc/html/mod-filesys.html, doc/html/mod-irc.html,
-	  doc/html/mod-notes.html, doc/html/mod-server.html,
-	  doc/html/mod-share.html, doc/html/mod-uptime.html,
-	  doc/html/news.html, doc/html/party.html,
-	  doc/html/patch-howto.html, doc/html/readme.html,
-	  doc/html/starting.html, doc/html/tcl-commands.html,
-	  doc/html/users.html, doc/man1/eggdrop.1, doc/modules/MODULES,
-	  doc/modules/sample.mod/sample.c, doc/settings/core.settings,
-	  doc/settings/mod.assoc, doc/settings/mod.blowfish,
-	  doc/settings/mod.channels, doc/settings/mod.compress,
-	  doc/settings/mod.console, doc/settings/mod.ctcp,
-	  doc/settings/mod.dns, doc/settings/mod.filesys,
-	  doc/settings/mod.irc, doc/settings/mod.notes,
-	  doc/settings/mod.server, doc/settings/mod.share,
-	  doc/settings/mod.transfer, doc/settings/mod.uptime,
-	  misc/addpatch, misc/killwhitespace, misc/makedepend,
-	  misc/modconfig, misc/newversion, misc/releaseprep,
-	  misc/runautotools, scripts/action.fix.tcl, scripts/alltools.tcl,
-	  scripts/compat.tcl, src/bg.c, src/bg.h, src/botcmd.c,
-	  src/botcmd.h, src/botmsg.c, src/botmsg.h, src/botnet.c,
-	  src/botnet.h, src/chan.h, src/chanprog.c, src/chanprog.h,
-	  src/cmds.c, src/cmds.h, src/dcc.c, src/dcc.h, src/dccutil.c,
-	  src/dccutil.h, src/debug.c, src/debug.h, src/dns.c, src/dns.h,
-	  src/eggdrop.h, src/flags.c, src/flags.h, src/help.c, src/help.h,
-	  src/lang.h, src/language.c, src/language.h, src/logfile.c,
-	  src/logfile.h, src/main.c, src/main.h, src/match.h, src/mem.c,
-	  src/mem.h, src/misc.c, src/misc.h, src/misc_file.c,
-	  src/misc_file.h, src/modules.c, src/modules.h, src/net.c,
-	  src/net.h, src/patch.h, src/proto.h, src/rfc1459.c,
-	  src/rfc1459.h, src/stat.h, src/tcl.c, src/tcldcc.c, src/tcldcc.h,
-	  src/tclegg.h, src/tclhash.c, src/tclhash.h, src/tclmisc.c,
-	  src/tcluser.c, src/traffic.c, src/traffic.h, src/types.h,
-	  src/userent.c, src/userent.h, src/userfile.c, src/userfile.h,
-	  src/userrec.c, src/userrec.h, src/users.c, src/users.h,
-	  src/compat/compat.h, src/compat/inet_aton.c,
-	  src/compat/inet_aton.h, src/compat/memcpy.c, src/compat/memcpy.h,
-	  src/compat/memset.c, src/compat/memset.h, src/compat/snprintf.c,
-	  src/compat/snprintf.h, src/compat/strcasecmp.c,
-	  src/compat/strcasecmp.h, src/compat/strftime.c,
-	  src/compat/strftime.h, src/mod/module.h, src/mod/modvals.h,
-	  src/mod/assoc.mod/assoc.c, src/mod/assoc.mod/assoc.h,
-	  src/mod/blowfish.mod/bf_tab.h, src/mod/blowfish.mod/blowfish.c,
-	  src/mod/blowfish.mod/blowfish.h, src/mod/channels.mod/channels.c,
-	  src/mod/channels.mod/channels.h, src/mod/channels.mod/cmdschan.c,
-	  src/mod/channels.mod/tclchan.c, src/mod/channels.mod/udefchan.c,
-	  src/mod/channels.mod/userchan.c, src/mod/compress.mod/compress.c,
-	  src/mod/compress.mod/compress.h, src/mod/compress.mod/configure,
-	  src/mod/compress.mod/configure.ac,
-	  src/mod/compress.mod/tclcompress.c,
-	  src/mod/console.mod/console.c, src/mod/console.mod/console.h,
-	  src/mod/ctcp.mod/ctcp.c, src/mod/ctcp.mod/ctcp.h,
-	  src/mod/dns.mod/configure, src/mod/dns.mod/configure.ac,
-	  src/mod/dns.mod/coredns.c, src/mod/dns.mod/dns.c,
-	  src/mod/dns.mod/dns.h, src/mod/filesys.mod/dbcompat.c,
-	  src/mod/filesys.mod/dbcompat.h, src/mod/filesys.mod/filedb3.c,
-	  src/mod/filesys.mod/filedb3.h, src/mod/filesys.mod/filelist.c,
-	  src/mod/filesys.mod/filelist.h, src/mod/filesys.mod/files.c,
-	  src/mod/filesys.mod/files.h, src/mod/filesys.mod/filesys.c,
-	  src/mod/filesys.mod/filesys.h, src/mod/filesys.mod/tclfiles.c,
-	  src/mod/irc.mod/chan.c, src/mod/irc.mod/cmdsirc.c,
-	  src/mod/irc.mod/irc.c, src/mod/irc.mod/irc.h,
-	  src/mod/irc.mod/mode.c, src/mod/irc.mod/msgcmds.c,
-	  src/mod/irc.mod/tclirc.c, src/mod/notes.mod/cmdsnote.c,
-	  src/mod/notes.mod/notes.c, src/mod/notes.mod/notes.h,
-	  src/mod/server.mod/cmdsserv.c, src/mod/server.mod/server.c,
-	  src/mod/server.mod/server.h, src/mod/server.mod/servmsg.c,
-	  src/mod/server.mod/tclserv.c, src/mod/share.mod/share.c,
-	  src/mod/share.mod/share.h, src/mod/share.mod/uf_features.c,
-	  src/mod/transfer.mod/tcltransfer.c,
-	  src/mod/transfer.mod/transfer.c, src/mod/transfer.mod/transfer.h,
-	  src/mod/transfer.mod/transferfstat.c,
-	  src/mod/transfer.mod/transferqueue.c,
-	  src/mod/uptime.mod/uptime.c, src/mod/uptime.mod/uptime.h,
-	  text/banner:
+	configure.ac, doc/ABOUT, doc/BANS, doc/BOTNET, doc/COMPILE-GUIDE,
+	doc/FIRST-SCRIPT, doc/KNOWN-PROBLEMS, doc/PARTYLINE,
+	doc/PATCH-HOWTO, doc/TCL-COMMANDS, doc/TEXT-SUBSTITUTIONS,
+	doc/TRICKS, doc/USERS, doc/WEIRD-MESSAGES, doc/html/about.html,
+	doc/html/app-problems.html, doc/html/app-textsub.html,
+	doc/html/app-tricks.html, doc/html/app-weird.html,
+	doc/html/authors.html, doc/html/bans.html, doc/html/botnet.html,
+	doc/html/compiling.html, doc/html/egg-core.html,
+	doc/html/faqs.html, doc/html/features.html, doc/html/index.html,
+	doc/html/install.html, doc/html/mod-assoc.html,
+	doc/html/mod-blowfish.html, doc/html/mod-channels.html,
+	doc/html/mod-compress.html, doc/html/mod-console.html,
+	doc/html/mod-ctcp.html, doc/html/mod-dns.html,
+	doc/html/mod-filesys.html, doc/html/mod-irc.html,
+	doc/html/mod-notes.html, doc/html/mod-server.html,
+	doc/html/mod-share.html, doc/html/mod-uptime.html,
+	doc/html/news.html, doc/html/party.html, doc/html/patch-howto.html,
+	doc/html/readme.html, doc/html/starting.html,
+	doc/html/tcl-commands.html, doc/html/users.html,
+	doc/man1/eggdrop.1, doc/modules/MODULES,
+	doc/modules/sample.mod/sample.c, doc/settings/core.settings,
+	doc/settings/mod.assoc, doc/settings/mod.blowfish,
+	doc/settings/mod.channels, doc/settings/mod.compress,
+	doc/settings/mod.console, doc/settings/mod.ctcp,
+	doc/settings/mod.dns, doc/settings/mod.filesys,
+	doc/settings/mod.irc, doc/settings/mod.notes,
+	doc/settings/mod.server, doc/settings/mod.share,
+	doc/settings/mod.transfer, doc/settings/mod.uptime, misc/addpatch,
+	misc/killwhitespace, misc/makedepend, misc/modconfig,
+	misc/newversion, misc/releaseprep, misc/runautotools,
+	scripts/action.fix.tcl, scripts/alltools.tcl, scripts/compat.tcl,
+	src/bg.c, src/bg.h, src/botcmd.c, src/botcmd.h, src/botmsg.c,
+	src/botmsg.h, src/botnet.c, src/botnet.h, src/chan.h,
+	src/chanprog.c, src/chanprog.h, src/cmds.c, src/cmds.h, src/dcc.c,
+	src/dcc.h, src/dccutil.c, src/dccutil.h, src/debug.c, src/debug.h,
+	src/dns.c, src/dns.h, src/eggdrop.h, src/flags.c, src/flags.h,
+	src/help.c, src/help.h, src/lang.h, src/language.c, src/language.h,
+	src/logfile.c, src/logfile.h, src/main.c, src/main.h, src/match.h,
+	src/mem.c, src/mem.h, src/misc.c, src/misc.h, src/misc_file.c,
+	src/misc_file.h, src/modules.c, src/modules.h, src/net.c,
+	src/net.h, src/patch.h, src/proto.h, src/rfc1459.c, src/rfc1459.h,
+	src/stat.h, src/tcl.c, src/tcldcc.c, src/tcldcc.h, src/tclegg.h,
+	src/tclhash.c, src/tclhash.h, src/tclmisc.c, src/tcluser.c,
+	src/traffic.c, src/traffic.h, src/types.h, src/userent.c,
+	src/userent.h, src/userfile.c, src/userfile.h, src/userrec.c,
+	src/userrec.h, src/users.c, src/users.h, src/compat/compat.h,
+	src/compat/inet_aton.c, src/compat/inet_aton.h,
+	src/compat/memcpy.c, src/compat/memcpy.h, src/compat/memset.c,
+	src/compat/memset.h, src/compat/snprintf.c, src/compat/snprintf.h,
+	src/compat/strcasecmp.c, src/compat/strcasecmp.h,
+	src/compat/strftime.c, src/compat/strftime.h, src/mod/module.h,
+	src/mod/modvals.h, src/mod/assoc.mod/assoc.c,
+	src/mod/assoc.mod/assoc.h, src/mod/blowfish.mod/bf_tab.h,
+	src/mod/blowfish.mod/blowfish.c, src/mod/blowfish.mod/blowfish.h,
+	src/mod/channels.mod/channels.c, src/mod/channels.mod/channels.h,
+	src/mod/channels.mod/cmdschan.c, src/mod/channels.mod/tclchan.c,
+	src/mod/channels.mod/udefchan.c, src/mod/channels.mod/userchan.c,
+	src/mod/compress.mod/compress.c, src/mod/compress.mod/compress.h,
+	src/mod/compress.mod/configure, src/mod/compress.mod/configure.ac,
+	src/mod/compress.mod/tclcompress.c, src/mod/console.mod/console.c,
+	src/mod/console.mod/console.h, src/mod/ctcp.mod/ctcp.c,
+	src/mod/ctcp.mod/ctcp.h, src/mod/dns.mod/configure,
+	src/mod/dns.mod/configure.ac, src/mod/dns.mod/coredns.c,
+	src/mod/dns.mod/dns.c, src/mod/dns.mod/dns.h,
+	src/mod/filesys.mod/dbcompat.c, src/mod/filesys.mod/dbcompat.h,
+	src/mod/filesys.mod/filedb3.c, src/mod/filesys.mod/filedb3.h,
+	src/mod/filesys.mod/filelist.c, src/mod/filesys.mod/filelist.h,
+	src/mod/filesys.mod/files.c, src/mod/filesys.mod/files.h,
+	src/mod/filesys.mod/filesys.c, src/mod/filesys.mod/filesys.h,
+	src/mod/filesys.mod/tclfiles.c, src/mod/irc.mod/chan.c,
+	src/mod/irc.mod/cmdsirc.c, src/mod/irc.mod/irc.c,
+	src/mod/irc.mod/irc.h, src/mod/irc.mod/mode.c,
+	src/mod/irc.mod/msgcmds.c, src/mod/irc.mod/tclirc.c,
+	src/mod/notes.mod/cmdsnote.c, src/mod/notes.mod/notes.c,
+	src/mod/notes.mod/notes.h, src/mod/server.mod/cmdsserv.c,
+	src/mod/server.mod/server.c, src/mod/server.mod/server.h,
+	src/mod/server.mod/servmsg.c, src/mod/server.mod/tclserv.c,
+	src/mod/share.mod/share.c, src/mod/share.mod/share.h,
+	src/mod/share.mod/uf_features.c,
+	src/mod/transfer.mod/tcltransfer.c,
+	src/mod/transfer.mod/transfer.c, src/mod/transfer.mod/transfer.h,
+	src/mod/transfer.mod/transferfstat.c,
+	src/mod/transfer.mod/transferqueue.c, src/mod/uptime.mod/uptime.c,
+	src/mod/uptime.mod/uptime.h, text/banner:
 
-	* Updated copyright dates for 2006 (better late than never).
+	* Updated copyright dates for 2006 (better late than never).  
 
-2006-11-20 07:26  Tothwolf <tothwolf@techmonkeys.org>
+2006-11-20 13:26  Tothwolf <tothwolf@techmonkeys.org>
 
 	* src/: dns.c, help.c, language.c, logfile.c, tcldcc.c, tclegg.h,
-	  tclhash.c, tclmisc.c, tcluser.c, traffic.c,
-	  mod/assoc.mod/assoc.c, mod/blowfish.mod/blowfish.c,
-	  mod/channels.mod/tclchan.c, mod/compress.mod/tclcompress.c,
-	  mod/filesys.mod/filesys.c, mod/filesys.mod/tclfiles.c,
-	  mod/irc.mod/irc.c, mod/irc.mod/tclirc.c, mod/notes.mod/notes.c,
-	  mod/server.mod/server.c, mod/server.mod/tclserv.c,
-	  mod/transfer.mod/tcltransfer.c, mod/transfer.mod/transfer.c:
+	tclhash.c, tclmisc.c, tcluser.c, traffic.c, mod/assoc.mod/assoc.c,
+	mod/blowfish.mod/blowfish.c, mod/channels.mod/tclchan.c,
+	mod/compress.mod/tclcompress.c, mod/filesys.mod/filesys.c,
+	mod/filesys.mod/tclfiles.c, mod/irc.mod/irc.c,
+	mod/irc.mod/tclirc.c, mod/notes.mod/notes.c,
+	mod/server.mod/server.c, mod/server.mod/tclserv.c,
+	mod/transfer.mod/tcltransfer.c, mod/transfer.mod/transfer.c:
 
-	* Removed STDVAR macro.
+	* Removed STDVAR macro.  
 
-2006-11-20 07:20  Tothwolf <tothwolf@techmonkeys.org>
+2006-11-20 13:20  Tothwolf <tothwolf@techmonkeys.org>
 
 	* aclocal.m4, config.h.in, configure, configure.ac:
 
-	* Updated recommended Tcl version.
+	* Updated recommended Tcl version.  
 
-2006-04-14 17:18  Will Buckner <wcc@techmonkeys.org>
-
-	* doc/AUTHORS:
-
-	* AUTHORS updates.
-
-2006-03-28 18:52  Will Buckner <wcc@techmonkeys.org>
+2006-04-14 22:18  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/AUTHORS:
 
-	* Added lordares to AUTHORS.
+	* AUTHORS updates.  
 
-2006-03-28 18:49  Will Buckner <wcc@techmonkeys.org>
+2006-03-29 00:52  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/AUTHORS:
 
-	* AUTHORS updates.
+	* Added lordares to AUTHORS.  
 
-2005-10-16 00:59  Will Buckner <wcc@techmonkeys.org>
+2006-03-29 00:49  Will Buckner <wcc@techmonkeys.org>
+
+	* doc/AUTHORS:
+
+	* AUTHORS updates.  
+
+2005-10-16 05:59  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/server.mod/server.c:
 
-	* Use egg_memcpy(), not memcpy().
+	* Use egg_memcpy(), not memcpy().  
 
-2005-10-15 19:11  Will Buckner <wcc@techmonkeys.org>
+2005-10-16 00:11  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/html/egg-core.html, doc/html/mod-server.html, src/patch.h:
 
-	* No ' in HTML docs! :)
+	* No ' in HTML docs! :) 
 
-2005-10-15 18:40  Will Buckner <wcc@techmonkeys.org>
+2005-10-15 23:40  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: modules.c, patch.h, mod/module.h:
 
-	* Fixed crash on startup reported by various users (global table order was
-	  off by one starting at index 100/101). Thanks guys.
+	* Fixed crash on startup reported by various users (global table
+	  order was off by one starting at index 100/101). Thanks guys.  
 
-2005-09-10 16:02  Will Buckner <wcc@techmonkeys.org>
+2005-09-10 21:02  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/Makefile.in, language/core.danish.lang,
-	  language/core.english.lang, language/core.french.lang,
-	  language/core.german.lang, scripts/Makefile.in:
+	language/core.english.lang, language/core.french.lang,
+	language/core.german.lang, scripts/Makefile.in:
 
-	* make install / language fixes.
+	* make install / language fixes.  
 
-2005-09-04 22:27  Will Buckner <wcc@techmonkeys.org>
+2005-09-05 03:27  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: botnet.c, main.c, patch.h:
 
-	* misc.h needs to be included in botnet.c.
-	* Fixed a little bug where the "stagnent module" warning in main() might
-	  not be printed.
-	* More mainloop cleanups.
+	* misc.h needs to be included in botnet.c.  
+	* Fixed a little bug where the "stagnent module" warning in main()
+	  might not be printed.  
+	* More mainloop cleanups.  
 
-2005-09-01 21:46  Bryan Drewery <lordares@shatow.net>
+2005-09-02 02:46  Bryan Drewery <lordares@shatow.net>
 
 	* src/botnet.c:
 
-	* Missed a free() in one of my patches for rembot()
+	* Missed a free() in one of my patches for rembot() 
 
-2005-08-30 21:35  Will Buckner <wcc@techmonkeys.org>
+2005-08-31 02:35  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: main.c, patch.h, mod/uptime.mod/uptime.c:
 
-	* Use newsplit() instead of splitc(.., ' ') in uptime.mod for consistency.
-	  This also stops some valgrind bitching =P.
+	* Use newsplit() instead of splitc(.., ' ') in uptime.mod for
+	  consistency.  This also stops some valgrind bitching =P.  
 
-2005-08-30 21:19  Will Buckner <wcc@techmonkeys.org>
+2005-08-31 02:19  Will Buckner <wcc@techmonkeys.org>
 
 	* config.h.in, configure:
 
-	* Ran autotools.
+	* Ran autotools.  
 
-2005-08-30 21:15  Will Buckner <wcc@techmonkeys.org>
+2005-08-31 02:15  Will Buckner <wcc@techmonkeys.org>
 
 	* aclocal.m4, src/patch.h:
 
-	* Dns.mod should work on Mac OS X now.
+	* Dns.mod should work on Mac OS X now.  
 
-2005-08-29 20:57  Will Buckner <wcc@techmonkeys.org>
+2005-08-30 01:57  Will Buckner <wcc@techmonkeys.org>
 
 	* src/mod/irc.mod/cmdsirc.c:
 
-	* Another useless host buffer filling.
+	* Another useless host buffer filling.  
 
-2005-08-28 23:38  Will Buckner <wcc@techmonkeys.org>
+2005-08-29 04:38  Will Buckner <wcc@techmonkeys.org>
 
 	* misc/killwhitespace, src/chanprog.h, src/patch.h,
-	  src/compat/strftime.h:
+	src/compat/strftime.h:
 
-	* UNIX-format chanprog.h (oops).
-	* Added and ran misc/killwhitespace.
+	* UNIX-format chanprog.h (oops).  
+	* Added and ran misc/killwhitespace.  
 
-2005-08-28 23:04  Will Buckner <wcc@techmonkeys.org>
+2005-08-29 04:04  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/modules/sample.mod/sample.c, doc/settings/core.settings,
-	  src/tclhash.c, src/mod/channels.mod/cmdschan.c,
-	  src/mod/compress.mod/tclcompress.c, src/mod/server.mod/servmsg.c,
-	  src/mod/transfer.mod/tcltransfer.c:
+	src/tclhash.c, src/mod/channels.mod/cmdschan.c,
+	src/mod/compress.mod/tclcompress.c, src/mod/server.mod/servmsg.c,
+	src/mod/transfer.mod/tcltransfer.c:
 
-	* Eww--trailing spaces :P
+	* Eww--trailing spaces :P 
 
-2005-08-28 22:25  Bryan Drewery <lordares@shatow.net>
+2005-08-29 03:25  Bryan Drewery <lordares@shatow.net>
 
 	* src/botnet.c:
 
-	* rembot() has the possibility to reference a NULL pointer, this fixes.
+	* rembot() has the possibility to reference a NULL pointer, this
+	fixes.  
 
-2005-08-28 22:21  Will Buckner <wcc@techmonkeys.org>
+2005-08-29 03:21  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/egg-core.html, doc/settings/core.settings,
-	  help/core.help, help/set/cmds1.help, src/dcc.c, src/patch.h,
-	  src/tcl.c, src/mod/irc.mod/irc.c:
+	help/core.help, help/set/cmds1.help, src/dcc.c, src/patch.h,
+	src/tcl.c, src/mod/irc.mod/irc.c:
 
-	* No more open-telnets.
+	* No more open-telnets.  
 
-2005-08-28 22:12  Will Buckner <wcc@techmonkeys.org>
+2005-08-29 03:12  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/mod-irc.html, doc/settings/mod.irc,
-	  src/patch.h, src/mod/irc.mod/irc.c, src/mod/irc.mod/msgcmds.c,
-	  src/mod/irc.mod/help/irc.help, src/mod/irc.mod/help/set/irc.help:
+	src/patch.h, src/mod/irc.mod/irc.c, src/mod/irc.mod/msgcmds.c,
+	src/mod/irc.mod/help/irc.help, src/mod/irc.mod/help/set/irc.help:
 
-	* No more learn-users.
+	* No more learn-users.  
 
-2005-08-28 22:12  Bryan Drewery <lordares@shatow.net>
+2005-08-29 03:12  Bryan Drewery <lordares@shatow.net>
 
 	* src/mod/server.mod/server.c:
 
-	* Wrong nick pointer used
-	* Duplicate dcc[].addr initialization line removed.
+	* Wrong nick pointer used 
+	* Duplicate dcc[].addr initialization line removed.  
 
-2005-08-28 22:10  Bryan Drewery <lordares@shatow.net>
+2005-08-29 03:10  Bryan Drewery <lordares@shatow.net>
 
 	* src/mod/irc.mod/cmdsirc.c:
 
-	* Pointless host buf filling
+	* Pointless host buf filling 
 
-2005-08-28 22:08  Bryan Drewery <lordares@shatow.net>
+2005-08-29 03:08  Bryan Drewery <lordares@shatow.net>
 
 	* src/dcc.h:
 
-	* dcc_table.timeout was missing a param cast
+	* dcc_table.timeout was missing a param cast 
 
-2005-08-28 22:06  Bryan Drewery <lordares@shatow.net>
+2005-08-29 03:06  Bryan Drewery <lordares@shatow.net>
 
 	* src/mod/channels.mod/channels.c:
 
-	* Use MODES_PER_LINE_MAX instead of '6'
+	* Use MODES_PER_LINE_MAX instead of '6' 
 
-2005-08-28 22:03  Bryan Drewery <lordares@shatow.net>
+2005-08-29 03:03  Bryan Drewery <lordares@shatow.net>
 
 	* src/dcc.c:
 
-	* Wrong putlog argument
+	* Wrong putlog argument 
 
-2005-08-28 21:57  Bryan Drewery <lordares@shatow.net>
+2005-08-29 02:58  Bryan Drewery <lordares@shatow.net>
 
 	* test:
 
-	test
+	[no log message] 
 
-2005-08-28 21:53  Will Buckner <wcc@techmonkeys.org>
+2005-08-29 02:57  Bryan Drewery <lordares@shatow.net>
+
+	* test:
+
+	test 
+
+2005-08-29 02:53  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/mod-channels.html,
-	  doc/settings/mod.channels, src/chan.h, src/patch.h,
-	  src/mod/channels.mod/channels.c, src/mod/channels.mod/cmdschan.c,
-	  src/mod/channels.mod/tclchan.c,
-	  src/mod/channels.mod/help/chaninfo.help, src/mod/irc.mod/irc.c:
+	doc/settings/mod.channels, src/chan.h, src/patch.h,
+	src/mod/channels.mod/channels.c, src/mod/channels.mod/cmdschan.c,
+	src/mod/channels.mod/tclchan.c,
+	src/mod/channels.mod/help/chaninfo.help, src/mod/irc.mod/irc.c:
 
-	* No more idle-kick.
+	* No more idle-kick.  
 
-2005-08-24 23:42  Will Buckner <wcc@techmonkeys.org>
+2005-08-25 04:42  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/module.h:
 
-	* Fixed global table order... yes, it's okay to laugh at me :P What I get
-	  for coding on no sleep. Thanks TaKeDa :)
+	* Fixed global table order... yes, it's okay to laugh at me :P What
+	  I get for coding on no sleep. Thanks TaKeDa :) 
 
-2005-08-24 19:25  Will Buckner <wcc@techmonkeys.org>
+2005-08-25 00:25  Will Buckner <wcc@techmonkeys.org>
 
-	* CONTENTS[DEAD], doc/CONTENTS[DEAD], doc/settings/CONTENTS[DEAD],
-	  logs/CONTENTS[DEAD], scripts/CONTENTS[DEAD], src/modules.c,
-	  src/mod/module.h, text/CONTENTS[DEAD]:
+	* CONTENTS, doc/CONTENTS, doc/settings/CONTENTS, scripts/CONTENTS,
+	src/modules.c, src/mod/module.h, text/CONTENTS:
 
-	* More global table cleaning-up.
-	* Removed CONTENTS files.
+	* More global table cleaning-up.  
+	* Removed CONTENTS files.  
 
-2005-08-23 20:24  Will Buckner <wcc@techmonkeys.org>
+2005-08-24 01:24  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: modules.c, patch.h, mod/module.h:
 
-	* Cleaned up the global table a bit.
+	* Cleaned up the global table a bit.  
 
-2005-08-23 09:52  Jeff Fisher <guppy@techmonkeys.org>
+2005-08-23 14:52  Jeff Fisher <guppy@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/egg-core.html, doc/html/mod-server.html,
-	  doc/settings/core.settings, doc/settings/mod.server,
-	  help/set/cmds1.help, src/patch.h, src/tcl.c,
-	  src/mod/server.mod/server.c, src/mod/server.mod/server.h,
-	  src/mod/server.mod/servmsg.c,
-	  src/mod/server.mod/help/server.help,
-	  src/mod/server.mod/help/set/server.help:
+	doc/settings/core.settings, doc/settings/mod.server,
+	help/set/cmds1.help, src/patch.h, src/tcl.c,
+	src/mod/server.mod/server.c, src/mod/server.mod/server.h,
+	src/mod/server.mod/servmsg.c, src/mod/server.mod/help/server.help,
+	src/mod/server.mod/help/set/server.help:
 
-	got rid of servlimit and changed the default for dcc-sanitycheck (plus the documentation .. no need to bad mouth mirc)
+	got rid of servlimit and changed the default for dcc-sanitycheck
+	(plus the documentation .. no need to bad mouth mirc) 
 
-2005-08-23 09:07  Jeff Fisher <guppy@techmonkeys.org>
-
-	* eggdrop.conf, doc/html/egg-core.html, doc/settings/core.settings,
-	  help/set/cmds1.help:
-
-	what a silly comment -- makes eggdrop sound like a tool used by kiddies
-
-2005-08-22 22:32  Jeff Fisher <guppy@techmonkeys.org>
+2005-08-23 14:07  Jeff Fisher <guppy@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/egg-core.html, doc/settings/core.settings,
-	  help/set/cmds1.help, scripts/CONTENTS, scripts/Makefile.in,
-	  scripts/cmd_resolve.tcl[DEAD], scripts/getops.tcl[DEAD],
-	  scripts/klined.tcl[DEAD], scripts/notes2.tcl[DEAD],
-	  scripts/ques5.tcl[DEAD], scripts/sentinel.tcl[DEAD],
-	  scripts/userinfo.tcl[DEAD], scripts/weed[DEAD],
-	  scripts/help/cmd_resolve.help[DEAD],
-	  scripts/help/userinfo.help[DEAD],
-	  scripts/help/msg/userinfo.help[DEAD], src/patch.h:
+	help/set/cmds1.help:
 
-	removed a bunch of the default scripts, people can easily get them on the FTP (once we put them there of course)
+	what a silly comment -- makes eggdrop sound like a tool used by
+	kiddies 
 
-2005-08-22 22:19  Jeff Fisher <guppy@techmonkeys.org>
+2005-08-23 03:32  Jeff Fisher <guppy@techmonkeys.org>
+
+	* eggdrop.conf, doc/html/egg-core.html, doc/settings/core.settings,
+	help/set/cmds1.help, scripts/CONTENTS, scripts/Makefile.in,
+	scripts/cmd_resolve.tcl, scripts/getops.tcl, scripts/klined.tcl,
+	scripts/notes2.tcl, scripts/ques5.tcl, scripts/sentinel.tcl,
+	scripts/userinfo.tcl, scripts/weed, src/patch.h:
+
+	removed a bunch of the default scripts, people can easily get them
+	on the FTP (once we put them there of course) 
+
+2005-08-23 03:19  Jeff Fisher <guppy@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/egg-core.html, doc/html/index.html,
-	  doc/html/mod-channels.html, doc/html/mod-seen.html[DEAD],
-	  doc/html/mod-wire.html[DEAD], doc/modules/MODULES,
-	  doc/settings/CONTENTS, doc/settings/core.settings,
-	  doc/settings/mod.channels, doc/settings/mod.seen[DEAD],
-	  doc/settings/mod.wire[DEAD], help/core.help, src/chan.h,
-	  src/mod/channels.mod/channels.c, src/mod/channels.mod/cmdschan.c,
-	  src/mod/channels.mod/tclchan.c,
-	  src/mod/channels.mod/help/chaninfo.help,
-	  src/mod/seen.mod/Makefile[DEAD], src/mod/seen.mod/modinfo[DEAD],
-	  src/mod/seen.mod/seen.c[DEAD],
-	  src/mod/seen.mod/help/seen.help[DEAD],
-	  src/mod/seen.mod/help/msg/seen.help[DEAD],
-	  src/mod/wire.mod/Makefile[DEAD], src/mod/wire.mod/modinfo[DEAD],
-	  src/mod/wire.mod/wire.c[DEAD], src/mod/wire.mod/wire.h[DEAD],
-	  src/mod/wire.mod/help/wire.help[DEAD],
-	  src/mod/wire.mod/language/wire.danish.lang[DEAD],
-	  src/mod/wire.mod/language/wire.english.lang[DEAD],
-	  src/mod/wire.mod/language/wire.finnish.lang[DEAD],
-	  src/mod/wire.mod/language/wire.french.lang[DEAD],
-	  src/mod/wire.mod/language/wire.german.lang[DEAD]:
+	doc/html/mod-channels.html, doc/html/mod-seen.html,
+	doc/html/mod-wire.html, doc/modules/MODULES, doc/settings/CONTENTS,
+	doc/settings/core.settings, doc/settings/mod.channels,
+	doc/settings/mod.seen, doc/settings/mod.wire, help/core.help,
+	src/chan.h, src/mod/channels.mod/channels.c,
+	src/mod/channels.mod/cmdschan.c, src/mod/channels.mod/tclchan.c,
+	src/mod/channels.mod/help/chaninfo.help:
 
-	removed wire.mod and seen.mod
+	removed wire.mod and seen.mod 
 
-2005-08-22 21:38  Jeff Fisher <guppy@techmonkeys.org>
+2005-08-23 02:38  Jeff Fisher <guppy@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/mod-irc.html, doc/settings/mod.irc,
-	  src/mod/irc.mod/chan.c, src/mod/irc.mod/irc.c,
-	  src/mod/irc.mod/help/irc.help, src/mod/server.mod/server.c,
-	  src/mod/server.mod/server.h, src/mod/server.mod/servmsg.c:
+	src/mod/irc.mod/chan.c, src/mod/irc.mod/irc.c,
+	src/mod/irc.mod/help/irc.help, src/mod/server.mod/server.c,
+	src/mod/server.mod/server.h, src/mod/server.mod/servmsg.c:
 
-	removed kick-fun/ban-fun
+	removed kick-fun/ban-fun 
 
-2005-08-21 22:32  Will Buckner <wcc@techmonkeys.org>
+2005-08-22 03:32  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/BUG-REPORT, doc/modules/MODULES, src/Makefile.in,
-	  src/debug.c, src/debug.h, src/main.c, src/modules.c, src/net.c,
-	  src/patch.h, src/tclhash.c, src/mod/module.h:
+	src/debug.c, src/debug.h, src/main.c, src/modules.c, src/net.c,
+	src/patch.h, src/tclhash.c, src/mod/module.h:
 
-	* Removed context debugging completly.
+	* Removed context debugging completly.  
 
-2005-07-31 14:42  Will Buckner <wcc@techmonkeys.org>
+2005-07-31 19:42  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/html/egg-core.html, doc/settings/core.settings,
-	  help/set/cmds1.help, src/patch.h:
+	help/set/cmds1.help, src/patch.h:
 
-	- Corrected nat-ip setting documentation.
-	* Found by: BarkerJr - Patch by: Wcc
+	- Corrected nat-ip setting documentation.  
+	* Found by: BarkerJr - Patch by: Wcc 
 
-2005-07-31 12:19  Will Buckner <wcc@techmonkeys.org>
+2005-07-31 17:19  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/server.mod/servmsg.c:
 
-	* Synch 1.6 realname changes.
+	* Synch 1.6 realname changes.  
 
-2005-07-31 01:19  Will Buckner <wcc@techmonkeys.org>
+2005-07-31 06:19  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/channels.mod/tclchan.c:
 
-	* Fixed bug 412, found by Chris Northwood.
+	* Fixed bug 412, found by Chris Northwood.  
 
-2005-07-31 01:02  Will Buckner <wcc@techmonkeys.org>
+2005-07-31 06:02  Will Buckner <wcc@techmonkeys.org>
 
 	* src/mod/irc.mod/mode.c:
 
-	* Synched thommey's mode patch.
+	* Synched thommey's mode patch.  
 
-2005-07-31 01:00  Will Buckner <wcc@techmonkeys.org>
+2005-07-31 06:00  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, tclhash.c:
 
-	* Synching finished now.. grr.
+	* Synching finished now.. grr.  
 
-2005-07-31 00:51  Will Buckner <wcc@techmonkeys.org>
+2005-07-31 05:51  Will Buckner <wcc@techmonkeys.org>
 
 	* README, doc/html/readme.html, src/botmsg.c, src/cmds.c,
-	  src/dccutil.c, src/dns.c, src/main.c, src/net.c, src/patch.h,
-	  src/tcl.c, src/tclhash.c, src/tclhash.h,
-	  src/mod/filesys.mod/filesys.c:
+	src/dccutil.c, src/dns.c, src/main.c, src/net.c, src/patch.h,
+	src/tcl.c, src/tclhash.c, src/tclhash.h,
+	src/mod/filesys.mod/filesys.c:
 
-	* If this compiles, I am going to cry with joy.
+	* If this compiles, I am going to cry with joy.  
 
-2005-07-30 22:49  Will Buckner <wcc@techmonkeys.org>
+2005-07-31 03:49  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/TCL-COMMANDS, doc/html/mod-server.html,
-	  doc/html/tcl-commands.html, doc/settings/mod.server, src/main.c,
-	  src/patch.h, src/tclegg.h, src/tclhash.c,
-	  src/mod/filesys.mod/filesys.c, src/mod/irc.mod/chan.c,
-	  src/mod/irc.mod/irc.c, src/mod/irc.mod/irc.h,
-	  src/mod/server.mod/server.c, src/mod/server.mod/server.h,
-	  src/mod/server.mod/servmsg.c,
-	  src/mod/server.mod/help/server.help,
-	  src/mod/server.mod/help/set/server.help:
+	doc/html/tcl-commands.html, doc/settings/mod.server, src/main.c,
+	src/patch.h, src/tclegg.h, src/tclhash.c,
+	src/mod/filesys.mod/filesys.c, src/mod/irc.mod/chan.c,
+	src/mod/irc.mod/irc.c, src/mod/irc.mod/irc.h,
+	src/mod/server.mod/server.c, src/mod/server.mod/server.h,
+	src/mod/server.mod/servmsg.c, src/mod/server.mod/help/server.help,
+	src/mod/server.mod/help/set/server.help:
 
-	* Phase 4. Compiles now.
-	* Fixed a bug in my earlier main.c changes.
+	* Phase 4. Compiles now.  
+	* Fixed a bug in my earlier main.c changes.  
+	
+	I don't like massive changes like this that don't go through the
+	patch process. There is alot of room for error here, as careful as I
+	am trying to be.  
 
-	I don't like massive changes like this that don't go through the patch
-	process. There is alot of room for error here, as careful as I am trying
-	to be.
-
-2005-07-30 22:04  Will Buckner <wcc@techmonkeys.org>
+2005-07-31 03:04  Will Buckner <wcc@techmonkeys.org>
 
 	* config.h.in, configure, src/patch.h,
-	  src/mod/compress.mod/configure, src/mod/dns.mod/configure:
+	src/mod/compress.mod/configure, src/mod/dns.mod/configure:
 
-	* Phase 3; ran misc/runautotools.
+	* Phase 3; ran misc/runautotools.  
 
-2005-07-30 22:03  Will Buckner <wcc@techmonkeys.org>
+2005-07-31 03:03  Will Buckner <wcc@techmonkeys.org>
 
 	* configure.ac, src/patch.h:
 
-	* Phase 2; autoconf updates.
+	* Phase 2; autoconf updates.  
 
-2005-07-30 21:57  Will Buckner <wcc@techmonkeys.org>
+2005-07-31 02:57  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/TCL-COMMANDS, doc/html/tcl-commands.html,
-	  src/flags.c, src/help.c, src/patch.h, src/tclegg.h,
-	  src/tclhash.c, src/mod/irc.mod/chan.c,
-	  src/mod/server.mod/servmsg.c:
+	src/flags.c, src/help.c, src/patch.h, src/tclegg.h, src/tclhash.c,
+	src/mod/irc.mod/chan.c, src/mod/server.mod/servmsg.c:
 
-	* Phase one of synching Tothwolf's recent 1.6 commits. I am breaking
-	this up into several commits because the changes are pretty large.
+	* Phase one of synching Tothwolf's recent 1.6 commits. I am breaking 
+	this up into several commits because the changes are pretty large.  
 
-2005-07-30 21:32  Will Buckner <wcc@techmonkeys.org>
+2005-07-31 02:32  Will Buckner <wcc@techmonkeys.org>
 
 	* src/main.c:
 
-	* More main.c cleanups.
+	* More main.c cleanups.  
 
-2005-07-25 22:31  Will Buckner <wcc@techmonkeys.org>
+2005-07-26 03:31  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: eggdrop.h, logfile.c, logfile.h, main.c, patch.h:
 
-	* Moved some logging stuff out of the core.
+	* Moved some logging stuff out of the core.  
 
-2005-07-23 17:20  Will Buckner <wcc@techmonkeys.org>
+2005-07-23 22:20  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/channels.mod/channels.h:
 
-	- Fixed bug 435; typos... grr. Bans work again.
-	* Found by: De Kus - Patch by: Darko
+	- Fixed bug 435; typos... grr. Bans work again.  
+	* Found by: De Kus - Patch by: Darko 
 
-2005-07-23 17:14  Will Buckner <wcc@techmonkeys.org>
+2005-07-23 22:14  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/irc.mod/irc.c:
 
-	- Request topic on channel reset; fixes topic issue of bug 441.
-	* Found by: De Kus - Patch by: Darko
+	- Request topic on channel reset; fixes topic issue of bug 441.  
+	* Found by: De Kus - Patch by: Darko 
 
-2005-07-23 16:57  Will Buckner <wcc@techmonkeys.org>
+2005-07-23 21:57  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: logfile.h, patch.h, tcl.c:
 
-	- Fixed bug 443; logfile crash.
-	* Found by: De Kus Fixed by: Darko
+	- Fixed bug 443; logfile crash.  
+	* Found by: De Kus Fixed by: Darko 
 
-2005-05-30 17:44  Will Buckner <wcc@techmonkeys.org>
+2005-05-30 22:44  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/share.mod/share.c:
 
-	- Fixed a situation where noshare could be set to 1 and never
-	  restored.
-	* Fixed by: lordares
+	- Fixed a situation where noshare could be set to 1 and never 
+	  restored.  
+	* Fixed by: lordares 
 
-2005-05-30 17:38  Will Buckner <wcc@techmonkeys.org>
+2005-05-30 22:38  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/Makefile.in:
 
-	* 'make install' fixes. Found by BarkerJr.
+	* 'make install' fixes. Found by BarkerJr.  
 
-2005-05-30 17:11  Will Buckner <wcc@techmonkeys.org>
+2005-05-30 22:11  Will Buckner <wcc@techmonkeys.org>
 
 	* src/net.c:
 
-	- Fixed a socklist leak in net.c.
-	* Fixed by: lordares
+	- Fixed a socklist leak in net.c.  
+	* Fixed by: lordares 
 
-2005-01-25 12:25  Will Buckner <wcc@techmonkeys.org>
+2005-01-25 18:25  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/irc.mod/chan.c:
 
-	- Use CHANMETA to define valid channel prefixes in gotmsg().
-	* Found by: zathras3 at hotmail.com - Patch by: Wcc
+	- Use CHANMETA to define valid channel prefixes in gotmsg().  
+	* Found by: zathras3 at hotmail.com - Patch by: Wcc 
 
-2005-01-25 12:17  Will Buckner <wcc@techmonkeys.org>
+2005-01-25 18:17  Will Buckner <wcc@techmonkeys.org>
 
-	* doc/MODULES[DEAD]:
+	* doc/MODULES:
 
-	* Forgot a cvs remove before.
+	* Forgot a cvs remove before.  
 
-2005-01-25 11:36  Will Buckner <wcc@techmonkeys.org>
+2005-01-25 17:36  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/channels.mod/channels.c:
 
-	- Fix for problems created when loading long user-defined channel setting
-	  names from the channel file.
-	* Patch by: Stream
+	- Fix for problems created when loading long user-defined channel
+	  setting names from the channel file.  
+	* Patch by: Stream 
 
-2005-01-20 19:43  Will Buckner <wcc@techmonkeys.org>
+2005-01-21 01:43  Will Buckner <wcc@techmonkeys.org>
 
 	* CONTENTS, FEATURES, INSTALL, NEWS, README, aclocal.m4, configure,
-	  configure.ac, doc/ABOUT, doc/AUTHORS, doc/BANS, doc/BOTNET,
-	  doc/COMPILE-GUIDE, doc/CONTENTS, doc/FIRST-SCRIPT,
-	  doc/KNOWN-PROBLEMS, doc/PARTYLINE, doc/PATCH-HOWTO,
-	  doc/TCL-COMMANDS, doc/TEXT-SUBSTITUTIONS, doc/TRICKS, doc/USERS,
-	  doc/WEIRD-MESSAGES, doc/html/about.html,
-	  doc/html/app-problems.html, doc/html/app-textsub.html,
-	  doc/html/app-tricks.html, doc/html/app-weird.html,
-	  doc/html/authors.html, doc/html/bans.html, doc/html/botnet.html,
-	  doc/html/compiling.html, doc/html/egg-core.html,
-	  doc/html/faqs.html, doc/html/features.html, doc/html/index.html,
-	  doc/html/install.html, doc/html/mod-assoc.html,
-	  doc/html/mod-blowfish.html, doc/html/mod-channels.html,
-	  doc/html/mod-compress.html, doc/html/mod-console.html,
-	  doc/html/mod-ctcp.html, doc/html/mod-dns.html,
-	  doc/html/mod-filesys.html, doc/html/mod-irc.html,
-	  doc/html/mod-notes.html, doc/html/mod-seen.html,
-	  doc/html/mod-server.html, doc/html/mod-share.html,
-	  doc/html/mod-uptime.html, doc/html/mod-wire.html,
-	  doc/html/news.html, doc/html/party.html,
-	  doc/html/patch-howto.html, doc/html/readme.html,
-	  doc/html/starting.html, doc/html/tcl-commands.html,
-	  doc/html/users.html, doc/man1/eggdrop.1, doc/modules/MODULES,
-	  doc/modules/sample.mod/sample.c, doc/settings/CONTENTS,
-	  doc/settings/core.settings, doc/settings/mod.assoc,
-	  doc/settings/mod.blowfish, doc/settings/mod.channels,
-	  doc/settings/mod.compress, doc/settings/mod.console,
-	  doc/settings/mod.ctcp, doc/settings/mod.dns,
-	  doc/settings/mod.filesys, doc/settings/mod.irc,
-	  doc/settings/mod.notes, doc/settings/mod.seen,
-	  doc/settings/mod.server, doc/settings/mod.share,
-	  doc/settings/mod.transfer, doc/settings/mod.uptime,
-	  doc/settings/mod.wire, help/cmds2.help, logs/CONTENTS,
-	  misc/addpatch, misc/makedepend, misc/modconfig, misc/newversion,
-	  misc/releaseprep, misc/runautotools, scripts/CONTENTS,
-	  scripts/action.fix.tcl, scripts/alltools.tcl, scripts/autobotchk,
-	  scripts/compat.tcl, scripts/ques5.tcl, src/bg.c, src/bg.h,
-	  src/botcmd.c, src/botcmd.h, src/botmsg.c, src/botmsg.h,
-	  src/botnet.c, src/botnet.h, src/chan.h, src/chanprog.c,
-	  src/chanprog.h, src/cmds.c, src/cmds.h, src/dcc.c, src/dcc.h,
-	  src/dccutil.c, src/dccutil.h, src/debug.c, src/debug.h,
-	  src/dns.c, src/dns.h, src/eggdrop.h, src/flags.c, src/flags.h,
-	  src/help.c, src/help.h, src/lang.h, src/language.c,
-	  src/language.h, src/logfile.c, src/logfile.h, src/main.c,
-	  src/main.h, src/match.h, src/mem.c, src/mem.h, src/misc.c,
-	  src/misc.h, src/misc_file.c, src/misc_file.h, src/modules.c,
-	  src/modules.h, src/net.h, src/patch.h, src/proto.h,
-	  src/rfc1459.c, src/rfc1459.h, src/stat.h, src/tcl.c,
-	  src/tcldcc.c, src/tcldcc.h, src/tclegg.h, src/tclhash.c,
-	  src/tclhash.h, src/tclmisc.c, src/tcluser.c, src/traffic.c,
-	  src/traffic.h, src/types.h, src/userent.c, src/userent.h,
-	  src/userfile.c, src/userfile.h, src/userrec.c, src/userrec.h,
-	  src/users.c, src/users.h, src/compat/compat.h,
-	  src/compat/inet_aton.c, src/compat/inet_aton.h,
-	  src/compat/memcpy.c, src/compat/memcpy.h, src/compat/memset.c,
-	  src/compat/memset.h, src/compat/snprintf.c,
-	  src/compat/snprintf.h, src/compat/strcasecmp.c,
-	  src/compat/strcasecmp.h, src/compat/strftime.c,
-	  src/compat/strftime.h, src/mod/module.h, src/mod/modvals.h,
-	  src/mod/assoc.mod/assoc.c, src/mod/assoc.mod/assoc.h,
-	  src/mod/blowfish.mod/bf_tab.h, src/mod/blowfish.mod/blowfish.c,
-	  src/mod/blowfish.mod/blowfish.h, src/mod/channels.mod/channels.c,
-	  src/mod/channels.mod/channels.h, src/mod/channels.mod/cmdschan.c,
-	  src/mod/channels.mod/tclchan.c, src/mod/channels.mod/udefchan.c,
-	  src/mod/channels.mod/userchan.c, src/mod/compress.mod/compress.c,
-	  src/mod/compress.mod/compress.h,
-	  src/mod/compress.mod/configure.ac,
-	  src/mod/compress.mod/tclcompress.c,
-	  src/mod/console.mod/console.c, src/mod/console.mod/console.h,
-	  src/mod/ctcp.mod/ctcp.c, src/mod/ctcp.mod/ctcp.h,
-	  src/mod/dns.mod/configure.ac, src/mod/dns.mod/coredns.c,
-	  src/mod/dns.mod/dns.c, src/mod/dns.mod/dns.h,
-	  src/mod/filesys.mod/dbcompat.c, src/mod/filesys.mod/dbcompat.h,
-	  src/mod/filesys.mod/filedb3.c, src/mod/filesys.mod/filedb3.h,
-	  src/mod/filesys.mod/filelist.c, src/mod/filesys.mod/filelist.h,
-	  src/mod/filesys.mod/files.c, src/mod/filesys.mod/files.h,
-	  src/mod/filesys.mod/filesys.c, src/mod/filesys.mod/filesys.h,
-	  src/mod/filesys.mod/tclfiles.c, src/mod/irc.mod/chan.c,
-	  src/mod/irc.mod/cmdsirc.c, src/mod/irc.mod/irc.c,
-	  src/mod/irc.mod/irc.h, src/mod/irc.mod/mode.c,
-	  src/mod/irc.mod/msgcmds.c, src/mod/irc.mod/tclirc.c,
-	  src/mod/notes.mod/cmdsnote.c, src/mod/notes.mod/notes.c,
-	  src/mod/notes.mod/notes.h, src/mod/seen.mod/seen.c,
-	  src/mod/server.mod/cmdsserv.c, src/mod/server.mod/server.c,
-	  src/mod/server.mod/server.h, src/mod/server.mod/servmsg.c,
-	  src/mod/server.mod/tclserv.c, src/mod/share.mod/share.c,
-	  src/mod/share.mod/share.h, src/mod/share.mod/uf_features.c,
-	  src/mod/transfer.mod/tcltransfer.c,
-	  src/mod/transfer.mod/transfer.c, src/mod/transfer.mod/transfer.h,
-	  src/mod/transfer.mod/transferfstat.c,
-	  src/mod/transfer.mod/transferqueue.c,
-	  src/mod/uptime.mod/uptime.c, src/mod/uptime.mod/uptime.h,
-	  src/mod/wire.mod/wire.c, src/mod/wire.mod/wire.h, text/CONTENTS,
-	  text/banner:
+	configure.ac, doc/ABOUT, doc/AUTHORS, doc/BANS, doc/BOTNET,
+	doc/COMPILE-GUIDE, doc/CONTENTS, doc/FIRST-SCRIPT,
+	doc/KNOWN-PROBLEMS, doc/PARTYLINE, doc/PATCH-HOWTO,
+	doc/TCL-COMMANDS, doc/TEXT-SUBSTITUTIONS, doc/TRICKS, doc/USERS,
+	doc/WEIRD-MESSAGES, doc/html/about.html,
+	doc/html/app-problems.html, doc/html/app-textsub.html,
+	doc/html/app-tricks.html, doc/html/app-weird.html,
+	doc/html/authors.html, doc/html/bans.html, doc/html/botnet.html,
+	doc/html/compiling.html, doc/html/egg-core.html,
+	doc/html/faqs.html, doc/html/features.html, doc/html/index.html,
+	doc/html/install.html, doc/html/mod-assoc.html,
+	doc/html/mod-blowfish.html, doc/html/mod-channels.html,
+	doc/html/mod-compress.html, doc/html/mod-console.html,
+	doc/html/mod-ctcp.html, doc/html/mod-dns.html,
+	doc/html/mod-filesys.html, doc/html/mod-irc.html,
+	doc/html/mod-notes.html, doc/html/mod-seen.html,
+	doc/html/mod-server.html, doc/html/mod-share.html,
+	doc/html/mod-uptime.html, doc/html/mod-wire.html,
+	doc/html/news.html, doc/html/party.html, doc/html/patch-howto.html,
+	doc/html/readme.html, doc/html/starting.html,
+	doc/html/tcl-commands.html, doc/html/users.html,
+	doc/man1/eggdrop.1, doc/modules/MODULES,
+	doc/modules/sample.mod/sample.c, doc/settings/CONTENTS,
+	doc/settings/core.settings, doc/settings/mod.assoc,
+	doc/settings/mod.blowfish, doc/settings/mod.channels,
+	doc/settings/mod.compress, doc/settings/mod.console,
+	doc/settings/mod.ctcp, doc/settings/mod.dns,
+	doc/settings/mod.filesys, doc/settings/mod.irc,
+	doc/settings/mod.notes, doc/settings/mod.seen,
+	doc/settings/mod.server, doc/settings/mod.share,
+	doc/settings/mod.transfer, doc/settings/mod.uptime,
+	doc/settings/mod.wire, help/cmds2.help, misc/addpatch,
+	misc/makedepend, misc/modconfig, misc/newversion, misc/releaseprep,
+	misc/runautotools, scripts/CONTENTS, scripts/action.fix.tcl,
+	scripts/alltools.tcl, scripts/autobotchk, scripts/compat.tcl,
+	scripts/ques5.tcl, src/bg.c, src/bg.h, src/botcmd.c, src/botcmd.h,
+	src/botmsg.c, src/botmsg.h, src/botnet.c, src/botnet.h, src/chan.h,
+	src/chanprog.c, src/chanprog.h, src/cmds.c, src/cmds.h, src/dcc.c,
+	src/dcc.h, src/dccutil.c, src/dccutil.h, src/debug.c, src/debug.h,
+	src/dns.c, src/dns.h, src/eggdrop.h, src/flags.c, src/flags.h,
+	src/help.c, src/help.h, src/lang.h, src/language.c, src/language.h,
+	src/logfile.c, src/logfile.h, src/main.c, src/main.h, src/match.h,
+	src/mem.c, src/mem.h, src/misc.c, src/misc.h, src/misc_file.c,
+	src/misc_file.h, src/modules.c, src/modules.h, src/net.h,
+	src/patch.h, src/proto.h, src/rfc1459.c, src/rfc1459.h, src/stat.h,
+	src/tcl.c, src/tcldcc.c, src/tcldcc.h, src/tclegg.h, src/tclhash.c,
+	src/tclhash.h, src/tclmisc.c, src/tcluser.c, src/traffic.c,
+	src/traffic.h, src/types.h, src/userent.c, src/userent.h,
+	src/userfile.c, src/userfile.h, src/userrec.c, src/userrec.h,
+	src/users.c, src/users.h, src/compat/compat.h,
+	src/compat/inet_aton.c, src/compat/inet_aton.h,
+	src/compat/memcpy.c, src/compat/memcpy.h, src/compat/memset.c,
+	src/compat/memset.h, src/compat/snprintf.c, src/compat/snprintf.h,
+	src/compat/strcasecmp.c, src/compat/strcasecmp.h,
+	src/compat/strftime.c, src/compat/strftime.h, src/mod/module.h,
+	src/mod/modvals.h, src/mod/assoc.mod/assoc.c,
+	src/mod/assoc.mod/assoc.h, src/mod/blowfish.mod/bf_tab.h,
+	src/mod/blowfish.mod/blowfish.c, src/mod/blowfish.mod/blowfish.h,
+	src/mod/channels.mod/channels.c, src/mod/channels.mod/channels.h,
+	src/mod/channels.mod/cmdschan.c, src/mod/channels.mod/tclchan.c,
+	src/mod/channels.mod/udefchan.c, src/mod/channels.mod/userchan.c,
+	src/mod/compress.mod/compress.c, src/mod/compress.mod/compress.h,
+	src/mod/compress.mod/configure.ac,
+	src/mod/compress.mod/tclcompress.c, src/mod/console.mod/console.c,
+	src/mod/console.mod/console.h, src/mod/ctcp.mod/ctcp.c,
+	src/mod/ctcp.mod/ctcp.h, src/mod/dns.mod/configure.ac,
+	src/mod/dns.mod/coredns.c, src/mod/dns.mod/dns.c,
+	src/mod/dns.mod/dns.h, src/mod/filesys.mod/dbcompat.c,
+	src/mod/filesys.mod/dbcompat.h, src/mod/filesys.mod/filedb3.c,
+	src/mod/filesys.mod/filedb3.h, src/mod/filesys.mod/filelist.c,
+	src/mod/filesys.mod/filelist.h, src/mod/filesys.mod/files.c,
+	src/mod/filesys.mod/files.h, src/mod/filesys.mod/filesys.c,
+	src/mod/filesys.mod/filesys.h, src/mod/filesys.mod/tclfiles.c,
+	src/mod/irc.mod/chan.c, src/mod/irc.mod/cmdsirc.c,
+	src/mod/irc.mod/irc.c, src/mod/irc.mod/irc.h,
+	src/mod/irc.mod/mode.c, src/mod/irc.mod/msgcmds.c,
+	src/mod/irc.mod/tclirc.c, src/mod/notes.mod/cmdsnote.c,
+	src/mod/notes.mod/notes.c, src/mod/notes.mod/notes.h,
+	src/mod/server.mod/cmdsserv.c, src/mod/server.mod/server.c,
+	src/mod/server.mod/server.h, src/mod/server.mod/servmsg.c,
+	src/mod/server.mod/tclserv.c, src/mod/share.mod/share.c,
+	src/mod/share.mod/share.h, src/mod/share.mod/uf_features.c,
+	src/mod/transfer.mod/tcltransfer.c,
+	src/mod/transfer.mod/transfer.c, src/mod/transfer.mod/transfer.h,
+	src/mod/transfer.mod/transferfstat.c,
+	src/mod/transfer.mod/transferqueue.c, src/mod/uptime.mod/uptime.c,
+	src/mod/uptime.mod/uptime.h, text/CONTENTS, text/banner:
 
-	* Sync 1.6 patches and 2005 Copyright updates.
+	* Sync 1.6 patches and 2005 Copyright updates.  
 
-2004-12-10 22:21  Will Buckner <wcc@techmonkeys.org>
+2004-12-11 04:21  Will Buckner <wcc@techmonkeys.org>
 
 	* src/dcc.h:
 
-	* Fixed bug 418 (misleading comment).
+	* Fixed bug 418 (misleading comment).  
 
-2004-12-02 17:28  Will Buckner <wcc@techmonkeys.org>
+2004-12-02 23:28  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/notes.mod/notes.c:
 
-	* This fixes bug 421.
+	* This fixes bug 421.  
 
-2004-12-02 16:15  Will Buckner <wcc@techmonkeys.org>
+2004-12-02 22:15  Will Buckner <wcc@techmonkeys.org>
 
 	* INSTALL, disabled_modules, eggdrop.conf, doc/html/index.html,
-	  doc/html/install.html, doc/html/mod-woobie.html[DEAD],
-	  doc/modules/MODULES, doc/modules/sample.mod/Makefile,
-	  doc/modules/sample.mod/modinfo, doc/modules/sample.mod/sample.c,
-	  doc/settings/CONTENTS, doc/settings/mod.woobie[DEAD],
-	  misc/modconfig, src/Makefile.in, src/patch.h,
-	  src/compat/Makefile.in, src/md5/Makefile.in,
-	  src/mod/assoc.mod/Makefile, src/mod/blowfish.mod/Makefile,
-	  src/mod/channels.mod/Makefile, src/mod/compress.mod/Makefile.in,
-	  src/mod/console.mod/Makefile, src/mod/ctcp.mod/Makefile,
-	  src/mod/dns.mod/Makefile.in, src/mod/filesys.mod/Makefile,
-	  src/mod/irc.mod/Makefile, src/mod/notes.mod/Makefile,
-	  src/mod/seen.mod/Makefile, src/mod/server.mod/Makefile,
-	  src/mod/share.mod/Makefile, src/mod/transfer.mod/Makefile,
-	  src/mod/uptime.mod/Makefile, src/mod/wire.mod/Makefile,
-	  src/mod/woobie.mod/Makefile[DEAD],
-	  src/mod/woobie.mod/modinfo[DEAD],
-	  src/mod/woobie.mod/woobie.c[DEAD]:
+	doc/html/install.html, doc/html/mod-woobie.html,
+	doc/modules/MODULES, doc/modules/sample.mod/Makefile,
+	doc/modules/sample.mod/modinfo, doc/modules/sample.mod/sample.c,
+	doc/settings/CONTENTS, doc/settings/mod.woobie, misc/modconfig,
+	src/Makefile.in, src/patch.h, src/compat/Makefile.in,
+	src/md5/Makefile.in, src/mod/assoc.mod/Makefile,
+	src/mod/blowfish.mod/Makefile, src/mod/channels.mod/Makefile,
+	src/mod/compress.mod/Makefile.in, src/mod/console.mod/Makefile,
+	src/mod/ctcp.mod/Makefile, src/mod/dns.mod/Makefile.in,
+	src/mod/filesys.mod/Makefile, src/mod/irc.mod/Makefile,
+	src/mod/notes.mod/Makefile, src/mod/server.mod/Makefile,
+	src/mod/share.mod/Makefile, src/mod/transfer.mod/Makefile,
+	src/mod/uptime.mod/Makefile:
 
-	* Moved woobie.mod to doc/ where it belongs.
-	* Ran misc/makedepend.
-	* Updates to misc/modconfig to handle empty module directories since CVS sucks.
+	* Moved woobie.mod to doc/ where it belongs.  
+	* Ran misc/makedepend.  
+	* Updates to misc/modconfig to handle empty module directories since
+	CVS sucks.  
 
-2004-11-25 23:35  Will Buckner <wcc@techmonkeys.org>
+2004-11-26 05:35  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: botnet.c, cmds.c, dcc.c, dccutil.c, debug.c, dns.c,
-	  eggdrop.h, flags.c, help.c, language.c, logfile.c, main.c,
-	  main.h, mem.c, mem.h, misc.c, modules.c, net.c, patch.h, proto.h,
-	  tcl.c, tcldcc.c, tclhash.c, tcluser.c, userent.c, userfile.c,
-	  userrec.c, users.c, mod/module.h, mod/irc.mod/msgcmds.c:
+	eggdrop.h, flags.c, help.c, language.c, logfile.c, main.c, main.h,
+	mem.c, mem.h, misc.c, modules.c, net.c, patch.h, proto.h, tcl.c,
+	tcldcc.c, tclhash.c, tcluser.c, userent.c, userfile.c, userrec.c,
+	users.c, mod/module.h, mod/irc.mod/msgcmds.c:
 
-	* More cleaning up.. mem.[ch] stuff.
+	* More cleaning up.. mem.[ch] stuff.  
 
-2004-11-24 20:10  Will Buckner <wcc@techmonkeys.org>
+2004-11-25 02:10  Will Buckner <wcc@techmonkeys.org>
 
 	* src/botnet.c:
 
-	* Oops, typo.
+	* Oops, typo.  
 
-2004-11-24 20:01  Will Buckner <wcc@techmonkeys.org>
+2004-11-25 02:01  Will Buckner <wcc@techmonkeys.org>
 
 	* NEWS, src/bg.c, src/bg.h, src/botnet.c, src/main.c:
 
-	* Some cleaning-up.
+	* Some cleaning-up.  
 
-2004-11-24 16:37  Will Buckner <wcc@techmonkeys.org>
+2004-11-24 22:37  Will Buckner <wcc@techmonkeys.org>
 
 	* NEWS, eggdrop.conf, doc/html/egg-core.html,
-	  doc/settings/core.settings, help/core.help, help/set/cmds1.help,
-	  src/cmds.c, src/dcc.c, src/flags.c, src/logfile.c, src/modules.c,
-	  src/patch.h, src/tcl.c, src/mod/module.h,
-	  src/mod/ctcp.mod/ctcp.c, src/mod/filesys.mod/filesys.c,
-	  src/mod/server.mod/server.c:
+	doc/settings/core.settings, help/core.help, help/set/cmds1.help,
+	src/cmds.c, src/dcc.c, src/flags.c, src/logfile.c, src/modules.c,
+	src/patch.h, src/tcl.c, src/mod/module.h, src/mod/ctcp.mod/ctcp.c,
+	src/mod/filesys.mod/filesys.c, src/mod/server.mod/server.c:
 
-	* Removed log-time. What good are logs without timestamps?
-	* Removed require-p (default to 1).
+	* Removed log-time. What good are logs without timestamps? 
+	* Removed require-p (default to 1).  
 
-2004-10-27 18:54  Will Buckner <wcc@techmonkeys.org>
+2004-10-27 23:54  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: Makefile.in, cmds.c, dcc.c, main.c, main.h, misc.c,
-	  modules.c, patch.h, proto.h, tcldcc.c, tcluser.c, userent.c,
-	  userfile.c, userfile.h, userrec.c, userrec.h, users.c, users.h,
-	  mod/module.h, mod/irc.mod/msgcmds.c:
+	modules.c, patch.h, proto.h, tcldcc.c, tcluser.c, userent.c,
+	userfile.c, userfile.h, userrec.c, userrec.h, users.c, users.h,
+	mod/module.h, mod/irc.mod/msgcmds.c:
 
-	* More header stuff.. also moved some of the userFILE stuff to userfile.[ch].
+	* More header stuff.. also moved some of the userFILE stuff to
+	userfile.[ch].  
 
-2004-10-05 19:04  Will Buckner <wcc@techmonkeys.org>
+2004-10-06 00:04  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: Makefile.in, botmsg.c, chan.h, chanprog.c, chanprog.h,
-	  cmds.c, cmds.h, dcc.c, dccutil.c, dccutil.h, flags.c, main.c,
-	  mem.c, misc.c, misc.h, modules.c, net.c, patch.h, proto.h, tcl.c,
-	  tcldcc.c, tclegg.h, tclhash.c, tclmisc.c, tcluser.c, userrec.c,
-	  userrec.h, users.c, users.h, compat/Makefile.in, md5/Makefile.in,
-	  mod/assoc.mod/Makefile, mod/blowfish.mod/Makefile,
-	  mod/channels.mod/Makefile, mod/compress.mod/Makefile.in,
-	  mod/console.mod/Makefile, mod/ctcp.mod/Makefile,
-	  mod/dns.mod/Makefile.in, mod/filesys.mod/Makefile,
-	  mod/irc.mod/Makefile, mod/notes.mod/Makefile,
-	  mod/seen.mod/Makefile, mod/server.mod/Makefile,
-	  mod/share.mod/Makefile, mod/transfer.mod/Makefile,
-	  mod/uptime.mod/Makefile, mod/wire.mod/Makefile,
-	  mod/woobie.mod/Makefile:
+	cmds.c, cmds.h, dcc.c, dccutil.c, dccutil.h, flags.c, main.c,
+	mem.c, misc.c, misc.h, modules.c, net.c, patch.h, proto.h, tcl.c,
+	tcldcc.c, tclegg.h, tclhash.c, tclmisc.c, tcluser.c, userrec.c,
+	userrec.h, users.c, users.h, compat/Makefile.in, md5/Makefile.in,
+	mod/assoc.mod/Makefile, mod/blowfish.mod/Makefile,
+	mod/channels.mod/Makefile, mod/compress.mod/Makefile.in,
+	mod/console.mod/Makefile, mod/ctcp.mod/Makefile,
+	mod/dns.mod/Makefile.in, mod/filesys.mod/Makefile,
+	mod/irc.mod/Makefile, mod/notes.mod/Makefile,
+	mod/server.mod/Makefile, mod/share.mod/Makefile,
+	mod/transfer.mod/Makefile, mod/uptime.mod/Makefile:
 
-	* More header-related cleanups.
-	* Removed config file compatability for a few settings that were removed
-	  earlier in 1.6 (is this compatability even necessary? it doesn't appear
-	  to be doing anything....).
-	* Moved timer stuff from chanprog to tcl.c for now.
+	* More header-related cleanups.  
+	* Removed config file compatability for a few settings that were
+	  removed earlier in 1.6 (is this compatability even necessary? it
+	  doesn't appear to be doing anything....).  
+	* Moved timer stuff from chanprog to tcl.c for now.  
+	
+	Sorry to leave this all in a bit of an unfinished state... I don't
+	have a lot of time right now.  
 
-	Sorry to leave this all in a bit of an unfinished state... I don't have a
-	lot of time right now.
-
-2004-09-09 20:10  Will Buckner <wcc@techmonkeys.org>
+2004-09-10 01:10  Will Buckner <wcc@techmonkeys.org>
 
 	* doc/TCL-COMMANDS, doc/html/tcl-commands.html, src/Makefile.in,
-	  src/botcmd.c, src/botmsg.c, src/chanprog.c, src/cmds.c,
-	  src/dcc.c, src/dccutil.c, src/dccutil.h, src/debug.c, src/dns.c,
-	  src/flags.c, src/help.c, src/language.c, src/language.h,
-	  src/logfile.c, src/main.c, src/main.h, src/misc.c, src/misc.h,
-	  src/modules.c, src/net.c, src/patch.h, src/proto.h, src/tcl.c,
-	  src/tcldcc.c, src/tclhash.c, src/tclmisc.c, src/tcluser.c,
-	  src/userent.c, src/userrec.c, src/users.c, src/mod/module.h,
-	  src/mod/assoc.mod/Makefile, src/mod/blowfish.mod/Makefile,
-	  src/mod/channels.mod/Makefile, src/mod/channels.mod/userchan.c,
-	  src/mod/compress.mod/Makefile.in, src/mod/console.mod/Makefile,
-	  src/mod/ctcp.mod/Makefile, src/mod/dns.mod/Makefile.in,
-	  src/mod/filesys.mod/Makefile, src/mod/irc.mod/Makefile,
-	  src/mod/irc.mod/chan.c, src/mod/irc.mod/cmdsirc.c,
-	  src/mod/irc.mod/irc.c, src/mod/irc.mod/mode.c,
-	  src/mod/irc.mod/msgcmds.c, src/mod/irc.mod/tclirc.c,
-	  src/mod/notes.mod/Makefile, src/mod/seen.mod/Makefile,
-	  src/mod/server.mod/Makefile, src/mod/server.mod/server.c,
-	  src/mod/share.mod/Makefile, src/mod/transfer.mod/Makefile,
-	  src/mod/uptime.mod/Makefile, src/mod/wire.mod/Makefile,
-	  src/mod/woobie.mod/Makefile:
+	src/botcmd.c, src/botmsg.c, src/chanprog.c, src/cmds.c, src/dcc.c,
+	src/dccutil.c, src/dccutil.h, src/debug.c, src/dns.c, src/flags.c,
+	src/help.c, src/language.c, src/language.h, src/logfile.c,
+	src/main.c, src/main.h, src/misc.c, src/misc.h, src/modules.c,
+	src/net.c, src/patch.h, src/proto.h, src/tcl.c, src/tcldcc.c,
+	src/tclhash.c, src/tclmisc.c, src/tcluser.c, src/userent.c,
+	src/userrec.c, src/users.c, src/mod/module.h,
+	src/mod/assoc.mod/Makefile, src/mod/blowfish.mod/Makefile,
+	src/mod/channels.mod/Makefile, src/mod/channels.mod/userchan.c,
+	src/mod/compress.mod/Makefile.in, src/mod/console.mod/Makefile,
+	src/mod/ctcp.mod/Makefile, src/mod/dns.mod/Makefile.in,
+	src/mod/filesys.mod/Makefile, src/mod/irc.mod/Makefile,
+	src/mod/irc.mod/chan.c, src/mod/irc.mod/cmdsirc.c,
+	src/mod/irc.mod/irc.c, src/mod/irc.mod/mode.c,
+	src/mod/irc.mod/msgcmds.c, src/mod/irc.mod/tclirc.c,
+	src/mod/notes.mod/Makefile, src/mod/server.mod/Makefile,
+	src/mod/server.mod/server.c, src/mod/share.mod/Makefile,
+	src/mod/transfer.mod/Makefile, src/mod/uptime.mod/Makefile:
 
-	* misc.c:egg_strcatn() -> irc.mod/mode.c:mode_strcatn(). This is the only place in the code that it's used or that has a use for it. Core bloat.
-	* Header cleanups continued; misc.[ch] this time.
-	* Fixed strict-ident stuff in maskhost().
-	* Removed maskhost() and maskban() defines. These were for module compatability in 1.6.
-	* Added "?options?" argument to tcl_maskban, This allows you to interface with maskhost() for either a ban OR a hostmask.
+	* misc.c:egg_strcatn() -> irc.mod/mode.c:mode_strcatn(). This is the
+	only place in the code that it's used or that has a use for it. Core
+	bloat.  
+	* Header cleanups continued; misc.[ch] this time.  
+	* Fixed strict-ident stuff in maskhost().  
+	* Removed maskhost() and maskban() defines. These were for module
+	compatability in 1.6.  
+	* Added "?options?" argument to tcl_maskban, This allows you to
+	interface with maskhost() for either a ban OR a hostmask.  
 
-2004-09-02 15:57  Will Buckner <wcc@techmonkeys.org>
+2004-09-02 20:57  Will Buckner <wcc@techmonkeys.org>
 
 	* src/logfile.c:
 
-	* Oops, the conditions were reversed in logfile_init(), causing a crash.
+	* Oops, the conditions were reversed in logfile_init(), causing a
+	crash.  
 
-2004-09-02 15:44  Will Buckner <wcc@techmonkeys.org>
+2004-09-02 20:44  Will Buckner <wcc@techmonkeys.org>
 
-	* doc/: TCL-COMMANDS, TCL-SCRIPTS[DEAD]:
+	* doc/: TCL-COMMANDS, TCL-SCRIPTS:
 
-	* Oops.
+	* Oops.  
 
-2004-09-02 15:27  Will Buckner <wcc@techmonkeys.org>
+2004-09-02 20:27  Will Buckner <wcc@techmonkeys.org>
 
 	* NEWS, README, eggdrop.conf, doc/CONTENTS, doc/FIRST-SCRIPT,
-	  doc/Makefile.in, doc/TCL-SCRIPTS, doc/tcl-commands.doc[DEAD],
-	  doc/html/egg-core.html, doc/settings/core.settings,
-	  doc/settings/mod.server, help/cmds1.help, help/core.help,
-	  misc/newversion, src/net.c, src/patch.h, src/tclhash.c:
+	doc/Makefile.in, doc/TCL-SCRIPTS, doc/tcl-commands.doc,
+	doc/html/egg-core.html, doc/settings/core.settings,
+	doc/settings/mod.server, help/cmds1.help, help/core.help,
+	misc/newversion, src/net.c, src/patch.h, src/tclhash.c:
 
-	* Applying the HTTP proxy support patch.
-	* doc/tcl-commands.doc -> doc/TCL-COMMANDS to conform with the naming of the
-	  other docs.
+	* Applying the HTTP proxy support patch.  
+	* doc/tcl-commands.doc -> doc/TCL-COMMANDS to conform with the
+	  naming of the other docs.  
 
-2004-08-31 17:56  Will Buckner <wcc@techmonkeys.org>
+2004-08-31 22:56  Will Buckner <wcc@techmonkeys.org>
 
 	* Makefile.in, src/Makefile.in, src/botcmd.c, src/cmds.c,
-	  src/help.c, src/help.h, src/logfile.c, src/main.c, src/mem.c,
-	  src/misc.c, src/misc.h, src/misc_file.c, src/misc_file.h,
-	  src/modules.c, src/net.c, src/patch.h, src/proto.h,
-	  src/tclhash.c, src/tclmisc.c, src/traffic.c, src/traffic.h,
-	  src/userrec.c:
+	src/help.c, src/help.h, src/logfile.c, src/main.c, src/mem.c,
+	src/misc.c, src/misc.h, src/misc_file.c, src/misc_file.h,
+	src/modules.c, src/net.c, src/patch.h, src/proto.h, src/tclhash.c,
+	src/tclmisc.c, src/traffic.c, src/traffic.h, src/userrec.c:
 
-	* Moved is_file() to misc_file.c where it belongs.
-	* Moved help functions to help.[ch].
-	* Simplified loops in scan_help_file().
-	* Finished moving logging functions to logfile.[ch].
-	* Moved more logfile code into logfile.[ch].
+	* Moved is_file() to misc_file.c where it belongs.  
+	* Moved help functions to help.[ch].  
+	* Simplified loops in scan_help_file().  
+	* Finished moving logging functions to logfile.[ch].  
+	* Moved more logfile code into logfile.[ch].  
 
-2004-08-30 20:48  Will Buckner <wcc@techmonkeys.org>
+2004-08-31 01:48  Will Buckner <wcc@techmonkeys.org>
 
 	* eggdrop.conf, doc/tcl-commands.doc, doc/html/egg-core.html,
-	  doc/html/tcl-commands.html, doc/settings/core.settings,
-	  help/cmds1.help, src/Makefile.in, src/botcmd.c, src/chanprog.c,
-	  src/cmds.c, src/flags.c, src/logfile.c, src/logfile.h,
-	  src/misc.c, src/net.c, src/patch.h, src/proto.h, src/tcl.c,
-	  src/tcldcc.c, src/tclhash.c, src/tclmisc.c, src/userrec.c:
+	doc/html/tcl-commands.html, doc/settings/core.settings,
+	help/cmds1.help, src/Makefile.in, src/botcmd.c, src/chanprog.c,
+	src/cmds.c, src/flags.c, src/logfile.c, src/logfile.h, src/misc.c,
+	src/net.c, src/patch.h, src/proto.h, src/tcl.c, src/tcldcc.c,
+	src/tclhash.c, src/tclmisc.c, src/userrec.c:
 
-	* Added log mode 'e' for logging Tcl errors. Patch by Noyga.
-	* More logging cleanups.
+	* Added log mode 'e' for logging Tcl errors. Patch by Noyga.  
+	* More logging cleanups.  
 
-2004-08-30 18:58  Will Buckner <wcc@techmonkeys.org>
+2004-08-30 23:58  Will Buckner <wcc@techmonkeys.org>
 
 	* misc/makedepend, src/Makefile.in, src/botcmd.c, src/botnet.c,
-	  src/chanprog.c, src/cmds.c, src/dcc.c, src/dccutil.c,
-	  src/debug.c, src/dns.c, src/eggdrop.h, src/language.c,
-	  src/logfile.c, src/logfile.h, src/main.c, src/main.h, src/mem.c,
-	  src/misc.c, src/misc.h, src/modules.c, src/net.c, src/patch.h,
-	  src/proto.h, src/tcl.c, src/tcldcc.c, src/tclhash.c,
-	  src/tclmisc.c, src/traffic.c, src/userent.c, src/userrec.c,
-	  src/users.c, src/compat/Makefile.in, src/md5/Makefile.in,
-	  src/mod/Makefile.in, src/mod/module.h,
-	  src/mod/assoc.mod/Makefile, src/mod/blowfish.mod/Makefile,
-	  src/mod/channels.mod/Makefile, src/mod/compress.mod/Makefile.in,
-	  src/mod/console.mod/Makefile, src/mod/ctcp.mod/Makefile,
-	  src/mod/dns.mod/Makefile.in, src/mod/filesys.mod/Makefile,
-	  src/mod/irc.mod/Makefile, src/mod/notes.mod/Makefile,
-	  src/mod/seen.mod/Makefile, src/mod/server.mod/Makefile,
-	  src/mod/share.mod/Makefile, src/mod/transfer.mod/Makefile,
-	  src/mod/uptime.mod/Makefile, src/mod/wire.mod/Makefile,
-	  src/mod/woobie.mod/Makefile:
+	src/chanprog.c, src/cmds.c, src/dcc.c, src/dccutil.c, src/debug.c,
+	src/dns.c, src/eggdrop.h, src/language.c, src/logfile.c,
+	src/logfile.h, src/main.c, src/main.h, src/mem.c, src/misc.c,
+	src/misc.h, src/modules.c, src/net.c, src/patch.h, src/proto.h,
+	src/tcl.c, src/tcldcc.c, src/tclhash.c, src/tclmisc.c,
+	src/traffic.c, src/userent.c, src/userrec.c, src/users.c,
+	src/compat/Makefile.in, src/md5/Makefile.in, src/mod/Makefile.in,
+	src/mod/module.h, src/mod/assoc.mod/Makefile,
+	src/mod/blowfish.mod/Makefile, src/mod/channels.mod/Makefile,
+	src/mod/compress.mod/Makefile.in, src/mod/console.mod/Makefile,
+	src/mod/ctcp.mod/Makefile, src/mod/dns.mod/Makefile.in,
+	src/mod/filesys.mod/Makefile, src/mod/irc.mod/Makefile,
+	src/mod/notes.mod/Makefile, src/mod/server.mod/Makefile,
+	src/mod/share.mod/Makefile, src/mod/transfer.mod/Makefile,
+	src/mod/uptime.mod/Makefile:
 
-	* Moved logging functions to logfile.[ch].
-	* Simplified loops in check_logsize() and fluchlogs() a bit.
-	* Updated misc/makedepend.
+	* Moved logging functions to logfile.[ch].  
+	* Simplified loops in check_logsize() and fluchlogs() a bit.  
+	* Updated misc/makedepend.  
 
-2004-08-27 22:24  Dariusz Kulinski <takeda@takeda.tk>
+2004-08-28 03:24  Dariusz Kulinski <takeda@takeda.tk>
 
 	* eggdrop.conf, doc/html/mod-server.html, doc/settings/mod.server,
-	  src/cmds.c, src/misc.c, src/patch.h, src/tcl.c, src/userrec.c,
-	  src/mod/irc.mod/cmdsirc.c, src/mod/irc.mod/irc.c,
-	  src/mod/irc.mod/help/irc.help,
-	  src/mod/server.mod/help/set/server.help:
+	src/cmds.c, src/misc.c, src/patch.h, src/tcl.c, src/userrec.c,
+	src/mod/irc.mod/cmdsirc.c, src/mod/irc.mod/irc.c,
+	src/mod/irc.mod/help/irc.help,
+	src/mod/server.mod/help/set/server.help:
 
-	* replaced strict-host with strict-ident
-	* strict-ident is on by default
-	  affected commands:
-	  - DCC: .+bot, .adduser
-	  - MSG: hello, ident
-	  commands that in theory shouldn't be affected:
-	  - DCC: .kickban
-	  - TCL: maskhost
-	  affected functions:
-	  - possibly all functions that use fixfrom()
+	* replaced strict-host with strict-ident 
+	* strict-ident is on by default 
+	  affected commands: 
+	  - DCC: .+bot, .adduser 
+	  - MSG: hello, ident 
+	  commands that in theory shouldn't be affected: 
+	  - DCC: .kickban 
+	  - TCL: maskhost 
+	  affected functions: 
+	  - possibly all functions that use fixfrom() 
 
-2004-08-27 22:07  Dariusz Kulinski <takeda@takeda.tk>
+2004-08-28 03:07  Dariusz Kulinski <takeda@takeda.tk>
 
 	* misc/addpatch, src/patch.h, src/rfc1459.c, src/tcl.c:
 
-	* changed misc/addpatch to work also with bsd's sed
-	* '^' and '~' is no longer equivalent in hostmasks comparison (rfc_casecmp)
-	* fixed warning while compiling tcl.c
+	* changed misc/addpatch to work also with bsd's sed * '^' and '~' is
+	no longer equivalent in hostmasks comparison (rfc_casecmp) 
+	* fixed warning while compiling tcl.c 
 
-2004-08-27 19:15  Will Buckner <wcc@techmonkeys.org>
+2004-08-28 00:15  Will Buckner <wcc@techmonkeys.org>
 
 	* Makefile.in, misc/makedepend, misc/releaseprep,
-	  misc/runautotools, src/Makefile.in, src/main.h, src/patch.h,
-	  src/compat/Makefile.in, src/md5/Makefile.in, src/mod/Makefile.in,
-	  src/mod/assoc.mod/Makefile, src/mod/blowfish.mod/Makefile,
-	  src/mod/channels.mod/Makefile, src/mod/compress.mod/Makefile.in,
-	  src/mod/console.mod/Makefile, src/mod/ctcp.mod/Makefile,
-	  src/mod/dns.mod/Makefile.in, src/mod/filesys.mod/Makefile,
-	  src/mod/irc.mod/Makefile, src/mod/notes.mod/Makefile,
-	  src/mod/seen.mod/Makefile, src/mod/server.mod/Makefile,
-	  src/mod/share.mod/Makefile, src/mod/transfer.mod/Makefile,
-	  src/mod/uptime.mod/Makefile, src/mod/wire.mod/Makefile,
-	  src/mod/woobie.mod/Makefile:
+	misc/runautotools, src/Makefile.in, src/main.h, src/patch.h,
+	src/compat/Makefile.in, src/md5/Makefile.in, src/mod/Makefile.in,
+	src/mod/assoc.mod/Makefile, src/mod/blowfish.mod/Makefile,
+	src/mod/channels.mod/Makefile, src/mod/compress.mod/Makefile.in,
+	src/mod/console.mod/Makefile, src/mod/ctcp.mod/Makefile,
+	src/mod/dns.mod/Makefile.in, src/mod/filesys.mod/Makefile,
+	src/mod/irc.mod/Makefile, src/mod/notes.mod/Makefile,
+	src/mod/server.mod/Makefile, src/mod/share.mod/Makefile,
+	src/mod/transfer.mod/Makefile, src/mod/uptime.mod/Makefile:
 
-	* Build process stuff.. mostly related to make depend.
-	* Added misc/makedepend script to automatially run make depend and update
-	  all of the dependencies in Makefiles throughout the tree.
+	* Build process stuff.. mostly related to make depend.  
+	* Added misc/makedepend script to automatially run make depend and
+	  update all of the dependencies in Makefiles throughout the tree.  
 
-2004-08-27 05:01  Will Buckner <wcc@techmonkeys.org>
+2004-08-27 10:01  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: botcmd.h, botmsg.h, botnet.h, cmds.h, dcc.h, dccutil.h,
-	  debug.c, debug.h, language.h, match.h, net.h, rfc1459.h,
-	  tcldcc.h, traffic.c, traffic.h, types.h, userent.h, userrec.h:
+	debug.c, debug.h, language.h, match.h, net.h, rfc1459.h, tcldcc.h,
+	traffic.c, traffic.h, types.h, userent.h, userrec.h:
 
-	* I don't know why, but KDevelop seems to treat zero-byte files as DOS format.
-	  I fixed my "cvsadd" alias to echo a newline to the file to prevent this from
-	  happening in the future.
+	* I don't know why, but KDevelop seems to treat zero-byte files as
+	  DOS format.  I fixed my "cvsadd" alias to echo a newline to the file
+	  to prevent this from happening in the future.  
 
-2004-08-27 04:34  Will Buckner <wcc@techmonkeys.org>
+2004-08-27 09:34  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: Makefile.in, cmds.c, main.c, main.h, misc.h, net.c,
-	  patch.h, tcldcc.c, tclhash.c, traffic.c, traffic.h,
-	  compat/Makefile.in, md5/Makefile.in, mod/assoc.mod/Makefile,
-	  mod/blowfish.mod/Makefile, mod/channels.mod/Makefile,
-	  mod/compress.mod/Makefile.in, mod/console.mod/Makefile,
-	  mod/ctcp.mod/Makefile, mod/dns.mod/Makefile.in,
-	  mod/filesys.mod/Makefile, mod/irc.mod/Makefile,
-	  mod/notes.mod/Makefile, mod/seen.mod/Makefile,
-	  mod/server.mod/Makefile, mod/share.mod/Makefile,
-	  mod/transfer.mod/Makefile, mod/uptime.mod/Makefile,
-	  mod/wire.mod/Makefile, mod/woobie.mod/Makefile:
+	patch.h, tcldcc.c, tclhash.c, traffic.c, traffic.h,
+	compat/Makefile.in, md5/Makefile.in, mod/assoc.mod/Makefile,
+	mod/blowfish.mod/Makefile, mod/channels.mod/Makefile,
+	mod/compress.mod/Makefile.in, mod/console.mod/Makefile,
+	mod/ctcp.mod/Makefile, mod/dns.mod/Makefile.in,
+	mod/filesys.mod/Makefile, mod/irc.mod/Makefile,
+	mod/notes.mod/Makefile, mod/server.mod/Makefile,
+	mod/share.mod/Makefile, mod/transfer.mod/Makefile,
+	mod/uptime.mod/Makefile:
 
-	* Moved all the traffic stuff to traffic.[ch]. Also got rid of the nasty
-	  usage of like 20 global variables for traffic accounting and moved it all
-	  to a struct (partial backport from earlier in 1.9 (Wingman)).
-	* Make depend works now.
+	* Moved all the traffic stuff to traffic.[ch]. Also got rid of the
+	  nasty usage of like 20 global variables for traffic accounting and
+	  moved it all to a struct (partial backport from earlier in 1.9
+	(Wingman)).  
+	* Make depend works now.  
 
-2004-08-27 00:34  Will Buckner <wcc@techmonkeys.org>
+2004-08-27 05:34  Will Buckner <wcc@techmonkeys.org>
 
 	* Makefile.in, src/Makefile.in, src/botnet.c, src/cmds.c,
-	  src/dcc.c, src/debug.c, src/debug.h, src/dns.h, src/eggdrop.h,
-	  src/language.h, src/main.c, src/main.h, src/match.c, src/match.h,
-	  src/mem.c, src/misc.c, src/misc_file.c, src/modules.c,
-	  src/proto.h, src/tclhash.c, src/tclmisc.c, src/types.h,
-	  src/userent.c, src/userrec.c, src/users.c,
-	  src/compat/Makefile.in, src/md5/Makefile.in:
+	src/dcc.c, src/debug.c, src/debug.h, src/dns.h, src/eggdrop.h,
+	src/language.h, src/main.c, src/main.h, src/match.c, src/match.h,
+	src/mem.c, src/misc.c, src/misc_file.c, src/modules.c, src/proto.h,
+	src/tclhash.c, src/tclmisc.c, src/types.h, src/userent.c,
+	src/userrec.c, src/users.c, src/compat/Makefile.in,
+	src/md5/Makefile.in:
 
-	* Moved debug stuff to debug.[ch].
-	* More misc cleanups.
-	* Added back safety hashes for src/, src/md5, and src/compat.
-	  make depend needs to be fixes for GCC 3.3+; it doesn't work
-	  anymore. #error's about varargs.h being depreciated.
+	* Moved debug stuff to debug.[ch].  
+	* More misc cleanups.  
+	* Added back safety hashes for src/, src/md5, and src/compat.  
+	  make depend needs to be fixes for GCC 3.3+; it doesn't work 
+	  anymore. #error's about varargs.h being depreciated.  
 
-2004-08-26 19:49  Will Buckner <wcc@techmonkeys.org>
+2004-08-27 00:49  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: botcmd.c, botmsg.c, botmsg.h, botnet.c, botnet.h, cmds.c,
-	  dcc.c, dcc.h, dccutil.c, eggdrop.h, main.c, main.h, misc.c,
-	  modules.c, patch.h, proto.h, tandem.h[DEAD], tcldcc.c, tclmisc.c,
-	  tcluser.c, types.h, userrec.c, users.c, mod/module.h,
-	  mod/assoc.mod/assoc.c, mod/filesys.mod/filesys.c,
-	  mod/notes.mod/notes.c, mod/share.mod/share.c,
-	  mod/transfer.mod/transfer.c:
+	dcc.c, dcc.h, dccutil.c, eggdrop.h, main.c, main.h, misc.c,
+	modules.c, patch.h, proto.h, tandem.h, tcldcc.c, tclmisc.c,
+	tcluser.c, types.h, userrec.c, users.c, mod/module.h,
+	mod/assoc.mod/assoc.c, mod/filesys.mod/filesys.c,
+	mod/notes.mod/notes.c, mod/share.mod/share.c,
+	mod/transfer.mod/transfer.c:
 
-	* More header cleanups. tandem.h is gone now.
+	* More header cleanups. tandem.h is gone now.  
 
-2004-08-26 05:36  Will Buckner <wcc@techmonkeys.org>
+2004-08-26 10:36  Will Buckner <wcc@techmonkeys.org>
 
 	* aclocal.m4, config.h.in, configure, src/botcmd.c, src/botmsg.c,
-	  src/botnet.c, src/chanprog.c, src/cmds.c, src/dcc.c, src/dcc.h,
-	  src/dccutil.c, src/dccutil.h, src/dns.c, src/eggdrop.h,
-	  src/main.c, src/main.h, src/mem.c, src/misc.c, src/modules.c,
-	  src/net.c, src/net.h, src/patch.h, src/proto.h, src/tcl.c,
-	  src/tcldcc.c, src/tcldcc.h, src/tclmisc.c, src/tcluser.c,
-	  src/userent.c, src/users.c, src/mod/module.h,
-	  src/mod/assoc.mod/assoc.c, src/mod/filesys.mod/filedb3.h,
-	  src/mod/irc.mod/chan.c, src/mod/irc.mod/irc.c,
-	  src/mod/irc.mod/irc.h, src/mod/irc.mod/mode.c,
-	  src/mod/irc.mod/tclirc.c, src/mod/share.mod/share.c,
-	  src/mod/transfer.mod/transfer.c:
+	src/botnet.c, src/chanprog.c, src/cmds.c, src/dcc.c, src/dcc.h,
+	src/dccutil.c, src/dccutil.h, src/dns.c, src/eggdrop.h, src/main.c,
+	src/main.h, src/mem.c, src/misc.c, src/modules.c, src/net.c,
+	src/net.h, src/patch.h, src/proto.h, src/tcl.c, src/tcldcc.c,
+	src/tcldcc.h, src/tclmisc.c, src/tcluser.c, src/userent.c,
+	src/users.c, src/mod/module.h, src/mod/assoc.mod/assoc.c,
+	src/mod/filesys.mod/filedb3.h, src/mod/irc.mod/chan.c,
+	src/mod/irc.mod/irc.c, src/mod/irc.mod/irc.h,
+	src/mod/irc.mod/mode.c, src/mod/irc.mod/tclirc.c,
+	src/mod/share.mod/share.c, src/mod/transfer.mod/transfer.c:
 
-	* More header stuff.
-	* Removed two unused functions... hostnamefromip() and flush_inbuf(). These peobably need to go in 1.6 too.
-	* Bot STAT_* flags -> BSTAT_*.
-	* Renamed BORGCUBES (NeXT Step OS hack) define to NEXT_HACKS.
+	* More header stuff.  
+	* Removed two unused functions... hostnamefromip() and
+	flush_inbuf(). These peobably need to go in 1.6 too.  
+	* Bot STAT_* flags -> BSTAT_*.  
+	* Renamed BORGCUBES (NeXT Step OS hack) define to NEXT_HACKS.  
 
-2004-08-25 22:21  Will Buckner <wcc@techmonkeys.org>
+2004-08-26 03:21  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: Makefile.in, bg.h, botcmd.c, botcmd.h, botmsg.c, botmsg.h,
-	  botnet.c, botnet.h, chanprog.c, chanprog.h, cmds.c, cmds.h,
-	  cmdt.h[DEAD], dcc.c, dcc.h, dccutil.c, dccutil.h, dns.c, dns.h,
-	  eggdrop.h, flags.c, flags.h, language.c, main.c, main.h, match.c,
-	  mem.c, misc.c, modules.c, modules.h, net.c, proto.h, rfc1459.c,
-	  rfc1459.h, tcl.c, tcldcc.c, tclhash.c, tclhash.h, tclmisc.c,
-	  tcluser.c, types.h, userent.c, userent.h, userrec.c, userrec.h,
-	  users.c, compat/Makefile.in, md5/Makefile.in, mod/module.h,
-	  mod/modvals.h, mod/assoc.mod/Makefile, mod/blowfish.mod/Makefile,
-	  mod/channels.mod/Makefile, mod/compress.mod/Makefile.in,
-	  mod/console.mod/Makefile, mod/ctcp.mod/Makefile,
-	  mod/dns.mod/Makefile.in, mod/filesys.mod/Makefile,
-	  mod/filesys.mod/filesys.c, mod/irc.mod/Makefile,
-	  mod/notes.mod/Makefile, mod/seen.mod/Makefile,
-	  mod/server.mod/Makefile, mod/share.mod/Makefile,
-	  mod/share.mod/share.c, mod/transfer.mod/Makefile,
-	  mod/uptime.mod/Makefile, mod/wire.mod/Makefile,
-	  mod/woobie.mod/Makefile, mod/woobie.mod/woobie.c:
+	botnet.c, botnet.h, chanprog.c, chanprog.h, cmds.c, cmds.h, cmdt.h,
+	dcc.c, dcc.h, dccutil.c, dccutil.h, dns.c, dns.h, eggdrop.h,
+	flags.c, flags.h, language.c, main.c, main.h, match.c, mem.c,
+	misc.c, modules.c, modules.h, net.c, proto.h, rfc1459.c, rfc1459.h,
+	tcl.c, tcldcc.c, tclhash.c, tclhash.h, tclmisc.c, tcluser.c,
+	types.h, userent.c, userent.h, userrec.c, userrec.h, users.c,
+	compat/Makefile.in, md5/Makefile.in, mod/module.h, mod/modvals.h,
+	mod/assoc.mod/Makefile, mod/blowfish.mod/Makefile,
+	mod/channels.mod/Makefile, mod/compress.mod/Makefile.in,
+	mod/console.mod/Makefile, mod/ctcp.mod/Makefile,
+	mod/dns.mod/Makefile.in, mod/filesys.mod/Makefile,
+	mod/filesys.mod/filesys.c, mod/irc.mod/Makefile,
+	mod/notes.mod/Makefile, mod/server.mod/Makefile,
+	mod/share.mod/Makefile, mod/share.mod/share.c,
+	mod/transfer.mod/Makefile, mod/uptime.mod/Makefile:
 
-	* More header stuff. Making progress..
+	* More header stuff. Making progress..  
 
-2004-08-25 02:41  Will Buckner <wcc@techmonkeys.org>
+2004-08-25 07:41  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: botcmd.c, botmsg.c, botnet.c, chanprog.c, cmds.c, cmds.h,
-	  dcc.c, dcc.h, dccutil.c, dccutil.h, dns.c, flags.c, language.c,
-	  language.h, main.c, main.h, mem.c, misc.c, modules.c, net.c,
-	  patch.h, proto.h, tcldcc.c, tclhash.c, tclmisc.c, userent.c,
-	  userrec.c, users.c:
+	dcc.c, dcc.h, dccutil.c, dccutil.h, dns.c, flags.c, language.c,
+	language.h, main.c, main.h, mem.c, misc.c, modules.c, net.c,
+	patch.h, proto.h, tcldcc.c, tclhash.c, tclmisc.c, userent.c,
+	userrec.c, users.c:
 
-	* More header cleanups.
+	* More header cleanups.  
 
-2004-08-25 01:39  Will Buckner <wcc@techmonkeys.org>
+2004-08-25 06:39  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: botcmd.c, botcmd.h, botmsg.c, botmsg.h, botnet.c, botnet.h,
-	  cmds.c, dcc.c, main.c, misc.c, modules.c, patch.h, proto.h,
-	  tcldcc.c, tclhash.c, tclmisc.c, tcluser.c, userent.c, userrec.c,
-	  users.c, mod/irc.mod/tclirc.c:
+	cmds.c, dcc.c, main.c, misc.c, modules.c, patch.h, proto.h,
+	tcldcc.c, tclhash.c, tclmisc.c, tcluser.c, userent.c, userrec.c,
+	users.c, mod/irc.mod/tclirc.c:
 
-	* Started cleaning up the #include mess. I moved the bot*.c prototypes out
-	  of  proto.h and into headers that correspond to their .c files. Much more
-	  coming. This will eventually speed up compilation a lot.
+	* Started cleaning up the #include mess. I moved the bot*.c
+	  prototypes out of  proto.h and into headers that correspond to their
+	  .c files. Much more coming. This will eventually speed up
+	compilation a lot.  
+	
+	* Moved base64_to_int() to botmsg.c where it belongs.  
 
-	* Moved base64_to_int() to botmsg.c where it belongs.
-
-2004-08-25 00:26  Will Buckner <wcc@techmonkeys.org>
+2004-08-25 05:26  Will Buckner <wcc@techmonkeys.org>
 
 	* src/: patch.h, mod/channels.mod/channels.c,
-	  mod/channels.mod/channels.h, mod/irc.mod/irc.h,
-	  mod/server.mod/server.c, mod/server.mod/server.h,
-	  mod/transfer.mod/transfer.c, mod/transfer.mod/transfer.h:
+	mod/channels.mod/channels.h, mod/irc.mod/irc.h,
+	mod/server.mod/server.c, mod/server.mod/server.h,
+	mod/transfer.mod/transfer.c, mod/transfer.mod/transfer.h:
 
-	* Cleaned up the holes in the modules' export tables.
+	* Cleaned up the holes in the modules' export tables.  
 
-2004-08-24 20:51  Will Buckner <wcc@techmonkeys.org>
+2004-08-25 01:51  Will Buckner <wcc@techmonkeys.org>
 
 	* configure, src/mod/compress.mod/configure,
-	  src/mod/dns.mod/configure:
+	src/mod/dns.mod/configure:
 
-	* Ran misc/runautotools.
+	* Ran misc/runautotools.  
 
-2004-08-24 20:51  Will Buckner <wcc@techmonkeys.org>
+2004-08-25 01:51  Will Buckner <wcc@techmonkeys.org>
 
 	* NEWS, README, configure.ac, doc/ABOUT, doc/BUG-REPORT,
-	  doc/COMPILE-GUIDE, doc/CONTENTS, doc/MODULES, doc/Makefile.in,
-	  doc/PATCH-HOWTO, doc/TEXT-SUBSTITUTIONS, doc/UPDATES1.6[DEAD],
-	  doc/UPDATES1.7, doc/tcl-commands.doc, doc/html/about.html,
-	  doc/html/app-textsub.html, doc/html/compiling.html,
-	  doc/html/index.html, doc/html/news.html,
-	  doc/html/patch-howto.html, doc/html/readme.html,
-	  doc/html/tcl-commands.html, doc/man1/eggdrop.1, misc/newversion,
-	  src/main.c, src/patch.h, src/mod/assoc.mod/assoc.c,
-	  src/mod/blowfish.mod/blowfish.c, src/mod/channels.mod/channels.c,
-	  src/mod/compress.mod/compress.c,
-	  src/mod/compress.mod/configure.ac, src/mod/console.mod/console.c,
-	  src/mod/ctcp.mod/ctcp.c, src/mod/dns.mod/configure.ac,
-	  src/mod/dns.mod/dns.c, src/mod/filesys.mod/filesys.c,
-	  src/mod/irc.mod/irc.c, src/mod/notes.mod/notes.c,
-	  src/mod/seen.mod/seen.c, src/mod/server.mod/server.c,
-	  src/mod/share.mod/share.c, src/mod/transfer.mod/transfer.c,
-	  src/mod/uptime.mod/uptime.c, src/mod/wire.mod/wire.c,
-	  src/mod/woobie.mod/woobie.c:
+	doc/COMPILE-GUIDE, doc/CONTENTS, doc/MODULES, doc/Makefile.in,
+	doc/PATCH-HOWTO, doc/TEXT-SUBSTITUTIONS, doc/UPDATES1.6,
+	doc/UPDATES1.7, doc/tcl-commands.doc, doc/html/about.html,
+	doc/html/app-textsub.html, doc/html/compiling.html,
+	doc/html/index.html, doc/html/news.html, doc/html/patch-howto.html,
+	doc/html/readme.html, doc/html/tcl-commands.html,
+	doc/man1/eggdrop.1, misc/newversion, src/main.c, src/patch.h,
+	src/mod/assoc.mod/assoc.c, src/mod/blowfish.mod/blowfish.c,
+	src/mod/channels.mod/channels.c, src/mod/compress.mod/compress.c,
+	src/mod/compress.mod/configure.ac, src/mod/console.mod/console.c,
+	src/mod/ctcp.mod/ctcp.c, src/mod/dns.mod/configure.ac,
+	src/mod/dns.mod/dns.c, src/mod/filesys.mod/filesys.c,
+	src/mod/irc.mod/irc.c, src/mod/notes.mod/notes.c,
+	src/mod/server.mod/server.c, src/mod/share.mod/share.c,
+	src/mod/transfer.mod/transfer.c, src/mod/uptime.mod/uptime.c:
 
-	* 1.6.18 -> 1.7.0
+	* 1.6.18 -> 1.7.0 
 
-2004-08-24 20:17  Will Buckner <wcc@techmonkeys.org>
+2004-08-25 01:17  Will Buckner <wcc@techmonkeys.org>
 
 	* src/patch.h:
 
-	* Test commit. Start of Eggdrop 1.7.0.
+	* Test commit. Start of Eggdrop 1.7.0.  
 
-2004-08-24 20:01  tag eggdrop1_7
-
-2004-08-24 20:01  Will Buckner <wcc@techmonkeys.org>
+2004-08-25 01:01  Will Buckner <wcc@techmonkeys.org>
 
 	* CONTENTS, NEWS, README, aclocal.m4, FEATURES, configure,
-	  eggdrop.conf, .cvsignore, COPYING, INSTALL, Makefile.in,
-	  config.h.in, configure.ac, disabled_modules, doc/ABOUT, doc/BANS,
-	  doc/BUG-REPORT, doc/CONTENTS, doc/USERS, doc/MODULES,
-	  doc/PARTYLINE, doc/TEXT-SUBSTITUTIONS, doc/TRICKS,
-	  doc/UPDATES1.6, doc/.cvsignore, doc/AUTHORS, doc/BOTNET,
-	  doc/COMPILE-GUIDE, doc/FIRST-SCRIPT, doc/KNOWN-PROBLEMS,
-	  doc/Makefile.in, doc/PATCH-HOWTO, doc/WEIRD-MESSAGES,
-	  doc/tcl-commands.doc, doc/html/app-weird.html,
-	  doc/html/about.html, doc/html/authors.html, doc/html/bans.html,
-	  doc/html/compiling.html, doc/html/egg-core.html,
-	  doc/html/faqs.html, doc/html/features.html, doc/html/index.html,
-	  doc/html/install.html, doc/html/mod-assoc.html,
-	  doc/html/mod-channels.html, doc/html/mod-dns.html,
-	  doc/html/mod-notes.html, doc/html/mod-seen.html,
-	  doc/html/mod-uptime.html, doc/html/patch-howto.html,
-	  doc/html/starting.html, doc/html/app-problems.html,
-	  doc/html/app-tricks.html, doc/html/botnet.html,
-	  doc/html/mod-console.html, doc/html/mod-ctcp.html,
-	  doc/html/mod-filesys.html, doc/html/mod-irc.html,
-	  doc/html/mod-server.html, doc/html/mod-wire.html,
-	  doc/html/mod-woobie.html, doc/html/party.html,
-	  doc/html/users.html, doc/html/app-textsub.html,
-	  doc/html/mod-blowfish.html, doc/html/mod-compress.html,
-	  doc/html/mod-share.html, doc/html/news.html,
-	  doc/html/readme.html, doc/html/tcl-commands.html,
-	  doc/man1/eggdrop.1, doc/settings/CONTENTS,
-	  doc/settings/core.settings, doc/settings/mod.channels,
-	  doc/settings/mod.assoc, doc/settings/mod.blowfish,
-	  doc/settings/mod.compress, doc/settings/mod.console,
-	  doc/settings/mod.ctcp, doc/settings/mod.dns,
-	  doc/settings/mod.filesys, doc/settings/mod.irc,
-	  doc/settings/mod.notes, doc/settings/mod.seen,
-	  doc/settings/mod.server, doc/settings/mod.share,
-	  doc/settings/mod.transfer, doc/settings/mod.uptime,
-	  doc/settings/mod.wire, doc/settings/mod.woobie, src/bg.c,
-	  src/bg.h, src/dcc.c, src/language.c, src/rfc1459.c,
-	  src/dccutil.c, src/dns.c, src/dns.h, src/match.c, src/mem.c,
-	  src/misc_file.c, src/misc_file.h, src/net.c, src/tcl.c,
-	  src/Makefile.in, src/chan.h, src/cmds.c, src/cmdt.h, src/flags.c,
-	  src/flags.h, src/eggdrop.h, src/lang.h, src/main.c, src/main.h,
-	  src/tclhash.c, src/tclhash.h, src/.cvsignore, src/misc.c,
-	  src/modules.c, src/modules.h, src/patch.h, src/stat.h,
-	  src/tandem.h, src/tclmisc.c, src/tcluser.c, src/users.c,
-	  src/users.h, src/botcmd.c, src/chanprog.c, src/tcldcc.c,
-	  src/tclegg.h, src/userent.c, src/userrec.c, src/botmsg.c,
-	  src/botnet.c, src/proto.h, src/md5/.cvsignore,
-	  src/md5/Makefile.in, src/md5/md5.h, src/md5/md5c.c,
-	  src/mod/.cvsignore, src/mod/Makefile.in, src/mod/eggmod.m4,
-	  src/mod/module.h, src/mod/modvals.h,
-	  src/mod/channels.mod/Makefile, src/mod/channels.mod/channels.c,
-	  src/mod/channels.mod/channels.h, src/mod/channels.mod/cmdschan.c,
-	  src/mod/channels.mod/modinfo, src/mod/channels.mod/tclchan.c,
-	  src/mod/channels.mod/udefchan.c, src/mod/channels.mod/userchan.c,
-	  src/mod/channels.mod/help/channels.help,
-	  src/mod/channels.mod/help/chaninfo.help,
-	  src/mod/channels.mod/help/set/channels.help,
-	  src/mod/ctcp.mod/Makefile, src/mod/ctcp.mod/ctcp.c,
-	  src/mod/ctcp.mod/ctcp.h, src/mod/ctcp.mod/modinfo,
-	  src/mod/ctcp.mod/help/ctcp.help,
-	  src/mod/ctcp.mod/help/set/ctcp.help, src/mod/dns.mod/configure,
-	  src/mod/dns.mod/configure.ac, src/mod/dns.mod/dns.c,
-	  src/mod/dns.mod/dns.h, src/mod/dns.mod/modinfo,
-	  src/mod/dns.mod/.cvsignore, src/mod/dns.mod/Makefile.in,
-	  src/mod/dns.mod/coredns.c, src/mod/filesys.mod/Makefile,
-	  src/mod/filesys.mod/dbcompat.c, src/mod/filesys.mod/dbcompat.h,
-	  src/mod/filesys.mod/filedb3.c, src/mod/filesys.mod/filedb3.h,
-	  src/mod/filesys.mod/filesys.c, src/mod/filesys.mod/filesys.h,
-	  src/mod/assoc.mod/Makefile, src/mod/assoc.mod/assoc.c,
-	  src/mod/assoc.mod/assoc.h, src/mod/assoc.mod/modinfo,
-	  src/mod/filesys.mod/filelist.c, src/mod/filesys.mod/filelist.h,
-	  src/mod/filesys.mod/files.c, src/mod/filesys.mod/files.h,
-	  src/mod/filesys.mod/modinfo, src/mod/filesys.mod/tclfiles.c,
-	  src/mod/filesys.mod/help/filesys.help,
-	  src/mod/filesys.mod/help/set/filesys.help,
-	  src/mod/filesys.mod/language/filesys.danish.lang,
-	  src/mod/filesys.mod/language/filesys.english.lang,
-	  src/mod/filesys.mod/language/filesys.finnish.lang,
-	  src/mod/filesys.mod/language/filesys.french.lang,
-	  src/mod/filesys.mod/language/filesys.german.lang,
-	  src/mod/notes.mod/Makefile, src/mod/notes.mod/cmdsnote.c,
-	  src/mod/notes.mod/modinfo, src/mod/notes.mod/notes.c,
-	  src/mod/notes.mod/notes.h, src/mod/notes.mod/help/notes.help,
-	  src/mod/notes.mod/help/msg/notes.help,
-	  src/mod/notes.mod/help/set/notes.help,
-	  src/mod/notes.mod/language/notes.danish.lang,
-	  src/mod/notes.mod/language/notes.english.lang,
-	  src/mod/notes.mod/language/notes.finnish.lang,
-	  src/mod/notes.mod/language/notes.french.lang,
-	  src/mod/notes.mod/language/notes.german.lang,
-	  src/mod/assoc.mod/help/assoc.help,
-	  src/mod/assoc.mod/language/assoc.danish.lang,
-	  src/mod/assoc.mod/language/assoc.english.lang,
-	  src/mod/assoc.mod/language/assoc.finnish.lang,
-	  src/mod/assoc.mod/language/assoc.french.lang,
-	  src/mod/assoc.mod/language/assoc.german.lang,
-	  src/mod/blowfish.mod/Makefile, src/mod/blowfish.mod/bf_tab.h,
-	  src/mod/blowfish.mod/blowfish.c, src/mod/blowfish.mod/blowfish.h,
-	  src/mod/blowfish.mod/modinfo, src/mod/console.mod/Makefile,
-	  src/mod/console.mod/console.c, src/mod/console.mod/console.h,
-	  src/mod/console.mod/modinfo,
-	  src/mod/console.mod/help/console.help,
-	  src/mod/console.mod/help/set/console.help,
-	  src/mod/console.mod/language/console.danish.lang,
-	  src/mod/console.mod/language/console.english.lang,
-	  src/mod/console.mod/language/console.finnish.lang,
-	  src/mod/console.mod/language/console.french.lang,
-	  src/mod/console.mod/language/console.german.lang,
-	  src/mod/share.mod/Makefile, src/mod/woobie.mod/Makefile,
-	  src/mod/woobie.mod/modinfo, src/mod/woobie.mod/woobie.c,
-	  src/mod/seen.mod/Makefile, src/mod/seen.mod/modinfo,
-	  src/mod/seen.mod/seen.c, src/mod/seen.mod/help/seen.help,
-	  src/mod/seen.mod/help/msg/seen.help, src/mod/server.mod/Makefile,
-	  src/mod/server.mod/cmdsserv.c, src/mod/server.mod/modinfo,
-	  src/mod/server.mod/servmsg.c, src/mod/server.mod/tclserv.c,
-	  src/mod/share.mod/modinfo, src/mod/share.mod/share.c,
-	  src/mod/share.mod/share.h, src/mod/share.mod/uf_features.c,
-	  src/mod/share.mod/help/share.help,
-	  src/mod/share.mod/help/set/share.help,
-	  src/mod/server.mod/server.c, src/mod/server.mod/server.h,
-	  src/mod/server.mod/help/server.help,
-	  src/mod/server.mod/help/set/server.help,
-	  src/mod/transfer.mod/Makefile, src/mod/transfer.mod/modinfo,
-	  src/mod/transfer.mod/tcltransfer.c,
-	  src/mod/transfer.mod/transfer.c, src/mod/transfer.mod/transfer.h,
-	  src/mod/transfer.mod/transferfstat.c,
-	  src/mod/transfer.mod/transferqueue.c, src/mod/wire.mod/Makefile,
-	  src/mod/wire.mod/modinfo, src/mod/wire.mod/wire.c,
-	  src/mod/wire.mod/wire.h, src/mod/wire.mod/help/wire.help,
-	  src/mod/wire.mod/language/wire.danish.lang,
-	  src/mod/wire.mod/language/wire.english.lang,
-	  src/mod/wire.mod/language/wire.finnish.lang,
-	  src/mod/wire.mod/language/wire.french.lang,
-	  src/mod/wire.mod/language/wire.german.lang,
-	  src/mod/irc.mod/Makefile, src/mod/irc.mod/irc.c,
-	  src/mod/irc.mod/irc.h, src/mod/irc.mod/msgcmds.c,
-	  src/mod/transfer.mod/help/transfer.help,
-	  src/mod/transfer.mod/help/set/transfer.help,
-	  src/mod/transfer.mod/language/transfer.danish.lang,
-	  src/mod/transfer.mod/language/transfer.english.lang,
-	  src/mod/transfer.mod/language/transfer.finnish.lang,
-	  src/mod/transfer.mod/language/transfer.french.lang,
-	  src/mod/transfer.mod/language/transfer.german.lang,
-	  src/mod/uptime.mod/Makefile, src/mod/uptime.mod/modinfo,
-	  src/mod/uptime.mod/uptime.c, src/mod/uptime.mod/uptime.h,
-	  src/mod/uptime.mod/help/uptime.help, src/mod/irc.mod/chan.c,
-	  src/mod/irc.mod/cmdsirc.c, src/mod/irc.mod/mode.c,
-	  src/mod/irc.mod/modinfo, src/mod/irc.mod/tclirc.c,
-	  src/mod/compress.mod/configure, src/mod/irc.mod/help/irc.help,
-	  src/mod/irc.mod/help/msg/irc.help,
-	  src/mod/irc.mod/help/set/irc.help, help/cmds1.help,
-	  src/compat/.cvsignore, src/compat/Makefile.in,
-	  src/compat/compat.h, src/compat/gnu_strftime.c,
-	  src/compat/inet_aton.c, src/compat/inet_aton.h,
-	  src/compat/memcpy.c, src/compat/memcpy.h, src/compat/memset.c,
-	  src/compat/memset.h, src/compat/snprintf.c,
-	  src/compat/snprintf.h, src/compat/strcasecmp.c,
-	  src/compat/strcasecmp.h, src/compat/strftime.c,
-	  src/compat/strftime.h, src/mod/compress.mod/.cvsignore,
-	  src/mod/compress.mod/Makefile.in,
-	  src/mod/compress.mod/compress.c, src/mod/compress.mod/compress.h,
-	  src/mod/compress.mod/configure.ac, src/mod/compress.mod/modinfo,
-	  src/mod/compress.mod/tclcompress.c,
-	  src/mod/compress.mod/help/compress.help,
-	  src/mod/compress.mod/help/set/compress.help, help/cmds2.help,
-	  help/core.help, help/set/cmds1.help, logs/CONTENTS,
-	  misc/config.guess, misc/install-sh, misc/newversion,
-	  misc/releaseprep, language/core.danish.lang,
-	  language/core.english.lang, language/core.finnish.lang,
-	  language/core.french.lang, language/core.german.lang,
-	  misc/addpatch, misc/config.sub, misc/mkinstalldirs,
-	  misc/modconfig, misc/runautotools, scripts/.cvsignore,
-	  scripts/CONTENTS, scripts/Makefile.in, scripts/action.fix.tcl,
-	  scripts/alltools.tcl, scripts/autobotchk, scripts/botchk,
-	  scripts/cmd_resolve.tcl, scripts/compat.tcl, scripts/getops.tcl,
-	  scripts/klined.tcl, scripts/notes2.tcl, scripts/ques5.tcl,
-	  scripts/sentinel.tcl, scripts/userinfo.tcl, scripts/weed,
-	  scripts/help/cmd_resolve.help, scripts/help/userinfo.help,
-	  scripts/help/msg/userinfo.help, text/CONTENTS, text/banner,
-	  text/motd, text/motd.finnish:
+	eggdrop.conf, .cvsignore, COPYING, INSTALL, Makefile.in,
+	config.h.in, configure.ac, disabled_modules, doc/ABOUT, doc/BANS,
+	doc/BUG-REPORT, doc/CONTENTS, doc/USERS, doc/MODULES,
+	doc/PARTYLINE, doc/TEXT-SUBSTITUTIONS, doc/TRICKS, doc/UPDATES1.6,
+	doc/.cvsignore, doc/AUTHORS, doc/BOTNET, doc/COMPILE-GUIDE,
+	doc/FIRST-SCRIPT, doc/KNOWN-PROBLEMS, doc/Makefile.in,
+	doc/PATCH-HOWTO, doc/WEIRD-MESSAGES, doc/tcl-commands.doc,
+	doc/html/app-weird.html, doc/html/about.html,
+	doc/html/authors.html, doc/html/bans.html, doc/html/compiling.html,
+	doc/html/egg-core.html, doc/html/faqs.html, doc/html/features.html,
+	doc/html/index.html, doc/html/install.html,
+	doc/html/mod-assoc.html, doc/html/mod-channels.html,
+	doc/html/mod-dns.html, doc/html/mod-notes.html,
+	doc/html/mod-seen.html, doc/html/mod-uptime.html,
+	doc/html/patch-howto.html, doc/html/starting.html,
+	doc/html/app-problems.html, doc/html/app-tricks.html,
+	doc/html/botnet.html, doc/html/mod-console.html,
+	doc/html/mod-ctcp.html, doc/html/mod-filesys.html,
+	doc/html/mod-irc.html, doc/html/mod-server.html,
+	doc/html/mod-wire.html, doc/html/mod-woobie.html,
+	doc/html/party.html, doc/html/users.html,
+	doc/html/app-textsub.html, doc/html/mod-blowfish.html,
+	doc/html/mod-compress.html, doc/html/mod-share.html,
+	doc/html/news.html, doc/html/readme.html,
+	doc/html/tcl-commands.html, doc/man1/eggdrop.1,
+	doc/settings/CONTENTS, doc/settings/core.settings,
+	doc/settings/mod.channels, doc/settings/mod.assoc,
+	doc/settings/mod.blowfish, doc/settings/mod.compress,
+	doc/settings/mod.console, doc/settings/mod.ctcp,
+	doc/settings/mod.dns, doc/settings/mod.filesys,
+	doc/settings/mod.irc, doc/settings/mod.notes,
+	doc/settings/mod.seen, doc/settings/mod.server,
+	doc/settings/mod.share, doc/settings/mod.transfer,
+	doc/settings/mod.uptime, doc/settings/mod.wire,
+	doc/settings/mod.woobie, src/bg.c, src/bg.h, src/dcc.c,
+	src/language.c, src/rfc1459.c, src/dccutil.c, src/dns.c, src/dns.h,
+	src/match.c, src/mem.c, src/misc_file.c, src/misc_file.h,
+	src/net.c, src/tcl.c, src/Makefile.in, src/chan.h, src/cmds.c,
+	src/cmdt.h, src/flags.c, src/flags.h, src/eggdrop.h, src/lang.h,
+	src/main.c, src/main.h, src/tclhash.c, src/tclhash.h,
+	src/.cvsignore, src/misc.c, src/modules.c, src/modules.h,
+	src/patch.h, src/stat.h, src/tandem.h, src/tclmisc.c,
+	src/tcluser.c, src/users.c, src/users.h, src/botcmd.c,
+	src/chanprog.c, src/tcldcc.c, src/tclegg.h, src/userent.c,
+	src/userrec.c, src/botmsg.c, src/botnet.c, src/proto.h,
+	src/md5/.cvsignore, src/md5/Makefile.in, src/md5/md5.h,
+	src/md5/md5c.c, src/mod/.cvsignore, src/mod/Makefile.in,
+	src/mod/eggmod.m4, src/mod/module.h, src/mod/modvals.h,
+	src/mod/channels.mod/Makefile, src/mod/channels.mod/channels.c,
+	src/mod/channels.mod/channels.h, src/mod/channels.mod/cmdschan.c,
+	src/mod/channels.mod/modinfo, src/mod/channels.mod/tclchan.c,
+	src/mod/channels.mod/udefchan.c, src/mod/channels.mod/userchan.c,
+	src/mod/channels.mod/help/channels.help,
+	src/mod/channels.mod/help/chaninfo.help,
+	src/mod/channels.mod/help/set/channels.help,
+	src/mod/ctcp.mod/Makefile, src/mod/ctcp.mod/ctcp.c,
+	src/mod/ctcp.mod/ctcp.h, src/mod/ctcp.mod/modinfo,
+	src/mod/ctcp.mod/help/ctcp.help,
+	src/mod/ctcp.mod/help/set/ctcp.help, src/mod/dns.mod/configure,
+	src/mod/dns.mod/configure.ac, src/mod/dns.mod/dns.c,
+	src/mod/dns.mod/dns.h, src/mod/dns.mod/modinfo,
+	src/mod/dns.mod/.cvsignore, src/mod/dns.mod/Makefile.in,
+	src/mod/dns.mod/coredns.c, src/mod/filesys.mod/Makefile,
+	src/mod/filesys.mod/dbcompat.c, src/mod/filesys.mod/dbcompat.h,
+	src/mod/filesys.mod/filedb3.c, src/mod/filesys.mod/filedb3.h,
+	src/mod/filesys.mod/filesys.c, src/mod/filesys.mod/filesys.h,
+	src/mod/assoc.mod/Makefile, src/mod/assoc.mod/assoc.c,
+	src/mod/assoc.mod/assoc.h, src/mod/assoc.mod/modinfo,
+	src/mod/filesys.mod/filelist.c, src/mod/filesys.mod/filelist.h,
+	src/mod/filesys.mod/files.c, src/mod/filesys.mod/files.h,
+	src/mod/filesys.mod/modinfo, src/mod/filesys.mod/tclfiles.c,
+	src/mod/filesys.mod/help/filesys.help,
+	src/mod/filesys.mod/help/set/filesys.help,
+	src/mod/filesys.mod/language/filesys.danish.lang,
+	src/mod/filesys.mod/language/filesys.english.lang,
+	src/mod/filesys.mod/language/filesys.finnish.lang,
+	src/mod/filesys.mod/language/filesys.french.lang,
+	src/mod/filesys.mod/language/filesys.german.lang,
+	src/mod/notes.mod/Makefile, src/mod/notes.mod/cmdsnote.c,
+	src/mod/notes.mod/modinfo, src/mod/notes.mod/notes.c,
+	src/mod/notes.mod/notes.h, src/mod/notes.mod/help/notes.help,
+	src/mod/notes.mod/help/msg/notes.help,
+	src/mod/notes.mod/help/set/notes.help,
+	src/mod/notes.mod/language/notes.danish.lang,
+	src/mod/notes.mod/language/notes.english.lang,
+	src/mod/notes.mod/language/notes.finnish.lang,
+	src/mod/notes.mod/language/notes.french.lang,
+	src/mod/notes.mod/language/notes.german.lang,
+	src/mod/assoc.mod/help/assoc.help,
+	src/mod/assoc.mod/language/assoc.danish.lang,
+	src/mod/assoc.mod/language/assoc.english.lang,
+	src/mod/assoc.mod/language/assoc.finnish.lang,
+	src/mod/assoc.mod/language/assoc.french.lang,
+	src/mod/assoc.mod/language/assoc.german.lang,
+	src/mod/blowfish.mod/Makefile, src/mod/blowfish.mod/bf_tab.h,
+	src/mod/blowfish.mod/blowfish.c, src/mod/blowfish.mod/blowfish.h,
+	src/mod/blowfish.mod/modinfo, src/mod/console.mod/Makefile,
+	src/mod/console.mod/console.c, src/mod/console.mod/console.h,
+	src/mod/console.mod/modinfo, src/mod/console.mod/help/console.help,
+	src/mod/console.mod/help/set/console.help,
+	src/mod/console.mod/language/console.danish.lang,
+	src/mod/console.mod/language/console.english.lang,
+	src/mod/console.mod/language/console.finnish.lang,
+	src/mod/console.mod/language/console.french.lang,
+	src/mod/console.mod/language/console.german.lang,
+	src/mod/share.mod/Makefile, src/mod/server.mod/Makefile,
+	src/mod/server.mod/cmdsserv.c, src/mod/server.mod/modinfo,
+	src/mod/server.mod/servmsg.c, src/mod/server.mod/tclserv.c,
+	src/mod/share.mod/modinfo, src/mod/share.mod/share.c,
+	src/mod/share.mod/share.h, src/mod/share.mod/uf_features.c,
+	src/mod/share.mod/help/share.help,
+	src/mod/share.mod/help/set/share.help, src/mod/server.mod/server.c,
+	src/mod/server.mod/server.h, src/mod/server.mod/help/server.help,
+	src/mod/server.mod/help/set/server.help,
+	src/mod/transfer.mod/Makefile, src/mod/transfer.mod/modinfo,
+	src/mod/transfer.mod/tcltransfer.c,
+	src/mod/transfer.mod/transfer.c, src/mod/transfer.mod/transfer.h,
+	src/mod/transfer.mod/transferfstat.c,
+	src/mod/transfer.mod/transferqueue.c, src/mod/irc.mod/Makefile,
+	src/mod/irc.mod/irc.c, src/mod/irc.mod/irc.h,
+	src/mod/irc.mod/msgcmds.c, src/mod/transfer.mod/help/transfer.help,
+	src/mod/transfer.mod/help/set/transfer.help,
+	src/mod/transfer.mod/language/transfer.danish.lang,
+	src/mod/transfer.mod/language/transfer.english.lang,
+	src/mod/transfer.mod/language/transfer.finnish.lang,
+	src/mod/transfer.mod/language/transfer.french.lang,
+	src/mod/transfer.mod/language/transfer.german.lang,
+	src/mod/uptime.mod/Makefile, src/mod/uptime.mod/modinfo,
+	src/mod/uptime.mod/uptime.c, src/mod/uptime.mod/uptime.h,
+	src/mod/uptime.mod/help/uptime.help, src/mod/irc.mod/chan.c,
+	src/mod/irc.mod/cmdsirc.c, src/mod/irc.mod/mode.c,
+	src/mod/irc.mod/modinfo, src/mod/irc.mod/tclirc.c,
+	src/mod/compress.mod/configure, src/mod/irc.mod/help/irc.help,
+	src/mod/irc.mod/help/msg/irc.help,
+	src/mod/irc.mod/help/set/irc.help, help/cmds1.help,
+	src/compat/.cvsignore, src/compat/Makefile.in, src/compat/compat.h,
+	src/compat/gnu_strftime.c, src/compat/inet_aton.c,
+	src/compat/inet_aton.h, src/compat/memcpy.c, src/compat/memcpy.h,
+	src/compat/memset.c, src/compat/memset.h, src/compat/snprintf.c,
+	src/compat/snprintf.h, src/compat/strcasecmp.c,
+	src/compat/strcasecmp.h, src/compat/strftime.c,
+	src/compat/strftime.h, src/mod/compress.mod/.cvsignore,
+	src/mod/compress.mod/Makefile.in, src/mod/compress.mod/compress.c,
+	src/mod/compress.mod/compress.h, src/mod/compress.mod/configure.ac,
+	src/mod/compress.mod/modinfo, src/mod/compress.mod/tclcompress.c,
+	src/mod/compress.mod/help/compress.help,
+	src/mod/compress.mod/help/set/compress.help, help/cmds2.help,
+	help/core.help, help/set/cmds1.help, misc/config.guess,
+	misc/install-sh, misc/newversion, misc/releaseprep,
+	language/core.danish.lang, language/core.english.lang,
+	language/core.finnish.lang, language/core.french.lang,
+	language/core.german.lang, misc/addpatch, misc/config.sub,
+	misc/mkinstalldirs, misc/modconfig, misc/runautotools,
+	scripts/.cvsignore, scripts/CONTENTS, scripts/Makefile.in,
+	scripts/action.fix.tcl, scripts/alltools.tcl, scripts/autobotchk,
+	scripts/botchk, scripts/cmd_resolve.tcl, scripts/compat.tcl,
+	scripts/getops.tcl, scripts/klined.tcl, scripts/notes2.tcl,
+	scripts/ques5.tcl, scripts/sentinel.tcl, scripts/userinfo.tcl,
+	scripts/weed, text/CONTENTS, text/banner, text/motd,
+	text/motd.finnish:
 
-	* Starting 1.7 tree based off of 1.6.18 CVS as of August 24, 2004.
+	* Starting 1.7 tree based off of 1.6.18 CVS as of August 24, 2004.  
 
-2004-08-24 20:01  Will Buckner <wcc@techmonkeys.org>
+2004-08-25 01:01  Will Buckner <wcc@techmonkeys.org>
 
 	* CONTENTS, NEWS, README, aclocal.m4, FEATURES, configure,
-	  eggdrop.conf, .cvsignore, COPYING, INSTALL, Makefile.in,
-	  config.h.in, configure.ac, disabled_modules, doc/ABOUT, doc/BANS,
-	  doc/BUG-REPORT, doc/CONTENTS, doc/USERS, doc/MODULES,
-	  doc/PARTYLINE, doc/TEXT-SUBSTITUTIONS, doc/TRICKS,
-	  doc/UPDATES1.6, doc/.cvsignore, doc/AUTHORS, doc/BOTNET,
-	  doc/COMPILE-GUIDE, doc/FIRST-SCRIPT, doc/KNOWN-PROBLEMS,
-	  doc/Makefile.in, doc/PATCH-HOWTO, doc/WEIRD-MESSAGES,
-	  doc/tcl-commands.doc, doc/html/app-weird.html,
-	  doc/html/about.html, doc/html/authors.html, doc/html/bans.html,
-	  doc/html/compiling.html, doc/html/egg-core.html,
-	  doc/html/faqs.html, doc/html/features.html, doc/html/index.html,
-	  doc/html/install.html, doc/html/mod-assoc.html,
-	  doc/html/mod-channels.html, doc/html/mod-dns.html,
-	  doc/html/mod-notes.html, doc/html/mod-seen.html,
-	  doc/html/mod-uptime.html, doc/html/patch-howto.html,
-	  doc/html/starting.html, doc/html/app-problems.html,
-	  doc/html/app-tricks.html, doc/html/botnet.html,
-	  doc/html/mod-console.html, doc/html/mod-ctcp.html,
-	  doc/html/mod-filesys.html, doc/html/mod-irc.html,
-	  doc/html/mod-server.html, doc/html/mod-wire.html,
-	  doc/html/mod-woobie.html, doc/html/party.html,
-	  doc/html/users.html, doc/html/app-textsub.html,
-	  doc/html/mod-blowfish.html, doc/html/mod-compress.html,
-	  doc/html/mod-share.html, doc/html/news.html,
-	  doc/html/readme.html, doc/html/tcl-commands.html,
-	  doc/man1/eggdrop.1, doc/settings/CONTENTS,
-	  doc/settings/core.settings, doc/settings/mod.channels,
-	  doc/settings/mod.assoc, doc/settings/mod.blowfish,
-	  doc/settings/mod.compress, doc/settings/mod.console,
-	  doc/settings/mod.ctcp, doc/settings/mod.dns,
-	  doc/settings/mod.filesys, doc/settings/mod.irc,
-	  doc/settings/mod.notes, doc/settings/mod.seen,
-	  doc/settings/mod.server, doc/settings/mod.share,
-	  doc/settings/mod.transfer, doc/settings/mod.uptime,
-	  doc/settings/mod.wire, doc/settings/mod.woobie, src/bg.c,
-	  src/bg.h, src/dcc.c, src/language.c, src/rfc1459.c,
-	  src/dccutil.c, src/dns.c, src/dns.h, src/match.c, src/mem.c,
-	  src/misc_file.c, src/misc_file.h, src/net.c, src/tcl.c,
-	  src/Makefile.in, src/chan.h, src/cmds.c, src/cmdt.h, src/flags.c,
-	  src/flags.h, src/eggdrop.h, src/lang.h, src/main.c, src/main.h,
-	  src/tclhash.c, src/tclhash.h, src/.cvsignore, src/misc.c,
-	  src/modules.c, src/modules.h, src/patch.h, src/stat.h,
-	  src/tandem.h, src/tclmisc.c, src/tcluser.c, src/users.c,
-	  src/users.h, src/botcmd.c, src/chanprog.c, src/tcldcc.c,
-	  src/tclegg.h, src/userent.c, src/userrec.c, src/botmsg.c,
-	  src/botnet.c, src/proto.h, src/md5/.cvsignore,
-	  src/md5/Makefile.in, src/md5/md5.h, src/md5/md5c.c,
-	  src/mod/.cvsignore, src/mod/Makefile.in, src/mod/eggmod.m4,
-	  src/mod/module.h, src/mod/modvals.h,
-	  src/mod/channels.mod/Makefile, src/mod/channels.mod/channels.c,
-	  src/mod/channels.mod/channels.h, src/mod/channels.mod/cmdschan.c,
-	  src/mod/channels.mod/modinfo, src/mod/channels.mod/tclchan.c,
-	  src/mod/channels.mod/udefchan.c, src/mod/channels.mod/userchan.c,
-	  src/mod/channels.mod/help/channels.help,
-	  src/mod/channels.mod/help/chaninfo.help,
-	  src/mod/channels.mod/help/set/channels.help,
-	  src/mod/ctcp.mod/Makefile, src/mod/ctcp.mod/ctcp.c,
-	  src/mod/ctcp.mod/ctcp.h, src/mod/ctcp.mod/modinfo,
-	  src/mod/ctcp.mod/help/ctcp.help,
-	  src/mod/ctcp.mod/help/set/ctcp.help, src/mod/dns.mod/configure,
-	  src/mod/dns.mod/configure.ac, src/mod/dns.mod/dns.c,
-	  src/mod/dns.mod/dns.h, src/mod/dns.mod/modinfo,
-	  src/mod/dns.mod/.cvsignore, src/mod/dns.mod/Makefile.in,
-	  src/mod/dns.mod/coredns.c, src/mod/filesys.mod/Makefile,
-	  src/mod/filesys.mod/dbcompat.c, src/mod/filesys.mod/dbcompat.h,
-	  src/mod/filesys.mod/filedb3.c, src/mod/filesys.mod/filedb3.h,
-	  src/mod/filesys.mod/filesys.c, src/mod/filesys.mod/filesys.h,
-	  src/mod/assoc.mod/Makefile, src/mod/assoc.mod/assoc.c,
-	  src/mod/assoc.mod/assoc.h, src/mod/assoc.mod/modinfo,
-	  src/mod/filesys.mod/filelist.c, src/mod/filesys.mod/filelist.h,
-	  src/mod/filesys.mod/files.c, src/mod/filesys.mod/files.h,
-	  src/mod/filesys.mod/modinfo, src/mod/filesys.mod/tclfiles.c,
-	  src/mod/filesys.mod/help/filesys.help,
-	  src/mod/filesys.mod/help/set/filesys.help,
-	  src/mod/filesys.mod/language/filesys.danish.lang,
-	  src/mod/filesys.mod/language/filesys.english.lang,
-	  src/mod/filesys.mod/language/filesys.finnish.lang,
-	  src/mod/filesys.mod/language/filesys.french.lang,
-	  src/mod/filesys.mod/language/filesys.german.lang,
-	  src/mod/notes.mod/Makefile, src/mod/notes.mod/cmdsnote.c,
-	  src/mod/notes.mod/modinfo, src/mod/notes.mod/notes.c,
-	  src/mod/notes.mod/notes.h, src/mod/notes.mod/help/notes.help,
-	  src/mod/notes.mod/help/msg/notes.help,
-	  src/mod/notes.mod/help/set/notes.help,
-	  src/mod/notes.mod/language/notes.danish.lang,
-	  src/mod/notes.mod/language/notes.english.lang,
-	  src/mod/notes.mod/language/notes.finnish.lang,
-	  src/mod/notes.mod/language/notes.french.lang,
-	  src/mod/notes.mod/language/notes.german.lang,
-	  src/mod/assoc.mod/help/assoc.help,
-	  src/mod/assoc.mod/language/assoc.danish.lang,
-	  src/mod/assoc.mod/language/assoc.english.lang,
-	  src/mod/assoc.mod/language/assoc.finnish.lang,
-	  src/mod/assoc.mod/language/assoc.french.lang,
-	  src/mod/assoc.mod/language/assoc.german.lang,
-	  src/mod/blowfish.mod/Makefile, src/mod/blowfish.mod/bf_tab.h,
-	  src/mod/blowfish.mod/blowfish.c, src/mod/blowfish.mod/blowfish.h,
-	  src/mod/blowfish.mod/modinfo, src/mod/console.mod/Makefile,
-	  src/mod/console.mod/console.c, src/mod/console.mod/console.h,
-	  src/mod/console.mod/modinfo,
-	  src/mod/console.mod/help/console.help,
-	  src/mod/console.mod/help/set/console.help,
-	  src/mod/console.mod/language/console.danish.lang,
-	  src/mod/console.mod/language/console.english.lang,
-	  src/mod/console.mod/language/console.finnish.lang,
-	  src/mod/console.mod/language/console.french.lang,
-	  src/mod/console.mod/language/console.german.lang,
-	  src/mod/share.mod/Makefile, src/mod/woobie.mod/Makefile,
-	  src/mod/woobie.mod/modinfo, src/mod/woobie.mod/woobie.c,
-	  src/mod/seen.mod/Makefile, src/mod/seen.mod/modinfo,
-	  src/mod/seen.mod/seen.c, src/mod/seen.mod/help/seen.help,
-	  src/mod/seen.mod/help/msg/seen.help, src/mod/server.mod/Makefile,
-	  src/mod/server.mod/cmdsserv.c, src/mod/server.mod/modinfo,
-	  src/mod/server.mod/servmsg.c, src/mod/server.mod/tclserv.c,
-	  src/mod/share.mod/modinfo, src/mod/share.mod/share.c,
-	  src/mod/share.mod/share.h, src/mod/share.mod/uf_features.c,
-	  src/mod/share.mod/help/share.help,
-	  src/mod/share.mod/help/set/share.help,
-	  src/mod/server.mod/server.c, src/mod/server.mod/server.h,
-	  src/mod/server.mod/help/server.help,
-	  src/mod/server.mod/help/set/server.help,
-	  src/mod/transfer.mod/Makefile, src/mod/transfer.mod/modinfo,
-	  src/mod/transfer.mod/tcltransfer.c,
-	  src/mod/transfer.mod/transfer.c, src/mod/transfer.mod/transfer.h,
-	  src/mod/transfer.mod/transferfstat.c,
-	  src/mod/transfer.mod/transferqueue.c, src/mod/wire.mod/Makefile,
-	  src/mod/wire.mod/modinfo, src/mod/wire.mod/wire.c,
-	  src/mod/wire.mod/wire.h, src/mod/wire.mod/help/wire.help,
-	  src/mod/wire.mod/language/wire.danish.lang,
-	  src/mod/wire.mod/language/wire.english.lang,
-	  src/mod/wire.mod/language/wire.finnish.lang,
-	  src/mod/wire.mod/language/wire.french.lang,
-	  src/mod/wire.mod/language/wire.german.lang,
-	  src/mod/irc.mod/Makefile, src/mod/irc.mod/irc.c,
-	  src/mod/irc.mod/irc.h, src/mod/irc.mod/msgcmds.c,
-	  src/mod/transfer.mod/help/transfer.help,
-	  src/mod/transfer.mod/help/set/transfer.help,
-	  src/mod/transfer.mod/language/transfer.danish.lang,
-	  src/mod/transfer.mod/language/transfer.english.lang,
-	  src/mod/transfer.mod/language/transfer.finnish.lang,
-	  src/mod/transfer.mod/language/transfer.french.lang,
-	  src/mod/transfer.mod/language/transfer.german.lang,
-	  src/mod/uptime.mod/Makefile, src/mod/uptime.mod/modinfo,
-	  src/mod/uptime.mod/uptime.c, src/mod/uptime.mod/uptime.h,
-	  src/mod/uptime.mod/help/uptime.help, src/mod/irc.mod/chan.c,
-	  src/mod/irc.mod/cmdsirc.c, src/mod/irc.mod/mode.c,
-	  src/mod/irc.mod/modinfo, src/mod/irc.mod/tclirc.c,
-	  src/mod/compress.mod/configure, src/mod/irc.mod/help/irc.help,
-	  src/mod/irc.mod/help/msg/irc.help,
-	  src/mod/irc.mod/help/set/irc.help, help/cmds1.help,
-	  src/compat/.cvsignore, src/compat/Makefile.in,
-	  src/compat/compat.h, src/compat/gnu_strftime.c,
-	  src/compat/inet_aton.c, src/compat/inet_aton.h,
-	  src/compat/memcpy.c, src/compat/memcpy.h, src/compat/memset.c,
-	  src/compat/memset.h, src/compat/snprintf.c,
-	  src/compat/snprintf.h, src/compat/strcasecmp.c,
-	  src/compat/strcasecmp.h, src/compat/strftime.c,
-	  src/compat/strftime.h, src/mod/compress.mod/.cvsignore,
-	  src/mod/compress.mod/Makefile.in,
-	  src/mod/compress.mod/compress.c, src/mod/compress.mod/compress.h,
-	  src/mod/compress.mod/configure.ac, src/mod/compress.mod/modinfo,
-	  src/mod/compress.mod/tclcompress.c,
-	  src/mod/compress.mod/help/compress.help,
-	  src/mod/compress.mod/help/set/compress.help, help/cmds2.help,
-	  help/core.help, help/set/cmds1.help, logs/CONTENTS,
-	  misc/config.guess, misc/install-sh, misc/newversion,
-	  misc/releaseprep, language/core.danish.lang,
-	  language/core.english.lang, language/core.finnish.lang,
-	  language/core.french.lang, language/core.german.lang,
-	  misc/addpatch, misc/config.sub, misc/mkinstalldirs,
-	  misc/modconfig, misc/runautotools, scripts/.cvsignore,
-	  scripts/CONTENTS, scripts/Makefile.in, scripts/action.fix.tcl,
-	  scripts/alltools.tcl, scripts/autobotchk, scripts/botchk,
-	  scripts/cmd_resolve.tcl, scripts/compat.tcl, scripts/getops.tcl,
-	  scripts/klined.tcl, scripts/notes2.tcl, scripts/ques5.tcl,
-	  scripts/sentinel.tcl, scripts/userinfo.tcl, scripts/weed,
-	  scripts/help/cmd_resolve.help, scripts/help/userinfo.help,
-	  scripts/help/msg/userinfo.help, text/CONTENTS, text/banner,
-	  text/motd, text/motd.finnish:
+	eggdrop.conf, .cvsignore, COPYING, INSTALL, Makefile.in,
+	config.h.in, configure.ac, disabled_modules, doc/ABOUT, doc/BANS,
+	doc/BUG-REPORT, doc/CONTENTS, doc/USERS, doc/MODULES,
+	doc/PARTYLINE, doc/TEXT-SUBSTITUTIONS, doc/TRICKS, doc/UPDATES1.6,
+	doc/.cvsignore, doc/AUTHORS, doc/BOTNET, doc/COMPILE-GUIDE,
+	doc/FIRST-SCRIPT, doc/KNOWN-PROBLEMS, doc/Makefile.in,
+	doc/PATCH-HOWTO, doc/WEIRD-MESSAGES, doc/tcl-commands.doc,
+	doc/html/app-weird.html, doc/html/about.html,
+	doc/html/authors.html, doc/html/bans.html, doc/html/compiling.html,
+	doc/html/egg-core.html, doc/html/faqs.html, doc/html/features.html,
+	doc/html/index.html, doc/html/install.html,
+	doc/html/mod-assoc.html, doc/html/mod-channels.html,
+	doc/html/mod-dns.html, doc/html/mod-notes.html,
+	doc/html/mod-seen.html, doc/html/mod-uptime.html,
+	doc/html/patch-howto.html, doc/html/starting.html,
+	doc/html/app-problems.html, doc/html/app-tricks.html,
+	doc/html/botnet.html, doc/html/mod-console.html,
+	doc/html/mod-ctcp.html, doc/html/mod-filesys.html,
+	doc/html/mod-irc.html, doc/html/mod-server.html,
+	doc/html/mod-wire.html, doc/html/mod-woobie.html,
+	doc/html/party.html, doc/html/users.html,
+	doc/html/app-textsub.html, doc/html/mod-blowfish.html,
+	doc/html/mod-compress.html, doc/html/mod-share.html,
+	doc/html/news.html, doc/html/readme.html,
+	doc/html/tcl-commands.html, doc/man1/eggdrop.1,
+	doc/settings/CONTENTS, doc/settings/core.settings,
+	doc/settings/mod.channels, doc/settings/mod.assoc,
+	doc/settings/mod.blowfish, doc/settings/mod.compress,
+	doc/settings/mod.console, doc/settings/mod.ctcp,
+	doc/settings/mod.dns, doc/settings/mod.filesys,
+	doc/settings/mod.irc, doc/settings/mod.notes,
+	doc/settings/mod.seen, doc/settings/mod.server,
+	doc/settings/mod.share, doc/settings/mod.transfer,
+	doc/settings/mod.uptime, doc/settings/mod.wire,
+	doc/settings/mod.woobie, src/bg.c, src/bg.h, src/dcc.c,
+	src/language.c, src/rfc1459.c, src/dccutil.c, src/dns.c, src/dns.h,
+	src/match.c, src/mem.c, src/misc_file.c, src/misc_file.h,
+	src/net.c, src/tcl.c, src/Makefile.in, src/chan.h, src/cmds.c,
+	src/cmdt.h, src/flags.c, src/flags.h, src/eggdrop.h, src/lang.h,
+	src/main.c, src/main.h, src/tclhash.c, src/tclhash.h,
+	src/.cvsignore, src/misc.c, src/modules.c, src/modules.h,
+	src/patch.h, src/stat.h, src/tandem.h, src/tclmisc.c,
+	src/tcluser.c, src/users.c, src/users.h, src/botcmd.c,
+	src/chanprog.c, src/tcldcc.c, src/tclegg.h, src/userent.c,
+	src/userrec.c, src/botmsg.c, src/botnet.c, src/proto.h,
+	src/md5/.cvsignore, src/md5/Makefile.in, src/md5/md5.h,
+	src/md5/md5c.c, src/mod/.cvsignore, src/mod/Makefile.in,
+	src/mod/eggmod.m4, src/mod/module.h, src/mod/modvals.h,
+	src/mod/channels.mod/Makefile, src/mod/channels.mod/channels.c,
+	src/mod/channels.mod/channels.h, src/mod/channels.mod/cmdschan.c,
+	src/mod/channels.mod/modinfo, src/mod/channels.mod/tclchan.c,
+	src/mod/channels.mod/udefchan.c, src/mod/channels.mod/userchan.c,
+	src/mod/channels.mod/help/channels.help,
+	src/mod/channels.mod/help/chaninfo.help,
+	src/mod/channels.mod/help/set/channels.help,
+	src/mod/ctcp.mod/Makefile, src/mod/ctcp.mod/ctcp.c,
+	src/mod/ctcp.mod/ctcp.h, src/mod/ctcp.mod/modinfo,
+	src/mod/ctcp.mod/help/ctcp.help,
+	src/mod/ctcp.mod/help/set/ctcp.help, src/mod/dns.mod/configure,
+	src/mod/dns.mod/configure.ac, src/mod/dns.mod/dns.c,
+	src/mod/dns.mod/dns.h, src/mod/dns.mod/modinfo,
+	src/mod/dns.mod/.cvsignore, src/mod/dns.mod/Makefile.in,
+	src/mod/dns.mod/coredns.c, src/mod/filesys.mod/Makefile,
+	src/mod/filesys.mod/dbcompat.c, src/mod/filesys.mod/dbcompat.h,
+	src/mod/filesys.mod/filedb3.c, src/mod/filesys.mod/filedb3.h,
+	src/mod/filesys.mod/filesys.c, src/mod/filesys.mod/filesys.h,
+	src/mod/assoc.mod/Makefile, src/mod/assoc.mod/assoc.c,
+	src/mod/assoc.mod/assoc.h, src/mod/assoc.mod/modinfo,
+	src/mod/filesys.mod/filelist.c, src/mod/filesys.mod/filelist.h,
+	src/mod/filesys.mod/files.c, src/mod/filesys.mod/files.h,
+	src/mod/filesys.mod/modinfo, src/mod/filesys.mod/tclfiles.c,
+	src/mod/filesys.mod/help/filesys.help,
+	src/mod/filesys.mod/help/set/filesys.help,
+	src/mod/filesys.mod/language/filesys.danish.lang,
+	src/mod/filesys.mod/language/filesys.english.lang,
+	src/mod/filesys.mod/language/filesys.finnish.lang,
+	src/mod/filesys.mod/language/filesys.french.lang,
+	src/mod/filesys.mod/language/filesys.german.lang,
+	src/mod/notes.mod/Makefile, src/mod/notes.mod/cmdsnote.c,
+	src/mod/notes.mod/modinfo, src/mod/notes.mod/notes.c,
+	src/mod/notes.mod/notes.h, src/mod/notes.mod/help/notes.help,
+	src/mod/notes.mod/help/msg/notes.help,
+	src/mod/notes.mod/help/set/notes.help,
+	src/mod/notes.mod/language/notes.danish.lang,
+	src/mod/notes.mod/language/notes.english.lang,
+	src/mod/notes.mod/language/notes.finnish.lang,
+	src/mod/notes.mod/language/notes.french.lang,
+	src/mod/notes.mod/language/notes.german.lang,
+	src/mod/assoc.mod/help/assoc.help,
+	src/mod/assoc.mod/language/assoc.danish.lang,
+	src/mod/assoc.mod/language/assoc.english.lang,
+	src/mod/assoc.mod/language/assoc.finnish.lang,
+	src/mod/assoc.mod/language/assoc.french.lang,
+	src/mod/assoc.mod/language/assoc.german.lang,
+	src/mod/blowfish.mod/Makefile, src/mod/blowfish.mod/bf_tab.h,
+	src/mod/blowfish.mod/blowfish.c, src/mod/blowfish.mod/blowfish.h,
+	src/mod/blowfish.mod/modinfo, src/mod/console.mod/Makefile,
+	src/mod/console.mod/console.c, src/mod/console.mod/console.h,
+	src/mod/console.mod/modinfo, src/mod/console.mod/help/console.help,
+	src/mod/console.mod/help/set/console.help,
+	src/mod/console.mod/language/console.danish.lang,
+	src/mod/console.mod/language/console.english.lang,
+	src/mod/console.mod/language/console.finnish.lang,
+	src/mod/console.mod/language/console.french.lang,
+	src/mod/console.mod/language/console.german.lang,
+	src/mod/share.mod/Makefile, src/mod/server.mod/Makefile,
+	src/mod/server.mod/cmdsserv.c, src/mod/server.mod/modinfo,
+	src/mod/server.mod/servmsg.c, src/mod/server.mod/tclserv.c,
+	src/mod/share.mod/modinfo, src/mod/share.mod/share.c,
+	src/mod/share.mod/share.h, src/mod/share.mod/uf_features.c,
+	src/mod/share.mod/help/share.help,
+	src/mod/share.mod/help/set/share.help, src/mod/server.mod/server.c,
+	src/mod/server.mod/server.h, src/mod/server.mod/help/server.help,
+	src/mod/server.mod/help/set/server.help,
+	src/mod/transfer.mod/Makefile, src/mod/transfer.mod/modinfo,
+	src/mod/transfer.mod/tcltransfer.c,
+	src/mod/transfer.mod/transfer.c, src/mod/transfer.mod/transfer.h,
+	src/mod/transfer.mod/transferfstat.c,
+	src/mod/transfer.mod/transferqueue.c, src/mod/irc.mod/Makefile,
+	src/mod/irc.mod/irc.c, src/mod/irc.mod/irc.h,
+	src/mod/irc.mod/msgcmds.c, src/mod/transfer.mod/help/transfer.help,
+	src/mod/transfer.mod/help/set/transfer.help,
+	src/mod/transfer.mod/language/transfer.danish.lang,
+	src/mod/transfer.mod/language/transfer.english.lang,
+	src/mod/transfer.mod/language/transfer.finnish.lang,
+	src/mod/transfer.mod/language/transfer.french.lang,
+	src/mod/transfer.mod/language/transfer.german.lang,
+	src/mod/uptime.mod/Makefile, src/mod/uptime.mod/modinfo,
+	src/mod/uptime.mod/uptime.c, src/mod/uptime.mod/uptime.h,
+	src/mod/uptime.mod/help/uptime.help, src/mod/irc.mod/chan.c,
+	src/mod/irc.mod/cmdsirc.c, src/mod/irc.mod/mode.c,
+	src/mod/irc.mod/modinfo, src/mod/irc.mod/tclirc.c,
+	src/mod/compress.mod/configure, src/mod/irc.mod/help/irc.help,
+	src/mod/irc.mod/help/msg/irc.help,
+	src/mod/irc.mod/help/set/irc.help, help/cmds1.help,
+	src/compat/.cvsignore, src/compat/Makefile.in, src/compat/compat.h,
+	src/compat/gnu_strftime.c, src/compat/inet_aton.c,
+	src/compat/inet_aton.h, src/compat/memcpy.c, src/compat/memcpy.h,
+	src/compat/memset.c, src/compat/memset.h, src/compat/snprintf.c,
+	src/compat/snprintf.h, src/compat/strcasecmp.c,
+	src/compat/strcasecmp.h, src/compat/strftime.c,
+	src/compat/strftime.h, src/mod/compress.mod/.cvsignore,
+	src/mod/compress.mod/Makefile.in, src/mod/compress.mod/compress.c,
+	src/mod/compress.mod/compress.h, src/mod/compress.mod/configure.ac,
+	src/mod/compress.mod/modinfo, src/mod/compress.mod/tclcompress.c,
+	src/mod/compress.mod/help/compress.help,
+	src/mod/compress.mod/help/set/compress.help, help/cmds2.help,
+	help/core.help, help/set/cmds1.help, misc/config.guess,
+	misc/install-sh, misc/newversion, misc/releaseprep,
+	language/core.danish.lang, language/core.english.lang,
+	language/core.finnish.lang, language/core.french.lang,
+	language/core.german.lang, misc/addpatch, misc/config.sub,
+	misc/mkinstalldirs, misc/modconfig, misc/runautotools,
+	scripts/.cvsignore, scripts/CONTENTS, scripts/Makefile.in,
+	scripts/action.fix.tcl, scripts/alltools.tcl, scripts/autobotchk,
+	scripts/botchk, scripts/cmd_resolve.tcl, scripts/compat.tcl,
+	scripts/getops.tcl, scripts/klined.tcl, scripts/notes2.tcl,
+	scripts/ques5.tcl, scripts/sentinel.tcl, scripts/userinfo.tcl,
+	scripts/weed, text/CONTENTS, text/banner, text/motd,
+	text/motd.finnish:
 
-	Initial revision
+	Initial revision 
 
